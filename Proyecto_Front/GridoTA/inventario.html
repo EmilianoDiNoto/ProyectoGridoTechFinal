@@ -60,5 +60,35 @@
       </section>
     </main>
     <script src="script.js"></script>
+    
+    <script>
+          
+    
+    function Get() {
+      fetch("http://localhost:63152/api/Inventory")
+        .then((response) => response.json())
+        .then((data) => {
+          const tbody = document.querySelector(`tbody`);
+
+          data.forEach((o) => {
+            let _tr = `<tr>
+                          <td>${o.InventoryID}</td>
+                          <td>${o.MateriaLID}</td>
+                          <td>${o.InitialStock}</td>
+                          <td>${o.FinalStock}</td>
+                          <td>${o.Date}</td>
+                          <td>${o.BatchNumber}</td>
+                      </tr>`;
+
+            tbody.innerHTML += _tr;
+          });
+        });
+    }
+    Get();
+    </script>
+  
+  
+  
+  
   </body>
 </html>
