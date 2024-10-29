@@ -28,6 +28,7 @@ namespace WebApplicationGridoTech.Models
         public string MaterialName { get; set; }
         public string Description { get; set; }
         public int SupplierID { get; set; }
+        public string SupplierName { get; set; }
         public int StockQuantity { get; set; }
         public string StockUnit { get; set; }
         #endregion
@@ -36,26 +37,23 @@ namespace WebApplicationGridoTech.Models
 
         public DataTable SelectAll()
         {
-            string sqlSentencia = "SP_GetAll_Materials";
+            string sqlSentencia = "SELECT * FROM vw_Materials_Suppliers";
 
-            SqlConnection sqlCnn = new SqlConnection();
-            sqlCnn.ConnectionString = conectionString;
+            using (SqlConnection sqlCnn = new SqlConnection(conectionString))
+            {
+                SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
+                sqlCom.CommandType = CommandType.Text;
 
-            sqlCnn.Open();
+                DataTable dt = new DataTable();
 
-            SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
-            sqlCom.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(sqlCom);
 
-            DataSet ds = new DataSet();
+                sqlCnn.Open();
+                da.Fill(dt);
+                sqlCnn.Close();
 
-            SqlDataAdapter da = new SqlDataAdapter();
-            da.SelectCommand = sqlCom;
-            da.Fill(ds);
-
-            sqlCnn.Close();
-
-            return ds.Tables[0];
-
+                return dt;
+            }
         }
 
         public void Insert()
