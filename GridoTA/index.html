@@ -8,24 +8,36 @@
     />
     <title>Modern Admin Dashboard</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="Modal/modal-crud/dist/style.css">
 
-    <!-- link de FontAwesome----->
     <script
       src="https://kit.fontawesome.com/417062404a.js"
       crossorigin="anonymous"
     ></script>
 
-    <!-- link de Icons8----->
     <link
       rel="stylesheet"
       href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
     />
 
-    <!-- link de chart----->
-    <script src="//cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
+  <!-- time picker library -->
+   
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+  <!-- font awesome -->
+  <script src="https://kit.fontawesome.com/44e24fc4d2.js"></script>
 
-    <!-- link de chartjs librerias---->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script><link rel="stylesheet" href="./style.css">
+  
+
   </head>
   <body>
     <input type="checkbox" id="menu-toggle" />
@@ -52,33 +64,68 @@
               </a>
               <ul class="submenu">
                 <li>
-                  <a href="login1.html">INICIO DE SESION</a>
+                  <a href="#">INICIO DE SESION</a>
+                  <ul class="menu">
+                    <li><a href="#">Login Administrativo</a></li>
+                    <li><a href="#">Login general</a></li>
+                  </ul>
                 </li>
                 <li>
                   <a href="#">PANEL DE CONTROL</a>
+                  <ul class="submenu">
+                    <li><a href="#">Visión General de Inventario</a></li>
+                    <li><a href="#">Estado de Órdenes de Producción</a></li>
+                  </ul>
                 </li>
               </ul>
             </li>
             <li>
               <a href="#">
-               <span class="las la-clipboard-list"></span>
-               <small>Gestion de inventario</small>
+                <span class="las la-clipboard-list"></span>
+                <small>Gestion de inventario</small>
               </a>
               <ul class="submenu">
                 <li>
-                  <a href="inventario.html">VISUALIZACION DE INVENTARIO</a>
+                  <a href="#">VISUALIZACION DE INVENTARIO</a>
+                  <ul class="menu">
+                    <li><a href="#">Inventario por Sección</a></li>
+                    <li><a href="#">Inventario por Lote</a></li>
+                    <li><a href="#">Estado de Materiales e Insumos</a></li>
+                  </ul>
                 </li>
                 <li>
-                  <a href="ajuste-invent.html">AJUSTES INVENTARIO</a>
+                  <a href="#">AJUSTES INVENTARIO</a>
+                  <ul class="menu">
+                    <li><a href="#">Ajustes Positivos</a></li>
+                    <li><a href="#">Ajustes Negativos</a></li>
+                  </ul>
                 </li>
                 <li>
-                  <a href="registro-fin.html">MOVIMIENTOS DE INVENTARIO</a>
+                  <a href="#">MOVIMIENTOS DE INVENTARIO</a>
+                  <ul class="menu">
+                    <li><a href="#">Transferencias de Materiales</a></li>
+                    <li>
+                      <a href="#"
+                        >Registro de Movimientos (Origen/Destino, Usuario)</a
+                      >
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <a href="reg-mov-mat.html">DEVOLUCIONES Y DESCARTES</a>
+                  <a href="#">DEVOLUCIONES Y DESCARTES</a>
+                  <ul class="menu">
+                    <li><a href="#">Materiales Devueltos</a></li>
+                    <li><a href="#">Materiales Descartados</a></li>
+                    <li><a href="#">Insumos Devueltos</a></li>
+                    <li><a href="#">Insumos Descartados</a></li>
+                  </ul>
                 </li>
                 <li>
-                  <a href="trazabilidad-material.html">TRAZABILIDAD</a>
+                  <a href="#">TRAZABILIDAD</a>
+                  <ul class="menu">
+                    <li><a href="#">Historial de Materiales e Insumos</a></li>
+                    <li><a href="#">Grafo de Estructura de Producto</a></li>
+                  </ul>
                 </li>
               </ul>
             </li>
@@ -89,15 +136,37 @@
               </a>
               <ul class="submenu">
                 <li>
-                  <a href="listado_insumos.html">GESTION DE ORDENES</a>
+                  <a href="#">GESTION DE ORDENES</a>
+                  <ul class="menu">
+                    <li><a href="#">Crear Orden de Producción</a></li>
+                    <li>
+                      <a href="#">Asignar Materiales a Ordenes de Trabajo</a>
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <a href="gestion.html">SOLICITUD DE MATERIALES</a>
-                <li>
-                  <a href="listado_insumos.html">ESTADO DE PRODUCCION</a>
+                  <a href="#">SOLICITUD DE MATERIALES</a>
+                  <ul class="menu">
+                    <li>
+                      <a href="#"
+                        >Registrar Solicitud de Materiales (Cantidad, Proveedor,
+                        Lote)</a
+                      >
+                    </li>
+                    <li><a href="#">Emitir Remito de Solicitud</a></li>
+                  </ul>
                 </li>
                 <li>
-                  <a href="#">CONFIRMACION DE PRODUCCION</a>
+                  <a href="#">ESTADO DE PRODUCCION</a>
+                  <ul class="menu">
+                    <li>
+                      <a href="#"
+                        >Registrar Finalización de Producción (Fecha, Turno,
+                        Hora)</a
+                      >
+                    </li>
+                    <li><a href="#">Confirmación de Producto Terminado</a></li>
+                  </ul>
                 </li>
               </ul>
             </li>
@@ -108,23 +177,104 @@
               </a>
               <ul class="submenu">
                 <li>
-                  <a href="listado.html">INVENTARIO</a>
+                  <a href="#">INVENTARIO</a>
+                  <ul class="menu">
+                    <li>
+                      <a href="#">Informe de Stock Inicial de Materiales</a>
+                    </li>
+                    <li>
+                      <a href="#">Informe de Stock Final de Materiales</a>
+                    </li>
+                    <li><a href="#">Informe de Sobrantes de Materiales</a></li>
+                    <li>
+                      <a href="#">Informe de Disponibilidad de Materiales</a>
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <a href="informe.html">INSUMOS</a>
+                  <a href="#">INSUMOS</a>
+                  <ul class="menu">
+                    <li><a href="#">Informe de Stock Inicial de Insumos</a></li>
+                    <li><a href="#"> Informe de Stock Final de Insumos</a></li>
+                    <li><a href="#">Informe de Sobrantes de Insumos</a></li>
+                    <li>
+                      <a href="#">Informe de Disponibilidad de Insumos</a>
+                    </li>
+                  </ul>
                 </li>
                 <li>
-                  <a href="informe-materiales.html">RETENCION Y DESCARTES</a>
+                  <a href="#">RETENCION Y DESCARTES</a>
+                  <ul class="menu">
+                    <li>
+                      <a href="#"
+                        >Informe de Materiales Retenidos (Causa y Fecha)</a
+                      >
+                    </li>
+                    <li>
+                      <a href="#"
+                        >Informe de Materiales Descartados (Causa y Fecha)</a
+                      >
+                    </li>
+                    <li>
+                      <a href="#"
+                        >Informe de Insumos Descartados (Causa y Fecha)</a
+                      >
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </li>
+            <li>
+              <a href="#">
+                <span class="las la-exclamation-circle"></span>
+                <small>Eventos</small>
+              </a>
+              <ul class="submenu">
+                <li><a href="#">Submenú 1</a></li>
+                <li><a href="#">Submenú 2</a></li>
+                <li><a href="#">Submenú 3</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">
+                <span class="las la-user-alt"></span>
+                <small>Personal</small>
+              </a>
+              <ul class="submenu">
+                <li>
+                  <a href="#">Submenú 1</a>
+                  <ul class="submenu">
+                    <li><a href="#">Sub-submenú 1</a></li>
+                    <li><a href="#">Sub-submenú 2</a></li>
+                    <li><a href="#">Sub-submenú 3</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#">Submenú 2</a>
+                  <ul class="submenu">
+                    <li><a href="#">Sub-submenú 1</a></li>
+                    <li><a href="#">Sub-submenú 2</a></li>
+                    <li><a href="#">Sub-submenú 3</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#">Submenú 3</a>
+                  <ul class="submenu">
+                    <li><a href="#">Sub-submenú 1</a></li>
+                    <li><a href="#">Sub-submenú 2</a></li>
+                    <li><a href="#">Sub-submenú 3</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
             <li>
               <a href="#">
                 <span class="las la-chart-line"></span>
                 <small>Gráficos</small>
               </a>
               <ul class="submenu">
-                <li><a href="#">Barras</a></li>
+                <li><a href="#">Submenú 1</a></li>
                 <li><a href="#">Submenú 2</a></li>
                 <li><a href="#">Submenú 3</a></li>
               </ul>
@@ -135,7 +285,7 @@
                 <small>Órdenes</small>
               </a>
               <ul class="submenu">
-                <li><a href="gestion.html">Prueba</a></li>
+                <li><a href="#">Submenú 1</a></li>
                 <li><a href="#">Submenú 2</a></li>
                 <li><a href="#">Submenú 3</a></li>
               </ul>
@@ -157,12 +307,26 @@
                 <small>Configuración</small>
               </a>
               <ul class="submenu">
-                <li><a href="crear_usuario.html">Crear Nuevo Usuario</a></li>
-                <li><a href="lista de usuarios.html">Lista de Usuarios</a></li>
+                <li>
+                  <a href="#">USUARIOS</a>
+                  <ul class="menu">
+                    <li>
+                      <a href="#"
+                        >Gestión de Roles (Administrativo y General)</a
+                      >
+                    </li>
+                    <li><a href="#">Asignar Permisos</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#">PREFERENCIAS DEL SISTEMA</a>
+                  <ul class="menu">
+                    <li><a href="#">Configuración de Notificaciones</a></li>
+                    <li><a href="#">Configuración de Idioma y Región</a></li>
+                  </ul>
+                </li>
               </ul>
             </li>
-
-
           </ul>
         </div>
       </div>
@@ -205,7 +369,7 @@
 
       <main>
         <div class="page-header">
-          <h2 class="h2menu">Menú</h2>
+          <h1>Menú</h1>
           <small>Inicio</small>
         </div>
 
@@ -264,9 +428,7 @@
             </div>
           </div>
 
-          <div class="page-header">
-            <h2 class="h2Lista">Lista de Materiales</h2>
-          </div>
+          <h1>Listar Materiales</h1>
           <br />
 
           <div class="records table-responsive">
@@ -276,8 +438,263 @@
                 <select name="" id="">
                   <option value="">ID</option>
                 </select>
-                <button>Agregar registro</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                  Add New Record
+                </button>
+
+                 <!-- add record modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add New Record</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group row">
+              <label for="title" class="col-sm-2 col-form-label">Title:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="title" placeholder="">
               </div>
+            </div>
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea class="form-control" rows="3" id="description"></textarea>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline" id="rd-manual">
+              <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" checked="true">
+              <label class="custom-control-label" for="customRadioInline1">Manual</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline" id="rd-automatic">
+              <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
+              <label class="custom-control-label" for="customRadioInline2">Automatic</label>
+            </div>
+            <!-- add manual time-->
+            <div id="add-manual">
+              <div class="form-row">
+                <label for="start-time" class="col-sm-3 col-form-label">Start Time:</label>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3" />
+                      <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                  $(function() {
+                    $('#datetimepicker3').datetimepicker({
+                      format: 'LT'
+                    });
+                  });
+                </script>
+              </div>
+              <div class="form-row">
+                <label for="start-time" class="col-sm-3 col-form-label">End Time:</label>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4" />
+                      <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                  $(function() {
+                    $('#datetimepicker4').datetimepicker({
+                      format: 'LT'
+                    });
+                  });
+                </script>
+
+              </div>
+              <div class="form-group" align="center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-save">Save</button>
+              </div>
+            </div>
+            <!-- end add manual time-->
+            <!-- add automactic -->
+            <div id="add-automatic">
+              <div class="form-group" align="center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-save">Start Timer</button>
+              </div>
+            </div>
+            <!-- end automatic add-->
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end add record modal-->
+
+  <!-- edit record modal-->
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit Record</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group row">
+              <label for="title" class="col-sm-2 col-form-label">Title:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="title" placeholder="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea class="form-control" rows="3" id="description"></textarea>
+            </div>
+            <!-- add manual time-->
+            <div id="add-manual">
+              <div class="form-row">
+                <label for="start-time" class="col-sm-3 col-form-label">Start Time:</label>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker5" />
+                      <div class="input-group-append" data-target="#datetimepicker5" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                  $(function() {
+                    $('#datetimepicker5').datetimepicker({
+                      format: 'LT'
+                    });
+                  });
+                </script>
+              </div>
+              <div class="form-row">
+                <label for="start-time" class="col-sm-3 col-form-label">End Time:</label>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <div class="input-group date" id="datetimepicker6" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker6" />
+                      <div class="input-group-append" data-target="#datetimepicker6" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script type="text/javascript">
+                  $(function() {
+                    $('#datetimepicker6').datetimepicker({
+                      format: 'LT'
+                    });
+                  });
+                </script>
+
+              </div>
+              <div class="form-group" align="center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-save">Save</button>
+              </div>
+            </div>
+            <!-- end add manual time-->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end edit record modal-->
+
+  <!-- detail record modal-->
+  <!-- end detail record modal-->
+   
+  <!-- delete record modal-->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Record</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group row">
+              <label for="title" class="col-sm-2 col-form-label">Title:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="title" placeholder="" value="task 01" readonly>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea class="form-control" rows="3" id="description" readonly>record content</textarea>
+            </div>
+            <!-- add manual time-->
+            <div id="add-manual">
+              <div class="form-row">
+                <label for="start-time" class="col-sm-3 col-form-label">Start Time:</label>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker5" value="2:00 PM" readonly/>
+                      <div class="input-group-append" data-target="#datetimepicker5" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-row">
+                <label for="start-time" class="col-sm-3 col-form-label">End Time:</label>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <div class="input-group date" id="datetimepicker6" data-target-input="nearest">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker6" value="4:00 PM" readonly/>
+                      <div class="input-group-append" data-target="#datetimepicker6" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group" align="center">
+                <p>Are you sure? You wont’t be able to revert it!
+                  <p>
+
+              </div>
+              <div class="form-group" align="center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger btn-save">Delete</button>
+              </div>
+            </div>
+            <!-- end add manual time-->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end delete record modal-->
+</div>
+
+              </div>
+
+
+             
+
+
 
               <div class="browse">
                 <input
@@ -296,14 +713,11 @@
                 <thead>
                   <tr>
                     <th><span class="las la-sort"></span>Codigo</th>
+                    <th><span class="las la-sort"></span>Nombre</th>
                     <th><span class="las la-sort"></span>Descripcion</th>
-                    <th><span class="las la-sort"></span>Cantidad</th>
-                    <th><span class="las la-sort"></span>Categoria</th>
-                    <th><span class="las la-sort"></span>Almacen</th>
-                    <th><span class="las la-sort"></span>Stock Minimo</th>
-                    <th><span class="las la-sort"></span>Inventario</th>
-                    <th><span class="las la-sort"></span>Stock Solicitar</th>
-                    <th><span class="las la-sort"></span>ACTIONS</th>
+                    <th><span class="las la-sort"></span>Proveedor</th>
+                    <th><span class="las la-sort"></span>Stock Disponible</th>
+                    <th><span class="las la-sort"></span>Unidad de medida</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -364,52 +778,12 @@
           </div>
         </div>
       </main>
-
-      <!-- Add charts- js chart---->
-
-      <div class="page-header">
-        <h2>Gráfico de Inventario</h2>
-        <canvas id="myChart" widh="100" height="100"></canvas>
-      </div>
     </div>
 
-    <!--js chart-->
-    <script src="my_chart.js"></script>
-
-    <!--js chart grafico-->
-    <script>
-      var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Mes1', 'Mes2', 'Mes3', 'Mes4', 'Mes5', 'Mes6'],
-        datasets: [{
-            label: '# of Votes',
-            data: [0, 100, 200, 300, 400, 500],
-            backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
-</script>
- 
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Nav desplegable-->
+
     <script type="text/javascript">
       $(".nav").click(function () {
         $("#mySidenav").css("width", "70px");
@@ -436,20 +810,21 @@ var myChart = new Chart(ctx, {
       });
     </script>
 
- <!-- conexion Api-->
     <script>
-    
       function Get() {
-        fetch("http://localhost:61344/api/Almacen/ListarTodos")
+        fetch("http://localhost:63152/api/Materials")
           .then((response) => response.json())
           .then((data) => {
             const tbody = document.querySelector(`tbody`);
 
             data.forEach((o) => {
               let _tr = `<tr>
-                            <td>${o.idMaterial}</td>
-                            <td>${o.Material}</td>
-                            <td>${o.Stock}</td>
+                            <td>${o.MaterialID}</td>
+                            <td>${o.MaterialName}</td>
+                            <td>${o.Description}</td>
+                            <td>${o.SupplierName}</td>
+                            <td>${o.StockQuantity}</td>
+                            <td>${o.StockUnit}</td>
                         </tr>`;
 
               tbody.innerHTML += _tr;
@@ -458,31 +833,30 @@ var myChart = new Chart(ctx, {
       }
       Get();
 
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuItems = document.querySelectorAll(".side-menu ul li a");
 
-    // js desplegables
+        menuItems.forEach((item) => {
+          item.addEventListener("click", function (event) {
+            event.preventDefault();
+            const submenu = this.nextElementSibling;
+            const isActive = submenu && submenu.style.display === "block";
 
-    document.addEventListener("DOMContentLoaded", function () {
-    const menuItems = document.querySelectorAll(".side-menu ul li a");
+            document
+              .querySelectorAll(".side-menu ul .submenu")
+              .forEach((sub) => {
+                sub.style.display = "none";
+              });
 
-    menuItems.forEach((item) => {
-      item.addEventListener("click", function () {
-        const submenu = this.nextElementSibling;
-        const isActive = submenu && submenu.style.display === "block";
-
-        // Oculta todos los submenús
-        document
-          .querySelectorAll(".side-menu ul .submenu")
-          .forEach((sub) => {
-            sub.style.display = "none";
+            if (submenu && !isActive) {
+              submenu.style.display = "block";
+            }
           });
-
-        // Muestra el submenú si no está activo
-        if (submenu && !isActive) {
-          submenu.style.display = "block";
-        }
+        });
       });
-    });
-  });
     </script>
+
+
+<script src="Modal/modal-crud/dist/script.js"></script>
   </body>
 </html>
