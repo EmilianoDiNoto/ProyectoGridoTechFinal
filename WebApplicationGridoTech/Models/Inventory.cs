@@ -11,10 +11,10 @@ namespace WebApplicationGridoTech.Models
     {
         #region Atributos
         // Conexión a Base de Datos EMMA
-        //string conectionString = @"Data Source=LAPTOP-OJ158TC8 ;Initial Catalog=GridoTech ; Integrated Security= True ";
+        string conectionString = @"Data Source=LAPTOP-OJ158TC8 ;Initial Catalog=GridoTech ; Integrated Security= True ";
 
         //// Conexión a Base de Datos EMI
-        string conectionString = @"Data Source=EMI-PC\EMI_PC_SERVER;Initial Catalog=GridoTech ; Integrated Security= True ";
+        //string conectionString = @"Data Source=EMI-PC\EMI_PC_SERVER;Initial Catalog=GridoTech ; Integrated Security= True ";
         //// Conexión a Base de Datos EMMA
         //string conectionString = @"Data Source=LAPTOP-OJ158TC8 ;Initial Catalog=GridoTech ; Integrated Security= True ";
         //// Conexión a Base de Datos EMMA
@@ -30,13 +30,17 @@ namespace WebApplicationGridoTech.Models
         public int FinalStock { get; set; }
         public DateTime Date { get; set; }
         public string BatchNumber { get; set; }
+        public string Material { get; set; }
+        public int Stock_Inicial { get; set; }
+        public int Stock_Final { get; set; }
+        public DateTime Fecha_de_Inventario { get; set; }
 
         #endregion
 
         #region Metodos
         public DataTable SelectAll()
         {
-            string sqlSentencia = "SP_GetAll_Inventory";
+            string sqlSentencia = "SP_V_Inventory1";
 
             SqlConnection sqlCnn = new SqlConnection();
             sqlCnn.ConnectionString = conectionString;
@@ -58,7 +62,7 @@ namespace WebApplicationGridoTech.Models
 
         }
 
-        public void Insert()
+      public void Insert()
         {
 
             string sqlSentencia = "InsertInventory";
@@ -74,6 +78,7 @@ namespace WebApplicationGridoTech.Models
             sqlCom.Parameters.Add("@Date", SqlDbType.DateTime).Value = Date;
             sqlCom.Parameters.Add("@BatchNumber", SqlDbType.NVarChar).Value = BatchNumber;
 
+
             sqlCnn.Open();
 
             var res = sqlCom.ExecuteNonQuery();
@@ -81,7 +86,6 @@ namespace WebApplicationGridoTech.Models
             sqlCnn.Close();
 
         }
-
         public void Actualizar()
         {
             string sqlSentencia = "UpdateInventory";

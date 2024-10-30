@@ -42,7 +42,6 @@ namespace WebApplicationGridoTech.Controllers
         {
             Inventory oInventory = new Inventory();
             oInventory.InventoryID = id;
-            oInventory.MaterialID = value.MaterialID;
             oInventory.InitialStock = value.InitialStock;
             oInventory.FinalStock = value.FinalStock;
             oInventory.Date = value.Date;

@@ -181,6 +181,7 @@
     <Compile Include="Controllers\DiscardedMaterialController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\InventoryEController.cs" />
     <Compile Include="Controllers\MaterialsController.cs" />
     <Compile Include="Controllers\RetainedMaterialController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -190,6 +191,7 @@
     </Compile>
     <Compile Include="Models\DiscardedMaterial.cs" />
     <Compile Include="Models\Inventory.cs" />
+    <Compile Include="Models\InventoryE.cs" />
     <Compile Include="Models\Materials.cs" />
     <Compile Include="Models\RetainedMaterial.cs" />
     <Compile Include="Models\WorkOrders.cs" />

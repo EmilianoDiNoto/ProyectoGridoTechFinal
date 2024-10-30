@@ -11,10 +11,10 @@ namespace WebApplicationGridoTech.Models
     {
         #region Atributos
         // Conexión a Base de Datos EMMA
-        //string conectionString = @"Data Source=LAPTOP-OJ158TC8 ;Initial Catalog=GridoTech ; Integrated Security= True ";
+        string conectionString = @"Data Source=LAPTOP-OJ158TC8 ;Initial Catalog=GridoTech ; Integrated Security= True ";
 
         //// Conexión a Base de Datos EMI
-        string conectionString = @"Data Source=EMI-PC\EMI_PC_SERVER;Initial Catalog=GridoTech ; Integrated Security= True ";
+        //string conectionString = @"Data Source=EMI-PC\EMI_PC_SERVER;Initial Catalog=GridoTech ; Integrated Security= True ";
         //// Conexión a Base de Datos EMMA
         //string conectionString = @"Data Source=LAPTOP-OJ158TC8 ;Initial Catalog=GridoTech ; Integrated Security= True ";
         //// Conexión a Base de Datos EMMA

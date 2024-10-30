@@ -11,10 +11,10 @@ namespace WebApplicationGridoTech.Models
     {
         #region Atributos
         // Conexión a Base de Datos EMMA
-        //string conectionString = @"Data Source=LAPTOP-OJ158TC8 ;Initial Catalog=GridoTech ; Integrated Security= True ";
+        string conectionString = @"Data Source=LAPTOP-OJ158TC8 ;Initial Catalog=GridoTech ; Integrated Security= True ";
 
         //// Conexión a Base de Datos EMI
-        string conectionString = @"Data Source=EMI-PC\EMI_PC_SERVER;Initial Catalog=GridoTech ; Integrated Security= True ";
+        //string conectionString = @"Data Source=EMI-PC\EMI_PC_SERVER;Initial Catalog=GridoTech ; Integrated Security= True ";
         //// Conexión a Base de Datos EMMA
         //string conectionString = @"Data Source=LAPTOP-OJ158TC8 ;Initial Catalog=GridoTech ; Integrated Security= True ";
         //// Conexión a Base de Datos EMMA
@@ -26,18 +26,26 @@ namespace WebApplicationGridoTech.Models
 
         public int WorkOrderID { get; set; }
         public int ProductID { get; set; }
-       
+
         public int Quantity { get; set; }
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+
+        //public string PRODUCTO { get; set; }
+        //public string DESCRIPCION { get; set; }
+
+        //public int CANTIDAD { get; set; }
+        //public string ESTADO { get; set; }
+        //public int OT { get; set; }
+
 
         #endregion
 
         #region Metodos
         public DataTable SelectAll()
         {
-            string sqlSentencia = "sp_GetAll_WoOp";
+            string sqlSentencia = "SP_V_GetAll_WorkOrders";
 
             SqlConnection sqlCnn = new SqlConnection();
             sqlCnn.ConnectionString = conectionString;
