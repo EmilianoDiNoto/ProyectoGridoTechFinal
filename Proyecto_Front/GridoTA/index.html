@@ -18,6 +18,13 @@
       rel="stylesheet"
       href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
     />
+<!-- jQuery Completo -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<!-- Bootstrap (si es necesario) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<!-- Tempus Dominus -->
+<script src="path/to/tempusdominus-bootstrap-4.min.js"></script>
+
 
   <!-- time picker library -->
    
@@ -280,16 +287,14 @@
           <div class="records table-responsive">
             <div class="record-header">
               <div class="add">
-                <span>Entradas</span>
-                <select name="" id="">
-                  <option value="">ID</option>
-                </select>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMaterialModal">
                   Agregar Material
                 </button>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMaterialModal">
                   Editar Material
                 </button>
+
+
 <!-- Modal para Cargar Materiales -->
 <div class="modal fade" id="addMaterialModal" tabindex="-1" role="dialog" aria-labelledby="addMaterialModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -301,7 +306,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form id="addMaterialForm">
           <div class="form-group">
             <label for="materialName">Nombre de Material</label>
             <input type="text" class="form-control" id="materialName" placeholder="Ingrese nombre del material">
@@ -334,7 +339,7 @@
           </div>
           <div class="form-group" align="center">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary">Crear Material</button>
+            <button type="button" class="btn btn-primary" id="createMaterialBtn">Crear Material</button>
           </div>
         </form>
       </div>
@@ -396,7 +401,7 @@
           </div>
           <div class="form-group" align="center">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary">Editar</button>
+            <button type="button" class="btn btn-primary" onclick="confirmUpdateMaterial()">Editar</button>
           </div>
         </form>
       </div>
@@ -406,251 +411,7 @@
 
 
         
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Agregar Material</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group row">
-              <label for="title" class="col-sm-2 col-form-label">Title:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="title" placeholder="">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="description">Description:</label>
-              <textarea class="form-control" rows="3" id="description"></textarea>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline" id="rd-manual">
-              <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" checked="true">
-              <label class="custom-control-label" for="customRadioInline1">Manual</label>
-            </div>
-            <div class="custom-control custom-radio custom-control-inline" id="rd-automatic">
-              <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
-              <label class="custom-control-label" for="customRadioInline2">Automatic</label>
-            </div>
-  
-            <div id="add-manual">
-              <div class="form-row">
-                <label for="start-time" class="col-sm-3 col-form-label">Start Time:</label>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3" />
-                      <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <script type="text/javascript">
-                  $(function() {
-                    $('#datetimepicker3').datetimepicker({
-                      format: 'LT'
-                    });
-                  });
-                </script>
-              </div>
-              <div class="form-row">
-                <label for="start-time" class="col-sm-3 col-form-label">End Time:</label>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4" />
-                      <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <script type="text/javascript">
-                  $(function() {
-                    $('#datetimepicker4').datetimepicker({
-                      format: 'LT'
-                    });
-                  });
-                </script>
 
-              </div>
-              <div class="form-group" align="center">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn-save">Save</button>
-              </div>
-            </div>
-            <!-- end add manual time-->
-            <!-- add automactic -->
-            <div id="add-automatic">
-              <div class="form-group" align="center">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn-save">Start Timer</button>
-              </div>
-            </div>
-            <!-- end automatic add-->
-
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- end add record modal-->
-
-  <!-- edit record modal-->
-  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Edit Record</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group row">
-              <label for="title" class="col-sm-2 col-form-label">Title:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="title" placeholder="">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="description">Description:</label>
-              <textarea class="form-control" rows="3" id="description"></textarea>
-            </div>
-            <!-- add manual time-->
-            <div id="add-manual">
-              <div class="form-row">
-                <label for="start-time" class="col-sm-3 col-form-label">Start Time:</label>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker5" />
-                      <div class="input-group-append" data-target="#datetimepicker5" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <script type="text/javascript">
-                  $(function() {
-                    $('#datetimepicker5').datetimepicker({
-                      format: 'LT'
-                    });
-                  });
-                </script>
-              </div>
-              <div class="form-row">
-                <label for="start-time" class="col-sm-3 col-form-label">End Time:</label>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <div class="input-group date" id="datetimepicker6" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker6" />
-                      <div class="input-group-append" data-target="#datetimepicker6" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <script type="text/javascript">
-                  $(function() {
-                    $('#datetimepicker6').datetimepicker({
-                      format: 'LT'
-                    });
-                  });
-                </script>
-
-              </div>
-              <div class="form-group" align="center">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn-save">Save</button>
-              </div>
-            </div>
-            <!-- end add manual time-->
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- end edit record modal-->
-
-  <!-- detail record modal-->
-  <!-- end detail record modal-->
-   
-  <!-- delete record modal-->
-  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Delete Record</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group row">
-              <label for="title" class="col-sm-2 col-form-label">Title:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="title" placeholder="" value="task 01" readonly>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="description">Description:</label>
-              <textarea class="form-control" rows="3" id="description" readonly>record content</textarea>
-            </div>
-            <!-- add manual time-->
-            <div id="add-manual">
-              <div class="form-row">
-                <label for="start-time" class="col-sm-3 col-form-label">Start Time:</label>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker5" value="2:00 PM" readonly/>
-                      <div class="input-group-append" data-target="#datetimepicker5" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              <div class="form-row">
-                <label for="start-time" class="col-sm-3 col-form-label">End Time:</label>
-                <div class="col-sm-4">
-                  <div class="form-group">
-                    <div class="input-group date" id="datetimepicker6" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker6" value="4:00 PM" readonly/>
-                      <div class="input-group-append" data-target="#datetimepicker6" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              <div class="form-group" align="center">
-                <p>Are you sure? You wont’t be able to revert it!
-                  <p>
-
-              </div>
-              <div class="form-group" align="center">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger btn-save">Delete</button>
-              </div>
-            </div>
-            <!-- end add manual time-->
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- end delete record modal-->
-</div>
 
               </div>
 
@@ -774,6 +535,8 @@
     </script>
 
     <script>
+
+
       function Get() {
         fetch("http://localhost:63152/api/Materials")
           .then((response) => response.json())
@@ -795,6 +558,140 @@
           });
       }
       Get();
+      document.getElementById("createMaterialBtn").addEventListener("click", addMaterial);
+
+function addMaterial() {
+  // Obtener los valores de los campos del formulario
+  const materialName = document.getElementById("materialName").value;
+  const materialDescription = document.getElementById("materialDescription").value;
+  const supplierID = document.getElementById("supplier").value;
+  const stockQuantity = document.getElementById("stockQuantity").value;
+  const stockUnit = document.getElementById("unit").value;
+
+  // Crear objeto con los datos del material
+  const newMaterial = {
+    MaterialName: materialName,
+    Description: materialDescription,
+    SupplierID: parseInt(supplierID),
+    StockQuantity: parseInt(stockQuantity),
+    StockUnit: stockUnit
+  };
+
+function clearFields() {
+  document.getElementById('materialID').selectedIndex = 0; // Resetea el select a la primera opción
+  document.getElementById('editMaterialName').value = ''; // Limpia el campo de nombre
+  document.getElementById('editMaterialDescription').value = ''; // Limpia el campo de descripción
+  document.getElementById('editSupplier').selectedIndex = 0; // Resetea el select de proveedores
+  document.getElementById('editStockQuantity').value = ''; // Limpia el campo de cantidad de stock
+  document.getElementById('editUnit').selectedIndex = 0; // Resetea el select de unidad de medida
+
+  document.getElementById('materialID').selectedIndex = 0; // Resetea el select a la primera opción
+  document.getElementById('materialName').value = ''; // Limpia el campo de nombre
+  document.getElementById('materialDescription').value = ''; // Limpia el campo de descripción
+  document.getElementById('supplier').selectedIndex = 0; // Resetea el select de proveedores
+  document.getElementById('stockQuantity').value = ''; // Limpia el campo de cantidad de stock
+  document.getElementById('unit').selectedIndex = 0; // Resetea el select de unidad de medida
+  
+}
+
+  // Hacer la solicitud POST a la API
+  fetch("http://localhost:63152/api/Materials", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(newMaterial)
+  })
+  .then(response => {
+    if (response.ok) {
+      alert("Material agregado exitosamente.");
+      // Aquí puedes agregar código para actualizar la lista de materiales
+      clearFields();
+    } else {
+      alert("Error al agregar el material.");
+    }
+  })
+}
+
+
+//Editar
+
+function confirmUpdateMaterial() {
+  // Mensaje de confirmación
+  const confirmUpdate = confirm("¿Desea realizar el cambio de material?");
+  
+  // Si el usuario acepta, se llama a la función de actualización
+  if (confirmUpdate) {
+    updateMaterial();
+  } else {
+    // Opcional: si el usuario cancela, puedes agregar un mensaje o simplemente no hacer nada
+    console.log("Actualización cancelada por el usuario.");
+  }
+}
+
+
+
+function updateMaterial() {
+  // Obtiene los valores del formulario de edición
+  const materialID = document.getElementById("materialID").value;
+  const materialName = document.getElementById("editMaterialName").value;
+  const materialDescription = document.getElementById("editMaterialDescription").value;
+  const supplierID = document.getElementById("editSupplier").value;
+  const stockQuantity = document.getElementById("editStockQuantity").value;
+  const stockUnit = document.getElementById("editUnit").value;
+
+  function clearFields() {
+  document.getElementById('materialID').selectedIndex = 0; // Resetea el select a la primera opción
+  document.getElementById('editMaterialName').value = ''; // Limpia el campo de nombre
+  document.getElementById('editMaterialDescription').value = ''; // Limpia el campo de descripción
+  document.getElementById('editSupplier').selectedIndex = 0; // Resetea el select de proveedores
+  document.getElementById('editStockQuantity').value = ''; // Limpia el campo de cantidad de stock
+  document.getElementById('editUnit').selectedIndex = 0; // Resetea el select de unidad de medida
+}
+
+  
+  // Llama a la API para actualizar el material
+  debugger
+fetch(`http://localhost:63152/api/Materials/${materialID}`, {
+  method: "PUT",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    MaterialID: parseInt(materialID),
+    MaterialName: materialName,
+    Description: materialDescription,
+    SupplierID: parseInt(supplierID),
+    StockQuantity: parseInt(stockQuantity),
+    StockUnit: stockUnit,
+  }),
+})
+  .then((response) => {
+    console.log("Respuesta del servidor:", response); // Log para ver la respuesta completa
+    if (response.ok) {
+      // Maneja respuestas exitosas
+      if (response.status === 204) {
+        alert("Material actualizado con éxito.");
+        clearFields();
+      } else {
+        return response.json(); // Lee el cuerpo si no es un 204
+      }
+    } else {
+      // Log para ver el error específico
+      return response.text().then(text => {
+        console.error("Error en la respuesta del servidor:", text); // Log del mensaje de error
+        throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+      });
+    }
+  })
+  .then((data) => {
+    if (data) {
+      console.log("Material actualizado con éxito:", data);
+      alert("Material actualizado con éxito.");
+      clearFields();
+    }
+  })
+}
 
       document.addEventListener("DOMContentLoaded", function () {
         const menuItems = document.querySelectorAll(".side-menu ul li a");
