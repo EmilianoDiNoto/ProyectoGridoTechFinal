@@ -589,3 +589,22 @@ table tbody tr {
 .side-menu ul li.active .submenu {
   display: block;
 }
+
+.add-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.add-right-btn {
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Ajusta el color a tu preferencia */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-right-btn:hover {
+  background-color: #45a049;
+}
