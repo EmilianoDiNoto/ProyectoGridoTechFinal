@@ -693,27 +693,28 @@ fetch(`http://localhost:63152/api/Materials/${materialID}`, {
   })
 }
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const menuItems = document.querySelectorAll(".side-menu ul li a");
+document.addEventListener("DOMContentLoaded", function () {
+    const menuItems = document.querySelectorAll(".side-menu ul li a");
 
-        menuItems.forEach((item) => {
-          item.addEventListener("click", function (event) {
-            event.preventDefault();
-            const submenu = this.nextElementSibling;
-            const isActive = submenu && submenu.style.display === "block";
+    menuItems.forEach((item) => {
+      item.addEventListener("click", function () {
+        const submenu = this.nextElementSibling;
+        const isActive = submenu && submenu.style.display === "block";
 
-            document
-              .querySelectorAll(".side-menu ul .submenu")
-              .forEach((sub) => {
-                sub.style.display = "none";
-              });
-
-            if (submenu && !isActive) {
-              submenu.style.display = "block";
-            }
+        // Oculta todos los submenús
+        document
+          .querySelectorAll(".side-menu ul .submenu")
+          .forEach((sub) => {
+            sub.style.display = "none";
           });
-        });
+
+        // Muestra el submenú si no está activo
+        if (submenu && !isActive) {
+          submenu.style.display = "block";
+        }
       });
+    });
+  });
     </script>
 
 
