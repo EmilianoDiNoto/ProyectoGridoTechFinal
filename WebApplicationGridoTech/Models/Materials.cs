@@ -24,12 +24,15 @@ namespace WebApplicationGridoTech.Models
 
         #region Propiedades
 
+
         public int MaterialID { get; set; }
-        public string MaterialName { get; set; }
-        public string Description { get; set; }
-        public int SupplierID { get; set; }
-        public int StockQuantity { get; set; }
-        public string StockUnit { get; set; }
+        public int CODIGO { get; set; }
+
+        public string MATERIAL { get; set; }
+        public decimal STOCK_MIN { get; set; }
+        public string UM { get; set; }
+        public decimal PRECIO { get; set; }
+
         #endregion
 
         #region Metodos
@@ -68,11 +71,11 @@ namespace WebApplicationGridoTech.Models
             SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
             sqlCom.CommandType = CommandType.StoredProcedure;
 
-            sqlCom.Parameters.Add("@MaterialName", SqlDbType.NVarChar).Value = MaterialName;
-            sqlCom.Parameters.Add("@Description", SqlDbType.NVarChar).Value = Description;
-            sqlCom.Parameters.Add("@SupplierID", SqlDbType.Int).Value = SupplierID;
-            sqlCom.Parameters.Add("@StockQuantity", SqlDbType.Int).Value = StockQuantity;
-            sqlCom.Parameters.Add("@StockUnit", SqlDbType.NVarChar).Value = StockUnit;
+            sqlCom.Parameters.Add("@Codigo", SqlDbType.Int).Value = CODIGO;
+            sqlCom.Parameters.Add("@Material", SqlDbType.NVarChar).Value = MATERIAL;
+            sqlCom.Parameters.Add("@Stock_min", SqlDbType.Int).Value = STOCK_MIN;
+            sqlCom.Parameters.Add("@um", SqlDbType.NVarChar).Value = UM;
+            sqlCom.Parameters.Add("@Precio", SqlDbType.Int).Value = PRECIO;
 
             sqlCnn.Open();
 
@@ -92,11 +95,11 @@ namespace WebApplicationGridoTech.Models
             SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
             sqlCom.CommandType = CommandType.StoredProcedure;
             sqlCom.Parameters.Add("@MaterialID", SqlDbType.NVarChar).Value = MaterialID;
-            sqlCom.Parameters.Add("@MaterialName", SqlDbType.NVarChar).Value = MaterialName;
-            sqlCom.Parameters.Add("@Description", SqlDbType.NVarChar).Value = Description;
-            sqlCom.Parameters.Add("@SupplierID", SqlDbType.Int).Value = SupplierID;
-            sqlCom.Parameters.Add("@StockQuantity", SqlDbType.Int).Value = StockQuantity;
-            sqlCom.Parameters.Add("@StockUnit", SqlDbType.NVarChar).Value = StockUnit;
+            sqlCom.Parameters.Add("@Codigo", SqlDbType.Int).Value = CODIGO;
+            sqlCom.Parameters.Add("@Material", SqlDbType.NVarChar).Value = MATERIAL;
+            sqlCom.Parameters.Add("@Stock_min", SqlDbType.Int).Value = STOCK_MIN;
+            sqlCom.Parameters.Add("@um", SqlDbType.NVarChar).Value = UM;
+            sqlCom.Parameters.Add("@Precio", SqlDbType.Int).Value = PRECIO;
 
             sqlCnn.Open();
 

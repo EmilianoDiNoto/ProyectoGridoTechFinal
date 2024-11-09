@@ -22,41 +22,41 @@ namespace WebApplicationGridoTech.Controllers
             return Lista;
         }
 
-        // GET: api/Materials/5
-       // public string Get(int id)
-        //{
-            //return "value";
-        //}
+        // // GET: api/Materials/5
+        //// public string Get(int id)
+        // //{
+        //     //return "value";
+        // //}
 
-        // POST: api/Materials
-        public void Post([FromBody]Materials value)
+        // // POST: api/Materials
+        public void Post([FromBody] Materials value)
         {
             Materials oMaterials = new Materials();
-            oMaterials.MaterialName = value.MaterialName;
-            oMaterials.Description = value.Description;
-            oMaterials.SupplierID = value.SupplierID;
-            oMaterials.StockQuantity = value.StockQuantity;
-            oMaterials.StockUnit = value.StockUnit;
+            oMaterials.CODIGO = value.CODIGO;
+            oMaterials.MATERIAL = value.MATERIAL;
+            oMaterials.STOCK_MIN = value.STOCK_MIN;
+            oMaterials.UM = value.UM;
+            oMaterials.PRECIO = value.PRECIO;
 
             oMaterials.Insert();
         }
 
-        // PUT: api/Materials/5
-        public void Put(int id, [FromBody]Materials value)
+        // // PUT: api/Materials/5
+        public void Put(int id, [FromBody] Materials value)
         {
             Materials oMaterials = new Materials();
             oMaterials.MaterialID = id;
-            oMaterials.MaterialName = value.MaterialName;
-            oMaterials.Description = value.Description;
-            oMaterials.SupplierID = value.SupplierID;
-            oMaterials.StockQuantity = value.StockQuantity;
-            oMaterials.StockUnit = value.StockUnit;
+            oMaterials.CODIGO = value.CODIGO;
+            oMaterials.MATERIAL = value.MATERIAL;
+            oMaterials.STOCK_MIN = value.STOCK_MIN;
+            oMaterials.UM = value.UM;
+            oMaterials.PRECIO = value.PRECIO; ;
 
             oMaterials.Actualizar();
         }
 
         // DELETE: api/Materials/5
-       // public void Delete(int id)
+        // public void Delete(int id)
         //{
         //}
     }//

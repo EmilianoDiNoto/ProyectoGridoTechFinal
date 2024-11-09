@@ -30,31 +30,31 @@ namespace WebApplicationGridoTech.Controllers
         //}
 
         // POST: api/WorkOrders
-        public void Post([FromBody] WorkOrders value)
-        {
-            WorkOrders oWorkOrders = new WorkOrders();
-            oWorkOrders.ProductID = value.ProductID;
-            oWorkOrders.Quantity = value.Quantity;
-            oWorkOrders.Status = value.Status;
+        //public void Post([FromBody] WorkOrders value)
+        //{
+        //    WorkOrders oWorkOrders = new WorkOrders();
+        //    oWorkOrders.ProductID = value.ProductID;
+        //    oWorkOrders.Quantity = value.Quantity;
+        //    oWorkOrders.Status = value.Status;
 
-            oWorkOrders.Insert();
+        //    oWorkOrders.Insert();
 
-        }
+        //}
 
-        // PUT: api/WorkOrders/5
-        public void Put(int id, [FromBody] WorkOrders value)
-        {
-            WorkOrders oWorkOrders = new WorkOrders();
-            oWorkOrders.WorkOrderID = id;
-            oWorkOrders.ProductID = value.ProductID;
-            oWorkOrders.Quantity = value.Quantity;
-            oWorkOrders.Status = value.Status;
-            oWorkOrders.CreatedAt = value.CreatedAt;
-            oWorkOrders.UpdatedAt = value.UpdatedAt;
+        //// PUT: api/WorkOrders/5
+        //public void Put(int id, [FromBody] WorkOrders value)
+        //{
+        //    WorkOrders oWorkOrders = new WorkOrders();
+        //    oWorkOrders.WorkOrderID = id;
+        //    oWorkOrders.ProductID = value.ProductID;
+        //    oWorkOrders.Quantity = value.Quantity;
+        //    oWorkOrders.Status = value.Status;
+        //    oWorkOrders.CreatedAt = value.CreatedAt;
+        //    oWorkOrders.UpdatedAt = value.UpdatedAt;
 
-            oWorkOrders.Actualizar();
+        //    oWorkOrders.Actualizar();
 
-        }
+        //}
 
         // DELETE: api/WorkOrders/5
         //public void Delete(int id)

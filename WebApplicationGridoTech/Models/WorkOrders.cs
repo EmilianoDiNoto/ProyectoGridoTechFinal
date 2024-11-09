@@ -24,21 +24,14 @@ namespace WebApplicationGridoTech.Models
 
         #region Propiedades
 
-        public int WorkOrderID { get; set; }
-        public int ProductID { get; set; }
+        public int OT { get; set; }
+        public string PRODUCTO { get; set; }
+        public int DEMANDA { get; set; }
+        public string ESTADO { get; set; }
+        public string UM { get; set; }
+        
 
-        public int Quantity { get; set; }
-        public string Status { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-
-        //public string PRODUCTO { get; set; }
-        //public string DESCRIPCION { get; set; }
-
-        //public int CANTIDAD { get; set; }
-        //public string ESTADO { get; set; }
-        //public int OT { get; set; }
-
+       
 
         #endregion
 
@@ -67,55 +60,55 @@ namespace WebApplicationGridoTech.Models
 
         }
 
-        public void Insert()
-        {
+        //public void Insert()
+        //{
 
-            string sqlSentencia = "SP_Insert_WorkOrders";
-            SqlConnection sqlCnn = new SqlConnection();
-            sqlCnn.ConnectionString = conectionString;
+        //    string sqlSentencia = "SP_Insert_WorkOrders";
+        //    SqlConnection sqlCnn = new SqlConnection();
+        //    sqlCnn.ConnectionString = conectionString;
 
-            SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
-            sqlCom.CommandType = CommandType.StoredProcedure;
+        //    SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
+        //    sqlCom.CommandType = CommandType.StoredProcedure;
 
-            sqlCom.Parameters.Add("@ProductID", SqlDbType.Int).Value = ProductID;
-            sqlCom.Parameters.Add("@Quantity", SqlDbType.Int).Value = Quantity;
-            sqlCom.Parameters.Add("@Status", SqlDbType.NVarChar).Value = Status;
+        //    sqlCom.Parameters.Add("@ProductID", SqlDbType.Int).Value = ProductID;
+        //    sqlCom.Parameters.Add("@Quantity", SqlDbType.Int).Value = Quantity;
+        //    sqlCom.Parameters.Add("@Status", SqlDbType.NVarChar).Value = Status;
 
-            sqlCnn.Open();
+        //    sqlCnn.Open();
 
-            var res = sqlCom.ExecuteNonQuery();
+        //    var res = sqlCom.ExecuteNonQuery();
 
-            sqlCnn.Close();
+        //    sqlCnn.Close();
 
-        }
+        //}
 
-        public void Actualizar()
-        {
-            string sqlSentencia = "SP_Update_WorkOrders";
-
-
-            SqlConnection sqlCnn = new SqlConnection();
-            sqlCnn.ConnectionString = conectionString;
+        //public void Actualizar()
+        //{
+        //    string sqlSentencia = "SP_Update_WorkOrders";
 
 
-            SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
-            sqlCom.CommandType = CommandType.StoredProcedure;
-            sqlCom.Parameters.Add("@WorkOrderID", SqlDbType.Int).Value = WorkOrderID;
-            sqlCom.Parameters.Add("@ProductID", SqlDbType.Int).Value = ProductID;
-            sqlCom.Parameters.Add("@Quantity", SqlDbType.Int).Value = Quantity;
-            sqlCom.Parameters.Add("@Status", SqlDbType.NVarChar).Value = Status;
-            sqlCom.Parameters.Add("@createdAT", SqlDbType.DateTime).Value = CreatedAt;
-            sqlCom.Parameters.Add("@UpdateAT", SqlDbType.DateTime).Value = UpdatedAt;
-
-            sqlCnn.Open();
+        //    SqlConnection sqlCnn = new SqlConnection();
+        //    sqlCnn.ConnectionString = conectionString;
 
 
-            var res = sqlCom.ExecuteNonQuery();
+        //    SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
+        //    sqlCom.CommandType = CommandType.StoredProcedure;
+        //    sqlCom.Parameters.Add("@WorkOrderID", SqlDbType.Int).Value = WorkOrderID;
+        //    sqlCom.Parameters.Add("@ProductID", SqlDbType.Int).Value = ProductID;
+        //    sqlCom.Parameters.Add("@Quantity", SqlDbType.Int).Value = Quantity;
+        //    sqlCom.Parameters.Add("@Status", SqlDbType.NVarChar).Value = Status;
+        //    sqlCom.Parameters.Add("@createdAT", SqlDbType.DateTime).Value = CreatedAt;
+        //    sqlCom.Parameters.Add("@UpdateAT", SqlDbType.DateTime).Value = UpdatedAt;
+
+        //    sqlCnn.Open();
 
 
-            sqlCnn.Close();
+        //    var res = sqlCom.ExecuteNonQuery();
 
-        }
+
+        //    sqlCnn.Close();
+
+        //}
 
         #endregion
 

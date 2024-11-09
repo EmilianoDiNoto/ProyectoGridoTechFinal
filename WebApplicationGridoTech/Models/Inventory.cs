@@ -73,6 +73,7 @@ namespace WebApplicationGridoTech.Models
             sqlCom.CommandType = CommandType.StoredProcedure;
 
             sqlCom.Parameters.Add("@MaterialID", SqlDbType.Int).Value = MaterialID;
+            
             sqlCom.Parameters.Add("@InitialStock", SqlDbType.Int).Value = InitialStock;
             sqlCom.Parameters.Add("@FinalStock", SqlDbType.Int).Value = FinalStock;
             sqlCom.Parameters.Add("@Date", SqlDbType.DateTime).Value = Date;
