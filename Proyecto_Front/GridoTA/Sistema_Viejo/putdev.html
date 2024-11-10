@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Sistema Grido Tech Advance">
-    <link rel="shortcut icon" href="IMG/grido-icon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../img/grido-icon.png" type="image/x-icon">
     <title>G.T.A</title>
 
     <!-- -------- CSS -------- -->
-    <link rel="stylesheet" href="CSS/indexg_style.css">
+    <link rel="stylesheet" href="indexg_style.css">
 
     <!-- -------- BOOTSTRAP CSS -------- -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -97,14 +97,15 @@
                         </div>
                 
                         <div class="form-group form-group-inline">
-                            <label class="label_tt" for="add-stock">Agregar al Stock:</label>
-                            <input type="text" id="IngMaterial" name="Agregar Stock">
-                            <button type="button" id="modificarBtn">Agregar</button>
+                            <label class="label_tt" for="rest-stock">Descontar del Stock:</label>
+                            <input type="text" id="DevMaterial" name="Restar Stock">
+                            <button type="button" id="modificarBtn">Restar Stock</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+
 
         <div class="cfooter g5">
             <div class="container">
@@ -117,8 +118,7 @@
             </div>
         </div>
     </div>
-
-
+    
     <!-- -------- BOOTSTRAP JS -------- -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -133,7 +133,7 @@
                         document.getElementById("Material").value = data.Material;
                         document.getElementById("Stock").value = data.Stock;
                         // Habilitar los campos y botones después de obtener los datos
-                        document.getElementById("IngMaterial").disabled = false;
+                        document.getElementById("DevMaterial").disabled = false;
                         document.getElementById("modificarBtn").disabled = false;
                     })
                     .catch(error => console.error("Error al obtener el material:", error));
@@ -141,12 +141,12 @@
     
             document.getElementById("modificarBtn").addEventListener("click", function() {
                 const id = document.getElementById("idMaterial").value;
-                const stockAgregar = document.getElementById("IngMaterial").value;
+                const stockDevolucion = document.getElementById("DevMaterial").value;
                 const material = {
-                    IngMaterial: parseFloat(stockAgregar)
+                    DevMaterial: parseFloat(stockDevolucion)
                 };
     
-                fetch(`http://localhost:61344/api/Almacen/Put/${id}`, {
+                fetch(`http://localhost:61344/api/Almacen/PutDev/${id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -163,7 +163,7 @@
                 .catch(error => console.error("Error al modificar el stock:", error));
             });
         </script>
-    
+
 
 </body>
 

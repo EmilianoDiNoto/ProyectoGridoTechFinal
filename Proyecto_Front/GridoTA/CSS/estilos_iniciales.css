@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300;400;500;600&display=swap");
 
+/* PREVIAMENTE SE LLAMABA STYLE.CSS */
+
 :root {
   --main-color: #22baa0;
   --color-dark: #34425a;
@@ -103,9 +105,9 @@ side-head span {
   font-weight: 600;
 }
 
-.sidebar {
+/* .sidebar {
   /*overflow-y: auto;*/
-}
+ */
 
 .side-menu ul {
   text-align: center;
@@ -136,29 +138,29 @@ side-head span {
   color: #899dc1;
 }
 
-#menu-toggle:checked ~ .sidebar {
+#menu-toggle:checked~.sidebar {
   width: 60px;
 }
 
-#menu-toggle:checked ~ .sidebar .side-header span {
+#menu-toggle:checked~.sidebar .side-header span {
   display: none;
 }
 
-#menu-toggle:checked ~ .main-content {
+#menu-toggle:checked~.main-content {
   margin-left: 60px;
   width: calc(100% - 60px);
 }
 
-#menu-toggle:checked ~ .main-content header {
+#menu-toggle:checked~.main-content header {
   left: 60px;
 }
 
-#menu-toggle:checked ~ .sidebar .profile,
-#menu-toggle:checked ~ .sidebar .side-menu a small {
+#menu-toggle:checked~.sidebar .profile,
+#menu-toggle:checked~.sidebar .side-menu a small {
   display: none;
 }
 
-#menu-toggle:checked ~ .sidebar .side-menu a span {
+#menu-toggle:checked~.sidebar .side-menu a span {
   font-size: 1.3rem;
 }
 
@@ -504,28 +506,28 @@ table tbody tr {
     width: 100%;
   }
 
-  #menu-toggle:checked ~ .sidebar {
+  #menu-toggle:checked~.sidebar {
     left: 0;
   }
 
-  #menu-toggle:checked ~ .sidebar {
+  #menu-toggle:checked~.sidebar {
     width: 165px;
   }
 
-  #menu-toggle:checked ~ .sidebar .side-header span {
+  #menu-toggle:checked~.sidebar .side-header span {
     display: inline-block;
   }
 
-  #menu-toggle:checked ~ .sidebar .profile,
-  #menu-toggle:checked ~ .sidebar .side-menu a small {
+  #menu-toggle:checked~.sidebar .profile,
+  #menu-toggle:checked~.sidebar .side-menu a small {
     display: block;
   }
 
-  #menu-toggle:checked ~ .sidebar .side-menu a span {
+  #menu-toggle:checked~.sidebar .side-menu a span {
     font-size: 1.7rem;
   }
 
-  #menu-toggle:checked ~ .main-content header {
+  #menu-toggle:checked~.main-content header {
     left: 0px;
   }
 
@@ -598,7 +600,8 @@ table tbody tr {
 
 .add-right-btn {
   padding: 10px 20px;
-  background-color: #4CAF50; /* Ajusta el color a tu preferencia */
+  background-color: #4CAF50;
+  /* Ajusta el color a tu preferencia */
   color: white;
   border: none;
   border-radius: 5px;
