@@ -23,22 +23,25 @@ namespace WebApplicationGridoTech.Models
         #endregion
 
         #region Propiedades
-
         public int OT { get; set; }
+        public int PRODUCTOID { get; set; }
+        public int CODIGO { get; set; }
         public string PRODUCTO { get; set; }
         public int DEMANDA { get; set; }
-        public string ESTADO { get; set; }
         public string UM { get; set; }
-        
+        public DateTime FECHACREADA { get; set; }
+        public DateTime FECHAMODIFICADA { get; set; }
+        public string ESTADO { get; set; }
 
-       
+
+
 
         #endregion
 
         #region Metodos
         public DataTable SelectAll()
         {
-            string sqlSentencia = "SP_V_GetAll_WorkOrders";
+            string sqlSentencia = "SP_GetAll_WorkOrder";
 
             SqlConnection sqlCnn = new SqlConnection();
             sqlCnn.ConnectionString = conectionString;
@@ -60,55 +63,64 @@ namespace WebApplicationGridoTech.Models
 
         }
 
-        //public void Insert()
-        //{
+        public void Insert()
+        {
 
-        //    string sqlSentencia = "SP_Insert_WorkOrders";
-        //    SqlConnection sqlCnn = new SqlConnection();
-        //    sqlCnn.ConnectionString = conectionString;
+            string sqlSentencia = "SP_Insert_WorkOrder";
+            SqlConnection sqlCnn = new SqlConnection();
+            sqlCnn.ConnectionString = conectionString;
 
-        //    SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
-        //    sqlCom.CommandType = CommandType.StoredProcedure;
+            SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
+            sqlCom.CommandType = CommandType.StoredProcedure;
 
-        //    sqlCom.Parameters.Add("@ProductID", SqlDbType.Int).Value = ProductID;
-        //    sqlCom.Parameters.Add("@Quantity", SqlDbType.Int).Value = Quantity;
-        //    sqlCom.Parameters.Add("@Status", SqlDbType.NVarChar).Value = Status;
-
-        //    sqlCnn.Open();
-
-        //    var res = sqlCom.ExecuteNonQuery();
-
-        //    sqlCnn.Close();
-
-        //}
-
-        //public void Actualizar()
-        //{
-        //    string sqlSentencia = "SP_Update_WorkOrders";
+            sqlCom.Parameters.Add("@PRODUCTOID", SqlDbType.Int).Value = PRODUCTOID;
+            sqlCom.Parameters.Add("@CODIGO", SqlDbType.Int).Value = CODIGO;
+            //sqlCom.Parameters.Add("@PRODUCTO", SqlDbType.NVarChar).Value = PRODUCTO;
+            sqlCom.Parameters.Add("@DEMANDA", SqlDbType.Int).Value = DEMANDA;
+            sqlCom.Parameters.Add("@UM", SqlDbType.NVarChar).Value = UM;
+            sqlCom.Parameters.Add("@FECHACREADA", SqlDbType.DateTime).Value = FECHACREADA;
+            sqlCom.Parameters.Add("@FECHAMODIFICADA", SqlDbType.DateTime).Value = FECHAMODIFICADA;
+            sqlCom.Parameters.Add("@ESTADO", SqlDbType.NVarChar).Value = ESTADO;
 
 
-        //    SqlConnection sqlCnn = new SqlConnection();
-        //    sqlCnn.ConnectionString = conectionString;
+            sqlCnn.Open();
+
+            var res = sqlCom.ExecuteNonQuery();
+
+            sqlCnn.Close();
+
+        }
+
+        public void Actualizar()
+        {
+            string sqlSentencia = "SP_Update_WorkOrders";
 
 
-        //    SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
-        //    sqlCom.CommandType = CommandType.StoredProcedure;
-        //    sqlCom.Parameters.Add("@WorkOrderID", SqlDbType.Int).Value = WorkOrderID;
-        //    sqlCom.Parameters.Add("@ProductID", SqlDbType.Int).Value = ProductID;
-        //    sqlCom.Parameters.Add("@Quantity", SqlDbType.Int).Value = Quantity;
-        //    sqlCom.Parameters.Add("@Status", SqlDbType.NVarChar).Value = Status;
-        //    sqlCom.Parameters.Add("@createdAT", SqlDbType.DateTime).Value = CreatedAt;
-        //    sqlCom.Parameters.Add("@UpdateAT", SqlDbType.DateTime).Value = UpdatedAt;
-
-        //    sqlCnn.Open();
+            SqlConnection sqlCnn = new SqlConnection();
+            sqlCnn.ConnectionString = conectionString;
 
 
-        //    var res = sqlCom.ExecuteNonQuery();
+            SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
+            sqlCom.CommandType = CommandType.StoredProcedure;
+            sqlCom.Parameters.Add("@OT", SqlDbType.Int).Value = OT;
+            sqlCom.Parameters.Add("@PRODUCTOID", SqlDbType.Int).Value = PRODUCTOID;
+            sqlCom.Parameters.Add("@CODIGO", SqlDbType.Int).Value = CODIGO;
+            //sqlCom.Parameters.Add("@PRODUCTO", SqlDbType.NVarChar).Value = PRODUCTO;
+            sqlCom.Parameters.Add("@DEMANDA", SqlDbType.Int).Value = DEMANDA;
+            sqlCom.Parameters.Add("@UM", SqlDbType.NVarChar).Value = UM;
+            sqlCom.Parameters.Add("@FECHACREADA", SqlDbType.DateTime).Value = FECHACREADA;
+            sqlCom.Parameters.Add("@FECHAMODIFICADA", SqlDbType.DateTime).Value = FECHAMODIFICADA;
+            sqlCom.Parameters.Add("@ESTADO", SqlDbType.NVarChar).Value = ESTADO;
+
+            sqlCnn.Open();
 
 
-        //    sqlCnn.Close();
+            var res = sqlCom.ExecuteNonQuery();
 
-        //}
+
+            sqlCnn.Close();
+
+        }
 
         #endregion
 

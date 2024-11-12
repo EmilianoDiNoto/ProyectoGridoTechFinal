@@ -26,35 +26,41 @@ namespace WebApplicationGridoTech.Controllers
         // GET: api/WorkOrders/5
         //public string Get(int id)
         //{
-            //return "value";
+        //return "value";
         //}
 
         // POST: api/WorkOrders
-        //public void Post([FromBody] WorkOrders value)
-        //{
-        //    WorkOrders oWorkOrders = new WorkOrders();
-        //    oWorkOrders.ProductID = value.ProductID;
-        //    oWorkOrders.Quantity = value.Quantity;
-        //    oWorkOrders.Status = value.Status;
+        public void Post([FromBody] WorkOrders value)
+        {
+            WorkOrders oWorkOrders = new WorkOrders();
+            oWorkOrders.PRODUCTOID = value.PRODUCTOID;
+            oWorkOrders.CODIGO = value.CODIGO;
+            oWorkOrders.DEMANDA = value.DEMANDA;
+            oWorkOrders.UM = value.UM;
+            oWorkOrders.FECHACREADA = value.FECHACREADA;
+            oWorkOrders.FECHAMODIFICADA = value.FECHAMODIFICADA;
+            oWorkOrders.ESTADO = value.ESTADO;
 
-        //    oWorkOrders.Insert();
+            oWorkOrders.Insert();
 
-        //}
+        }
 
         //// PUT: api/WorkOrders/5
-        //public void Put(int id, [FromBody] WorkOrders value)
-        //{
-        //    WorkOrders oWorkOrders = new WorkOrders();
-        //    oWorkOrders.WorkOrderID = id;
-        //    oWorkOrders.ProductID = value.ProductID;
-        //    oWorkOrders.Quantity = value.Quantity;
-        //    oWorkOrders.Status = value.Status;
-        //    oWorkOrders.CreatedAt = value.CreatedAt;
-        //    oWorkOrders.UpdatedAt = value.UpdatedAt;
+        public void Put(int id, [FromBody] WorkOrders value)
+        {
+            WorkOrders oWorkOrders = new WorkOrders();
+            oWorkOrders.OT = id;
+            oWorkOrders.PRODUCTOID = value.PRODUCTOID;
+            oWorkOrders.CODIGO = value.CODIGO;
+            oWorkOrders.DEMANDA = value.DEMANDA;
+            oWorkOrders.UM = value.UM;
+            oWorkOrders.FECHACREADA = value.FECHACREADA;
+            oWorkOrders.FECHAMODIFICADA = value.FECHAMODIFICADA;
+            oWorkOrders.ESTADO = value.ESTADO;
 
-        //    oWorkOrders.Actualizar();
+            oWorkOrders.Actualizar();
 
-        //}
+        }
 
         // DELETE: api/WorkOrders/5
         //public void Delete(int id)

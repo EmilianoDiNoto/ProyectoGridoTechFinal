@@ -537,6 +537,7 @@
     <Compile Include="Controllers\RecipesController.cs" />
     <Compile Include="Controllers\RetainedMaterialController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\WorkOrderMaterialController.cs" />
     <Compile Include="Controllers\WorkOrdersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -548,6 +549,7 @@
     <Compile Include="Models\Products.cs" />
     <Compile Include="Models\Recipes.cs" />
     <Compile Include="Models\RetainedMaterial.cs" />
+    <Compile Include="Models\WorkOrderMaterial.cs" />
     <Compile Include="Models\WorkOrders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
