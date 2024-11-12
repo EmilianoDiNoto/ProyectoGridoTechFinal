@@ -48,7 +48,7 @@ SELECT M.MaterialName MATERIAL, M.MaterialCod CODIGO , sum(WM.Quantity) NECESIDA
 GO
 
 
-
+select * from [dbo].[Products]
 
 
 
