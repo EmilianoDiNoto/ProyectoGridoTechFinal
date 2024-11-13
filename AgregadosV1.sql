@@ -47,8 +47,90 @@ SELECT M.MaterialName MATERIAL, M.MaterialCod CODIGO , sum(WM.Quantity) NECESIDA
  group by m.MaterialName, M.MaterialCod
 GO
 
+--12/11 Agregar columna NATO
+ALTER TABLE [dbo].[Products]
+ADD Nato nvarchar(50)
+go
 
-select * from [dbo].[Products]
+UPDATE Products
+set Nato= 'GRIDO'
+WHERE ProductID = 1
+GO
+UPDATE Products
+set Nato= 'MOUSSE'
+WHERE ProductID = 2
+GO
+UPDATE Products
+set Nato= 'COOKIES'
+WHERE ProductID = 3
+GO
+UPDATE Products
+set Nato= 'GRIDO'
+WHERE ProductID = 4
+GO
+UPDATE Products
+set Nato= 'MOUSSE'
+WHERE ProductID = 5
+GO
+UPDATE Products
+set Nato= 'COOKIES'
+WHERE ProductID = 6
+GO
+UPDATE Products
+set Nato= 'GRIDO'
+WHERE ProductID = 7
+GO
+UPDATE Products
+set Nato= 'MOUSSE'
+WHERE ProductID = 8
+GO
+UPDATE Products
+set Nato= 'COOKIES'
+WHERE ProductID = 9
+GO
+UPDATE Products
+set Nato= 'GRIDO'
+WHERE ProductID = 10
+GO
+UPDATE Products
+set Nato= 'MOUSSE'
+WHERE ProductID = 11
+GO
+UPDATE Products
+set Nato= 'COOKIES'
+WHERE ProductID = 12
+GO
+UPDATE Products
+set Nato= 'GRIDO'
+WHERE ProductID = 13
+GO
+UPDATE Products
+set Nato= 'MOUSSE'
+WHERE ProductID = 14
+GO
+UPDATE Products
+set Nato= 'COOKIES'
+WHERE ProductID = 15
+GO
+
+
+create view V_GetAll_ProductNato
+as
+select Nato from Products
+GROUP BY Nato
+go
+
+create procedure SP_GetAll_ProductNato
+as
+begin
+select * from V_GetAll_ProductNato
+end
+go
+
+
+ALTER VIEW [dbo].[V_Products] AS
+SELECT ProductCod AS CODIGO, ProductName AS PRODUCTO, Description AS DESCRIPCION, UM, Nato AS NATO
+FROM     dbo.Products
 
 
 
