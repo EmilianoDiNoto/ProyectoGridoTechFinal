@@ -40,6 +40,7 @@ namespace WebApplicationGridoTech.Controllers
             oWorkOrders.FECHACREADA = value.FECHACREADA;
             oWorkOrders.FECHAMODIFICADA = value.FECHAMODIFICADA;
             oWorkOrders.ESTADO = value.ESTADO;
+            oWorkOrders.FECHAELABORACION = value.FECHAELABORACION;
 
             oWorkOrders.Insert();
 
@@ -57,6 +58,7 @@ namespace WebApplicationGridoTech.Controllers
             oWorkOrders.FECHACREADA = value.FECHACREADA;
             oWorkOrders.FECHAMODIFICADA = value.FECHAMODIFICADA;
             oWorkOrders.ESTADO = value.ESTADO;
+            oWorkOrders.FECHAELABORACION = value.FECHAELABORACION;
 
             oWorkOrders.Actualizar();
 

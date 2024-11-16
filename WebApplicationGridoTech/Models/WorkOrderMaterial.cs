@@ -40,7 +40,8 @@ namespace YourNamespace
                                 MATERIAL = reader["MATERIAL"].ToString(),
                                 NECESIDAD = Convert.ToDecimal(reader["NECESIDAD"]),
                                 UM = reader["UM"].ToString(),
-                                CODIGO = reader["CODIGO"].ToString()
+                                CODIGO = reader["CODIGO"].ToString(),
+                                FECHAENTREGA = Convert.ToDateTime(reader["FECHAENTREGA"]),
                             });
                         }
                     }
@@ -73,7 +74,8 @@ namespace YourNamespace
                                 MATERIAL = reader["MATERIAL"].ToString(),
                                 NECESIDAD = Convert.ToDecimal(reader["NECESIDAD"]),
                                 //UM = reader["UM"].ToString(),
-                                CODIGO = reader["CODIGO"].ToString()
+                                CODIGO = reader["CODIGO"].ToString(),
+                                FECHAENTREGA = Convert.ToDateTime(reader["FECHAENTREGA"]),
                             });
                         }
                     }
@@ -91,5 +93,6 @@ namespace YourNamespace
         public decimal NECESIDAD { get; set; }
         public string UM { get; set; }
         public string CODIGO { get; set; }
+        public DateTime FECHAENTREGA { get; set; }
     }
 }

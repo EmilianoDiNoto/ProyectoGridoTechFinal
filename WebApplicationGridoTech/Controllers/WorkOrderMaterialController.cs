@@ -21,7 +21,7 @@ namespace WebApplicationGridoTech.Controllers
         {
             if (ot <= 0)
             {
-                return BadRequest("A valid OT (Order Number) is required.");
+                return BadRequest("Se requiere un OT(Número de pedido) válido.");
             }
 
             List<WorkOrderMaterial> materials = _workOrderMaterialRepository.GetWorkOrderMaterials(ot);

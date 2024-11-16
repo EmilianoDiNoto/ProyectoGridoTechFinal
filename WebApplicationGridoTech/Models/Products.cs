@@ -29,6 +29,8 @@ namespace WebApplicationGridoTech.Models
 
         public string DESCRIPCION { get; set; }
         public string UM { get; set; }
+        public string NATO { get; set; }
+
         #endregion
 
         #region Metodos
@@ -56,6 +58,30 @@ namespace WebApplicationGridoTech.Models
             return ds.Tables[0];
 
         }
+
+        //public DataTable SelectAllNato()
+        //{
+        //    string sqlSentencia = "SP_GetAll_ProductNato";
+
+        //    SqlConnection sqlCnn = new SqlConnection();
+        //    sqlCnn.ConnectionString = conectionString;
+
+        //    sqlCnn.Open();
+
+        //    SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn);
+        //    sqlCom.CommandType = CommandType.StoredProcedure;
+
+        //    DataSet ds = new DataSet();
+
+        //    SqlDataAdapter da = new SqlDataAdapter();
+        //    da.SelectCommand = sqlCom;
+        //    da.Fill(ds);
+
+        //    sqlCnn.Close();
+
+        //    return ds.Tables[0];
+
+        //}
 
 
         #endregion

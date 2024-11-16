@@ -32,6 +32,8 @@ namespace WebApplicationGridoTech.Models
         public DateTime FECHACREADA { get; set; }
         public DateTime FECHAMODIFICADA { get; set; }
         public string ESTADO { get; set; }
+        public DateTime FECHAELABORACION { get; set; }
+
 
 
 
@@ -81,6 +83,7 @@ namespace WebApplicationGridoTech.Models
             sqlCom.Parameters.Add("@FECHACREADA", SqlDbType.DateTime).Value = FECHACREADA;
             sqlCom.Parameters.Add("@FECHAMODIFICADA", SqlDbType.DateTime).Value = FECHAMODIFICADA;
             sqlCom.Parameters.Add("@ESTADO", SqlDbType.NVarChar).Value = ESTADO;
+            sqlCom.Parameters.Add("@FECHAELABORACION", SqlDbType.Date).Value = FECHAELABORACION;
 
 
             sqlCnn.Open();
@@ -111,6 +114,7 @@ namespace WebApplicationGridoTech.Models
             sqlCom.Parameters.Add("@FECHACREADA", SqlDbType.DateTime).Value = FECHACREADA;
             sqlCom.Parameters.Add("@FECHAMODIFICADA", SqlDbType.DateTime).Value = FECHAMODIFICADA;
             sqlCom.Parameters.Add("@ESTADO", SqlDbType.NVarChar).Value = ESTADO;
+            sqlCom.Parameters.Add("@FECHAELABORACION", SqlDbType.DateTime).Value = FECHAELABORACION;
 
             sqlCnn.Open();
 
