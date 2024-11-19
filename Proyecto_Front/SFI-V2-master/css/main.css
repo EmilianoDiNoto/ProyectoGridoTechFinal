@@ -1,8 +1,3 @@
-/*
-* Copyright 2018 Carlos Eduardo Alfaro Orellana
-  https://www.youtube.com/c/CarlosAlfaro007
-*/
-
 /*=====================================================
 					Tipografia
 ======================================================*/
@@ -36,7 +31,7 @@
 :root{
 	--color-text: #3F51B5;
 	--primary-color: #2B2B2C;
-	--acent-color: #DB763B;
+	--acent-color: #117daf;
 }
 html, body{
 	width: 100%;
@@ -850,3 +845,4 @@ html, body{
 		text-align: right;
 	}
 }
+
