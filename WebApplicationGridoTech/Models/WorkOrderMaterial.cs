@@ -36,7 +36,7 @@ namespace YourNamespace
                         {
                             materials.Add(new WorkOrderMaterial
                             {
-                                OT = Convert.ToInt32(reader["OT"]),
+                                //OT = Convert.ToInt32(reader["OT"]),
                                 MATERIAL = reader["MATERIAL"].ToString(),
                                 NECESIDAD = Convert.ToDecimal(reader["NECESIDAD"]),
                                 UM = reader["UM"].ToString(),
