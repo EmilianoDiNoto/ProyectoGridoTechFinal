@@ -4,97 +4,450 @@
 -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Company</title>
-	<link rel="stylesheet" href="css/normalize.css">
+	<!-- <link rel="stylesheet" href="css/normalize.css"> -->
 	<link rel="stylesheet" href="css/sweetalert2.css">
 	<link rel="stylesheet" href="css/material.min.css">
 	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
 	<link rel="stylesheet" href="css/main.css">
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
-	<script src="js/material.min.js" ></script>
-	<script src="js/sweetalert2.min.js" ></script>
-	<script src="js/jquery.mCustomScrollbar.concat.min.js" ></script>
-	<script src="js/main.js" ></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- SweetAlert2 (una sola versión) -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<!-- Tus otros scripts locales -->
+	<script src="js/material.min.js"></script>
+	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="js/main.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+
+	<style>
+		/* Estilo para centrar el título "Listar productos" */
+		.header-well-text {
+			text-align: center;
+			width: 100%;
+		}
+
+		.header-well-text p {
+			font-size: 24px;
+			margin: 0;
+			padding: 20px 0;
+		}
+
+		/* Alineación de precios a la derecha */
+		.table-responsive td:nth-child(5) {
+			/* Columna de precios */
+			text-align: right;
+		}
+
+		/* Previous table styling remains the same */
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			font-family: Arial, sans-serif;
+			box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+		}
+
+		thead {
+			background-color: #f8f9fa;
+			border-bottom: 2px solid #dee2e6;
+		}
+
+		th,
+		td {
+			padding: 12px 15px;
+			text-align: left;
+			border-bottom: 1px solid #e9ecef;
+		}
+
+		th {
+			color: #495057;
+			font-weight: 600;
+			text-transform: uppercase;
+			font-size: 0.9em;
+		}
+
+		tbody tr:hover {
+			background-color: #f1f3f5;
+			transition: background-color 0.3s ease;
+		}
+
+		td {
+			color: #212529;
+		}
+
+		.las {
+			margin-right: 5px;
+			color: #adb5bd;
+			cursor: pointer;
+		}
+
+		tbody tr:nth-child(even) {
+			background-color: #f8f9fa;
+		}
+
+		td:last-child {
+			font-weight: bold;
+			color: #2ecc71;
+		}
+
+		/* Estilos para modal */
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1000;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgba(0, 0, 0, 0.4);
+		}
+
+		.modal-content {
+			background-color: #fefefe;
+			margin: 10% auto;
+			padding: 20px;
+			border-radius: 8px;
+			width: 80%;
+			max-width: 500px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+
+		.modal-content form {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.modal-content input,
+		.modal-content select {
+			margin-bottom: 15px;
+			padding: 10px;
+			border: 1px solid #ced4da;
+			border-radius: 4px;
+		}
+
+		.modal-close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+		.modal-close:hover {
+			color: #333;
+		}
+
+		.btn {
+			padding: 10px 15px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			margin-right: 10px;
+		}
+
+		.btn-primary {
+			background-color: #007bff;
+			color: white;
+		}
+
+		.btn-secondary {
+			background-color: #6c757d;
+			color: white;
+		}
+
+		.action-btn {
+			background: none;
+			border: none;
+			color: #007bff;
+			cursor: pointer;
+			padding: 5px;
+		}
+
+		.action-btn:hover {
+			text-decoration: underline;
+		}
+
+		.search-container {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 1rem;
+			/* Espacio entre elementos */
+			padding: 2rem;
+			/* Padding alrededor del contenedor */
+			margin: 1rem auto;
+			/* Margen arriba y abajo, auto para centrar */
+			max-width: 1200px;
+			/* Ancho máximo para mantener todo junto */
+		}
+
+		#searchInput {
+			padding: 0.75rem 1rem;
+			border: 1px solid #e2e8f0;
+			border-radius: 0.375rem;
+			min-width: 300px;
+			/* Ancho mínimo del input */
+			font-size: 0.875rem;
+			transition: border-color 0.2s ease;
+		}
+
+		#searchInput:focus {
+			outline: none;
+			border-color: #4a90e2;
+			box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+		}
+
+		#searchType {
+			padding: 0.75rem 1rem;
+			border: 1px solid #e2e8f0;
+			border-radius: 0.375rem;
+			min-width: 150px;
+			/* Ancho mínimo del select */
+			font-size: 0.875rem;
+			background-color: white;
+			cursor: pointer;
+		}
+
+		#addMaterialBtn {
+			padding: 0.75rem 1.5rem;
+			background-color: #4a90e2;
+			/* Color azul que coincide con tu diseño */
+			color: white;
+			border: none;
+			border-radius: 0.375rem;
+			font-size: 0.875rem;
+			cursor: pointer;
+			transition: background-color 0.2s ease;
+		}
+
+		#addMaterialBtn:hover {
+			background-color: #357abd;
+			/* Un tono más oscuro al hover */
+		}
+
+		/* Responsive design */
+		@media (max-width: 768px) {
+			.search-container {
+				flex-direction: column;
+				padding: 1rem;
+			}
+
+			#searchInput,
+			#searchType,
+			#addMaterialBtn {
+				width: 100%;
+				min-width: unset;
+			}
+
+			/* Contenedor principal de la tabla */
+			.table-container {
+				width: 100%;
+				overflow-x: auto;
+				margin: 1rem auto;
+				padding: 0 1rem;
+				max-width: 1200px;
+			}
+
+			/* Estilos base de la tabla */
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				font-family: Arial, sans-serif;
+				box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+				min-width: 800px;
+				/* Asegura que la tabla tenga un ancho mínimo */
+			}
+
+			/* Estilos para el encabezado */
+			thead {
+				background-color: #f8f9fa;
+				border-bottom: 2px solid #dee2e6;
+			}
+
+			th {
+				padding: 1rem;
+				text-align: left;
+				color: #495057;
+				font-weight: 600;
+				text-transform: uppercase;
+				font-size: 0.9em;
+				white-space: nowrap;
+			}
+
+			/* Estilos para el cuerpo de la tabla */
+			td {
+				padding: 1rem;
+				color: #212529;
+				border-bottom: 1px solid #e9ecef;
+			}
+
+			/* Estilos para filas alternas */
+			tbody tr:nth-child(even) {
+				background-color: #f8f9fa;
+			}
+
+			tbody tr:hover {
+				background-color: #f1f3f5;
+				transition: background-color 0.3s ease;
+			}
+
+			/* Estilos para los botones de acción */
+			.action-btn {
+				padding: 0.5rem 1rem;
+				background-color: #4a90e2;
+				color: white;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				transition: background-color 0.2s ease;
+			}
+
+			.action-btn:hover {
+				background-color: #357abd;
+			}
+
+			/* Responsive para móviles */
+			@media screen and (max-width: 768px) {
+				.table-container {
+					padding: 0.5rem;
+				}
+
+				/* Hacer que la tabla se pueda scrollear horizontalmente */
+				table {
+					display: block;
+					overflow-x: auto;
+					white-space: nowrap;
+				}
+
+				th,
+				td {
+					padding: 0.75rem;
+				}
+
+				/* Opcional: Hacer que algunas columnas sean más pequeñas en móvil */
+				th:nth-child(3),
+				/* Stock Mínimo */
+				td:nth-child(3),
+				th:nth-child(4),
+				/* Unidad de Medida */
+				td:nth-child(4) {
+					max-width: 100px;
+				}
+			}
+
+			/* Mensaje de no resultados */
+			.no-results {
+				text-align: center;
+				padding: 2rem;
+				color: #666;
+				font-style: italic;
+			}
+
+			/* Estilos para el scrollbar horizontal en la tabla (opcional) */
+			.table-container::-webkit-scrollbar {
+				height: 8px;
+			}
+
+			.table-container::-webkit-scrollbar-track {
+				background: #f1f1f1;
+			}
+
+			.table-container::-webkit-scrollbar-thumb {
+				background: #888;
+				border-radius: 4px;
+			}
+
+			.table-container::-webkit-scrollbar-thumb:hover {
+				background: #555;
+			}
+		}
+	</style>
+	</style>
 </head>
+
 <body>
 	<!-- Notifications area -->
 	<section class="full-width container-notifications">
 		<div class="full-width container-notifications-bg btn-Notification"></div>
-	    <section class="NotificationArea">
-	        <div class="full-width text-center NotificationArea-title tittles">Notifications <i class="zmdi zmdi-close btn-Notification"></i></div>
-	        <a href="#" class="Notification" id="notifation-unread-1">
-	            <div class="Notification-icon"><i class="zmdi zmdi-accounts-alt bg-info"></i></div>
-	            <div class="Notification-text">
-	                <p>
-	                    <i class="zmdi zmdi-circle"></i>
-	                    <strong>New User Registration</strong> 
-	                    <br>
-	                    <small>Just Now</small>
-	                </p>
-	            </div>
-	        	<div class="mdl-tooltip mdl-tooltip--left" for="notifation-unread-1">Notification as UnRead</div> 
-	        </a>
-	        <a href="#" class="Notification" id="notifation-read-1">
-	            <div class="Notification-icon"><i class="zmdi zmdi-cloud-download bg-primary"></i></div>
-	            <div class="Notification-text">
-	                <p>
-	                    <i class="zmdi zmdi-circle-o"></i>
-	                    <strong>New Updates</strong> 
-	                    <br>
-	                    <small>30 Mins Ago</small>
-	                </p>
-	            </div>
-	            <div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-1">Notification as Read</div>
-	        </a>
-	        <a href="#" class="Notification" id="notifation-unread-2">
-	            <div class="Notification-icon"><i class="zmdi zmdi-upload bg-success"></i></div>
-	            <div class="Notification-text">
-	                <p>
-	                    <i class="zmdi zmdi-circle"></i>
-	                    <strong>Archive uploaded</strong> 
-	                    <br>
-	                    <small>31 Mins Ago</small>
-	                </p>
-	            </div>
-	            <div class="mdl-tooltip mdl-tooltip--left" for="notifation-unread-2">Notification as UnRead</div>
-	        </a> 
-	        <a href="#" class="Notification" id="notifation-read-2">
-	            <div class="Notification-icon"><i class="zmdi zmdi-mail-send bg-danger"></i></div>
-	            <div class="Notification-text">
-	                <p>
-	                    <i class="zmdi zmdi-circle-o"></i>
-	                    <strong>New Mail</strong> 
-	                    <br>
-	                    <small>37 Mins Ago</small>
-	                </p>
-	            </div>
-	            <div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-2">Notification as Read</div>
-	        </a>
-	        <a href="#" class="Notification" id="notifation-read-3">
-	            <div class="Notification-icon"><i class="zmdi zmdi-folder bg-primary"></i></div>
-	            <div class="Notification-text">
-	                <p>
-	                    <i class="zmdi zmdi-circle-o"></i>
-	                    <strong>Folder delete</strong> 
-	                    <br>
-	                    <small>1 hours Ago</small>
-	                </p>
-	            </div>
-	            <div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-3">Notification as Read</div>
-	        </a>  
-	    </section>
+		<section class="NotificationArea">
+			<div class="full-width text-center NotificationArea-title tittles">Notifications <i
+					class="zmdi zmdi-close btn-Notification"></i></div>
+			<a href="#" class="Notification" id="notifation-unread-1">
+				<div class="Notification-icon"><i class="zmdi zmdi-accounts-alt bg-info"></i></div>
+				<div class="Notification-text">
+					<p>
+						<i class="zmdi zmdi-circle"></i>
+						<strong>New User Registration</strong>
+						<br>
+						<small>Just Now</small>
+					</p>
+				</div>
+				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-unread-1">Notification as UnRead</div>
+			</a>
+			<a href="#" class="Notification" id="notifation-read-1">
+				<div class="Notification-icon"><i class="zmdi zmdi-cloud-download bg-primary"></i></div>
+				<div class="Notification-text">
+					<p>
+						<i class="zmdi zmdi-circle-o"></i>
+						<strong>New Updates</strong>
+						<br>
+						<small>30 Mins Ago</small>
+					</p>
+				</div>
+				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-1">Notification as Read</div>
+			</a>
+			<a href="#" class="Notification" id="notifation-unread-2">
+				<div class="Notification-icon"><i class="zmdi zmdi-upload bg-success"></i></div>
+				<div class="Notification-text">
+					<p>
+						<i class="zmdi zmdi-circle"></i>
+						<strong>Archive uploaded</strong>
+						<br>
+						<small>31 Mins Ago</small>
+					</p>
+				</div>
+				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-unread-2">Notification as UnRead</div>
+			</a>
+			<a href="#" class="Notification" id="notifation-read-2">
+				<div class="Notification-icon"><i class="zmdi zmdi-mail-send bg-danger"></i></div>
+				<div class="Notification-text">
+					<p>
+						<i class="zmdi zmdi-circle-o"></i>
+						<strong>New Mail</strong>
+						<br>
+						<small>37 Mins Ago</small>
+					</p>
+				</div>
+				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-2">Notification as Read</div>
+			</a>
+			<a href="#" class="Notification" id="notifation-read-3">
+				<div class="Notification-icon"><i class="zmdi zmdi-folder bg-primary"></i></div>
+				<div class="Notification-text">
+					<p>
+						<i class="zmdi zmdi-circle-o"></i>
+						<strong>Folder delete</strong>
+						<br>
+						<small>1 hours Ago</small>
+					</p>
+				</div>
+				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-3">Notification as Read</div>
+			</a>
+		</section>
 	</section>
 	<!-- navLateral -->
 	<section class="full-width navLateral">
 		<div class="full-width navLateral-bg btn-menu"></div>
 		<div class="full-width navLateral-body">
 			<div class="full-width navLateral-body-logo text-center tittles">
-				<i class="zmdi zmdi-close btn-menu"></i> Grido Tech Advance 
+				<i class="zmdi zmdi-close btn-menu"></i> Grido Tech Advance
 			</div>
 			<figure class="full-width navLateral-body-tittle-menu">
 				<div>
@@ -273,7 +626,7 @@
 		<!-- navBar -->
 		<div class="full-width navBar">
 			<div class="full-width navBar-options">
-				<i class="zmdi zmdi-swap btn-menu" id="btn-menu"></i>	
+				<i class="zmdi zmdi-swap btn-menu" id="btn-menu"></i>
 				<div class="mdl-tooltip" for="btn-menu">Hide / Show MENU</div>
 				<nav class="navBar-options-list">
 					<ul class="list-unstyle">
@@ -285,7 +638,7 @@
 							<i class="zmdi zmdi-power"></i>
 							<div class="mdl-tooltip" for="btn-exit">LogOut</div>
 						</li>
-						<li class="text-condensedLight noLink" ><small>User Name</small></li>
+						<li class="text-condensedLight noLink"><small>User Name</small></li>
 						<li class="noLink">
 							<figure>
 								<img src="assets/img/avatar-male.png" alt="Avatar" class="img-responsive">
@@ -297,362 +650,323 @@
 		</div>
 		<section class="full-width header-well">
 			<div class="full-width header-well-icon">
-				<i class="zmdi zmdi-washing-machine"></i>
+				<!-- <i class="zmdi zmdi-washing-machine"></i> -->
 			</div>
 			<div class="full-width header-well-text">
 				<p class="text-condensedLight">
-					Listar productos 
+					Listar materiales de almacen
 				</p>
 			</div>
 		</section>
-		<div class="browse">
-			<input type="search" placeholder="Search" class="record-search" />
-			<select name="" id="">
-			  <option value="">Status</option>
+		</div>
+
+		<div class="search-container">
+			<input type="text" id="searchInput" placeholder="Buscar...">
+			<select id="searchType">
+				<option value="all">Buscar en Todo</option>
+				<option value="codigo">Código</option>
+				<option value="nombre">Nombre</option>
+				<option value="precio">Precio</option>
 			</select>
-		  </div>
 		</div>
 
-		<div>
-		  <table width="100%">
-			<thead>
-			  <tr>
-				<th><span class="las la-sort"></span>Codigo</th>
-				<th><span class="las la-sort"></span>Nombre</th>
-				<th><span class="las la-sort"></span>Stock Minimo</th>
-				<th><span class="las la-sort"></span>Unidad de Medida</th>
-				<th><span class="las la-sort"></span>Precio por Kilogramo</th>
-			  </tr>
-			</thead>
-			<tbody>
-			  <!-- <tr>
-				  <td>100</td>
-				  <td>Caramelo doble concentracion</td>
-				  <td>kg</td>
-				  <td>Dulces</td>
-				  <td>Almacen1</td>
-				  <td>50</td>
-				  <td>42</td>
-				  <td>Solicitar material</td>
-				  <td>
-					<div class="actions">
-					  <span class="lab la-telegram-plane"></span>
-					  <span class="las la-eye"></span>
-					  <span class="las la-ellipsis-v"></span>
-					</div>
-				  </td>
-				</tr>
-				<tr>
-				  <td>101</td>
-				  <td>Caramelo de menta</td>
-				  <td>bolsa</td>
-				  <td>Dulces</td>
-				  <td>Almacen1</td>
-				  <td>5</td>
-				  <td>10</td>
-				  <td>Hay suficiente</td>
-				  <td>
-					<div class="actions">
-					  <span class="lab la-telegram-plane"></span>
-					  <span class="las la-eye"></span>
-					  <span class="las la-ellipsis-v"></span>
-					</div>
-				  </td>
-				</tr>
-				<tr>
-				  <td>102</td>
-				  <td>Caramelo oscuro</td>
-				  <td>bolsa</td>
-				  <td>Dulces</td>
-				  <td>Almacen1</td>
-				  <td>0</td>
-				  <td>0</td>
-				  <td>Sin dato stock minimo</td>
-				  <td>
-					<div class="actions">
-					  <span class="lab la-telegram-plane"></span>
-					  <span class="las la-eye"></span>
-					  <span class="las la-ellipsis-v"></span>
-					</div>
-				  </td>
-				</tr> -->
-			</tbody>
-		  </table>
+		<div class="table-responsive">
+			<table>
+				<thead>
+					<tr>
+						<th>Código</th>
+						<th>Nombre</th>
+						<th>Stock Mínimo</th>
+						<th>Unidad de Medida</th>
+						<th>Precio por Kilogramo</th>
+						<th>Acciones</th>
+					</tr>
+				</thead>
+				<tbody id="materialsTableBody">
+					<!-- Los datos se insertarán dinámicamente aquí -->
+				</tbody>
+			</table>
 		</div>
-	  </div>
-	</div>
-  </main>
-</div>	
-		<!-- <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
-			<div class="mdl-tabs__tab-bar">
-				<a href="#tabNewProduct" class="mdl-tabs__tab is-active">NEW</a>
-				<a href="#tabListProducts" class="mdl-tabs__tab">LIST</a>
-			</div>
-			<div class="mdl-tabs__panel is-active" id="tabNewProduct">
-				<div class="mdl-grid">
-					<div class="mdl-cell mdl-cell--12-col">
-						<div class="full-width panel mdl-shadow--2dp">
-							<div class="full-width panel-tittle bg-primary text-center tittles">
-								New Product
-							</div>
-							<div class="full-width panel-content">
-								<form>
-									<div class="mdl-grid">
-										<div class="mdl-cell mdl-cell--12-col">
-									        <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i> &nbsp; BASIC INFORMATION</legend><br>
-									    </div>
-										<div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="number" pattern="-?[0-9- ]*(\.[0-9]+)?" id="BarCode">
-												<label class="mdl-textfield__label" for="BarCode">Barcode</label>
-												<span class="mdl-textfield__error">Invalid barcode</span>
-											</div>
-										</div>
-										<div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text" pattern="-?[A-Za-z0-9áéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" id="NameProduct">
-												<label class="mdl-textfield__label" for="NameProduct">Name</label>
-												<span class="mdl-textfield__error">Invalid name</span>
-											</div>
-										</div>
-										<div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="StrockProduct">
-												<label class="mdl-textfield__label" for="StrockProduct">Units</label>
-												<span class="mdl-textfield__error">Invalid number</span>
-											</div>
-										</div>
-										<div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text" pattern="-?[0-9.]*(\.[0-9]+)?" id="PriceProduct">
-												<label class="mdl-textfield__label" for="PriceProduct">Price</label>
-												<span class="mdl-textfield__error">Invalid price</span>
-											</div>
-										</div>
-										<div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="discountProduct">
-												<label class="mdl-textfield__label" for="discountProduct">% Discount</label>
-												<span class="mdl-textfield__error">Invalid discount</span>
-											</div>	
-										</div>
-										<div class="mdl-cell mdl-cell--12-col">
-									        <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i> &nbsp; CATEGORY</legend><br>
-									    </div>
-										<div class="mdl-cell mdl-cell--12-col">
-											<div class="mdl-textfield mdl-js-textfield">
-												<select class="mdl-textfield__input">
-													<option value="" disabled="" selected="">Select category</option>
-													<option value="">Category 1</option>
-													<option value="">Category 2</option>
-												</select>
-											</div>
-										</div>
-										<div class="mdl-cell mdl-cell--12-col">
-									        <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i> &nbsp; SUPPLIER DATA AND MODEL</legend><br>
-									    </div>
-										<div class="mdl-cell mdl-cell--12-col">
-											<div class="mdl-textfield mdl-js-textfield">
-												<select class="mdl-textfield__input">
-													<option value="" disabled="" selected="">Select provider</option>
-													<option value="">Provider 1</option>
-													<option value="">Provider 2</option>
-												</select>
-											</div>
-									    </div>
-										<div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text"  id="modelProduct">
-												<label class="mdl-textfield__label" for="modelProduct">Model</label>
-												<span class="mdl-textfield__error">Invalid model</span>
-											</div>
-										</div>
-										<div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-											<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-												<input class="mdl-textfield__input" type="text" id="markProduct">
-												<label class="mdl-textfield__label" for="markProduct">Mark</label>
-												<span class="mdl-textfield__error">Invalid Mark</span>
-											</div>
-										</div>
-										<div class="mdl-cell mdl-cell--12-col">
-									        <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i> &nbsp; OTHER DATA</legend><br>
-									    </div>
-										<div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
-											<div class="mdl-textfield mdl-js-textfield">
-												<input type="date" class="mdl-textfield__input">
-											</div>
-										</div>
-										<div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
-											<div class="mdl-textfield mdl-js-textfield">
-												<select class="mdl-textfield__input">
-													<option value="" disabled="" selected="">Select status</option>
-													<option value="">Active</option>
-													<option value="">deactivated</option>
-												</select>
-											</div>
-										</div>
-										<div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
-											<div class="mdl-textfield mdl-js-textfield">
-												<input type="file">
-											</div>
-										</div>
-									</div>
-									<p class="text-center">
-										<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addProduct">
-											<i class="zmdi zmdi-plus"></i>
-										</button>
-										<div class="mdl-tooltip" for="btn-addProduct">Add Product</div>
-									</p>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="mdl-tabs__panel" id="tabListProducts">
-				<div class="mdl-grid">
-					<div class="mdl-cell mdl-cell--4-col-phone mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
-						<form action="#">
-							<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-								<label class="mdl-button mdl-js-button mdl-button--icon" for="searchProduct">
-									<i class="zmdi zmdi-search"></i>
-								</label>
-								<div class="mdl-textfield__expandable-holder">
-									<input class="mdl-textfield__input" type="text" id="searchProduct">
-									<label class="mdl-textfield__label"></label>
-								</div>
-							</div>
-						</form>
-						<nav class="full-width menu-categories">
-							<ul class="list-unstyle text-center">
-								<li><a href="#!">Category 1</a></li>
-								<li><a href="#!">Category 2</a></li>
-								<li><a href="#!">Category 3</a></li>
-								<li><a href="#!">Category 4</a></li>
-							</ul>
-						</nav>
-						<div class="full-width text-center" style="padding: 30px 0;">
-							<div class="mdl-card mdl-shadow--2dp full-width product-card">
-								<div class="mdl-card__title">
-									<img src="assets/img/fontLogin.jpg" alt="product" class="img-responsive">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<small>Stock</small><br>
-									<small>Category</small>
-								</div>
-								<div class="mdl-card__actions mdl-card--border">
-									Product name
-									<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-										<i class="zmdi zmdi-more"></i>
-									</button>
-								</div>
-							</div>
-							<div class="mdl-card mdl-shadow--2dp full-width product-card">
-								<div class="mdl-card__title">
-									<img src="assets/img/fontLogin.jpg" alt="product" class="img-responsive">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<small>Stock</small><br>
-									<small>Category</small>
-								</div>
-								<div class="mdl-card__actions mdl-card--border">
-									Product name
-									<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-										<i class="zmdi zmdi-more"></i>
-									</button>
-								</div>
-							</div>
-							<div class="mdl-card mdl-shadow--2dp full-width product-card">
-								<div class="mdl-card__title">
-									<img src="assets/img/fontLogin.jpg" alt="product" class="img-responsive">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<small>Stock</small><br>
-									<small>Category</small>
-								</div>
-								<div class="mdl-card__actions mdl-card--border">
-									Product name
-									<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-										<i class="zmdi zmdi-more"></i>
-									</button>
-								</div>
-							</div>
-							<div class="mdl-card mdl-shadow--2dp full-width product-card">
-								<div class="mdl-card__title">
-									<img src="assets/img/fontLogin.jpg" alt="product" class="img-responsive">
-								</div>
-								<div class="mdl-card__supporting-text">
-									<small>Stock</small><br>
-									<small>Category</small>
-								</div>
-								<div class="mdl-card__actions mdl-card--border">
-									Product name
-									<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-										<i class="zmdi zmdi-more"></i>
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
-	</section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-	<!-- Nav desplegable-->
-	
-<script type="text/javascript">
-	  $(".nav").click(function () {
-		$("#mySidenav").css("width", "70px");
-		$("#main").css("margin-left", "70px");
-		$(".logo").css("visibility", "hidden");
-		$(".logo span").css("visibility", "visible");
-		$(".logo span").css("margin-left", "-10px");
-		$(".icon-a").css("visibility", "hidden");
-		$(".icons").css("visibility", "visible");
-		$(".icons").css("margin-left", "-8px");
-		$(".nav").css("display", "none");
-		$(".nav2").css("display", "block");
-	  });
-	
-	  $(".nav2").click(function () {
-		$("#mySidenav").css("width", "300px");
-		$("#main").css("margin-left", "300px");
-		$(".logo").css("visibility", "visible");
-		$(".logo span").css("visibility", "visible");
-		$(".icon-a").css("visibility", "visible");
-		$(".icons").css("visibility", "visible");
-		$(".nav").css("display", "block");
-		$(".nav2").css("display", "none");
-	  });
-	</script>
-	
-	<script>
-	
-	
-	  function Get() {
-		fetch("http://localhost:63152/api/Materials")
-		  .then((response) => response.json())
-		  .then((data) => {
-			const tbody = document.querySelector(`tbody`);
-	
-			data.forEach((o) => {
-			  let _tr = `<tr>
-							  <td>${o.CODIGO}</td>
-							  <td>${o.MATERIAL}</td>
-							  <td>${o.STOCK_MIN}</td>
-							  <td>${o.UM}</td>
-							  <td>$${o.PRECIO}</td>
-						  </tr>`;
-	
-			  tbody.innerHTML += _tr;
+		<!-- Modal para Alta/Modificación de Materiales -->
+		<div id="materialModal" class="modal">
+			<div class="modal-content">
+				<span class="modal-close">&times;</span>
+				<h2 id="modalTitle">Agregar Material</h2>
+				<form id="materialForm">
+					<input type="hidden" id="materialIdInput">
+					<input type="number" id="codigoInput" placeholder="Código" required>
+					<input type="text" id="nombreInput" placeholder="Nombre del Material" required>
+					<input type="number" step="0.01" id="stockMinInput" placeholder="Stock Mínimo" required>
+					<select id="umInput" required>
+						<option value="">Seleccione Unidad de Medida</option>
+						<option value="KG">Kilogramos</option>
+						<option value="LT">Litros</option>
+						<option value="UN">Unidades</option>
+					</select>
+					<input type="number" step="0.01" id="precioInput" placeholder="Precio" required>
+					<div>
+						<button type="submit" class="btn btn-primary" id="submitBtn">Guardar</button>
+						<button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			let allMaterials = []; // Variable global para almacenar todos los materiales
+
+			// Funciones de modal
+			const modal = document.getElementById('materialModal');
+			const modalClose = document.querySelector('.modal-close');
+			const addMaterialBtn = document.getElementById('addMaterialBtn');
+			const materialForm = document.getElementById('materialForm');
+			const cancelBtn = document.getElementById('cancelBtn');
+
+			// Abrir modal para agregar material
+			addMaterialBtn.addEventListener('click', () => {
+				document.getElementById('modalTitle').textContent = 'Agregar Material';
+				document.getElementById('materialIdInput').value = '';
+				materialForm.reset();
+				modal.style.display = 'block';
 			});
-		  });
-	  }
-	  Get();
-</script>
-		<!-- <section class="full-width header-well">
+
+			// Cerrar modal
+			modalClose.addEventListener('click', () => modal.style.display = 'none');
+			cancelBtn.addEventListener('click', () => modal.style.display = 'none');
+
+			// Función para renderizar la tabla
+			function renderMaterials(materials) {
+				const tbody = document.getElementById('materialsTableBody');
+				tbody.innerHTML = '';
+
+				if (materials.length === 0) {
+					tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="no-results">
+                            No se encontraron resultados.
+                        </td>
+                    </tr>
+                `;
+					return;
+				}
+
+				materials.forEach((o) => {
+					let _tr = `
+                    <tr>
+                        <td>${o.CODIGO}</td>
+                        <td>${o.MATERIAL}</td>
+                        <td>${o.STOCK_MIN}</td>
+                        <td>${o.UM}</td>
+                        <td>$${Number(o.PRECIO).toFixed(2)}</td>
+                        <td>
+                            <button class="action-btn edit-btn" data-id="${o.MaterialID}">Modificar</button>
+                        </td>
+                    </tr>
+                `;
+
+					tbody.innerHTML += _tr;
+				});
+
+				// Agregar eventos de modificación
+				document.querySelectorAll('.edit-btn').forEach(btn => {
+					btn.addEventListener('click', (e) => {
+						const materialId = e.target.dataset.id;
+						const material = allMaterials.find(m => m.MaterialID == materialId);
+
+						if (material) {
+							document.getElementById('modalTitle').textContent = 'Modificar Material';
+							document.getElementById('materialIdInput').value = material.MaterialID;
+
+							// Establecer el valor y deshabilitar el campo código
+							const codigoInput = document.getElementById('codigoInput');
+							codigoInput.value = material.CODIGO;
+							codigoInput.setAttribute('readonly', true);
+							codigoInput.style.backgroundColor = '#f0f0f0'; // Opcional: da feedback visual
+
+							document.getElementById('nombreInput').value = material.MATERIAL;
+							document.getElementById('stockMinInput').value = material.STOCK_MIN;
+							document.getElementById('umInput').value = material.UM;
+							document.getElementById('precioInput').value = material.PRECIO;
+
+							modal.style.display = 'block';
+						}
+					});
+				});
+			}
+
+			// Obtener materiales
+			function Get() {
+				fetch("http://localhost:63152/api/Materials")
+					.then((response) => response.json())
+					.then((data) => {
+						// Asegurarse de que todos los campos sean strings
+						allMaterials = data.map(material => ({
+							MaterialID: material.MaterialID,
+							CODIGO: material.CODIGO ? String(material.CODIGO).trim() : '',
+							MATERIAL: material.MATERIAL ? String(material.MATERIAL).trim() : '',
+							STOCK_MIN: material.STOCK_MIN ? Number(material.STOCK_MIN) : 0,
+							UM: material.UM ? String(material.UM).trim() : '',
+							PRECIO: material.PRECIO ? Number(material.PRECIO) : 0
+						}));
+						renderMaterials(allMaterials);
+					})
+					.catch((error) => {
+						console.error('Error fetching materials:', error);
+					});
+			}
+
+			// Añade esto para asegurarte de que el campo código esté habilitado cuando se abre el modal para agregar
+			addMaterialBtn.addEventListener('click', () => {
+				document.getElementById('modalTitle').textContent = 'Agregar Material';
+				document.getElementById('materialIdInput').value = '';
+				const codigoInput = document.getElementById('codigoInput');
+				codigoInput.removeAttribute('readonly');
+				codigoInput.style.backgroundColor = ''; // Elimina el background gris
+				materialForm.reset();
+				modal.style.display = 'block';
+			});
+
+			// Manejar submit del formulario (Alta o Modificación)
+			materialForm.addEventListener('submit', function (e) {
+				e.preventDefault();
+
+				const materialCodigo = document.getElementById('codigoInput').value;
+				const material = {
+					CODIGO: parseInt(materialCodigo),
+					MATERIAL: document.getElementById('nombreInput').value,
+					STOCK_MIN: parseFloat(document.getElementById('stockMinInput').value),
+					UM: document.getElementById('umInput').value,
+					PRECIO: parseFloat(document.getElementById('precioInput').value)
+				};
+
+				const isModificacion = document.getElementById('modalTitle').textContent === 'Modificar Material';
+
+				Swal.fire({
+					title: isModificacion ? '¿Desea modificar el material?' : '¿Desea insertar un nuevo material?',
+					icon: 'question',
+					showCancelButton: true,
+					confirmButtonText: 'Sí',
+					cancelButtonText: 'No',
+					reverseButtons: true
+				}).then((result) => {
+					if (result.isConfirmed) {
+						// Proceder con la operación
+						const url = isModificacion
+							? `http://localhost:63152/api/Materials/${materialCodigo}`
+							: "http://localhost:63152/api/Materials";
+
+						fetch(url, {
+							method: isModificacion ? 'PUT' : 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								'Accept': 'application/json',
+							},
+							body: JSON.stringify(material)
+						})
+							.then(response => {
+								if (!response.ok) throw new Error('Error en la operación');
+								return response.text();
+							})
+							.then(() => {
+								Swal.fire({
+									title: isModificacion ? 'Material modificado correctamente' : 'Material insertado correctamente',
+									icon: 'success'
+								}).then(() => {
+									modal.style.display = 'none';
+									materialForm.reset();
+									Get();
+								});
+							})
+							.catch(error => {
+								Swal.fire({
+									title: 'Error al completar operación',
+									text: 'Intente nuevamente',
+									icon: 'error'
+								});
+							});
+					} else if (result.dismiss === Swal.DismissReason.cancel) {
+						// Si se presiona "No", preguntar si desea cancelar
+						Swal.fire({
+							title: '¿Desea cancelar la operación?',
+							icon: 'warning',
+							showCancelButton: true,
+							confirmButtonText: 'Sí',
+							cancelButtonText: 'No',
+							reverseButtons: true
+						}).then((cancelResult) => {
+							if (cancelResult.isConfirmed) {
+								modal.style.display = 'none';
+								materialForm.reset();
+							}
+							// Si presiona "No" en el diálogo de cancelación, no hacemos nada
+						});
+					}
+				});
+			});
+
+			// Modificar también el evento del botón cancelar
+			cancelBtn.addEventListener('click', () => {
+				Swal.fire({
+					title: '¿Desea cancelar la operación?',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Sí',
+					cancelButtonText: 'No',
+					reverseButtons: true
+				}).then((result) => {
+					if (result.isConfirmed) {
+						modal.style.display = 'none';
+						materialForm.reset();
+					}
+					// Si presiona "No", el modal permanece abierto
+				});
+			});
+
+			// En la función de edición, deshabilitar el input de código
+			function setupEditModal(material) {
+				document.getElementById('modalTitle').textContent = 'Modificar Material';
+				document.getElementById('codigoInput').value = material.CODIGO;
+				document.getElementById('codigoInput').setAttribute('readonly', true); // Hacer el código de solo lectura
+				// ... resto del código de configuración del modal
+			}
+			// Búsqueda de materiales (previa implementación)
+			function filterMaterials() {
+				const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
+				const searchType = document.getElementById('searchType').value;
+
+				const filteredMaterials = allMaterials.filter(material => {
+					const codigo = String(material.CODIGO).toLowerCase();
+					const nombre = String(material.MATERIAL).toLowerCase();
+					const precio = String(material.PRECIO).toLowerCase();
+
+					switch (searchType) {
+						case 'codigo':
+							return codigo.includes(searchInput);
+						case 'nombre':
+							return nombre.includes(searchInput);
+						case 'precio':
+							return precio.includes(searchInput);
+						default: // all
+							return (
+								codigo.includes(searchInput) ||
+								nombre.includes(searchInput) ||
+								precio.includes(searchInput)
+							);
+					}
+				});
+
+				renderMaterials(filteredMaterials);
+			}
+
+			// Eventos de búsqueda
+			document.getElementById('searchInput').addEventListener('input', filterMaterials);
+			document.getElementById('searchType').addEventListener('change', filterMaterials);
+
+			// Cargar materiales al iniciar
+			Get();
+		</script>
+</body>
+<!-- <section class="full-width header-well">
 			<div class="full-width header-well-icon">
 				<i class="zmdi zmdi-balance"></i>
 			</div>
@@ -662,7 +976,7 @@
 				</p>
 			</div>
 		</section> -->
-		<!-- <div class="full-width divider-menu-h"></div>
+<!-- <div class="full-width divider-menu-h"></div>
 		<div class="mdl-grid">
 			<div class="mdl-cell mdl-cell--12-col">
 				<div class="full-width panel mdl-shadow--2dp">
@@ -745,4 +1059,5 @@
 		</div>
 	</section> -->
 </body>
+
 </html>
