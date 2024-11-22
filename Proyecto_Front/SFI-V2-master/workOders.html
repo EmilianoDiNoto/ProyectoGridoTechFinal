@@ -1,0 +1,356 @@
+<!-- 
+* Copyright 2018 Carlos Eduardo Alfaro Orellana
+  https://www.youtube.com/c/CarlosAlfaro007
+-->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Products</title>
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/sweetalert2.css">
+	<link rel="stylesheet" href="css/material.min.css">
+	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+	<link rel="stylesheet" href="css/stylesWO.css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+	<script src="js/material.min.js"></script>
+	<script src="js/sweetalert2.min.js"></script>
+	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="js/main.js"></script>
+</head>
+
+<body>
+
+
+
+	<div id="nav-container"></div>
+
+	<script>
+		// Cargar el menú lateral
+		document.addEventListener("DOMContentLoaded", () => {
+			fetch("home copy.html")
+				.then(response => response.text())
+				.then(html => {
+					document.getElementById("nav-container").innerHTML = html;
+					// Aquí puedes inicializar los eventos para el menú desplegable después de cargar el contenido
+					initializeNav();
+				})
+				.catch(error => console.error("Error al cargar el menú:", error));
+		});
+
+		// Función para inicializar el funcionamiento del menú desplegable
+		function initializeNav() {
+			$(".nav").click(function () {
+				$("#mySidenav").css("width", "70px");
+				$("#main").css("margin-left", "70px");
+				$(".logo").css("visibility", "hidden");
+				$(".logo span").css("visibility", "visible");
+				$(".logo span").css("margin-left", "-10px");
+				$(".icon-a").css("visibility", "hidden");
+				$(".icons").css("visibility", "visible");
+				$(".icons").css("margin-left", "-8px");
+				$(".nav").css("display", "none");
+				$(".nav2").css("display", "block");
+			});
+
+			$(".nav2").click(function () {
+				$("#mySidenav").css("width", "300px");
+				$("#main").css("margin-left", "300px");
+				$(".logo").css("visibility", "visible");
+				$(".logo span").css("visibility", "visible");
+				$(".icon-a").css("visibility", "visible");
+				$(".icons").css("visibility", "visible");
+				$(".nav").css("display", "block");
+				$(".nav2").css("display", "none");
+			});
+		}
+	</script>
+
+
+	<div class="content-container">
+		<div style="width: 20%; margin: 0 auto; text-align: center;">
+			<canvas id="orderChart"></canvas>
+		</div>
+
+		<div style="text-align: right; margin-bottom: 100px;">
+			<span id="order-status"
+				style="background-color: #4CAF50; color: white; padding: 10px 20px; border-radius: 5px; font-size: 18px;">
+				Calculando el porcentaje...
+			</span>
+		</div>
+
+	</div>
+
+	<div class="contenedor">
+
+	<div class="table-container">
+		<table>
+			<thead>
+				<tr>
+					<th><span class="las la-sort"></span>OT</th>
+					<th><span class="las la-sort"></span>CODIGO</th>
+					<th><span class="las la-sort"></span>PRODUCTO</th>
+					<th><span class="las la-sort"></span>DEMANDA</th>
+					<th><span class="las la-sort"></span>UM</th>
+					<th><span class="las la-sort"></span>ESTADO</th>
+					<th><span class="las la-sort"></span>FECHA ELABORACION</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+	</div>
+	<H5>FILTROS APLICABLES</H5>
+	<div class="filters">
+		
+		<label for="filter-ot"></label>
+		<input type="text" id="filter-ot" placeholder="Ingrese OT">
+
+		<label for="filter-producto"></label>
+		<input type="text" id="filter-producto" placeholder="Ingrese Producto">
+
+		<label for="filter-fecha-desde">DESDE</label>
+		<input type="date" id="filter-fecha-desde">
+
+		<label for="filter-fecha-hasta">HASTA</label>
+		<input type="date" id="filter-fecha-hasta">
+	</div>
+	</div>
+
+	<!-- Modal para mostrar los materiales -->
+	<div id="materials-modal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<h3>NECESIDAD DE MATERIALES</h3>
+			<table id="materials-table">
+				<thead>
+					<tr>
+						<th>MATERIAL</th>
+						<th>NECESIDAD</th>
+						<th>UM</th>
+						<th>CODIGO</th>
+						<th>FECHA ENTREGA</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Los materiales aparecerán aquí -->
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<script>
+		let orderChart;
+
+		function formatDate(dateString) {
+			const date = new Date(dateString);
+			const day = String(date.getDate()).padStart(2, '0');
+			const month = String(date.getMonth() + 1).padStart(2, '0');
+			const year = date.getFullYear();
+
+			return `${day}-${month}-${year}`;
+		}
+
+		function Get() {
+			fetch("http://localhost:63152/api/WorkOrders")
+				.then((response) => {
+					if (!response.ok) throw new Error("Error al obtener las órdenes de trabajo");
+					return response.json();
+				})
+				.then((data) => {
+					const tbody = document.querySelector('tbody');
+					tbody.innerHTML = ''; // Limpiar la tabla
+
+					let completed = 0;
+					let pending = 0;
+
+					data.forEach((o) => {
+						if (o.ESTADO === "REALIZADA") completed++;
+						else if (o.ESTADO === "PENDIENTE") pending++;
+
+						const fechaElaboracion = formatDate(o.FECHAELABORACION);
+
+
+						const _tr = `
+							<tr class="order-row" data-ot="${o.OT}">
+								<td data-label="OT">${o.OT}</td>
+								<td data-label="CODIGO">${o.CODIGO}</td>
+								<td data-label="PRODUCTO">${o.PRODUCTO}</td>
+								<td data-label="DEMANDA">${o.DEMANDA}</td>
+								<td data-label="UM">${o.UM}</td>
+								<td data-label="ESTADO">${o.ESTADO}</td>
+								<td data-label="FECHA ELABORACIÓN">${fechaElaboracion}</td>
+								
+							</tr>`;
+						tbody.innerHTML += _tr;
+					});
+
+					updateOrderStatus(completed, pending);
+					createChart(completed, pending);
+
+					document.querySelectorAll('.order-row').forEach(row => {
+						row.addEventListener('click', (e) => {
+							const ot = e.currentTarget.dataset.ot;
+							showMaterials(ot);
+						});
+					});
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				});
+		}
+
+		function updateOrderStatus(completed, pending) {
+			const total = completed + pending;
+			const percentage = total > 0 ? ((completed / total) * 100).toFixed(2) : 0;
+
+			const orderStatus = document.getElementById("order-status");
+			orderStatus.textContent = `Órdenes Realizadas: ${completed}, Pendientes: ${pending} (${percentage}% Completadas)`;
+			orderStatus.style.backgroundColor = percentage === 100 ? "#4CAF50" : "#FF9800";
+		}
+
+		function createChart(completed, pending) {
+			const ctx = document.getElementById('orderChart').getContext('2d');
+
+			if (orderChart) {
+				orderChart.destroy();
+			}
+
+			orderChart = new Chart(ctx, {
+				type: 'doughnut',
+				data: {
+					labels: ['Realizadas', 'Pendientes'],
+					datasets: [{
+						data: [completed, pending],
+						backgroundColor: ['#4CAF50', '#FF5733'],
+						borderWidth: 1
+					}]
+				},
+				options: {
+					responsive: true,
+					plugins: {
+						legend: {
+							position: 'top'
+						},
+						tooltip: {
+							callbacks: {
+								label: function (tooltipItem) {
+									const total = completed + pending;
+									const value = tooltipItem.raw;
+									const percentage = ((value / total) * 100).toFixed(2);
+									return `${tooltipItem.label}: ${percentage}% (${value})`;
+								}
+							}
+						}
+					}
+				}
+			});
+		}
+
+		function showMaterials(ot) {
+			fetch(`http://localhost:63152/api/WorkOrderMaterial/GetWorkOrderMaterials?ot=${ot}`)
+				.then((response) => {
+					if (!response.ok) throw new Error("Error al obtener los materiales");
+					return response.json();
+				})
+				.then((data) => {
+					const tbody = document.querySelector('#materials-table tbody');
+					tbody.innerHTML = '';
+
+					data.forEach((material) => {
+						const fechaEntrega = formatDate(material.FECHAENTREGA);
+
+						const _tr = `
+							<tr>
+								<td>${material.MATERIAL}</td>
+								<td>${material.NECESIDAD}</td>
+								<td>${material.UM}</td>
+								<td>${material.CODIGO}</td>
+								<td>${fechaEntrega}</td>
+							</tr>`;
+						tbody.innerHTML += _tr;
+					});
+
+					document.getElementById("materials-modal").style.display = "block";
+				})
+				.catch((error) => {
+					console.error("Error:", error);
+				});
+		}
+
+		const closeBtn = document.querySelector(".close");
+		if (closeBtn) {
+			closeBtn.addEventListener("click", () => {
+				document.getElementById("materials-modal").style.display = "none";
+			});
+		}
+
+		window.onclick = function (event) {
+			const modal = document.getElementById("materials-modal");
+			if (event.target === modal) {
+				modal.style.display = "none";
+			}
+		};
+
+		function applyFilters() {
+    const otFilter = document.getElementById('filter-ot').value.toLowerCase();
+    const productoFilter = document.getElementById('filter-producto').value.toLowerCase();
+    const fechaDesde = document.getElementById('filter-fecha-desde').value;
+    const fechaHasta = document.getElementById('filter-fecha-hasta').value;
+
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+        const ot = row.querySelector('[data-label="OT"]').textContent.toLowerCase();
+        const producto = row.querySelector('[data-label="PRODUCTO"]').textContent.toLowerCase();
+        const fecha = row.querySelector('[data-label="FECHA ELABORACIÓN"]').textContent;
+
+        // Formatear la fecha de la fila para comparación
+        const rowDate = new Date(fecha.split('-').reverse().join('-')); // Convertir DD-MM-YYYY a YYYY-MM-DD
+
+        const matchesOt = ot.includes(otFilter);
+        const matchesProducto = producto.includes(productoFilter);
+
+        // Verificar si la fecha está en el rango
+        const matchesFecha = 
+            (!fechaDesde || rowDate >= new Date(fechaDesde)) &&
+            (!fechaHasta || rowDate <= new Date(fechaHasta));
+
+        if (matchesOt && matchesProducto && matchesFecha) {
+            row.style.display = ''; // Mostrar fila
+        } else {
+            row.style.display = 'none'; // Ocultar fila
+        }
+    });
+}
+
+// Asignar eventos a los filtros
+document.getElementById('filter-ot').addEventListener('input', applyFilters);
+document.getElementById('filter-producto').addEventListener('input', applyFilters);
+document.getElementById('filter-fecha-desde').addEventListener('change', applyFilters);
+document.getElementById('filter-fecha-hasta').addEventListener('change', applyFilters);
+
+
+
+
+		Get();
+	</script>
+
+
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+</body>
+
+</html>
