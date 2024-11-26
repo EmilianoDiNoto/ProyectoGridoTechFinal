@@ -288,6 +288,7 @@ html, body{
 	background-color: var(--primary-color);
 	height: 45px;
 	color: #fff;
+	
 }
 .navBar-options{
 	line-height: 45px;
@@ -845,4 +846,3 @@ html, body{
 		text-align: right;
 	}
 }
-

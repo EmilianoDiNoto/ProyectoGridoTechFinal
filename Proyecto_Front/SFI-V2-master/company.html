@@ -257,19 +257,29 @@
 			}
 
 			/* Estilos base de la tabla */
-			table {
-				width: 100%;
+			.table-container {
+				width: 90%;
 				border-collapse: collapse;
+				margin: 20px auto;
+				/* Centrará la tabla horizontalmente */
 				font-family: Arial, sans-serif;
-				box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-				min-width: 800px;
-				/* Asegura que la tabla tenga un ancho mínimo */
+				font-size: 14px;
+				text-align: center;
+				/* Centra el texto de las celdas */
+				background-color: #f9f9f9;
+				/* Fondo claro */
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+				/* Sombra para darle un efecto elevado */
 			}
 
 			/* Estilos para el encabezado */
 			thead {
-				background-color: #f8f9fa;
-				border-bottom: 2px solid #dee2e6;
+				background-color: #0000FF;
+				/* Verde */
+				color: white;
+				padding: 10px;
+				text-transform: uppercase;
+				border: 1px solid #ddd;
 			}
 
 			th {
@@ -474,12 +484,36 @@
 					</li>
 					<li class="full-width divider-menu-h"></li>
 					<li class="full-width">
+						<a href="production.html" class="full-width">
+							<div class="navLateral-body-cl">
+								<i class="zmdi zmdi-washing-machine"></i>
+							</div>
+							<div class="navLateral-body-cr">
+								Declarar Producción
+							</div>
+						</a>
+					</li>
+
+					<li class="full-width divider-menu-h"></li>
+					<li class="full-width">
+						<a href="workOders.html" class="full-width">
+							<div class="navLateral-body-cl">
+								<i class="zmdi zmdi-washing-machine"></i>
+							</div>
+							<div class="navLateral-body-cr">
+								Ordenes de Trabajo
+							</div>
+						</a>
+					</li>
+					<li class="full-width divider-menu-h"></li>
+					<li class="full-width">
+
 						<a href="#!" class="full-width btn-subMenu">
 							<div class="navLateral-body-cl">
 								<i class="zmdi zmdi-case"></i>
 							</div>
 							<div class="navLateral-body-cr">
-								Producción
+								Materiales
 							</div>
 							<span class="zmdi zmdi-chevron-left"></span>
 						</a>
@@ -518,6 +552,39 @@
 					</li>
 					<li class="full-width divider-menu-h"></li>
 					<li class="full-width">
+						<a href="products.html" class="full-width">
+							<div class="navLateral-body-cl">
+								<i class="zmdi zmdi-washing-machine"></i>
+							</div>
+							<div class="navLateral-body-cr">
+								Productos
+							</div>
+						</a>
+					</li>
+					<li class="full-width divider-menu-h"></li>
+					<li class="full-width">
+						<a href="inventory.html" class="full-width">
+							<div class="navLateral-body-cl">
+								<i class="zmdi zmdi-store"></i>
+							</div>
+							<div class="navLateral-body-cr">
+								Inventario
+							</div>
+						</a>
+					</li>
+					<li class="full-width divider-menu-h"></li>
+					<!-- <li class="full-width">
+						<a href="sales.html" class="full-width">
+							<div class="navLateral-body-cl">
+								<i class="zmdi zmdi-shopping-cart"></i>
+							</div>
+							<div class="navLateral-body-cr">
+								Informes
+							</div>
+						</a>
+					</li>
+					<li class="full-width divider-menu-h"></li> -->
+					<li class="full-width">
 						<a href="#!" class="full-width btn-subMenu">
 							<div class="navLateral-body-cl">
 								<i class="zmdi zmdi-face"></i>
@@ -550,40 +617,6 @@
 							</li>
 						</ul>
 					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="products.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-washing-machine"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Productos
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="sales.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-shopping-cart"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Informes
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="inventory.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-store"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Inventario
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
 					<li class="full-width">
 						<a href="#!" class="full-width btn-subMenu">
 							<div class="navLateral-body-cl">
@@ -670,16 +703,16 @@
 			</select>
 		</div>
 
-		<div class="table-responsive">
+		<div class="table-container">
 			<table>
 				<thead>
 					<tr>
-						<th>Código</th>
-						<th>Nombre</th>
-						<th>Stock Mínimo</th>
-						<th>Unidad de Medida</th>
-						<th>Precio por Kilogramo</th>
-						<th>Acciones</th>
+						<th>CODIGO</th>
+						<th>MATERIAL</th>
+						<th>STOCK MINIMO</th>
+						<th>UNIDAD DE MEDIDA</th>
+						<th>PRECIO POR KILO</th>
+
 					</tr>
 				</thead>
 				<tbody id="materialsTableBody">
@@ -689,7 +722,7 @@
 		</div>
 
 		<!-- Modal para Alta/Modificación de Materiales -->
-		<div id="materialModal" class="modal">
+		<!-- <div id="materialModal" class="modal">
 			<div class="modal-content">
 				<span class="modal-close">&times;</span>
 				<h2 id="modalTitle">Agregar Material</h2>
@@ -711,7 +744,7 @@
 					</div>
 				</form>
 			</div>
-		</div>
+		</div> -->
 		<script>
 			let allMaterials = []; // Variable global para almacenar todos los materiales
 
@@ -799,7 +832,6 @@
 				fetch("http://localhost:63152/api/Materials")
 					.then((response) => response.json())
 					.then((data) => {
-						// Asegurarse de que todos los campos sean strings
 						allMaterials = data.map(material => ({
 							MaterialID: material.MaterialID,
 							CODIGO: material.CODIGO ? String(material.CODIGO).trim() : '',

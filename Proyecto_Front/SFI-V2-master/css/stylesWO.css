@@ -1,18 +1,23 @@
 /* Estilo general de la tabla */
 table {
-    width: 60%;
+    width: 90%;
     border-collapse: collapse;
-    margin: 20px auto; /* Centrará la tabla horizontalmente */
+    margin: 20px auto;
+    /* Centrará la tabla horizontalmente */
     font-family: Arial, sans-serif;
     font-size: 14px;
-    text-align: center; /* Centra el texto de las celdas */
-    background-color: #f9f9f9; /* Fondo claro */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle un efecto elevado */
+    text-align: center;
+    /* Centra el texto de las celdas */
+    background-color: #f9f9f9;
+    /* Fondo claro */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra para darle un efecto elevado */
 }
 
 /* Estilo para las celdas del encabezado */
 table thead th {
-    background-color: #4CAF50; /* Verde */
+    background-color: #0000CD;
+    /* Verde */
     color: white;
     padding: 10px;
     text-transform: uppercase;
@@ -22,35 +27,45 @@ table thead th {
 /* Estilo para las celdas del cuerpo */
 table tbody td {
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 3px solid #ddd;
 }
 
 /* Estilo alternado de filas */
 table tbody tr:nth-child(odd) {
-    background-color: #f2f2f2; /* Fondo alternado */
+    background-color: #f2f2f2;
+    /* Fondo alternado */
 }
 
 /* Resaltado de fila al pasar el cursor */
 table tbody tr:hover {
-    background-color: #ddd; /* Gris claro */
+    background-color: #ddd;
+    /* Gris claro */
 }
 
 /* Responsividad */
 @media screen and (max-width: 768px) {
     table {
-        font-size: 12px; /* Reducir tamaño de fuente */
+        font-size: 12px;
+        /* Reducir tamaño de fuente */
     }
+
     table thead {
-        display: none; /* Oculta encabezado en dispositivos pequeños */
+        display: none;
+        /* Oculta encabezado en dispositivos pequeños */
     }
+
     table tbody td {
         display: block;
-        text-align: right; /* Alinear texto a la derecha */
-        padding-left: 50%; /* Espacio para la etiqueta */
+        text-align: right;
+        /* Alinear texto a la derecha */
+        padding-left: 50%;
+        /* Espacio para la etiqueta */
         position: relative;
     }
+
     table tbody td::before {
-        content: attr(data-label); /* Etiquetas dinámicas para celdas */
+        content: attr(data-label);
+        /* Etiquetas dinámicas para celdas */
         position: absolute;
         left: 10px;
         text-align: left;
@@ -61,41 +76,58 @@ table tbody tr:hover {
 /* Contenedor principal para gráfico y tabla */
 .content-container {
     display: flex;
-    flex-wrap: wrap; /* Permite que los elementos se ajusten en pantallas pequeñas */
-    justify-content: space-between; /* Espacio entre elementos */
-    align-items: flex-start; /* Alinea elementos arriba */
+    flex-wrap: wrap;
+    /* Permite que los elementos se ajusten en pantallas pequeñas */
+    justify-content: space-between;
+    /* Espacio entre elementos */
+    align-items: flex-start;
+    /* Alinea elementos arriba */
     margin: 20px;
-    gap: 20px; /* Espacio entre tabla y gráfico */
+    /* gap: 20px; */
+    /* Espacio entre tabla y gráfico */
 }
 
 /* Contenedor del gráfico */
 .chart-container {
-    flex: 1; /* Ocupa espacio proporcional */
-    min-width: 300px; /* Ancho mínimo para el gráfico */
-    max-width: 400px; /* Ancho máximo */
-    text-align: center; /* Centra contenido interno */
+    flex: 1;
+    /* Ocupa espacio proporcional */
+    min-width: 600px;
+    /* Ancho mínimo para el gráfico */
+    max-width: 400px;
+    /* Ancho máximo */
+    text-align: center;
+    /* Centra contenido interno */
 }
 
 /* Contenedor de la tabla */
 .table-container {
-    flex: 2; /* Ocupa más espacio que el gráfico */
-    min-width: 600px; /* Ancho mínimo */
-    overflow-x: auto; /* Permite scroll horizontal si la tabla es muy ancha */
-    padding: 0 20px; /* Espaciado interno lateral */
-    margin: 0 auto; /* Centrar horizontalmente */
+    flex: 2;
+    /* Ocupa más espacio que el gráfico */
+    min-width: 600px;
+    /* Ancho mínimo */
+    overflow-x: auto;
+    /* Permite scroll horizontal si la tabla es muy ancha */
+    padding: 0 20px;
+    /* Espaciado interno lateral */
+    margin: 0 auto;
+    /* Centrar horizontalmente */
 }
 
 /* Estilo para la etiqueta de ordenes realizadas (porcentaje) */
 #order-status {
-    margin-bottom: 10px;
-    font-size: 16px;
-    padding: 10px;
+    margin-top: 500px;
+    padding: auto;
+    margin-bottom: 100px;
+    font-size: 20px;
+    padding: 100px;
     border-radius: 5px;
     color: white;
 }
+
 /* Estilo del modal */
 .modal {
-    display: none; /* Ocultar el modal por defecto */
+    display: none;
+    /* Ocultar el modal por defecto */
     position: fixed;
     z-index: 1;
     left: 0;
@@ -103,7 +135,8 @@ table tbody tr:hover {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* Fondo oscuro */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Fondo oscuro */
 }
 
 .modal-content {
@@ -111,7 +144,8 @@ table tbody tr:hover {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Ancho del modal */
+    width: 80%;
+    /* Ancho del modal */
 }
 
 .close {
@@ -127,11 +161,13 @@ table tbody tr:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
 /* Contenedor principal que envuelve la tabla y los filtros */
 .contenedor {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centra todo el contenido en el contenedor */
+    align-items: center;
+    /* Centra todo el contenido en el contenedor */
     justify-content: center;
     margin: 20px;
 }
@@ -146,33 +182,49 @@ table tbody tr:hover {
 /* Contenedor de filtros */
 .filters {
     display: flex;
-    justify-content: center;    /* Centra los filtros horizontalmente */
-    gap: 30px;                  /* Espacio entre los filtros */
-    flex-wrap: wrap;            /* Permite que los filtros se ajusten a la pantalla */
+    justify-content: center;
+    /* Centra los filtros horizontalmente */
+    gap: 15px;
+    /* Espacio entre los filtros */
+    flex-wrap: wrap;
+    /* Permite que los filtros se ajusten a la pantalla */
+    border: #888;
 }
 
 /* Cada filtro individual */
 .filter-item {
     display: flex;
-    flex-direction: column;     /* Coloca el label encima del input */
-    align-items: center;        /* Centra el contenido de cada filtro */
-    gap: 5px;                   /* Espacio entre el label y el input */
-    text-align: center;         /* Alinea el texto de los labels al centro */
+    flex-direction: column;
+    /* Coloca el label encima del input */
+    align-items: center;
+    /* Centra el contenido de cada filtro */
+    gap: 2px;
+    /* Espacio entre el label y el input */
+    text-align: left;
+    /* Alinea el texto de los labels al centro */
 }
 
 /* Estilo de los labels */
 .filters label {
     font-weight: bold;
     font-size: 14px;
+    text-align: right;
 }
 
 /* Estilo de los inputs */
 .filters input {
-    padding: 8px;
+    padding: 5px;
+    text-align: center;
     font-size: 14px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 190px;  /* Limita el ancho de los inputs */
+    border-radius: 10px;
+    width: 150px;
+    /* Limita el ancho de los inputs */
 }
 
-
+#chart-container {
+    display: flex;
+    align-items: center; /* Alinea verticalmente al centro */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    gap: 20px; /* Espacio entre el gráfico y la etiqueta */
+  }
