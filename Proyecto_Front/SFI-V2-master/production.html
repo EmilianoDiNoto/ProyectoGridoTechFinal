@@ -1,7 +1,7 @@
 <!-- 
-* Copyright 2018 Carlos Eduardo Alfaro Orellana
-  https://www.youtube.com/c/CarlosAlfaro007
--->
+    * Copyright 2018 Carlos Eduardo Alfaro Orellana
+    https://www.youtube.com/c/CarlosAlfaro007
+    -->
 <!DOCTYPE html>
 <html lang="es">
 
@@ -26,6 +26,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         /* Estilos para el mensaje de alerta */
+
+        body {
+            background-color: #f0f0f0 !important;
+            /* Gris claro */
+        }
+
         .production-alert {
             background-color: #ffebee;
             border: 1px solid #ffcdd2;
@@ -48,7 +54,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
+            gap: 50px;
+            /* Aumentar el espacio entre las imágenes */
             padding: 20px;
             flex-wrap: wrap;
             margin: 20px 0;
@@ -63,7 +70,8 @@
             width: 100%;
             height: 300px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 50%;
+            /* Aplicar borde circular */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
@@ -75,14 +83,6 @@
         .ice-cream-item p {
             margin-top: 10px;
             font-size: 16px;
-            font-weight: 500;
-        }
-
-        /* Tabla de producción */
-        .production-table-title {
-            text-align: center;
-            padding: 20px;
-            font-size: 24px;
             font-weight: 500;
         }
 
@@ -111,71 +111,673 @@
             background-color: #f9f9f9;
         }
 
- /* Estilos para el modal */
- .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.5);
-        overflow-y: auto;
-    }
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            overflow-y: auto;
+            animation: modalBackgroundFade 0.3s ease-out;
+        }
 
-    .modal-content {
-        background-color: #fefefe;
-        margin: 2% auto;
-        padding: 20px;
-        border-radius: 8px;
-        width: 90%;
-        max-width: 1200px;
-        position: relative;
-    }
-
-    .modal-close {
-        position: absolute;
-        right: 20px;
-        top: 10px;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-        color: #666;
-    }
-
-    .modal-close:hover {
-        color: #000;
-    }
-
-    /* Hacer que la tabla sea responsiva */
-    @media screen and (max-width: 1024px) {
         .modal-content {
-            width: 95%;
-            margin: 1% auto;
+            background-color: #fefefe;
+            margin: 2% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1200px;
+            position: relative;
+            animation: modalSlideIn 0.3s ease-out;
+            transform-origin: top center;
+            overflow-y: auto;
         }
 
-        .table-container {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        .modal-close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #666;
         }
 
-        table {
-            min-width: 800px;
+        .modal-close:hover {
+            color: #000;
         }
-    }
 
-    /* Estilos para hacer la alerta clickeable */
-    .production-alert {
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+        /* Estilos para los formularios dentro de los modales */
+        .modal-content form {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+        }
 
-    .production-alert:hover {
-        background-color: #ffe6e6;
-    }
+        .modal-content form .mb-4 {
+            margin-bottom: 15px;
+        }
+
+        .modal-content form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .modal-content form input,
+        .modal-content form select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .modal-content form input:focus,
+        .modal-content form select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .modal-content form .text-center {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .modal-content form button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .modal-content form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilos responsivos */
+        @media (max-width: 768px) {
+            .modal-content form {
+                padding: 15px;
+            }
+        }
+
+        /* Hacer que la tabla sea responsiva */
+        @media screen and (max-width: 1024px) {
+            .modal-content {
+                width: 95%;
+                margin: 1% auto;
+            }
+
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                min-width: 800px;
+            }
+        }
+
+        /* Estilos para hacer la alerta clickeable */
+        .production-alert {
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .production-alert:hover {
+            background-color: #ffe6e6;
+        }
 
 
+        .modal-tabs {
+            display: flex;
+            background-color: #f5f5f5;
+            border-bottom: 2px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .modal-tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            position: relative;
+        }
+
+        .modal-tab.active {
+            color: #000;
+        }
+
+        .modal-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #007bff;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .modal-product-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Actualizar estilos del modal existente */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 2% auto;
+            padding: 0;
+            /* Removemos el padding para que las pestañas lleguen al borde */
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+            /* Para que las pestañas no sobresalgan */
+        }
+
+        .tab-body {
+            padding: 20px;
+        }
+
+        /* Agregar estos estilos en la sección de estilos */
+        .row-pending {
+            background-color: #ffd700 !important;
+            /* Amarillo oscuro */
+            color: black;
+        }
+
+        .row-completed {
+            background-color: #006666 !important;
+            /* Verde azul oscuro */
+            color: white;
+        }
+
+        /* Para mantener los colores al hacer hover */
+        .production-table tbody tr.row-pending:hover {
+            background-color: #e6c200 !important;
+            /* Un amarillo más oscuro para el hover */
+        }
+
+        .production-table tbody tr.row-completed:hover {
+            background-color: #004d4d !important;
+            /* Un verde azul más oscuro para el hover */
+        }
+
+        /* Mantener todos los estilos existentes y agregar/modificar solo lo necesario */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 2% auto;
+            padding: 0;
+            /* Mantener en 0 para las pestañas */
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Contenedor principal de pestañas */
+        .tab-container {
+            margin: 0;
+            background-color: #fff;
+        }
+
+        /* Actualización de los estilos de las pestañas */
+        .modal-tabs {
+            display: flex;
+            background-color: #f5f5f5;
+            border-bottom: 2px solid #ddd;
+            margin: 0;
+            padding: 0;
+        }
+
+        .modal-tab {
+            flex: 1;
+            padding: 15px 30px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            position: relative;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        .modal-tab.active {
+            color: #000;
+        }
+
+        .modal-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #007bff;
+        }
+
+        /* Contenido de las pestañas */
+        .tab-panels {
+            padding: 20px;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Ajustes para el contenido dentro de las pestañas */
+        .tab-content .table-container {
+            margin-top: 0;
+        }
+
+        .tab-content h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* Mantener los estilos responsivos */
+        @media screen and (max-width: 1024px) {
+            .modal-tabs {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .modal-tab {
+                padding: 15px 20px;
+                white-space: nowrap;
+            }
+        }
+
+        /* Estilos base del navLateral */
+        .navLateral {
+            width: 300px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -300px;
+            z-index: 9999;
+            background-color: #fff;
+            transition: left 0.3s ease;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+
+
+        /* Fondo oscuro cuando el menú está abierto */
+        .navLateral-bg {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        /* El contenedor principal ahora no necesita margen */
+        .pageContent {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            /* Eliminar cualquier margen o padding que pudiera estar causando el espacio */
+            margin: 0;
+            padding: 0;
+            overflow-y: auto !important;
+            /* Forzar scroll vertical */
+        }
+
+        /* Cuando el menú está abierto */
+        .navLateral.active-menu {
+            left: 0;
+        }
+
+        .navLateral.active-menu .navLateral-bg {
+            display: block;
+        }
+
+        /* Ajustes para móviles */
+        @media screen and (max-width: 768px) {
+            .navLateral {
+                width: 250px;
+                left: -250px;
+            }
+        }
+
+
+        /* Estilos para el formulario */
+        #productionStoreForm {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        #productionStoreForm .mb-4 {
+            margin-bottom: 15px;
+        }
+
+        #productionStoreForm label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        #productionStoreForm input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        #productionStoreForm input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        #productionStoreForm .text-center {
+            grid-column: span 2;
+            padding: 20px 0;
+        }
+
+        #productionStoreForm button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        #productionStoreForm button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilos responsive */
+        @media (max-width: 768px) {
+            #productionStoreForm {
+                grid-template-columns: 1fr;
+            }
+
+            #productionStoreForm .text-center {
+                grid-column: 1;
+            }
+        }
+
+
+
+        /*estilos modales de RECETA OT*/
+        * Estilos específicos para el modal de materiales */ #materials-modal {
+            z-index: 1001;
+            /* Mayor que el modal principal */
+        }
+
+        #materials-modal .modal-content {
+            max-width: 900px;
+            margin: 30px auto;
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            padding: 25px;
+        }
+
+        #materials-modal h3 {
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        #materials-modal .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #6c757d;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        #materials-modal .close:hover {
+            color: #dc3545;
+        }
+
+        #materials-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 15px;
+        }
+
+        #materials-table thead th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+            position: sticky;
+            top: 0;
+        }
+
+        #materials-table tbody td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+            color: #495057;
+        }
+
+        #materials-table tbody tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+
+        #materials-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Estilo para las columnas específicas */
+        #materials-table td:nth-child(2),
+        /* NECESIDAD */
+        #materials-table th:nth-child(2) {
+            text-align: right;
+            font-weight: 500;
+        }
+
+        #materials-table td:nth-child(3),
+        /* UM */
+        #materials-table th:nth-child(3) {
+            text-align: center;
+            width: 100px;
+        }
+
+        /* Diseño responsive */
+        @media (max-width: 768px) {
+            #materials-modal .modal-content {
+                width: 95%;
+                margin: 10px auto;
+                padding: 15px;
+            }
+
+            #materials-table {
+                font-size: 14px;
+            }
+
+            #materials-table thead th,
+            #materials-table tbody td {
+                padding: 10px 8px;
+            }
+
+            #materials-modal h3 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Animación de entrada para el modal */
+        #materials-modal .modal-content {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Scrollbar personalizado para la tabla */
+        #materials-modal .modal-content {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #materials-modal .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #materials-modal .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        #materials-modal .modal-content::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        #materials-modal .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .full-width.pageContent {
+            height: auto;
+            min-height: 100vh;
+            overflow-y: visible !important;
+        }
+
+
+        /* Agregar estos estilos a tu sección de CSS existente */
+        #productionStoreForm select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+
+        #productionStoreForm select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        #productionStoreForm input[readonly] {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        #productionStoreForm select:required:invalid {
+            color: gray;
+        }
+
+        #productionStoreForm option[value=""][disabled] {
+            display: none;
+        }
+
+        #productionStoreForm option {
+            color: black;
+        }
+
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 
 </head>
@@ -480,7 +1082,11 @@
             </div>
 
             <div class="production-alert">
+<<<<<<< HEAD
                 <p>ORDEN PENDIENTE DEL DIA</p>
+=======
+                <p>Orden Pendiente del día de hoy: Cookie and Cream </p>
+>>>>>>> 681a4c19d5b8e180548e42e9cfead9e490fc5997
             </div>
 
             <!-- Contenedor de imágenes de helados -->
@@ -502,12 +1108,20 @@
             <!-- Tabla de producción -->
             <div class="table-container">
                 <div class="production-table-title">
+<<<<<<< HEAD
                     LISTAR PRODUCCION FINALIZADA
+=======
+                    Producciónes
+>>>>>>> 681a4c19d5b8e180548e42e9cfead9e490fc5997
                 </div>
                 <table class="production-table">
                     <thead>
                         <tr>
+<<<<<<< HEAD
                             <th>FECHA</th>
+=======
+                            <th>FECHA DE PRODUCCIÓN</th>
+>>>>>>> 681a4c19d5b8e180548e42e9cfead9e490fc5997
                             <th>TURNO</th>
                             <th>RESPONSABLE</th>
                             <th>OT</th>
@@ -522,123 +1136,520 @@
                 </table>
             </div>
 
-            <!-- Agregar el modal después de la tabla de producción -->
+            <!-- Modal -->
             <div id="workOrderModal" class="modal">
                 <div class="modal-content">
                     <span class="modal-close">&times;</span>
-                    <h2 class="text-center text-xl font-bold mb-4">Órdenes de Trabajo Pendientes</h2>
-                    <div class="table-container">
-                        <table class="production-table">
-                            <thead>
-                                <tr>
-                                    <th>OT</th>
-                                    <th>Código</th>
-                                    <th>Producto</th>
-                                    <th>Demanda</th>
-                                    <th>UM</th>
-                                    <th>Fecha Creación</th>
-                                    <th>Fecha Modificación</th>
-                                    <th>Estado</th>
-                                    <th>Fecha Elaboración</th>
-                                </tr>
-                            </thead>
-                            <tbody id="workOrderTableBody">
-                                <!-- Los datos se cargarán dinámicamente aquí -->
-                            </tbody>
-                        </table>
+                    <h2 class="modal-product-title text-center" id="modalProductTitle"> Declarar Producción de Torta
+                    </h2>
+
+                    <!-- Contenedor principal de las pestañas -->
+                    <div class="tab-container">
+                        <!-- Botones de pestañas -->
+                        <div class="modal-tabs">
+                            <button class="modal-tab active" data-tab="stock-inicial">STOCK INICIAL</button>
+                            <button class="modal-tab" data-tab="pedidos">SOLICITUD DE PEDIDO</button>
+                            <button class="modal-tab" data-tab="stock-final">STOCK FINAL</button>
+                            <button class="modal-tab" data-tab="producto-terminado">PRODUCCION FINAL</button>
+                        </div>
+
+                        <!-- Contenido de las pestañas -->
+                        <div class="tab-panels">
+                            <!-- Stock Inicial -->
+                            <div id="stock-inicial" class="tab-content active">
+                                <form id="stockInicialForm" class="p-4">
+                                    <div id="materialesContainer" class="grid grid-cols-2 gap-4">
+                                        <div class="mb-4 col-span-2">
+                                            <label>Fecha Movimiento:</label>
+                                            <input type="date" id="fechamov_inicial" name="fechamov" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Turno:</label>
+                                            <select id="turnoid_inicial" name="turnoid" required>
+                                                <option value="">Seleccione un turno</option>
+                                                <option value="1">MAÑANA</option>
+                                                <option value="2">TARDE</option>
+                                                <option value="3">NOCHE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Usuario:</label>
+                                            <select id="usuarioid_inicial" name="usuarioid" required>
+                                                <option value="">Seleccione un usuario</option>
+                                                <option value="1">EMMANUEL GONZALEZ CASTRO</option>
+                                                <option value="2">EMILIANO DI NOTO</option>
+                                                <option value="3">SOFIA ROURE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>OT:</label>
+                                            <select id="otid_inicial" name="otid" required>
+                                                <option value="">Seleccione una OT</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Proveedor:</label>
+                                            <select id="proveedorid_inicial" name="proveedorid" required>
+                                                <option value="">Seleccione un proveedor</option>
+                                                <option value="1">PARNOR</option>
+                                                <option value="2">MONDELEZ</option>
+                                                <option value="3">SABORISIMO</option>
+                                                <option value="4">LIVIAN FERCO</option>
+                                                <option value="5">FACHITAS</option>
+                                                <option value="6">CHAMMAS</option>
+                                                <option value="7">JAMER</option>
+                                                <option value="8">BEMER</option>
+                                                <option value="9">PETIT FOUR</option>
+                                                <option value="10">SANTA LUCIA</option>
+                                                <option value="11">LA BLANCA</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Lote:</label>
+                                            <input type="text" id="lote_inicial" name="lote" value="AB0909" readonly>
+                                        </div>
+
+                                        <!-- Material Entry Template -->
+                                        <div class="material-entry col-span-2 grid grid-cols-2 gap-4">
+                                            <div class="mb-4">
+                                                <label>Material:</label>
+                                                <select class="materialid" name="materialid" required>
+                                                    <option value="">Seleccione un material</option>
+                                                    <option value="1">DULCE DE LECHE P/SEMBRAR</option>
+                                                    <option value="2">TAPA GALLETA SABOR VAINILLA 17 CM</option>
+                                                    <option value="3">SALSA DULCE SABOR CHOCOLATE</option>
+                                                    <option value="4">DULCE DE LECHE C/CACAO P/SEMBRAR</option>
+                                                    <option value="5">GALLETAS MILKA MOUSSE</option>
+                                                    <option value="6">GALLETA OREO PICADA</option>
+                                                    <option value="7">PREPARADO ALMIBAR STANDART</option>
+                                                    <option value="8">HELADO DE CREMA AMERICANA</option>
+                                                    <option value="9">HELADO DE CHOCOLATE</option>
+                                                    <option value="10">HELADO DE DULCE DE LECHE</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label>Cantidad:</label>
+                                                <input type="number" class="cantidad" name="cantidad" required min="1">
+                                            </div>
+                                        </div>
+
+                                        <!-- Botón para agregar material -->
+                                        <div class="col-span-2 text-center mb-4">
+                                            <button type="button" id="addMaterial"
+                                                class="bg-green-500 text-white px-4 py-2 rounded">
+                                                + Agregar Material
+                                            </button>
+                                        </div>
+                                        <!-- <div class="mb-4">
+                                            <label>Tipo Movimiento:</label>
+                                            <input type="text" id="tipomov_inicial" name="tipomov" value="STOCK INICIAL"
+                                                readonly>
+                                        </div> -->
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="submit-btn">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Contenido para la pestaña "Solicitud de Pedido" -->
+                            <div id="pedidos" class="tab-content">
+                                <form id="solicitudPedidoForm" class="p-4">
+                                    <div id="materialesContainerPedido" class="grid grid-cols-2 gap-4">
+                                        <div class="mb-4">
+                                            <label>Fecha Movimiento:</label>
+                                            <input type="date" id="fechamov_pedido" name="fechamov" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Turno:</label>
+                                            <select id="turnoid_pedido" name="turnoid" required>
+                                                <option value="">Seleccione un turno</option>
+                                                <option value="1">MAÑANA</option>
+                                                <option value="2">TARDE</option>
+                                                <option value="3">NOCHE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Usuario:</label>
+                                            <select id="usuarioid_pedido" name="usuarioid" required>
+                                                <option value="">Seleccione un usuario</option>
+                                                <option value="1">EMMANUEL GONZALEZ CASTRO</option>
+                                                <option value="2">EMILIANO DI NOTO</option>
+                                                <option value="3">SOFIA ROURE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>OT:</label>
+                                            <select id="otid_pedido" name="otid" required>
+                                                <option value="">Seleccione una OT</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Proveedor:</label>
+                                            <select id="proveedorid_pedido" name="proveedorid" required>
+                                                <option value="">Seleccione un proveedor</option>
+                                                <option value="1">PARNOR</option>
+                                                <option value="2">MONDELEZ</option>
+                                                <option value="3">SABORISIMO</option>
+                                                <option value="4">LIVIAN FERCO</option>
+                                                <option value="5">FACHITAS</option>
+                                                <option value="6">CHAMMAS</option>
+                                                <option value="7">JAMER</option>
+                                                <option value="8">BEMER</option>
+                                                <option value="9">PETIT FOUR</option>
+                                                <option value="10">SANTA LUCIA</option>
+                                                <option value="11">LA BLANCA</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Material Entry Template -->
+                                        <div class="material-entry col-span-2 grid grid-cols-2 gap-4">
+                                            <div class="mb-4">
+                                                <label>Material:</label>
+                                                <select class="materialid" name="materialid" required>
+                                                    <option value="">Seleccione un material</option>
+                                                    <option value="1">DULCE DE LECHE P/SEMBRAR</option>
+                                                    <option value="2">TAPA GALLETA SABOR VAINILLA 17 CM</option>
+                                                    <option value="3">SALSA DULCE SABOR CHOCOLATE</option>
+                                                    <option value="4">DULCE DE LECHE C/CACAO P/SEMBRAR</option>
+                                                    <option value="5">GALLETAS MILKA MOUSSE</option>
+                                                    <option value="6">GALLETA OREO PICADA</option>
+                                                    <option value="7">PREPARADO ALMIBAR STANDART</option>
+                                                    <option value="8">HELADO DE CREMA AMERICANA</option>
+                                                    <option value="9">HELADO DE CHOCOLATE</option>
+                                                    <option value="10">HELADO DE DULCE DE LECHE</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label>Cantidad:</label>
+                                                <input type="number" class="cantidad" name="cantidad" required min="1">
+                                            </div>
+                                        </div>
+
+                                        <!-- Botón para agregar material -->
+                                        <div class="col-span-2 text-center mb-4">
+                                            <button type="button" id="addMaterialPedido"
+                                                class="bg-green-500 text-white px-4 py-2 rounded">
+                                                + Agregar Material
+                                            </button>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label>Lote:</label>
+                                            <input type="text" id="lote_pedido" name="lote" value="AB0909" readonly>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Tipo Movimiento:</label>
+                                            <input type="text" id="tipomov_pedido" name="tipomov"
+                                                value="SOLICITUD DE PEDIDO" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="submit-btn">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Contenido para la pestaña "Stock Final" -->
+                            <div id="stock-final" class="tab-content">
+                                <form id="stockFinalForm" class="p-4">
+                                    <div id="materialesContainerFinal" class="grid grid-cols-2 gap-4">
+                                        <div class="mb-4">
+                                            <label>Fecha Movimiento:</label>
+                                            <input type="date" id="fechamov_final" name="fechamov" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Turno:</label>
+                                            <select id="turnoid_final" name="turnoid" required>
+                                                <option value="">Seleccione un turno</option>
+                                                <option value="1">MAÑANA</option>
+                                                <option value="2">TARDE</option>
+                                                <option value="3">NOCHE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Usuario:</label>
+                                            <select id="usuarioid_final" name="usuarioid" required>
+                                                <option value="">Seleccione un usuario</option>
+                                                <option value="1">EMMANUEL GONZALEZ CASTRO</option>
+                                                <option value="2">EMILIANO DI NOTO</option>
+                                                <option value="3">SOFIA ROURE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>OT:</label>
+                                            <select id="otid_final" name="otid" required>
+                                                <option value="">Seleccione una OT</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Proveedor:</label>
+                                            <select id="proveedorid_final" name="proveedorid" required>
+                                                <option value="">Seleccione un proveedor</option>
+                                                <option value="1">PARNOR</option>
+                                                <option value="2">MONDELEZ</option>
+                                                <option value="3">SABORISIMO</option>
+                                                <option value="4">LIVIAN FERCO</option>
+                                                <option value="5">FACHITAS</option>
+                                                <option value="6">CHAMMAS</option>
+                                                <option value="7">JAMER</option>
+                                                <option value="8">BEMER</option>
+                                                <option value="9">PETIT FOUR</option>
+                                                <option value="10">SANTA LUCIA</option>
+                                                <option value="11">LA BLANCA</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Material Entry Template -->
+                                        <div class="material-entry col-span-2 grid grid-cols-2 gap-4">
+                                            <div class="mb-4">
+                                                <label>Material:</label>
+                                                <select class="materialid" name="materialid" required>
+                                                    <option value="">Seleccione un material</option>
+                                                    <option value="1">DULCE DE LECHE P/SEMBRAR</option>
+                                                    <option value="2">TAPA GALLETA SABOR VAINILLA 17 CM</option>
+                                                    <option value="3">SALSA DULCE SABOR CHOCOLATE</option>
+                                                    <option value="4">DULCE DE LECHE C/CACAO P/SEMBRAR</option>
+                                                    <option value="5">GALLETAS MILKA MOUSSE</option>
+                                                    <option value="6">GALLETA OREO PICADA</option>
+                                                    <option value="7">PREPARADO ALMIBAR STANDART</option>
+                                                    <option value="8">HELADO DE CREMA AMERICANA</option>
+                                                    <option value="9">HELADO DE CHOCOLATE</option>
+                                                    <option value="10">HELADO DE DULCE DE LECHE</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label>Cantidad:</label>
+                                                <input type="number" class="cantidad" name="cantidad" required min="1">
+                                            </div>
+                                        </div>
+
+                                        <!-- Botón para agregar material -->
+                                        <div class="col-span-2 text-center mb-4">
+                                            <button type="button" id="addMaterialFinal"
+                                                class="bg-green-500 text-white px-4 py-2 rounded">
+                                                + Agregar Material
+                                            </button>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label>Lote:</label>
+                                            <input type="text" id="lote_final" name="lote" value="AB0909" readonly>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Tipo Movimiento:</label>
+                                            <input type="text" id="tipomov_final" name="tipomov" value="STOCK FINAL"
+                                                readonly>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="submit-btn">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Contenido para la pestaña "Producción Final" -->
+                            <div id="producto-terminado" class="tab-content">
+                                <form id="produccionFinalForm" class="p-4">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="mb-4">
+                                            <label>Fecha:</label>
+                                            <input type="date" id="fecha_produccion" name="fecha" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Turno:</label>
+                                            <select id="turnoid_produccion" name="turnoid" required>
+                                                <option value="">Seleccione un turno</option>
+                                                <option value="1">MAÑANA</option>
+                                                <option value="2">TARDE</option>
+                                                <option value="3">NOCHE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Responsable:</label>
+                                            <select id="usuarioid_produccion" name="usuarioid" required>
+                                                <option value="">Seleccione un usuario</option>
+                                                <option value="1">EMMANUEL GONZALEZ CASTRO</option>
+                                                <option value="2">EMILIANO DI NOTO</option>
+                                                <option value="3">SOFIA ROURE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Orden de Trabajo:</label>
+                                            <select id="otid_produccion" name="otid" required>
+                                                <option value="">Seleccione una OT</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Producido:</label>
+                                            <input type="number" id="producido" name="producido" required min="1">
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="submit-btn">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+
 
         </section>
     </section>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Referencias a elementos del DOM
-    const modal = document.getElementById('workOrderModal');
-    const alertBox = document.querySelector('.production-alert');
-    const closeBtn = document.querySelector('.modal-close');
-    
-    // Función para cargar los datos de órdenes de trabajo usando fetch
-    function loadWorkOrders() {
-        fetch('http://localhost:63152/api/WorkOrders')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tableBody = document.getElementById('workOrderTableBody');
-                tableBody.innerHTML = '';
+    <script>
 
-                data.forEach(item => {
-                    const row = `
+
+        // Definir showMaterials globalmente (fuera del DOMContentLoaded)
+        window.showMaterials = function (ot) {
+            fetch(`http://localhost:63152/api/WorkOrderMaterial/GetWorkOrderMaterials?ot=${ot}`)
+                .then((response) => {
+                    if (!response.ok) throw new Error("Error al obtener los materiales");
+                    return response.json();
+                })
+                .then((data) => {
+                    const tbody = document.querySelector('#materials-table tbody');
+                    tbody.innerHTML = '';
+
+                    data.forEach((material) => {
+                        const fechaEntrega = formatDate(material.FECHAENTREGA);
+                        const row = `
                         <tr>
+                            <td>${material.MATERIAL}</td>
+                            <td>${material.NECESIDAD}</td>
+                            <td>${material.UM}</td>
+                            <td>${material.CODIGO}</td>
+                            <td>${fechaEntrega}</td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+
+                    const materialsModal = document.getElementById("materials-modal");
+                    materialsModal.style.display = "block";
+
+                    // Event listener para cerrar el modal de materiales
+                    const closeBtn = materialsModal.querySelector(".close");
+                    if (closeBtn) {
+                        closeBtn.addEventListener("click", () => {
+                            materialsModal.style.display = "none";
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudieron cargar los materiales'
+                    });
+                });
+        };
+
+
+
+        // Función formatDate global
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-AR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        // Función para cargar órdenes de trabajo filtradas
+        function loadFilteredWorkOrders(productFilter = null) {
+            fetch('http://localhost:63152/api/WorkOrders')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    const filteredData = data.filter(item => {
+                        const isPending = (item.ESTADO || '').toUpperCase().trim().includes('PEND') ||
+                            (item.ESTADO || '').toUpperCase().trim() === 'P';
+
+                        if (productFilter) {
+                            const isCorrectProduct = item.PRODUCTO &&
+                                item.PRODUCTO.toUpperCase().includes(productFilter.toUpperCase());
+                            return isPending && isCorrectProduct;
+                        }
+                        return isPending;
+                    });
+
+                    const tableBody = document.getElementById('workOrderTableBody');
+                    tableBody.innerHTML = '';
+
+                    filteredData.forEach(item => {
+                        const row = `
+                        <tr class="row-pending" onclick="showMaterials(${item.OT})" style="cursor: pointer">
                             <td>${item.OT || '-'}</td>
                             <td>${item.CODIGO || '-'}</td>
                             <td>${item.PRODUCTO || '-'}</td>
                             <td>${item.DEMANDA || '-'}</td>
                             <td>${item.UM || '-'}</td>
-                            <td>${formatDate(item.FECHACREADA)}</td>
-                            <td>${formatDate(item.FECHAMODIFICADA)}</td>
-                            <td>${item.ESTADO || '-'}</td>
                             <td>${formatDate(item.FECHAELABORACION)}</td>
+                            <td>${item.ESTADO || '-'}</td>
                         </tr>
                     `;
-                    tableBody.innerHTML += row;
+                        tableBody.innerHTML += row;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudieron cargar las órdenes de trabajo'
+                    });
                 });
-
-                // Mostrar el modal después de cargar los datos
-                modal.style.display = 'block';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'No se pudieron cargar las órdenes de trabajo'
-                });
-            });
-    }
-
-    // Función para formatear fechas
-    function formatDate(dateString) {
-        if (!dateString) return '-';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-AR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    }
-
-    // Event Listeners
-    alertBox.addEventListener('click', function() {
-        loadWorkOrders();
-    });
-
-    closeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-    });
-
-    // Cerrar el modal si se hace click fuera de él
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
         }
-    });
 
-    // Prevenir que el scroll del modal afecte al fondo
-    modal.addEventListener('wheel', function(event) {
-        if (event.target.closest('.table-container')) {
-            event.stopPropagation();
-        }
-    });
-});
+        // Función para mostrar los materiales de una OT
+        function showMaterials(ot) {
+            fetch(`http://localhost:63152/api/WorkOrderMaterial/GetWorkOrderMaterials?ot=${ot}`)
+                .then((response) => {
+                    if (!response.ok) throw new Error("Error al obtener los materiales");
+                    return response.json();
+                })
+                .then((data) => {
+                    const tbody = document.querySelector('#materials-table tbody');
+                    tbody.innerHTML = '';
 
+<<<<<<< HEAD
 
 document.addEventListener('DOMContentLoaded', function() {
     // Función para cargar los datos de producción
@@ -656,49 +1667,1348 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 data.forEach(item => {
                     const row = `
+=======
+                    data.forEach((material) => {
+                        const fechaEntrega = formatDate(material.FECHAENTREGA);
+                        const row = `
+>>>>>>> 681a4c19d5b8e180548e42e9cfead9e490fc5997
                         <tr>
-                            <td>${formatDate(item.FECHA)}</td>
-                            <td>${item.TURNO || '-'}</td>
-                            <td>${item.RESPONSABLE || '-'}</td>
-                            <td>${item.OT || '-'}</td>
-                            <td>${item.PRODUCTO || '-'}</td>
-                            <td>${item.PRODUCIDO || '-'}</td>
-                            <td>${item.PERFORMANCE || '-'}%</td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
+                            <td>${material.MATERIAL}</td>
+                            <td>${material.NECESIDAD}</td>
+                            <td>${material.UM}</td>
+                            <td>${material.CODIGO}</td>
+                            <td>${fechaEntrega}</td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+
+                    const materialsModal = document.getElementById("materials-modal");
+                    materialsModal.style.display = "block";
+
+                    // Event listener para cerrar el modal de materiales
+                    const closeBtn = materialsModal.querySelector(".close");
+                    if (closeBtn) {
+                        closeBtn.addEventListener("click", () => {
+                            materialsModal.style.display = "none";
+                        });
+                    }
+
+                    // Cerrar al hacer clic fuera del modal
+                    window.onclick = function (event) {
+                        if (event.target === materialsModal) {
+                            materialsModal.style.display = "none";
+                        }
+                    };
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudieron cargar los materiales'
+                    });
                 });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'No se pudieron cargar los datos de producción'
+        }
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Función para reinicializar las pestañas cuando se abre el modal
+            function reinitializeTabsOnModalOpen() {
+                const modal = document.getElementById('workOrderModal');
+                const modalContent = modal.querySelector('.modal-content');
+
+                // Asegurarse de que la primera pestaña esté activa
+                const firstTab = modalContent.querySelector('.modal-tab');
+                const firstContent = modalContent.querySelector('.tab-content');
+
+                if (firstTab && firstContent) {
+                    // Desactivar todas las pestañas y contenidos
+                    modalContent.querySelectorAll('.modal-tab').forEach(tab =>
+                        tab.classList.remove('active'));
+                    modalContent.querySelectorAll('.tab-content').forEach(content =>
+                        content.classList.remove('active'));
+
+                    // Activar la primera pestaña y contenido
+                    firstTab.classList.add('active');
+                    firstContent.classList.add('active');
+                }
+            }
+
+
+
+            // Referencias a elementos del DOM
+            const modal = document.getElementById('workOrderModal');
+            const alertBox = document.querySelector('.production-alert');
+            const closeBtn = document.querySelector('.modal-close');
+            const modalTitle = document.getElementById('modalProductTitle');
+            const btnMenu = document.getElementById('btn-menu');
+            const navLateral = document.querySelector('.navLateral');
+
+            loadProductionData();
+
+            // Event listener para el alert box (Hoy toca grido cookie)
+            if (alertBox) {
+                alertBox.addEventListener('click', function () {
+                    modal.style.display = 'block';
+                    modalTitle.textContent = 'Órdenes de Trabajo Pendientes - Grido Cookie';
+
+                    // Crear la tabla dentro del modal
+                    const modalContent = document.querySelector('.modal-content');
+                    modalContent.innerHTML = `
+                          <span class="modal-close">&times;</span>
+                          <h2 class="modal-product-title text-center">Órdenes de Trabajo Pendientes - Grido Cookie</h2>
+                          <div class="table-container">
+                    <table class="production-table">
+                        <thead>
+                            <tr>
+                                <th>OT</th>
+                                <th>CÓDIGO</th>
+                                <th>PRODUCTO</th>
+                                <th>DEMANDA</th>
+                                <th>UM</th>
+                                <th>FECHA DE ELABORACIÓN</th>
+                                <th>ESTADO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="workOrderTableBody">
+                        </tbody>
+                    </table>
+                          </div>
+                
+                         <!-- Modal para la receta -->
+                          <div id="materials-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>NECESIDAD DE MATERIALES</h3>
+                        <table id="materials-table" class="production-table">
+                            <thead>
+                                <tr>
+                                    <th>MATERIAL</th>
+                                    <th>NECESIDAD</th>
+                                    <th>UM</th>
+                                    <th>CODIGO</th>
+                                    <th>FECHA ENTREGA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>`;
+
+                    // Cargar las órdenes de trabajo
+                    loadFilteredWorkOrders('COOKIE');
+
+                    // Agregar el event listener para cerrar el modal principal
+                    const newCloseBtn = modalContent.querySelector('.modal-close');
+                    if (newCloseBtn) {
+                        newCloseBtn.addEventListener('click', () => {
+                            modal.style.display = 'none';
+                        });
+                    }
+                    // Función para inicializar los event listeners de las pestañas
+                    function initializeTabs() {
+                        const tabs = document.querySelectorAll('.modal-tab');
+                        const tabContents = document.querySelectorAll('.tab-content');
+
+                        tabs.forEach(tab => {
+                            tab.addEventListener('click', function () {
+                                // Remover active de todas las pestañas
+                                tabs.forEach(t => t.classList.remove('active'));
+                                // Remover active de todos los contenidos
+                                tabContents.forEach(content => content.classList.remove('active'));
+
+                                // Agregar active a la pestaña seleccionada
+                                this.classList.add('active');
+
+                                // Mostrar el contenido correspondiente
+                                const targetId = this.getAttribute('data-tab');
+                                const targetContent = document.getElementById(targetId);
+                                if (targetContent) {
+                                    targetContent.classList.add('active');
+                                }
+                            });
+                        });
+                    }
+
+                    // Función para inicializar el cierre del modal
+                    function initializeModalClose() {
+                        const modal = document.getElementById('workOrderModal');
+                        const closeButtons = document.querySelectorAll('.modal-close');
+
+                        closeButtons.forEach(button => {
+                            button.addEventListener('click', function () {
+                                modal.style.display = 'none';
+                            });
+                        });
+
+                        // Cerrar modal al hacer clic fuera
+                        window.addEventListener('click', function (event) {
+                            if (event.target === modal) {
+                                modal.style.display = 'none';
+                            }
+                        });
+                    }
+
+
+
+                });
+            }
+
+
+
+
+
+            function toggleMenu(e) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                navLateral.classList.toggle('active-menu');
+                document.body.style.overflow = navLateral.classList.contains('active-menu') ? 'hidden' : '';
+            }
+
+
+
+            // Event listeners
+            btnMenu.addEventListener('click', toggleMenu);
+
+            // Cerrar el menú cuando se hace clic en el fondo
+            document.querySelector('.navLateral-bg').addEventListener('click', toggleMenu);
+
+            // Cerrar el menú cuando se hace clic en el botón de cerrar
+            document.querySelector('.navLateral .btn-menu').addEventListener('click', toggleMenu);
+
+
+            // Mapa de productos y sus nombres en la API
+            const productMapping = {
+                'Cookie and Cream': 'COOKIE',
+                'Mousse': 'MOUSSE',
+                'Torta Grido': 'TORTA GRIDO'
+            };
+
+           // Función para cargar los datos de producción
+function loadProductionData() {
+    fetch('http://localhost:63152/api/Production/GetAllProduction')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tableBody = document.getElementById('productionTableBody');
+            tableBody.innerHTML = '';
+
+            data.forEach(item => {
+                // Convertir el número con coma a número con punto y luego formatear
+                const performance = item.PERFORMANCE ?
+                    item.PERFORMANCE >= 10000 ?
+                        String(item.PERFORMANCE).slice(0, 3) + '.' + String(item.PERFORMANCE).slice(3, 5) + '%' :
+                        String(item.PERFORMANCE).slice(0, 2) + '.' + String(item.PERFORMANCE).slice(2, 4) + '%' :
+                    '-';
+
+                const row = `
+                    <tr>
+                        <td>${formatDate(item.FECHA)}</td>
+                        <td>${item.TURNO || '-'}</td>
+                        <td>${item.RESPONSABLE || '-'}</td>
+                        <td>${item.OT || '-'}</td>
+                        <td>${item.PRODUCTO || '-'}</td>
+                        <td>${item.PRODUCIDO || '-'}</td>
+                        <td>${performance}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudieron cargar los datos de producción'
+            });
+        });
+}
+
+
+
+
+
+
+            // Event listener para las imágenes de tortas (modal con formulario y pestañas)
+            document.querySelectorAll('.ice-cream-item').forEach(item => {
+                item.addEventListener('click', function () {
+                    const productName = this.querySelector('p').textContent;
+                    const apiProductName = productMapping[productName];
+
+                    document.querySelector('.modal-product-title').textContent = `Declarar producción de Torta - ${productName}`;
+                    modal.style.display = 'block';
+
+                    // Agregar después de modal.style.display = 'block';
+                    initializeTabSystem();
+                    reinitializeTabsOnModalOpen();
+
+                    // Restaurar el contenido original del modal para el formulario
+                    const modalContent = document.querySelector('.modal-content');
+
+                    document.querySelector('.modal-product-title').textContent = modalTitle.textContent;
+                    modal.style.display = 'block';
+                    modalContent.innerHTML = `
+                    <span class="modal-close">&times;</span>
+                    <h2 class="modal-product-title text-center">${modalTitle.textContent}</h2>
+                    <div class="tab-container">
+                     <div class="modal-tabs">
+                        <button class="modal-tab active" data-tab="stock-inicial">STOCK INICIAL</button>
+                        <button class="modal-tab" data-tab="pedidos">SOLICITUD DE PEDIDO</button>
+                        <button class="modal-tab" data-tab="stock-final">STOCK FINAL</button>
+                        <button class="modal-tab" data-tab="producto-terminado">PRODUCCION FINAL</button>
+                    </div>
+                    <div class="tab-panels">
+                            <!-- Stock Inicial -->
+                            <div id="stock-inicial" class="tab-content active">
+                                <form id="stockInicialForm" class="p-4">
+                                    <div id="materialesContainer" class="grid grid-cols-2 gap-4">
+                                        <div class="mb-4 col-span-2">
+                                            <label>Fecha Movimiento:</label>
+                                            <input type="date" id="fechamov_inicial" name="fechamov" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Turno:</label>
+                                            <select id="turnoid_inicial" name="turnoid" required>
+                                                <option value="">Seleccione un turno</option>
+                                                <option value="1">MAÑANA</option>
+                                                <option value="2">TARDE</option>
+                                                <option value="3">NOCHE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Usuario:</label>
+                                            <select id="usuarioid_inicial" name="usuarioid" required>
+                                                <option value="">Seleccione un usuario</option>
+                                                <option value="1">EMMANUEL GONZALEZ CASTRO</option>
+                                                <option value="2">EMILIANO DI NOTO</option>
+                                                <option value="3">SOFIA ROURE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>OT:</label>
+                                            <select id="otid_inicial" name="otid" required>
+                                                <option value="">Seleccione una OT</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Proveedor:</label>
+                                            <select id="proveedorid_inicial" name="proveedorid" required>
+                                                <option value="">Seleccione un proveedor</option>
+                                                <option value="1">PARNOR</option>
+                                                <option value="2">MONDELEZ</option>
+                                                <option value="3">SABORISIMO</option>
+                                                <option value="4">LIVIAN FERCO</option>
+                                                <option value="5">FACHITAS</option>
+                                                <option value="6">CHAMMAS</option>
+                                                <option value="7">JAMER</option>
+                                                <option value="8">BEMER</option>
+                                                <option value="9">PETIT FOUR</option>
+                                                <option value="10">SANTA LUCIA</option>
+                                                <option value="11">LA BLANCA</option>
+                                            </select>
+                                        </div>
+
+                                          <div class="mb-4">
+                                            <label>Lote:</label>
+                                            <input type="text" id="lote_inicial" name="lote" value="AB0909" readonly>
+                                        </div>
+
+                                        <!-- Material Entry Template -->
+                                        <div class="material-entry col-span-2 grid grid-cols-2 gap-4">
+                                            <div class="mb-4">
+                                                <label>Material:</label>
+                                                <select class="materialid" name="materialid" required>
+                                                    <option value="">Seleccione un material</option>
+                                                    <option value="1">DULCE DE LECHE P/SEMBRAR</option>
+                                                    <option value="2">TAPA GALLETA SABOR VAINILLA 17 CM</option>
+                                                    <option value="3">SALSA DULCE SABOR CHOCOLATE</option>
+                                                    <option value="4">DULCE DE LECHE C/CACAO P/SEMBRAR</option>
+                                                    <option value="5">GALLETAS MILKA MOUSSE</option>
+                                                    <option value="6">GALLETA OREO PICADA</option>
+                                                    <option value="7">PREPARADO ALMIBAR STANDART</option>
+                                                    <option value="8">HELADO DE CREMA AMERICANA</option>
+                                                    <option value="9">HELADO DE CHOCOLATE</option>
+                                                    <option value="10">HELADO DE DULCE DE LECHE</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label>Cantidad:</label>
+                                                <input type="number" class="cantidad" name="cantidad" required min="1">
+                                            </div>
+                                        </div>
+
+                                        <!-- Botón para agregar material -->
+                                        <div class="col-span-2 text-center mb-4">
+                                            <button type="button" id="addMaterial"
+                                                class="bg-green-500 text-white px-4 py-2 rounded">
+                                                + Agregar Material
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="submit-btn">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Contenido para la pestaña "Solicitud de Pedido" -->
+                            <div id="pedidos" class="tab-content">
+                                <form id="solicitudPedidoForm" class="p-4">
+                                    <div id="materialesContainerPedido" class="grid grid-cols-2 gap-4">
+                                        <div class="mb-4">
+                                            <label>Fecha Movimiento:</label>
+                                            <input type="date" id="fechamov_pedido" name="fechamov" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Turno:</label>
+                                            <select id="turnoid_pedido" name="turnoid" required>
+                                                <option value="">Seleccione un turno</option>
+                                                <option value="1">MAÑANA</option>
+                                                <option value="2">TARDE</option>
+                                                <option value="3">NOCHE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Usuario:</label>
+                                            <select id="usuarioid_pedido" name="usuarioid" required>
+                                                <option value="">Seleccione un usuario</option>
+                                                <option value="1">EMMANUEL GONZALEZ CASTRO</option>
+                                                <option value="2">EMILIANO DI NOTO</option>
+                                                <option value="3">SOFIA ROURE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>OT:</label>
+                                            <select id="otid_pedido" name="otid" required>
+                                                <option value="">Seleccione una OT</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Proveedor:</label>
+                                            <select id="proveedorid_pedido" name="proveedorid" required>
+                                                <option value="">Seleccione un proveedor</option>
+                                                <option value="1">PARNOR</option>
+                                                <option value="2">MONDELEZ</option>
+                                                <option value="3">SABORISIMO</option>
+                                                <option value="4">LIVIAN FERCO</option>
+                                                <option value="5">FACHITAS</option>
+                                                <option value="6">CHAMMAS</option>
+                                                <option value="7">JAMER</option>
+                                                <option value="8">BEMER</option>
+                                                <option value="9">PETIT FOUR</option>
+                                                <option value="10">SANTA LUCIA</option>
+                                                <option value="11">LA BLANCA</option>
+                                            </select>
+                                        </div>
+
+                                           <div class="mb-4">
+                                            <label>Lote:</label>
+                                            <input type="text" id="lote_pedido" name="lote" value="AB0909" readonly>
+                                        </div>
+
+                                        <!-- Material Entry Template -->
+                                        <div class="material-entry col-span-2 grid grid-cols-2 gap-4">
+                                            <div class="mb-4">
+                                                <label>Material:</label>
+                                                <select class="materialid" name="materialid" required>
+                                                    <option value="">Seleccione un material</option>
+                                                    <option value="1">DULCE DE LECHE P/SEMBRAR</option>
+                                                    <option value="2">TAPA GALLETA SABOR VAINILLA 17 CM</option>
+                                                    <option value="3">SALSA DULCE SABOR CHOCOLATE</option>
+                                                    <option value="4">DULCE DE LECHE C/CACAO P/SEMBRAR</option>
+                                                    <option value="5">GALLETAS MILKA MOUSSE</option>
+                                                    <option value="6">GALLETA OREO PICADA</option>
+                                                    <option value="7">PREPARADO ALMIBAR STANDART</option>
+                                                    <option value="8">HELADO DE CREMA AMERICANA</option>
+                                                    <option value="9">HELADO DE CHOCOLATE</option>
+                                                    <option value="10">HELADO DE DULCE DE LECHE</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label>Cantidad:</label>
+                                                <input type="number" class="cantidad" name="cantidad" required min="1">
+                                            </div>
+                                        </div>
+
+                                        <!-- Botón para agregar material -->
+                                        <div class="col-span-2 text-center mb-4">
+                                            <button type="button" id="addMaterialPedido"
+                                                class="bg-green-500 text-white px-4 py-2 rounded">
+                                                + Agregar Material
+                                            </button>
+                                        </div>
+
+                                     
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="submit-btn">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Contenido para la pestaña "Stock Final" -->
+                            <div id="stock-final" class="tab-content">
+                                <form id="stockFinalForm" class="p-4">
+                                    <div id="materialesContainerFinal" class="grid grid-cols-2 gap-4">
+                                        <div class="mb-4">
+                                            <label>Fecha Movimiento:</label>
+                                            <input type="date" id="fechamov_final" name="fechamov" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Turno:</label>
+                                            <select id="turnoid_final" name="turnoid" required>
+                                                <option value="">Seleccione un turno</option>
+                                                <option value="1">MAÑANA</option>
+                                                <option value="2">TARDE</option>
+                                                <option value="3">NOCHE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Usuario:</label>
+                                            <select id="usuarioid_final" name="usuarioid" required>
+                                                <option value="">Seleccione un usuario</option>
+                                                <option value="1">EMMANUEL GONZALEZ CASTRO</option>
+                                                <option value="2">EMILIANO DI NOTO</option>
+                                                <option value="3">SOFIA ROURE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>OT:</label>
+                                            <select id="otid_final" name="otid" required>
+                                                <option value="">Seleccione una OT</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Proveedor:</label>
+                                            <select id="proveedorid_final" name="proveedorid" required>
+                                                <option value="">Seleccione un proveedor</option>
+                                                <option value="1">PARNOR</option>
+                                                <option value="2">MONDELEZ</option>
+                                                <option value="3">SABORISIMO</option>
+                                                <option value="4">LIVIAN FERCO</option>
+                                                <option value="5">FACHITAS</option>
+                                                <option value="6">CHAMMAS</option>
+                                                <option value="7">JAMER</option>
+                                                <option value="8">BEMER</option>
+                                                <option value="9">PETIT FOUR</option>
+                                                <option value="10">SANTA LUCIA</option>
+                                                <option value="11">LA BLANCA</option>
+                                            </select>
+                                        </div>
+
+                                         <div class="mb-4">
+                                            <label>Lote:</label>
+                                            <input type="text" id="lote_final" name="lote" value="AB0909" readonly>
+                                        </div>
+
+                                        <!-- Material Entry Template -->
+                                        <div class="material-entry col-span-2 grid grid-cols-2 gap-4">
+                                            <div class="mb-4">
+                                                <label>Material:</label>
+                                                <select class="materialid" name="materialid" required>
+                                                    <option value="">Seleccione un material</option>
+                                                    <option value="1">DULCE DE LECHE P/SEMBRAR</option>
+                                                    <option value="2">TAPA GALLETA SABOR VAINILLA 17 CM</option>
+                                                    <option value="3">SALSA DULCE SABOR CHOCOLATE</option>
+                                                    <option value="4">DULCE DE LECHE C/CACAO P/SEMBRAR</option>
+                                                    <option value="5">GALLETAS MILKA MOUSSE</option>
+                                                    <option value="6">GALLETA OREO PICADA</option>
+                                                    <option value="7">PREPARADO ALMIBAR STANDART</option>
+                                                    <option value="8">HELADO DE CREMA AMERICANA</option>
+                                                    <option value="9">HELADO DE CHOCOLATE</option>
+                                                    <option value="10">HELADO DE DULCE DE LECHE</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label>Cantidad:</label>
+                                                <input type="number" class="cantidad" name="cantidad" required min="1">
+                                            </div>
+                                        </div>
+
+                                        <!-- Botón para agregar material -->
+                                        <div class="col-span-2 text-center mb-4">
+                                            <button type="button" id="addMaterialFinal"
+                                                class="bg-green-500 text-white px-4 py-2 rounded">
+                                                + Agregar Material
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="submit-btn">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Contenido para la pestaña "Producción Final" -->
+                            <div id="producto-terminado" class="tab-content">
+                                <form id="produccionFinalForm" class="p-4">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div class="mb-4">
+                                            <label>Fecha:</label>
+                                            <input type="date" id="fecha_produccion" name="fecha" required>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Turno:</label>
+                                            <select id="turnoid_produccion" name="turnoid" required>
+                                                <option value="">Seleccione un turno</option>
+                                                <option value="1">MAÑANA</option>
+                                                <option value="2">TARDE</option>
+                                                <option value="3">NOCHE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Responsable:</label>
+                                            <select id="usuarioid_produccion" name="usuarioid" required>
+                                                <option value="">Seleccione un usuario</option>
+                                                <option value="1">EMMANUEL GONZALEZ CASTRO</option>
+                                                <option value="2">EMILIANO DI NOTO</option>
+                                                <option value="3">SOFIA ROURE</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Orden de Trabajo:</label>
+                                            <select id="otid_produccion" name="otid" required>
+                                                <option value="">Seleccione una OT</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Producido:</label>
+                                            <input type="number" id="producido" name="producido" required min="1">
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="submit-btn">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>`;
+
+
+                    // AÑADIR AQUÍ - justo después del innerHTML y antes del código del addMaterialBtn
+                    setTimeout(() => {
+                        const tabs = document.querySelectorAll('.modal-tab');
+                        tabs.forEach(tab => {
+                            tab.addEventListener('click', function () {
+                                const tabId = this.getAttribute('data-tab');
+
+                                // Desactivar todas las pestañas y contenidos
+                                document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+                                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                                // Activar la pestaña actual y su contenido
+                                this.classList.add('active');
+                                const content = document.getElementById(tabId);
+                                if (content) {
+                                    content.classList.add('active');
+                                }
+                            });
+                        });
+
+                        // Activar la primera pestaña por defecto
+                        const firstTab = document.querySelector('.modal-tab');
+                        const firstContent = document.querySelector('.tab-content');
+                        if (firstTab && firstContent) {
+                            firstTab.classList.add('active');
+                            firstContent.classList.add('active');
+                        }
+                    }, 100);
+
+                    // AÑADIR ESTE CÓDIGO AQUÍ
+                    const newCloseBtn = modalContent.querySelector('.modal-close');
+                    if (newCloseBtn) {
+                        newCloseBtn.addEventListener('click', () => {
+                            modal.style.display = 'none';
+                        });
+                    }
+
+
+
+
+                    // Y luego, después del innerHTML, agrega este código para manejar el formulario:
+
+                    // Para el botón de agregar material en Stock Inicial
+                    const addMaterialBtn = document.getElementById('addMaterial');
+                    if (addMaterialBtn) {
+                        addMaterialBtn.addEventListener('click', function () {
+                            const materialsContainer = document.getElementById('materialesContainer');
+
+                            // Crear el nuevo material
+                            const newMaterial = document.createElement('div');
+                            newMaterial.className = 'material-entry col-span-2 grid grid-cols-2 gap-4';
+                            newMaterial.innerHTML = `<div class="mb-4">
+                            <label>Proveedor:</label>
+                            <select id="proveedorid" name="proveedorid" required>
+                                <option value="">Seleccione un proveedor</option>
+                                <option value="1">PARNOR</option>
+                                <option value="2">MONDELEZ</option>
+                                <option value="3">SABORISIMO</option>
+                                <option value="4">LIVIAN FERCO</option>
+                                <option value="5">FACHITAS</option>
+                                <option value="6">CHAMMAS</option>
+                                <option value="7">JAMER</option>
+                                <option value="8">BEMER</option>
+                                <option value="9">PETIT FOUR</option>
+                                <option value="10">SANTA LUCIA</option>
+                                <option value="11">LA BLANCA</option>
+                            </select>
+                        </div>
+            <div class="mb-4">
+                <label>Material:</label>
+                <select class="materialid" name="materialid" required>
+                    <option value="">Seleccione un material</option>
+                    <option value="1">DULCE DE LECHE P/SEMBRAR</option>
+                    <option value="2">TAPA GALLETA SABOR VAINILLA 17 CM</option>
+                    <option value="3">SALSA DULCE SABOR CHOCOLATE</option>
+                    <option value="4">DULCE DE LECHE C/CACAO P/SEMBRAR</option>
+                    <option value="5">GALLETAS MILKA MOUSSE</option>
+                    <option value="6">GALLETA OREO PICADA</option>
+                    <option value="7">PREPARADO ALMIBAR STANDART</option>
+                    <option value="8">HELADO DE CREMA AMERICANA</option>
+                    <option value="9">HELADO DE CHOCOLATE</option>
+                    <option value="10">HELADO DE DULCE DE LECHE</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label>Cantidad:</label>
+                <input type="number" class="cantidad" name="cantidad" required min="1">
+            </div>
+            <button type="button" onclick="this.parentElement.remove()" class="remove-material absolute right-0 top-0 text-red-500">
+                Eliminar
+            </button>`;
+
+                            // Encontrar el botón "Agregar Material" y su contenedor
+                            const addButtonContainer = document.querySelector('#addMaterial').parentElement;
+
+                            // Insertar el nuevo material antes del contenedor del botón
+                            addButtonContainer.before(newMaterial);
+
+                            // Agregar event listener para el botón eliminar
+                            const deleteButton = newMaterial.querySelector('.remove-material');
+                            deleteButton.addEventListener('click', function () {
+                                newMaterial.remove();
+                            });
+                        });
+                    }
+
+                    // Para el formulario de Stock Inicial
+                    const formInicial = document.getElementById('stockInicialForm');
+                    if (formInicial) {
+                        formInicial.addEventListener('submit', function (e) {
+                            e.preventDefault();
+
+                            const materialEntries = formInicial.querySelectorAll('.material-entry');
+                            const baseDatos = {
+                                FECHAMOV: document.getElementById('fechamov_inicial').value,
+                                TURNO: parseInt(document.getElementById('turnoid_inicial').value),
+                                RESPONSABLE: parseInt(document.getElementById('usuarioid_inicial').value),
+                                OT: parseInt(document.getElementById('otid_inicial').value),
+                                LOTE: document.getElementById('lote_inicial').value,
+                                TIPOMOV: 'STOCK INICIAL'
+                            };
+
+                            try {
+                                const promesas = Array.from(materialEntries).map((entry) => {
+                                    const proveedorId = parseInt(document.getElementById('proveedorid_inicial').value);
+                                    const materialSelect = entry.querySelector('.materialid');
+                                    const cantidadInput = entry.querySelector('.cantidad');
+
+                                    if (!materialSelect || !cantidadInput) {
+                                        throw new Error('Faltan campos en alguna entrada de material');
+                                    }
+
+                                    const formData = {
+                                        ...baseDatos,
+                                        PROVEEDOR: proveedorId,
+                                        MATERIAL: parseInt(materialSelect.value),
+                                        CANTIDAD: parseInt(cantidadInput.value)
+                                    };
+
+                                    // Validar que todos los campos tengan valor
+                                    if (!formData.PROVEEDOR || !formData.MATERIAL || !formData.CANTIDAD) {
+                                        throw new Error('Todos los campos son requeridos para cada material');
+                                    }
+
+                                    return fetch('http://localhost:63152/api/ProductionStore/InsertProductionStore', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify(formData)
+                                    });
+                                });
+
+                                Promise.all(promesas)
+                                    .then(responses => {
+                                        const todosOk = responses.every(response => response.ok);
+                                        if (!todosOk) throw new Error('Uno o más registros fallaron');
+                                        return Promise.all(responses.map(r => r.text()));
+                                    })
+                                    .then(data => {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Éxito',
+                                            text: 'Todos los materiales fueron guardados correctamente'
+                                        });
+                                        formInicial.reset();
+                                        document.getElementById('lote_inicial').value = 'AB0909';
+
+                                        const container = document.getElementById('materialesContainer');
+                                        const entries = container.querySelectorAll('.material-entry');
+                                        entries.forEach((entry, index) => {
+                                            if (index > 0) entry.remove();
+                                        });
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Error',
+                                            text: error.message || 'No se pudieron guardar todos los registros'
+                                        });
+                                    });
+                            } catch (error) {
+                                console.error('Error:', error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: error.message || 'No se pudieron guardar todos los registros'
+                                });
+                            }
+                        });
+                    }
+
+                    // Para Pedidos
+                    const addMaterialPedidoBtn = document.getElementById('addMaterialPedido');
+                    if (addMaterialPedidoBtn) {
+                        addMaterialPedidoBtn.addEventListener('click', function () {
+                            const materialsContainer = document.getElementById('materialesContainerPedido');
+
+                            // Crear el nuevo material
+                            const newMaterial = document.createElement('div');
+                            newMaterial.className = 'material-entry col-span-2 grid grid-cols-2 gap-4';
+                            newMaterial.innerHTML = `<div class="mb-4">
+                            <label>Proveedor:</label>
+                            <select id="proveedorid" name="proveedorid" required>
+                                <option value="">Seleccione un proveedor</option>
+                                <option value="1">PARNOR</option>
+                                <option value="2">MONDELEZ</option>
+                                <option value="3">SABORISIMO</option>
+                                <option value="4">LIVIAN FERCO</option>
+                                <option value="5">FACHITAS</option>
+                                <option value="6">CHAMMAS</option>
+                                <option value="7">JAMER</option>
+                                <option value="8">BEMER</option>
+                                <option value="9">PETIT FOUR</option>
+                                <option value="10">SANTA LUCIA</option>
+                                <option value="11">LA BLANCA</option>
+                            </select>
+                        </div>
+            <div class="mb-4">
+                <label>Material:</label>
+                <select class="materialid" name="materialid" required>
+                    <option value="">Seleccione un material</option>
+                    <option value="1">DULCE DE LECHE P/SEMBRAR</option>
+                    <option value="2">TAPA GALLETA SABOR VAINILLA 17 CM</option>
+                    <option value="3">SALSA DULCE SABOR CHOCOLATE</option>
+                    <option value="4">DULCE DE LECHE C/CACAO P/SEMBRAR</option>
+                    <option value="5">GALLETAS MILKA MOUSSE</option>
+                    <option value="6">GALLETA OREO PICADA</option>
+                    <option value="7">PREPARADO ALMIBAR STANDART</option>
+                    <option value="8">HELADO DE CREMA AMERICANA</option>
+                    <option value="9">HELADO DE CHOCOLATE</option>
+                    <option value="10">HELADO DE DULCE DE LECHE</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label>Cantidad:</label>
+                <input type="number" class="cantidad" name="cantidad" required min="1">
+            </div>
+            <button type="button" onclick="this.parentElement.remove()" class="remove-material absolute right-0 top-0 text-red-500">
+                Eliminar
+            </button>`;
+
+                            // Encontrar el botón "Agregar Material" y su contenedor
+                            const addButtonContainer = document.querySelector('#addMaterialPedido').parentElement;
+
+                            // Insertar el nuevo material antes del contenedor del botón
+                            addButtonContainer.before(newMaterial);
+
+                            // Agregar event listener para el botón eliminar
+                            const deleteButton = newMaterial.querySelector('.remove-material');
+                            deleteButton.addEventListener('click', function () {
+                                newMaterial.remove();
+                            });
+                        });
+
+
+
+                        // Para el formulario de Pedidos
+                        const formPedido = document.getElementById('solicitudPedidoForm');
+                        if (formPedido) {
+                            formPedido.addEventListener('submit', function (e) {
+                                e.preventDefault();
+
+                                const materialEntries = formPedido.querySelectorAll('.material-entry');
+                                const baseDatos = {
+                                    FECHAMOV: document.getElementById('fechamov_pedido').value,
+                                    TURNO: parseInt(document.getElementById('turnoid_pedido').value),
+                                    RESPONSABLE: parseInt(document.getElementById('usuarioid_pedido').value),
+                                    OT: parseInt(document.getElementById('otid_pedido').value),
+                                    LOTE: document.getElementById('lote_pedido').value,
+                                    TIPOMOV: 'PEDIDO' // Siempre será PEDIDO
+                                };
+
+                                try {
+                                    const promesas = Array.from(materialEntries).map((entry) => {
+                                        const proveedorId = parseInt(document.getElementById('proveedorid_pedido').value);
+                                        const materialSelect = entry.querySelector('.materialid');
+                                        const cantidadInput = entry.querySelector('.cantidad');
+
+                                        if (!materialSelect || !cantidadInput) {
+                                            throw new Error('Faltan campos en alguna entrada de material');
+                                        }
+
+                                        const formData = {
+                                            ...baseDatos,
+                                            PROVEEDOR: proveedorId,
+                                            MATERIAL: parseInt(materialSelect.value),
+                                            CANTIDAD: parseInt(cantidadInput.value)
+                                        };
+
+                                        if (!formData.PROVEEDOR || !formData.MATERIAL || !formData.CANTIDAD) {
+                                            throw new Error('Todos los campos son requeridos para cada material');
+                                        }
+
+                                        return fetch('http://localhost:63152/api/ProductionStore/InsertProductionStore', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify(formData)
+                                        });
+                                    });
+
+                                    Promise.all(promesas)
+                                        .then(responses => {
+                                            const todosOk = responses.every(response => response.ok);
+                                            if (!todosOk) throw new Error('Uno o más registros fallaron');
+                                            return Promise.all(responses.map(r => r.text()));
+                                        })
+                                        .then(data => {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Éxito',
+                                                text: 'Todos los materiales fueron guardados correctamente'
+                                            });
+                                            formPedido.reset();
+                                            document.getElementById('lote_pedido').value = 'AB0909';
+
+                                            const container = document.getElementById('materialesContainerPedido');
+                                            const entries = container.querySelectorAll('.material-entry');
+                                            entries.forEach((entry, index) => {
+                                                if (index > 0) entry.remove();
+                                            });
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Error',
+                                                text: error.message || 'No se pudieron guardar todos los registros'
+                                            });
+                                        });
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: error.message || 'No se pudieron guardar todos los registros'
+                                    });
+                                }
+                            });
+                        }
+
+                    }
+
+
+                    // Para Stock Final const addMaterialFinalBtn = document.getElementById('addMaterialFinal'); if (addMaterialFinalBtn) { addMaterialFinalBtn.addEventListener('click', function () { cons
+
+                    // Para Stock Final
+                    const formFinal = document.getElementById('stockFinalForm');
+
+                    // Para Stock Final
+                    const addMaterialFinalBtn = document.getElementById('addMaterialFinal');
+                    if (addMaterialFinalBtn) {
+                        addMaterialFinalBtn.addEventListener('click', function () {
+                            const materialsContainer = document.getElementById('materialesContainerFinal');
+                            const lastMaterialEntry = materialsContainer.querySelector('.material-entry:last-of-type');
+
+                            // Crear el nuevo material
+                            const newMaterial = document.createElement('div');
+                            newMaterial.className = 'material-entry col-span-2 grid grid-cols-2 gap-4';
+                            newMaterial.innerHTML = `<div class="mb-4">
+                            <label>Proveedor:</label>
+                            <select id="proveedorid" name="proveedorid" required>
+                                <option value="">Seleccione un proveedor</option>
+                                <option value="1">PARNOR</option>
+                                <option value="2">MONDELEZ</option>
+                                <option value="3">SABORISIMO</option>
+                                <option value="4">LIVIAN FERCO</option>
+                                <option value="5">FACHITAS</option>
+                                <option value="6">CHAMMAS</option>
+                                <option value="7">JAMER</option>
+                                <option value="8">BEMER</option>
+                                <option value="9">PETIT FOUR</option>
+                                <option value="10">SANTA LUCIA</option>
+                                <option value="11">LA BLANCA</option>
+                            </select>
+                        </div>
+            <div class="mb-4">
+                <label>Material:</label>
+                <select class="materialid" name="materialid" required>
+                    <option value="">Seleccione un material</option>
+                    <option value="1">DULCE DE LECHE P/SEMBRAR</option>
+                    <option value="2">TAPA GALLETA SABOR VAINILLA 17 CM</option>
+                    <option value="3">SALSA DULCE SABOR CHOCOLATE</option>
+                    <option value="4">DULCE DE LECHE C/CACAO P/SEMBRAR</option>
+                    <option value="5">GALLETAS MILKA MOUSSE</option>
+                    <option value="6">GALLETA OREO PICADA</option>
+                    <option value="7">PREPARADO ALMIBAR STANDART</option>
+                    <option value="8">HELADO DE CREMA AMERICANA</option>
+                    <option value="9">HELADO DE CHOCOLATE</option>
+                    <option value="10">HELADO DE DULCE DE LECHE</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label>Cantidad:</label>
+                <input type="number" class="cantidad" name="cantidad" required min="1">
+            </div>
+            <button type="button" onclick="this.parentElement.remove()" class="remove-material absolute right-0 top-0 text-red-500">
+                Eliminar
+            </button>`;
+
+                            // Insertar después del último material o al inicio si no hay materiales
+                            if (lastMaterialEntry) {
+                                lastMaterialEntry.insertAdjacentElement('afterend', newMaterial);
+                            } else {
+                                // Insertar antes del botón de agregar
+                                const addButtonContainer = addMaterialFinalBtn.closest('.col-span-2');
+                                addButtonContainer.insertAdjacentElement('beforebegin', newMaterial);
+                            }
+
+                            // Agregar event listener para el botón eliminar
+                            const deleteButton = newMaterial.querySelector('.remove-material');
+                            deleteButton.addEventListener('click', function () {
+                                newMaterial.remove();
+                            });
+                        });
+
+
+
+                        // Para el formulario de Stock Final
+                        const formFinal = document.getElementById('stockFinalForm');
+                        if (formFinal) {
+                            formFinal.addEventListener('submit', function (e) {
+                                e.preventDefault();
+
+                                const materialEntries = formFinal.querySelectorAll('.material-entry');
+                                const baseDatos = {
+                                    FECHAMOV: document.getElementById('fechamov_final').value,
+                                    TURNO: parseInt(document.getElementById('turnoid_final').value),
+                                    RESPONSABLE: parseInt(document.getElementById('usuarioid_final').value),
+                                    OT: parseInt(document.getElementById('otid_final').value),
+                                    LOTE: document.getElementById('lote_final').value,
+                                    TIPOMOV: 'STOCK FINAL'
+                                };
+
+                                try {
+                                    const promesas = Array.from(materialEntries).map((entry) => {
+                                        const proveedorId = parseInt(document.getElementById('proveedorid_final').value);
+                                        const materialSelect = entry.querySelector('.materialid');
+                                        const cantidadInput = entry.querySelector('.cantidad');
+
+                                        if (!materialSelect || !cantidadInput) {
+                                            throw new Error('Faltan campos en alguna entrada de material');
+                                        }
+
+                                        const formData = {
+                                            ...baseDatos,
+                                            PROVEEDOR: proveedorId,
+                                            MATERIAL: parseInt(materialSelect.value),
+                                            CANTIDAD: parseInt(cantidadInput.value)
+                                        };
+
+                                        if (!formData.PROVEEDOR || !formData.MATERIAL || !formData.CANTIDAD) {
+                                            throw new Error('Todos los campos son requeridos para cada material');
+                                        }
+
+                                        return fetch('http://localhost:63152/api/ProductionStore/InsertProductionStore', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify(formData)
+                                        });
+                                    });
+
+                                    Promise.all(promesas)
+                                        .then(responses => {
+                                            const todosOk = responses.every(response => response.ok);
+                                            if (!todosOk) throw new Error('Uno o más registros fallaron');
+                                            return Promise.all(responses.map(r => r.text()));
+                                        })
+                                        .then(data => {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Éxito',
+                                                text: 'Todos los materiales fueron guardados correctamente'
+                                            });
+                                            formFinal.reset();
+                                            document.getElementById('lote_final').value = 'AB0909';
+
+                                            const container = document.getElementById('materialesContainerFinal');
+                                            const entries = container.querySelectorAll('.material-entry');
+                                            entries.forEach((entry, index) => {
+                                                if (index > 0) entry.remove();
+                                            });
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Error',
+                                                text: error.message || 'No se pudieron guardar todos los registros'
+                                            });
+                                        });
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: error.message || 'No se pudieron guardar todos los registros'
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    // Configuración para el formulario de Producción Final
+                    const formProduccion = document.getElementById('produccionFinalForm');
+                    if (formProduccion) {
+                        formProduccion.addEventListener('submit', function (e) {
+                            e.preventDefault();
+
+                            const fecha = document.getElementById('fecha_produccion').value;
+                            const turno = parseInt(document.getElementById('turnoid_produccion').value);
+                            const usuario = parseInt(document.getElementById('usuarioid_produccion').value);
+                            const ot = parseInt(document.getElementById('otid_produccion').value);
+                            const producido = parseInt(document.getElementById('producido').value);
+
+                            const formData = {
+                                FECHA: fecha,
+                                TURNO: turno,
+                                RESPONSABLE: usuario,
+                                OT: ot,
+                                PRODUCTO: apiProductName, // Utiliza el valor de apiProductName que obtuviste anteriormente
+                                PRODUCIDO: producido
+                            };
+
+                            fetch('http://localhost:63152/api/Production/InsertProduction', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(formData)
+                            })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Error al guardar los datos de producción');
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Éxito',
+                                        text: 'Los datos de producción se guardaron correctamente'
+                                    });
+                                    formProduccion.reset();
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: error.message || 'No se pudieron guardar los datos de producción'
+                                    });
+                                });
+                        });
+                    }
+
+
+
+
+                    // Reconectar los event listeners de las pestañas
+                    const newTabs = modalContent.querySelectorAll('.modal-tab');
+                    const newTabContents = modalContent.querySelectorAll('.tab-content');
+
+
+
+                    // Función para cargar datos específicos de cada pestaña
+                    function loadTabData(tabId, productName) {
+                        const tabContent = document.getElementById(tabId);
+                        const tableContainer = tabContent.querySelector('.table-container');
+
+                        switch (tabId) {
+                            case 'stock-inicial':
+                                fetchStockInicial(productName, tableContainer);
+                                break;
+                            case 'pedidos':
+                                fetchPedidos(productName, tableContainer);
+                                break;
+                            case 'stock-final':
+                                fetchStockFinal(productName, tableContainer);
+                                break;
+                            case 'producto-terminado':
+                                fetchProductoTerminado(productName, tableContainer);
+                                break;
+                        }
+                    }
+
+
+
+
+                    // Event listener para las pestañas
+                    tabs.forEach(tab => {
+                        tab.addEventListener('click', () => {
+                            tabs.forEach(t => t.classList.remove('active'));
+                            tabContents.forEach(c => c.classList.remove('active'));
+
+                            tab.classList.add('active');
+                            const tabContentId = tab.getAttribute('data-tab');
+                            document.getElementById(tabContentId).classList.add('active');
+                        });
+                    });
+
+                    // Función para formatear fechas
+                    function formatDate(dateString) {
+                        if (!dateString) return '-';
+                        const date = new Date(dateString);
+                        return date.toLocaleDateString('es-AR', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric'
+                        });
+                    }
+
+
+                    window.addEventListener('click', (event) => {
+                        if (event.target === modal) {
+                            modal.style.display = 'none';
+                            reinitializeTabsOnModalOpen(); // Agregar esta línea
+                        }
+                    });
+
+
                 });
             });
-    }
 
-    // Función para formatear fechas
-    function formatDate(dateString) {
-        if (!dateString) return '-';
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-AR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
         });
-    }
 
-    // Cargar datos cuando la página esté lista
-    loadProductionData();
+        // Función para manejar el cambio de pestañas
+        function initializeTabSystem() {
+            const tabs = document.querySelectorAll('.modal-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
 
-    // Opcional: Función para recargar datos cada cierto tiempo
-    // setInterval(loadProductionData, 300000); // Recarga cada 5 minutos
-});
-</script>
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    // Remover la clase active de todas las pestañas
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Remover la clase active de todos los contenidos
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Agregar la clase active a la pestaña seleccionada
+                    this.classList.add('active');
+
+                    // Mostrar el contenido correspondiente
+                    const tabId = this.getAttribute('data-tab');
+                    const targetContent = document.getElementById(tabId);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+
+                    // Reinicializar los formularios si es necesario
+                    const form = targetContent.querySelector('form');
+                    if (form) {
+                        form.reset();
+                        // Restaurar valores por defecto específicos
+                        const loteInput = form.querySelector('[name="lote"]');
+                        const tipoMovInput = form.querySelector('[name="tipomov"]');
+
+                        if (loteInput) loteInput.value = 'AB0909';
+                        if (tipoMovInput) {
+                            switch (tabId) {
+                                case 'stock-inicial':
+                                    tipoMovInput.value = 'STOCK INICIAL';
+                                    break;
+                                case 'pedidos':
+                                    tipoMovInput.value = 'SOLICITUD DE PEDIDO';
+                                    break;
+                                case 'stock-final':
+                                    tipoMovInput.value = 'STOCK FINAL';
+                                    break;
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+
+
+    </script>
 
 
 </body>
