@@ -28,7 +28,8 @@
         /* Estilos para el mensaje de alerta */
 
         body {
-        background-color: #f0f0f0 !important; /* Gris claro */ 
+            background-color: #f0f0f0 !important;
+            /* Gris claro */
         }
 
         .production-alert {
@@ -50,38 +51,40 @@
 
         /* Estilos para el contenedor de imágenes */
         .ice-cream-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 50px; /* Aumentar el espacio entre las imágenes */
-    padding: 20px;
-    flex-wrap: wrap;
-    margin: 20px 0;
-}
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            /* Aumentar el espacio entre las imágenes */
+            padding: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
 
-.ice-cream-item {
-    width: 300px;
-    text-align: center;
-}
+        .ice-cream-item {
+            width: 300px;
+            text-align: center;
+        }
 
-.ice-cream-item img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 50%; /* Aplicar borde circular */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
+        .ice-cream-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 50%;
+            /* Aplicar borde circular */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
 
-.ice-cream-item img:hover {
-    transform: scale(1.05);
-}
+        .ice-cream-item img:hover {
+            transform: scale(1.05);
+        }
 
-.ice-cream-item p {
-    margin-top: 10px;
-    font-size: 16px;
-    font-weight: 500;
-}
+        .ice-cream-item p {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 500;
+        }
 
         .production-table {
             width: 100%;
@@ -1078,18 +1081,18 @@
             <!-- Tabla de producción -->
             <div class="table-container">
                 <div class="production-table-title">
-                   Producciónes
+                    Producciónes
                 </div>
                 <table class="production-table">
                     <thead>
                         <tr>
-                            <th>Production ID</th>
-                            <th>Production Date</th>
-                            <th>Shift ID</th>
-                            <th>User ID</th>
-                            <th>Work Order ID</th>
-                            <th>Quantity Actual</th>
-                            <th>Performance</th>
+                            <th>FECHA DE PRODUCCIÓN</th>
+                            <th>TURNO</th>
+                            <th>RESPONSABLE</th>
+                            <th>OT</th>
+                            <th>PRODUCTO</th>
+                            <th>CANTIDAD</th>
+                            <th>PERFORMANCE</th>
                         </tr>
                     </thead>
                     <tbody id="productionTableBody">
@@ -1174,6 +1177,10 @@
                                                 <option value="11">LA BLANCA</option>
                                             </select>
                                         </div>
+                                        <div class="mb-4">
+                                            <label>Lote:</label>
+                                            <input type="text" id="lote_inicial" name="lote" value="AB0909" readonly>
+                                        </div>
 
                                         <!-- Material Entry Template -->
                                         <div class="material-entry col-span-2 grid grid-cols-2 gap-4">
@@ -1206,16 +1213,11 @@
                                                 + Agregar Material
                                             </button>
                                         </div>
-
-                                        <div class="mb-4">
-                                            <label>Lote:</label>
-                                            <input type="text" id="lote_inicial" name="lote" value="AB0909" readonly>
-                                        </div>
-                                        <div class="mb-4">
+                                        <!-- <div class="mb-4">
                                             <label>Tipo Movimiento:</label>
                                             <input type="text" id="tipomov_inicial" name="tipomov" value="STOCK INICIAL"
                                                 readonly>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="text-center mt-4">
                                         <button type="submit" class="submit-btn">Guardar</button>
@@ -1707,12 +1709,12 @@
                         <thead>
                             <tr>
                                 <th>OT</th>
-                                <th>Código</th>
-                                <th>Producto</th>
-                                <th>Demanda</th>
+                                <th>CÓDIGO</th>
+                                <th>PRODUCTO</th>
+                                <th>DEMANDA</th>
                                 <th>UM</th>
-                                <th>Fecha Elaboración</th>
-                                <th>Estado</th>
+                                <th>FECHA DE ELABORACIÓN</th>
+                                <th>ESTADO</th>
                             </tr>
                         </thead>
                         <tbody id="workOrderTableBody">
@@ -1832,45 +1834,50 @@
                 'Torta Grido': 'TORTA GRIDO'
             };
 
-            // Función para cargar los datos de producción
-            function loadProductionData() {
-                fetch('http://localhost:63152/api/Production/GetAllProduction')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        const tableBody = document.getElementById('productionTableBody');
-                        tableBody.innerHTML = '';
-
-                        data.forEach(item => {
-                            const row = `
-                            <tr>
-                                <td>${formatDate(item.FECHA)}</td>
-                                <td>${item.TURNO || '-'}</td>
-                                <td>${item.RESPONSABLE || '-'}</td>
-                                <td>${item.OT || '-'}</td>
-                                <td>${item.PRODUCTO || '-'}</td>
-                                <td>${item.PRODUCIDO || '-'}</td>
-                                <td>${item.PERFORMANCE || '-'}%</td>
-                            </tr>
-                        `;
-                            tableBody.innerHTML += row;
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'No se pudieron cargar los datos de producción'
-                        });
-                    });
+           // Función para cargar los datos de producción
+function loadProductionData() {
+    fetch('http://localhost:63152/api/Production/GetAllProduction')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            return response.json();
+        })
+        .then(data => {
+            const tableBody = document.getElementById('productionTableBody');
+            tableBody.innerHTML = '';
 
+            data.forEach(item => {
+                // Convertir el número con coma a número con punto y luego formatear
+                const performance = item.PERFORMANCE ?
+                    item.PERFORMANCE >= 10000 ?
+                        String(item.PERFORMANCE).slice(0, 3) + '.' + String(item.PERFORMANCE).slice(3, 5) + '%' :
+                        String(item.PERFORMANCE).slice(0, 2) + '.' + String(item.PERFORMANCE).slice(2, 4) + '%' :
+                    '-';
 
+                const row = `
+                    <tr>
+                        <td>${formatDate(item.FECHA)}</td>
+                        <td>${item.TURNO || '-'}</td>
+                        <td>${item.RESPONSABLE || '-'}</td>
+                        <td>${item.OT || '-'}</td>
+                        <td>${item.PRODUCTO || '-'}</td>
+                        <td>${item.PRODUCIDO || '-'}</td>
+                        <td>${performance}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudieron cargar los datos de producción'
+            });
+        });
+}
 
 
 
@@ -1964,6 +1971,11 @@
                                             </select>
                                         </div>
 
+                                          <div class="mb-4">
+                                            <label>Lote:</label>
+                                            <input type="text" id="lote_inicial" name="lote" value="AB0909" readonly>
+                                        </div>
+
                                         <!-- Material Entry Template -->
                                         <div class="material-entry col-span-2 grid grid-cols-2 gap-4">
                                             <div class="mb-4">
@@ -1994,16 +2006,6 @@
                                                 class="bg-green-500 text-white px-4 py-2 rounded">
                                                 + Agregar Material
                                             </button>
-                                        </div>
-
-                                        <div class="mb-4">
-                                            <label>Lote:</label>
-                                            <input type="text" id="lote_inicial" name="lote" value="AB0909" readonly>
-                                        </div>
-                                        <div class="mb-4">
-                                            <label>Tipo Movimiento:</label>
-                                            <input type="text" id="tipomov_inicial" name="tipomov" value="STOCK INICIAL"
-                                                readonly>
                                         </div>
                                     </div>
                                     <div class="text-center mt-4">
@@ -2070,6 +2072,11 @@
                                             </select>
                                         </div>
 
+                                           <div class="mb-4">
+                                            <label>Lote:</label>
+                                            <input type="text" id="lote_pedido" name="lote" value="AB0909" readonly>
+                                        </div>
+
                                         <!-- Material Entry Template -->
                                         <div class="material-entry col-span-2 grid grid-cols-2 gap-4">
                                             <div class="mb-4">
@@ -2102,15 +2109,7 @@
                                             </button>
                                         </div>
 
-                                        <div class="mb-4">
-                                            <label>Lote:</label>
-                                            <input type="text" id="lote_pedido" name="lote" value="AB0909" readonly>
-                                        </div>
-                                        <div class="mb-4">
-                                            <label>Tipo Movimiento:</label>
-                                            <input type="text" id="tipomov_pedido" name="tipomov"
-                                                value="SOLICITUD DE PEDIDO" readonly>
-                                        </div>
+                                     
                                     </div>
                                     <div class="text-center mt-4">
                                         <button type="submit" class="submit-btn">Guardar</button>
@@ -2176,6 +2175,11 @@
                                             </select>
                                         </div>
 
+                                         <div class="mb-4">
+                                            <label>Lote:</label>
+                                            <input type="text" id="lote_final" name="lote" value="AB0909" readonly>
+                                        </div>
+
                                         <!-- Material Entry Template -->
                                         <div class="material-entry col-span-2 grid grid-cols-2 gap-4">
                                             <div class="mb-4">
@@ -2206,16 +2210,6 @@
                                                 class="bg-green-500 text-white px-4 py-2 rounded">
                                                 + Agregar Material
                                             </button>
-                                        </div>
-
-                                        <div class="mb-4">
-                                            <label>Lote:</label>
-                                            <input type="text" id="lote_final" name="lote" value="AB0909" readonly>
-                                        </div>
-                                        <div class="mb-4">
-                                            <label>Tipo Movimiento:</label>
-                                            <input type="text" id="tipomov_final" name="tipomov" value="STOCK FINAL"
-                                                readonly>
                                         </div>
                                     </div>
                                     <div class="text-center mt-4">
@@ -2320,15 +2314,16 @@
 
                     // Y luego, después del innerHTML, agrega este código para manejar el formulario:
 
-                    // Único event listener para el botón de agregar material
+                    // Para el botón de agregar material en Stock Inicial
                     const addMaterialBtn = document.getElementById('addMaterial');
                     if (addMaterialBtn) {
                         addMaterialBtn.addEventListener('click', function () {
-                            const newMaterial = document.createElement('div');
-                            newMaterial.className = 'material-entry grid grid-cols-2 gap-4 mt-4 relative';
+                            const materialsContainer = document.getElementById('materialesContainer');
 
-                            newMaterial.innerHTML = `
-        <div class="mb-4">
+                            // Crear el nuevo material
+                            const newMaterial = document.createElement('div');
+                            newMaterial.className = 'material-entry col-span-2 grid grid-cols-2 gap-4';
+                            newMaterial.innerHTML = `<div class="mb-4">
                             <label>Proveedor:</label>
                             <select id="proveedorid" name="proveedorid" required>
                                 <option value="">Seleccione un proveedor</option>
@@ -2369,60 +2364,39 @@
                 Eliminar
             </button>`;
 
+                            // Encontrar el botón "Agregar Material" y su contenedor
+                            const addButtonContainer = document.querySelector('#addMaterial').parentElement;
 
-                            // Obtener el último material entry
-                            const materialsContainer = document.getElementById('materialesContainer');
-                            const lastMaterialEntry = materialsContainer.querySelector('.material-entry:last-of-type');
-
-                            // Insertar el nuevo material después del último material entry
-                            if (lastMaterialEntry) {
-                                lastMaterialEntry.after(newMaterial);
-                            } else {
-                                // Si no hay materiales, insertarlo al principio del contenedor
-                                materialsContainer.insertBefore(newMaterial, materialsContainer.firstChild);
-                            }
+                            // Insertar el nuevo material antes del contenedor del botón
+                            addButtonContainer.before(newMaterial);
 
                             // Agregar event listener para el botón eliminar
                             const deleteButton = newMaterial.querySelector('.remove-material');
                             deleteButton.addEventListener('click', function () {
                                 newMaterial.remove();
                             });
-
                         });
                     }
 
-                    // JavaScript actualizado para el submit del formulario
-                    const form2 = document.getElementById('productionStoreForm');
-                    if (form2) {
-                        form2.addEventListener('submit', function (e) {
+                    // Para el formulario de Stock Inicial
+                    const formInicial = document.getElementById('stockInicialForm');
+                    if (formInicial) {
+                        formInicial.addEventListener('submit', function (e) {
                             e.preventDefault();
 
-                            const materialEntries = document.querySelectorAll('.material-entry');
+                            const materialEntries = formInicial.querySelectorAll('.material-entry');
                             const baseDatos = {
-                                FECHAMOV: document.getElementById('fechamov').value,
-                                TURNO: parseInt(document.getElementById('turnoid').value),
-                                RESPONSABLE: parseInt(document.getElementById('usuarioid').value),
-                                OT: parseInt(document.getElementById('otid').value),
-                                LOTE: document.getElementById('lote').value,
-                                TIPOMOV: document.getElementById('tipomov').value
+                                FECHAMOV: document.getElementById('fechamov_inicial').value,
+                                TURNO: parseInt(document.getElementById('turnoid_inicial').value),
+                                RESPONSABLE: parseInt(document.getElementById('usuarioid_inicial').value),
+                                OT: parseInt(document.getElementById('otid_inicial').value),
+                                LOTE: document.getElementById('lote_inicial').value,
+                                TIPOMOV: 'STOCK INICIAL'
                             };
 
                             try {
-                                const promesas = Array.from(materialEntries).map((entry, index) => {
-                                    let proveedorId;
-
-                                    // Para el primer material (index 0), usar el proveedor del formulario principal
-                                    if (index === 0) {
-                                        proveedorId = parseInt(document.getElementById('proveedorid').value);
-                                    } else {
-                                        // Para materiales adicionales, usar el proveedor de cada entrada
-                                        const proveedorSelect = entry.querySelector('select[name="proveedorid"]');
-                                        if (!proveedorSelect) {
-                                            throw new Error('Falta seleccionar el proveedor en algún material adicional');
-                                        }
-                                        proveedorId = parseInt(proveedorSelect.value);
-                                    }
-
+                                const promesas = Array.from(materialEntries).map((entry) => {
+                                    const proveedorId = parseInt(document.getElementById('proveedorid_inicial').value);
                                     const materialSelect = entry.querySelector('.materialid');
                                     const cantidadInput = entry.querySelector('.cantidad');
 
@@ -2463,9 +2437,8 @@
                                             title: 'Éxito',
                                             text: 'Todos los materiales fueron guardados correctamente'
                                         });
-                                        form2.reset();
-                                        document.getElementById('lote').value = 'AB0909';
-                                        document.getElementById('tipomov').value = 'STOCK INICIAL';
+                                        formInicial.reset();
+                                        document.getElementById('lote_inicial').value = 'AB0909';
 
                                         const container = document.getElementById('materialesContainer');
                                         const entries = container.querySelectorAll('.material-entry');
@@ -2492,33 +2465,32 @@
                         });
                     }
 
-                    // Configuración para el formulario de Solicitud de Pedido
-                    const formPedido = document.getElementById('solicitudPedidoForm');
-                    if (formPedido) {
-                        const addMaterialPedidoBtn = document.getElementById('addMaterialPedido');
-                        if (addMaterialPedidoBtn) {
-                            addMaterialPedidoBtn.addEventListener('click', function () {
-                                const newMaterial = document.createElement('div');
-                                newMaterial.className = 'material-entry grid grid-cols-2 gap-4 mt-4 relative';
+                    // Para Pedidos
+                    const addMaterialPedidoBtn = document.getElementById('addMaterialPedido');
+                    if (addMaterialPedidoBtn) {
+                        addMaterialPedidoBtn.addEventListener('click', function () {
+                            const materialsContainer = document.getElementById('materialesContainerPedido');
 
-                                newMaterial.innerHTML = `
-            <div class="mb-4">
-                <label>Proveedor:</label>
-                <select name="proveedorid" required>
-                    <option value="">Seleccione un proveedor</option>
-                    <option value="1">PARNOR</option>
-                    <option value="2">MONDELEZ</option>
-                    <option value="3">SABORISIMO</option>
-                    <option value="4">LIVIAN FERCO</option>
-                    <option value="5">FACHITAS</option>
-                    <option value="6">CHAMMAS</option>
-                    <option value="7">JAMER</option>
-                    <option value="8">BEMER</option>
-                    <option value="9">PETIT FOUR</option>
-                    <option value="10">SANTA LUCIA</option>
-                    <option value="11">LA BLANCA</option>
-                </select>
-            </div>
+                            // Crear el nuevo material
+                            const newMaterial = document.createElement('div');
+                            newMaterial.className = 'material-entry col-span-2 grid grid-cols-2 gap-4';
+                            newMaterial.innerHTML = `<div class="mb-4">
+                            <label>Proveedor:</label>
+                            <select id="proveedorid" name="proveedorid" required>
+                                <option value="">Seleccione un proveedor</option>
+                                <option value="1">PARNOR</option>
+                                <option value="2">MONDELEZ</option>
+                                <option value="3">SABORISIMO</option>
+                                <option value="4">LIVIAN FERCO</option>
+                                <option value="5">FACHITAS</option>
+                                <option value="6">CHAMMAS</option>
+                                <option value="7">JAMER</option>
+                                <option value="8">BEMER</option>
+                                <option value="9">PETIT FOUR</option>
+                                <option value="10">SANTA LUCIA</option>
+                                <option value="11">LA BLANCA</option>
+                            </select>
+                        </div>
             <div class="mb-4">
                 <label>Material:</label>
                 <select class="materialid" name="materialid" required>
@@ -2543,128 +2515,142 @@
                 Eliminar
             </button>`;
 
-                                const materialsContainer = document.getElementById('materialesContainerPedido');
-                                const lastMaterialEntry = materialsContainer.querySelector('.material-entry:last-of-type');
+                            // Encontrar el botón "Agregar Material" y su contenedor
+                            const addButtonContainer = document.querySelector('#addMaterialPedido').parentElement;
 
-                                if (lastMaterialEntry) {
-                                    lastMaterialEntry.after(newMaterial);
-                                } else {
-                                    materialsContainer.insertBefore(newMaterial, materialsContainer.firstChild);
+                            // Insertar el nuevo material antes del contenedor del botón
+                            addButtonContainer.before(newMaterial);
+
+                            // Agregar event listener para el botón eliminar
+                            const deleteButton = newMaterial.querySelector('.remove-material');
+                            deleteButton.addEventListener('click', function () {
+                                newMaterial.remove();
+                            });
+                        });
+
+
+
+                        // Para el formulario de Pedidos
+                        const formPedido = document.getElementById('solicitudPedidoForm');
+                        if (formPedido) {
+                            formPedido.addEventListener('submit', function (e) {
+                                e.preventDefault();
+
+                                const materialEntries = formPedido.querySelectorAll('.material-entry');
+                                const baseDatos = {
+                                    FECHAMOV: document.getElementById('fechamov_pedido').value,
+                                    TURNO: parseInt(document.getElementById('turnoid_pedido').value),
+                                    RESPONSABLE: parseInt(document.getElementById('usuarioid_pedido').value),
+                                    OT: parseInt(document.getElementById('otid_pedido').value),
+                                    LOTE: document.getElementById('lote_pedido').value,
+                                    TIPOMOV: 'PEDIDO' // Siempre será PEDIDO
+                                };
+
+                                try {
+                                    const promesas = Array.from(materialEntries).map((entry) => {
+                                        const proveedorId = parseInt(document.getElementById('proveedorid_pedido').value);
+                                        const materialSelect = entry.querySelector('.materialid');
+                                        const cantidadInput = entry.querySelector('.cantidad');
+
+                                        if (!materialSelect || !cantidadInput) {
+                                            throw new Error('Faltan campos en alguna entrada de material');
+                                        }
+
+                                        const formData = {
+                                            ...baseDatos,
+                                            PROVEEDOR: proveedorId,
+                                            MATERIAL: parseInt(materialSelect.value),
+                                            CANTIDAD: parseInt(cantidadInput.value)
+                                        };
+
+                                        if (!formData.PROVEEDOR || !formData.MATERIAL || !formData.CANTIDAD) {
+                                            throw new Error('Todos los campos son requeridos para cada material');
+                                        }
+
+                                        return fetch('http://localhost:63152/api/ProductionStore/InsertProductionStore', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify(formData)
+                                        });
+                                    });
+
+                                    Promise.all(promesas)
+                                        .then(responses => {
+                                            const todosOk = responses.every(response => response.ok);
+                                            if (!todosOk) throw new Error('Uno o más registros fallaron');
+                                            return Promise.all(responses.map(r => r.text()));
+                                        })
+                                        .then(data => {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Éxito',
+                                                text: 'Todos los materiales fueron guardados correctamente'
+                                            });
+                                            formPedido.reset();
+                                            document.getElementById('lote_pedido').value = 'AB0909';
+
+                                            const container = document.getElementById('materialesContainerPedido');
+                                            const entries = container.querySelectorAll('.material-entry');
+                                            entries.forEach((entry, index) => {
+                                                if (index > 0) entry.remove();
+                                            });
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Error',
+                                                text: error.message || 'No se pudieron guardar todos los registros'
+                                            });
+                                        });
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: error.message || 'No se pudieron guardar todos los registros'
+                                    });
                                 }
                             });
                         }
 
-                        formPedido.addEventListener('submit', function (e) {
-                            e.preventDefault();
-
-                            const materialEntries = formPedido.querySelectorAll('.material-entry');
-                            const baseDatos = {
-                                FECHAMOV: document.getElementById('fechamov_pedido').value,
-                                TURNO: parseInt(document.getElementById('turnoid_pedido').value),
-                                RESPONSABLE: parseInt(document.getElementById('usuarioid_pedido').value),
-                                OT: parseInt(document.getElementById('otid_pedido').value),
-                                LOTE: document.getElementById('lote_pedido').value,
-                                TIPOMOV: document.getElementById('tipomov_pedido').value
-                            };
-
-                            try {
-                                const promesas = Array.from(materialEntries).map((entry, index) => {
-                                    let proveedorId;
-
-                                    if (index === 0) {
-                                        proveedorId = parseInt(document.getElementById('proveedorid_pedido').value);
-                                    } else {
-                                        const proveedorSelect = entry.querySelector('select[name="proveedorid"]');
-                                        if (!proveedorSelect) {
-                                            throw new Error('Falta seleccionar el proveedor en algún material adicional');
-                                        }
-                                        proveedorId = parseInt(proveedorSelect.value);
-                                    }
-
-                                    const formData = {
-                                        ...baseDatos,
-                                        PROVEEDOR: proveedorId,
-                                        MATERIAL: parseInt(entry.querySelector('.materialid').value),
-                                        CANTIDAD: parseInt(entry.querySelector('.cantidad').value)
-                                    };
-
-                                    return fetch('http://localhost:63152/api/ProductionStore/InsertProductionStore', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                        },
-                                        body: JSON.stringify(formData)
-                                    });
-                                });
-
-                                Promise.all(promesas)
-                                    .then(responses => {
-                                        const todosOk = responses.every(response => response.ok);
-                                        if (!todosOk) throw new Error('Uno o más registros fallaron');
-                                        return Promise.all(responses.map(r => r.text()));
-                                    })
-                                    .then(data => {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Éxito',
-                                            text: 'Todos los materiales fueron guardados correctamente'
-                                        });
-                                        formPedido.reset();
-                                        document.getElementById('lote_pedido').value = 'AB0909';
-                                        document.getElementById('tipomov_pedido').value = 'SOLICITUD DE PEDIDO';
-
-                                        const container = document.getElementById('materialesContainerPedido');
-                                        const entries = container.querySelectorAll('.material-entry');
-                                        entries.forEach((entry, index) => {
-                                            if (index > 0) entry.remove();
-                                        });
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: error.message || 'No se pudieron guardar todos los registros'
-                                        });
-                                    });
-                            } catch (error) {
-                                console.error('Error:', error);
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: error.message || 'No se pudieron guardar todos los registros'
-                                });
-                            }
-                        });
                     }
 
-                    // Configuración para el formulario de Stock Final
+
+                    // Para Stock Final const addMaterialFinalBtn = document.getElementById('addMaterialFinal'); if (addMaterialFinalBtn) { addMaterialFinalBtn.addEventListener('click', function () { cons
+
+                    // Para Stock Final
                     const formFinal = document.getElementById('stockFinalForm');
-                    if (formFinal) {
-                        const addMaterialFinalBtn = document.getElementById('addMaterialFinal');
-                        if (addMaterialFinalBtn) {
-                            addMaterialFinalBtn.addEventListener('click', function () {
-                                const newMaterial = document.createElement('div');
-                                newMaterial.className = 'material-entry grid grid-cols-2 gap-4 mt-4 relative';
 
-                                newMaterial.innerHTML = `
-            <div class="mb-4">
-                <label>Proveedor:</label>
-                <select name="proveedorid" required>
-                    <option value="">Seleccione un proveedor</option>
-                    <option value="1">PARNOR</option>
-                    <option value="2">MONDELEZ</option>
-                    <option value="3">SABORISIMO</option>
-                    <option value="4">LIVIAN FERCO</option>
-                    <option value="5">FACHITAS</option>
-                    <option value="6">CHAMMAS</option>
-                    <option value="7">JAMER</option>
-                    <option value="8">BEMER</option>
-                    <option value="9">PETIT FOUR</option>
-                    <option value="10">SANTA LUCIA</option>
-                    <option value="11">LA BLANCA</option>
-                </select>
-            </div>
+                    // Para Stock Final
+                    const addMaterialFinalBtn = document.getElementById('addMaterialFinal');
+                    if (addMaterialFinalBtn) {
+                        addMaterialFinalBtn.addEventListener('click', function () {
+                            const materialsContainer = document.getElementById('materialesContainerFinal');
+                            const lastMaterialEntry = materialsContainer.querySelector('.material-entry:last-of-type');
+
+                            // Crear el nuevo material
+                            const newMaterial = document.createElement('div');
+                            newMaterial.className = 'material-entry col-span-2 grid grid-cols-2 gap-4';
+                            newMaterial.innerHTML = `<div class="mb-4">
+                            <label>Proveedor:</label>
+                            <select id="proveedorid" name="proveedorid" required>
+                                <option value="">Seleccione un proveedor</option>
+                                <option value="1">PARNOR</option>
+                                <option value="2">MONDELEZ</option>
+                                <option value="3">SABORISIMO</option>
+                                <option value="4">LIVIAN FERCO</option>
+                                <option value="5">FACHITAS</option>
+                                <option value="6">CHAMMAS</option>
+                                <option value="7">JAMER</option>
+                                <option value="8">BEMER</option>
+                                <option value="9">PETIT FOUR</option>
+                                <option value="10">SANTA LUCIA</option>
+                                <option value="11">LA BLANCA</option>
+                            </select>
+                        </div>
             <div class="mb-4">
                 <label>Material:</label>
                 <select class="materialid" name="materialid" required>
@@ -2689,101 +2675,110 @@
                 Eliminar
             </button>`;
 
-                                const materialsContainer = document.getElementById('materialesContainerFinal');
-                                const lastMaterialEntry = materialsContainer.querySelector('.material-entry:last-of-type');
+                            // Insertar después del último material o al inicio si no hay materiales
+                            if (lastMaterialEntry) {
+                                lastMaterialEntry.insertAdjacentElement('afterend', newMaterial);
+                            } else {
+                                // Insertar antes del botón de agregar
+                                const addButtonContainer = addMaterialFinalBtn.closest('.col-span-2');
+                                addButtonContainer.insertAdjacentElement('beforebegin', newMaterial);
+                            }
 
-                                if (lastMaterialEntry) {
-                                    lastMaterialEntry.after(newMaterial);
-                                } else {
-                                    materialsContainer.insertBefore(newMaterial, materialsContainer.firstChild);
+                            // Agregar event listener para el botón eliminar
+                            const deleteButton = newMaterial.querySelector('.remove-material');
+                            deleteButton.addEventListener('click', function () {
+                                newMaterial.remove();
+                            });
+                        });
+
+
+
+                        // Para el formulario de Stock Final
+                        const formFinal = document.getElementById('stockFinalForm');
+                        if (formFinal) {
+                            formFinal.addEventListener('submit', function (e) {
+                                e.preventDefault();
+
+                                const materialEntries = formFinal.querySelectorAll('.material-entry');
+                                const baseDatos = {
+                                    FECHAMOV: document.getElementById('fechamov_final').value,
+                                    TURNO: parseInt(document.getElementById('turnoid_final').value),
+                                    RESPONSABLE: parseInt(document.getElementById('usuarioid_final').value),
+                                    OT: parseInt(document.getElementById('otid_final').value),
+                                    LOTE: document.getElementById('lote_final').value,
+                                    TIPOMOV: 'STOCK FINAL'
+                                };
+
+                                try {
+                                    const promesas = Array.from(materialEntries).map((entry) => {
+                                        const proveedorId = parseInt(document.getElementById('proveedorid_final').value);
+                                        const materialSelect = entry.querySelector('.materialid');
+                                        const cantidadInput = entry.querySelector('.cantidad');
+
+                                        if (!materialSelect || !cantidadInput) {
+                                            throw new Error('Faltan campos en alguna entrada de material');
+                                        }
+
+                                        const formData = {
+                                            ...baseDatos,
+                                            PROVEEDOR: proveedorId,
+                                            MATERIAL: parseInt(materialSelect.value),
+                                            CANTIDAD: parseInt(cantidadInput.value)
+                                        };
+
+                                        if (!formData.PROVEEDOR || !formData.MATERIAL || !formData.CANTIDAD) {
+                                            throw new Error('Todos los campos son requeridos para cada material');
+                                        }
+
+                                        return fetch('http://localhost:63152/api/ProductionStore/InsertProductionStore', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            body: JSON.stringify(formData)
+                                        });
+                                    });
+
+                                    Promise.all(promesas)
+                                        .then(responses => {
+                                            const todosOk = responses.every(response => response.ok);
+                                            if (!todosOk) throw new Error('Uno o más registros fallaron');
+                                            return Promise.all(responses.map(r => r.text()));
+                                        })
+                                        .then(data => {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Éxito',
+                                                text: 'Todos los materiales fueron guardados correctamente'
+                                            });
+                                            formFinal.reset();
+                                            document.getElementById('lote_final').value = 'AB0909';
+
+                                            const container = document.getElementById('materialesContainerFinal');
+                                            const entries = container.querySelectorAll('.material-entry');
+                                            entries.forEach((entry, index) => {
+                                                if (index > 0) entry.remove();
+                                            });
+                                        })
+                                        .catch(error => {
+                                            console.error('Error:', error);
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Error',
+                                                text: error.message || 'No se pudieron guardar todos los registros'
+                                            });
+                                        });
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: error.message || 'No se pudieron guardar todos los registros'
+                                    });
                                 }
                             });
                         }
-
-                        formFinal.addEventListener('submit', function (e) {
-                            e.preventDefault();
-
-                            const materialEntries = formFinal.querySelectorAll('.material-entry');
-                            const baseDatos = {
-                                FECHAMOV: document.getElementById('fechamov_final').value,
-                                TURNO: parseInt(document.getElementById('turnoid_final').value),
-                                RESPONSABLE: parseInt(document.getElementById('usuarioid_final').value),
-                                OT: parseInt(document.getElementById('otid_final').value),
-                                LOTE: document.getElementById('lote_final').value,
-                                TIPOMOV: document.getElementById('tipomov_final').value
-                            };
-
-                            try {
-                                const promesas = Array.from(materialEntries).map((entry, index) => {
-                                    let proveedorId;
-
-                                    if (index === 0) {
-                                        proveedorId = parseInt(document.getElementById('proveedorid_final').value);
-                                    } else {
-                                        const proveedorSelect = entry.querySelector('select[name="proveedorid"]');
-                                        if (!proveedorSelect) {
-                                            throw new Error('Falta seleccionar el proveedor en algún material adicional');
-                                        }
-                                        proveedorId = parseInt(proveedorSelect.value);
-                                    }
-
-                                    const formData = {
-                                        ...baseDatos,
-                                        PROVEEDOR: proveedorId,
-                                        MATERIAL: parseInt(entry.querySelector('.materialid').value),
-                                        CANTIDAD: parseInt(entry.querySelector('.cantidad').value)
-                                    };
-
-                                    return fetch('http://localhost:63152/api/ProductionStore/InsertProductionStore', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                        },
-                                        body: JSON.stringify(formData)
-                                    });
-                                });
-
-                                Promise.all(promesas)
-                                    .then(responses => {
-                                        const todosOk = responses.every(response => response.ok);
-                                        if (!todosOk) throw new Error('Uno o más registros fallaron');
-                                        return Promise.all(responses.map(r => r.text()));
-                                    })
-                                    .then(data => {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Éxito',
-                                            text: 'Todos los materiales fueron guardados correctamente'
-                                        });
-                                        formFinal.reset();
-                                        document.getElementById('lote_final').value = 'AB0909';
-                                        document.getElementById('tipomov_final').value = 'STOCK FINAL';
-
-                                        const container = document.getElementById('materialesContainerFinal');
-                                        const entries = container.querySelectorAll('.material-entry');
-                                        entries.forEach((entry, index) => {
-                                            if (index > 0) entry.remove();
-                                        });
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: error.message || 'No se pudieron guardar todos los registros'
-                                        });
-                                    });
-                            } catch (error) {
-                                console.error('Error:', error);
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: error.message || 'No se pudieron guardar todos los registros'
-                                });
-                            }
-                        });
                     }
-
                     // Configuración para el formulario de Producción Final
                     const formProduccion = document.getElementById('produccionFinalForm');
                     if (formProduccion) {
