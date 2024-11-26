@@ -4,6 +4,7 @@
 -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,36 +44,46 @@
 			text-align: right;
 		}
 
-		/* Previous table styling remains the same */
-		table {
-			width: 100%;
-			border-collapse: collapse;
-			font-family: Arial, sans-serif;
-			box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+		/* Contenedor de la tabla */
+		.table-container {
+			flex: 2;
+			/* Ocupa más espacio que el gráfico */
+			min-width: 500px;
+			/* Ancho mínimo */
+			overflow-x: auto;
+			/* Permite scroll horizontal si la tabla es muy ancha */
+			padding: 0 20px;
+			/* Espaciado interno lateral */
+			margin: 0 auto;
+			/* Centrar horizontalmente */
 		}
 
 		thead {
-			background-color: #f8f9fa;
-			border-bottom: 2px solid #dee2e6;
+			background-color: #468bc7;
+			/* Verde */
+			color: white;
+			padding: 10px;
+			text-transform: uppercase;
+			border: 1px solid #ddd;
 		}
 
 		th,
 		td {
 			padding: 12px 15px;
-			text-align: left;
+
 			border-bottom: 1px solid #e9ecef;
 		}
 
 		th {
-			color: #495057;
+			color: white;
 			font-weight: 600;
 			text-transform: uppercase;
 			font-size: 0.9em;
 		}
 
-		tbody tr:hover {
-			background-color: #f1f3f5;
-			transition: background-color 0.3s ease;
+		 table tbody tr:hover {
+			background-color: #bec9d4;
+			transition: background-color 0.1s ease;
 		}
 
 		td {
@@ -90,8 +101,10 @@
 		}
 
 		td:last-child {
-			font-weight: bold;
-			color: #2ecc71;
+			width: 15%;
+			/* font-weight: bold; */
+			text-align: center;
+
 		}
 
 		/* Estilos para modal */
@@ -368,80 +381,82 @@
 		}
 	</style>
 </head>
+
 <body>
 	<!-- Notifications area -->
 	<section class="full-width container-notifications">
 		<div class="full-width container-notifications-bg btn-Notification"></div>
-	    <section class="NotificationArea">
-	        <div class="full-width text-center NotificationArea-title tittles">Notifications <i class="zmdi zmdi-close btn-Notification"></i></div>
-	        <a href="#" class="Notification" id="notifation-unread-1">
-	            <div class="Notification-icon"><i class="zmdi zmdi-accounts-alt bg-info"></i></div>
-	            <div class="Notification-text">
-	                <p>
-	                    <i class="zmdi zmdi-circle"></i>
-	                    <strong>New User Registration</strong> 
-	                    <br>
-	                    <small>Just Now</small>
-	                </p>
-	            </div>
-	        	<div class="mdl-tooltip mdl-tooltip--left" for="notifation-unread-1">Notification as UnRead</div> 
-	        </a>
-	        <a href="#" class="Notification" id="notifation-read-1">
-	            <div class="Notification-icon"><i class="zmdi zmdi-cloud-download bg-primary"></i></div>
-	            <div class="Notification-text">
-	                <p>
-	                    <i class="zmdi zmdi-circle-o"></i>
-	                    <strong>New Updates</strong> 
-	                    <br>
-	                    <small>30 Mins Ago</small>
-	                </p>
-	            </div>
-	            <div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-1">Notification as Read</div>
-	        </a>
-	        <a href="#" class="Notification" id="notifation-unread-2">
-	            <div class="Notification-icon"><i class="zmdi zmdi-upload bg-success"></i></div>
-	            <div class="Notification-text">
-	                <p>
-	                    <i class="zmdi zmdi-circle"></i>
-	                    <strong>Archive uploaded</strong> 
-	                    <br>
-	                    <small>31 Mins Ago</small>
-	                </p>
-	            </div>
-	            <div class="mdl-tooltip mdl-tooltip--left" for="notifation-unread-2">Notification as UnRead</div>
-	        </a> 
-	        <a href="#" class="Notification" id="notifation-read-2">
-	            <div class="Notification-icon"><i class="zmdi zmdi-mail-send bg-danger"></i></div>
-	            <div class="Notification-text">
-	                <p>
-	                    <i class="zmdi zmdi-circle-o"></i>
-	                    <strong>New Mail</strong> 
-	                    <br>
-	                    <small>37 Mins Ago</small>
-	                </p>
-	            </div>
-	            <div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-2">Notification as Read</div>
-	        </a>
-	        <a href="#" class="Notification" id="notifation-read-3">
-	            <div class="Notification-icon"><i class="zmdi zmdi-folder bg-primary"></i></div>
-	            <div class="Notification-text">
-	                <p>
-	                    <i class="zmdi zmdi-circle-o"></i>
-	                    <strong>Folder delete</strong> 
-	                    <br>
-	                    <small>1 hours Ago</small>
-	                </p>
-	            </div>
-	            <div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-3">Notification as Read</div>
-	        </a>  
-	    </section>
+		<section class="NotificationArea">
+			<div class="full-width text-center NotificationArea-title tittles">Notifications <i
+					class="zmdi zmdi-close btn-Notification"></i></div>
+			<a href="#" class="Notification" id="notifation-unread-1">
+				<div class="Notification-icon"><i class="zmdi zmdi-accounts-alt bg-info"></i></div>
+				<div class="Notification-text">
+					<p>
+						<i class="zmdi zmdi-circle"></i>
+						<strong>New User Registration</strong>
+						<br>
+						<small>Just Now</small>
+					</p>
+				</div>
+				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-unread-1">Notification as UnRead</div>
+			</a>
+			<a href="#" class="Notification" id="notifation-read-1">
+				<div class="Notification-icon"><i class="zmdi zmdi-cloud-download bg-primary"></i></div>
+				<div class="Notification-text">
+					<p>
+						<i class="zmdi zmdi-circle-o"></i>
+						<strong>New Updates</strong>
+						<br>
+						<small>30 Mins Ago</small>
+					</p>
+				</div>
+				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-1">Notification as Read</div>
+			</a>
+			<a href="#" class="Notification" id="notifation-unread-2">
+				<div class="Notification-icon"><i class="zmdi zmdi-upload bg-success"></i></div>
+				<div class="Notification-text">
+					<p>
+						<i class="zmdi zmdi-circle"></i>
+						<strong>Archive uploaded</strong>
+						<br>
+						<small>31 Mins Ago</small>
+					</p>
+				</div>
+				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-unread-2">Notification as UnRead</div>
+			</a>
+			<a href="#" class="Notification" id="notifation-read-2">
+				<div class="Notification-icon"><i class="zmdi zmdi-mail-send bg-danger"></i></div>
+				<div class="Notification-text">
+					<p>
+						<i class="zmdi zmdi-circle-o"></i>
+						<strong>New Mail</strong>
+						<br>
+						<small>37 Mins Ago</small>
+					</p>
+				</div>
+				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-2">Notification as Read</div>
+			</a>
+			<a href="#" class="Notification" id="notifation-read-3">
+				<div class="Notification-icon"><i class="zmdi zmdi-folder bg-primary"></i></div>
+				<div class="Notification-text">
+					<p>
+						<i class="zmdi zmdi-circle-o"></i>
+						<strong>Folder delete</strong>
+						<br>
+						<small>1 hours Ago</small>
+					</p>
+				</div>
+				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-3">Notification as Read</div>
+			</a>
+		</section>
 	</section>
 	<!-- navLateral -->
 	<section class="full-width navLateral">
 		<div class="full-width navLateral-bg btn-menu"></div>
 		<div class="full-width navLateral-body">
 			<div class="full-width navLateral-body-logo text-center tittles">
-				<i class="zmdi zmdi-close btn-menu"></i> Grido Tech Advance 
+				<i class="zmdi zmdi-close btn-menu"></i> Grido Tech Advance
 			</div>
 			<figure class="full-width navLateral-body-tittle-menu">
 				<div>
@@ -468,12 +483,36 @@
 					</li>
 					<li class="full-width divider-menu-h"></li>
 					<li class="full-width">
+						<a href="production.html" class="full-width">
+							<div class="navLateral-body-cl">
+								<i class="zmdi zmdi-washing-machine"></i>
+							</div>
+							<div class="navLateral-body-cr">
+								Declarar Producción
+							</div>
+						</a>
+					</li>
+
+					<li class="full-width divider-menu-h"></li>
+					<li class="full-width">
+						<a href="workOders.html" class="full-width">
+							<div class="navLateral-body-cl">
+								<i class="zmdi zmdi-washing-machine"></i>
+							</div>
+							<div class="navLateral-body-cr">
+								Ordenes de Trabajo
+							</div>
+						</a>
+					</li>
+					<li class="full-width divider-menu-h"></li>
+					<li class="full-width">
+
 						<a href="#!" class="full-width btn-subMenu">
 							<div class="navLateral-body-cl">
 								<i class="zmdi zmdi-case"></i>
 							</div>
 							<div class="navLateral-body-cr">
-								Producción
+								Materiales
 							</div>
 							<span class="zmdi zmdi-chevron-left"></span>
 						</a>
@@ -512,6 +551,39 @@
 					</li>
 					<li class="full-width divider-menu-h"></li>
 					<li class="full-width">
+						<a href="products.html" class="full-width">
+							<div class="navLateral-body-cl">
+								<i class="zmdi zmdi-washing-machine"></i>
+							</div>
+							<div class="navLateral-body-cr">
+								Productos
+							</div>
+						</a>
+					</li>
+					<li class="full-width divider-menu-h"></li>
+					<li class="full-width">
+						<a href="inventory.html" class="full-width">
+							<div class="navLateral-body-cl">
+								<i class="zmdi zmdi-store"></i>
+							</div>
+							<div class="navLateral-body-cr">
+								Inventario
+							</div>
+						</a>
+					</li>
+					<li class="full-width divider-menu-h"></li>
+					<!-- <li class="full-width">
+						<a href="sales.html" class="full-width">
+							<div class="navLateral-body-cl">
+								<i class="zmdi zmdi-shopping-cart"></i>
+							</div>
+							<div class="navLateral-body-cr">
+								Informes
+							</div>
+						</a>
+					</li>
+					<li class="full-width divider-menu-h"></li> -->
+					<li class="full-width">
 						<a href="#!" class="full-width btn-subMenu">
 							<div class="navLateral-body-cl">
 								<i class="zmdi zmdi-face"></i>
@@ -544,50 +616,6 @@
 							</li>
 						</ul>
 					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="products.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-washing-machine"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Productos
-							</div>
-						</a>
-					</li>
-					<li class="full-width">
-						<a href="production.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-washing-machine"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Producciónes
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="sales.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-shopping-cart"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Informes
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="inventory.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-store"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Inventario
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
 					<li class="full-width">
 						<a href="#!" class="full-width btn-subMenu">
 							<div class="navLateral-body-cl">
@@ -630,7 +658,8 @@
 		<!-- navBar -->
 		<div class="full-width navBar">
 			<div class="full-width navBar-options">
-				<i class="zmdi zmdi-swap btn-menu" id="btn-menu"></i>	
+				<i class="zmdi zmdi-swap btn-menu" id="btn-menu"></i>
+				<h5 style="text-align: center;">PRODUCTOS</h5>
 				<div class="mdl-tooltip" for="btn-menu">Hide / Show MENU</div>
 				<nav class="navBar-options-list">
 					<ul class="list-unstyle">
@@ -642,7 +671,7 @@
 							<i class="zmdi zmdi-power"></i>
 							<div class="mdl-tooltip" for="btn-exit">LogOut</div>
 						</li>
-						<li class="text-condensedLight noLink" ><small>Emiliano Di Noto</small></li>
+						<li class="text-condensedLight noLink"><small>Emiliano Di Noto</small></li>
 						<li class="noLink">
 							<figure>
 								<img src="assets/img/Emi (sin Fondo).png" alt="Avatar" class="img-responsive">
@@ -676,308 +705,304 @@
 
 		</div>
 
-		<div>
-		  <table width="100%">
-			<thead>
-			  <tr>
-				<th><span class="las la-sort"></span>Codigo</th>
-				<th><span class="las la-sort"></span>Producto</th>
-				<th><span class="las la-sort"></span>Descripción</th>
-				<th><span class="las la-sort"></span>Unidad de Medida</th>
-			  </tr>
-			</thead>
-			<tbody>
-			   
-			</tbody>
-		  </table>
+		<div class="table-container">
+			<table width="95%">
+				<thead>
+					<tr>
+						<th><span class="las la-sort"></span>CODIGO</th>
+						<th><span class="las la-sort"></span>PRODUCTO</th>
+						<th><span class="las la-sort"></span>DESCRIPCION</th>
+						<th><span class="las la-sort"></span>UNIDAD DE MEDIDA</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
 		</div>
-	  </div>
-	</div>
-  </main>
-</div>
+		</div>
+		</div>
+		</main>
+		</div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<!-- Nav desplegable-->
+		<!-- Nav desplegable-->
 
-<script type="text/javascript">
-  $(".nav").click(function () {
-	$("#mySidenav").css("width", "70px");
-	$("#main").css("margin-left", "70px");
-	$(".logo").css("visibility", "hidden");
-	$(".logo span").css("visibility", "visible");
-	$(".logo span").css("margin-left", "-10px");
-	$(".icon-a").css("visibility", "hidden");
-	$(".icons").css("visibility", "visible");
-	$(".icons").css("margin-left", "-8px");
-	$(".nav").css("display", "none");
-	$(".nav2").css("display", "block");
-  });
+		<script type="text/javascript">
+			$(".nav").click(function () {
+				$("#mySidenav").css("width", "70px");
+				$("#main").css("margin-left", "70px");
+				$(".logo").css("visibility", "hidden");
+				$(".logo span").css("visibility", "visible");
+				$(".logo span").css("margin-left", "-10px");
+				$(".icon-a").css("visibility", "hidden");
+				$(".icons").css("visibility", "visible");
+				$(".icons").css("margin-left", "-8px");
+				$(".nav").css("display", "none");
+				$(".nav2").css("display", "block");
+			});
 
-  $(".nav2").click(function () {
-	$("#mySidenav").css("width", "300px");
-	$("#main").css("margin-left", "300px");
-	$(".logo").css("visibility", "visible");
-	$(".logo span").css("visibility", "visible");
-	$(".icon-a").css("visibility", "visible");
-	$(".icons").css("visibility", "visible");
-	$(".nav").css("display", "block");
-	$(".nav2").css("display", "none");
-  });
-</script>
+			$(".nav2").click(function () {
+				$("#mySidenav").css("width", "300px");
+				$("#main").css("margin-left", "300px");
+				$(".logo").css("visibility", "visible");
+				$(".logo span").css("visibility", "visible");
+				$(".icon-a").css("visibility", "visible");
+				$(".icons").css("visibility", "visible");
+				$(".nav").css("display", "block");
+				$(".nav2").css("display", "none");
+			});
+		</script>
 
-<script>
+		<script>
+			function Get() {
+				fetch("http://localhost:63152/api/Products")
+					.then((response) => response.json())
+					.then((data) => {
+						const tbody = document.querySelector(`tbody`);
 
-
-
-
-
-  function Get() {
-	fetch("http://localhost:63152/api/Products")
-	  .then((response) => response.json())
-	  .then((data) => {
-		const tbody = document.querySelector(`tbody`);
-
-		data.forEach((o) => {
-		  let _tr = `<tr>
+						data.forEach((o) => {
+							let _tr = `<tr>
 						  <td>${o.CODIGO}</td>
 						  <td>${o.PRODUCTO}</td>
 						  <td>${o.DESCRIPCION}</td>
 						  <td>${o.UM}</td>
 					  </tr>`;
 
-		  tbody.innerHTML += _tr;
-		});
-	  });
-  }
-  Get();
+							tbody.innerHTML += _tr;
+						});
+					});
+			}
+			Get();
 
-// Función para filtrar los productos
-function filterProducts(searchValue, searchType) {
-  const tbody = document.querySelector('tbody');
-  const rows = tbody.getElementsByTagName('tr');
-  
-  // Convertir el valor de búsqueda a minúsculas para hacer la búsqueda insensible a mayúsculas
-  searchValue = searchValue.toLowerCase();
-  
-  for (let row of rows) {
-    let codigo = row.cells[0].textContent.toLowerCase();
-    let nombre = row.cells[1].textContent.toLowerCase();
-    let descripcion = row.cells[2].textContent.toLowerCase();
-    let showRow = false;
-    
-    switch(searchType) {
-      case 'codigo':
-        showRow = codigo.includes(searchValue);
-        break;
-      case 'nombre':
-        showRow = nombre.includes(searchValue);
-        break;
-      case 'all':
-        showRow = codigo.includes(searchValue) || 
-                 nombre.includes(searchValue) || 
-                 descripcion.includes(searchValue);
-        break;
-      default:
-        showRow = true;
-    }
-    
-    row.style.display = showRow ? '' : 'none';
-  }
-}
+			// Función para filtrar los productos
+			function filterProducts(searchValue, searchType) {
+				const tbody = document.querySelector('tbody');
+				const rows = tbody.getElementsByTagName('tr');
 
-// Función para inicializar los event listeners
-function initializeSearch() {
-  const searchInput = document.getElementById('searchInput');
-  const searchType = document.getElementById('searchType');
-  
-  // Event listener para el input de búsqueda
-  searchInput.addEventListener('input', function() {
-    filterProducts(this.value, searchType.value);
-  });
-  
-  // Event listener para el cambio de tipo de búsqueda
-  searchType.addEventListener('change', function() {
-    filterProducts(searchInput.value, this.value);
-  });
-}
+				// Convertir el valor de búsqueda a minúsculas para hacer la búsqueda insensible a mayúsculas
+				searchValue = searchValue.toLowerCase();
 
-// Modificar la función Get para inicializar la búsqueda después de cargar los datos
-function Get() {
-  fetch("http://localhost:63152/api/Products")
-    .then((response) => response.json())
-    .then((data) => {
-      const tbody = document.querySelector('tbody');
-      tbody.innerHTML = ''; // Limpiar tbody antes de agregar nuevos datos
-      
-      data.forEach((o) => {
-        let _tr = `<tr>
+				for (let row of rows) {
+					let codigo = row.cells[0].textContent.toLowerCase();
+					let nombre = row.cells[1].textContent.toLowerCase();
+					let descripcion = row.cells[2].textContent.toLowerCase();
+					let showRow = false;
+
+					switch (searchType) {
+						case 'codigo':
+							showRow = codigo.includes(searchValue);
+							break;
+						case 'nombre':
+							showRow = nombre.includes(searchValue);
+							break;
+						case 'all':
+							showRow = codigo.includes(searchValue) ||
+								nombre.includes(searchValue) ||
+								descripcion.includes(searchValue);
+							break;
+						default:
+							showRow = true;
+					}
+
+					row.style.display = showRow ? '' : 'none';
+				}
+			}
+
+			// Función para inicializar los event listeners
+			function initializeSearch() {
+				const searchInput = document.getElementById('searchInput');
+				const searchType = document.getElementById('searchType');
+
+				// Event listener para el input de búsqueda
+				searchInput.addEventListener('input', function () {
+					filterProducts(this.value, searchType.value);
+				});
+
+				// Event listener para el cambio de tipo de búsqueda
+				searchType.addEventListener('change', function () {
+					filterProducts(searchInput.value, this.value);
+				});
+			}
+
+			// Modificar la función Get para inicializar la búsqueda después de cargar los datos
+			function Get() {
+				fetch("http://localhost:63152/api/Products")
+					.then((response) => response.json())
+					.then((data) => {
+						const tbody = document.querySelector('tbody');
+						tbody.innerHTML = ''; // Limpiar tbody antes de agregar nuevos datos
+
+						data.forEach((o) => {
+							let _tr = `<tr>
                     <td>${o.CODIGO}</td>
                     <td>${o.PRODUCTO}</td>
                     <td>${o.DESCRIPCION}</td>
                     <td>${o.UM}</td>
                   </tr>`;
-        tbody.innerHTML += _tr;
-      });
-      
-      // Inicializar la búsqueda después de cargar los datos
-      initializeSearch();
-    })
-    .catch(error => {
-      console.error('Error al cargar los productos:', error);
-    });
-}
+							tbody.innerHTML += _tr;
+						});
 
-// Llamar a Get cuando se carga la página
-document.addEventListener('DOMContentLoaded', Get);
+						// Inicializar la búsqueda después de cargar los datos
+						initializeSearch();
+					})
+					.catch(error => {
+						console.error('Error al cargar los productos:', error);
+					});
+			}
 
-// Función para filtrar productos por texto
-function filterProducts(searchValue, searchType) {
-    const tbody = document.querySelector('tbody');
-    const rows = tbody.getElementsByTagName('tr');
-    
-    searchValue = searchValue.toLowerCase();
-    
-    for (let row of rows) {
-        let codigo = row.cells[0].textContent.toLowerCase();
-        let nombre = row.cells[1].textContent.toLowerCase();
-        let descripcion = row.cells[2].textContent.toLowerCase();
-        let showRow = false;
-        
-        switch(searchType) {
-            case 'codigo':
-                showRow = codigo.includes(searchValue);
-                break;
-            case 'nombre':
-                showRow = nombre.includes(searchValue);
-                break;
-            case 'all':
-                showRow = codigo.includes(searchValue) || 
-                         nombre.includes(searchValue) || 
-                         descripcion.includes(searchValue);
-                break;
-            default:
-                showRow = true;
-        }
-        
-        row.style.display = showRow ? '' : 'none';
-    }
-}
+			// Llamar a Get cuando se carga la página
+			document.addEventListener('DOMContentLoaded', Get);
 
-// Función para filtrar por país
-function filterByCountry() {
-    const countryFilter = document.getElementById('countryFilter').value;
-    const tbody = document.querySelector('tbody');
-    const rows = tbody.getElementsByTagName('tr');
-    
-    // Si hay texto en el buscador, primero aplicamos ese filtro
-    const searchInput = document.getElementById('searchInput');
-    const searchType = document.getElementById('searchType');
-    if (searchInput.value) {
-        filterProducts(searchInput.value, searchType.value);
-    }
-    
-    // Luego aplicamos el filtro de país
-    for (let row of rows) {
-        // Solo procesamos las filas que están visibles después del filtro de búsqueda
-        if (row.style.display !== 'none') {
-            let nombre = row.cells[1].textContent.toLowerCase(); // Cambiamos a nombre en lugar de código
-            let showRow = false;
-            
-            switch(countryFilter) {
-                case 'argentina':
-                    showRow = nombre.includes('GRIDO');
-                    break;
-                case 'paraguay':
-                    showRow = nombre.includes('EXPO');
-                    break;
-                case 'peru':
-                    showRow = nombre.includes('PE');
-                    break;
-                case 'uruguay':
-                    showRow = nombre.includes('UY');
-                    break;
-                case 'chile':
-                    showRow = nombre.includes('CL');
-                    break;
-                case 'all':
-                    showRow = true;
-                    break;
-            }
-            
-            row.style.display = showRow ? '' : 'none';
-        }
-    }
-    
-    // Mostrar mensaje si no hay resultados
-    const visibleRows = [...rows].filter(row => row.style.display !== 'none');
-    const noResultsMessage = document.getElementById('noResultsMessage');
-    
-    if (visibleRows.length === 0) {
-        if (!noResultsMessage) {
-            const message = document.createElement('div');
-            message.id = 'noResultsMessage';
-            message.className = 'no-results';
-            message.textContent = 'No se encontraron productos para los filtros seleccionados';
-            tbody.parentNode.insertBefore(message, tbody.nextSibling);
-        }
-    } else if (noResultsMessage) {
-        noResultsMessage.remove();
-    }
-}
+			// Función para filtrar productos por texto
+			function filterProducts(searchValue, searchType) {
+				const tbody = document.querySelector('tbody');
+				const rows = tbody.getElementsByTagName('tr');
 
-// Función para inicializar los event listeners
-function initializeSearch() {
-    const searchInput = document.getElementById('searchInput');
-    const searchType = document.getElementById('searchType');
-    const filterButton = document.getElementById('filterButton');
-    
-    // Event listener para el input de búsqueda
-    searchInput.addEventListener('input', function() {
-        filterProducts(this.value, searchType.value);
-    });
-    
-    // Event listener para el cambio de tipo de búsqueda
-    searchType.addEventListener('change', function() {
-        if (searchInput.value) {
-            filterProducts(searchInput.value, this.value);
-        }
-    });
-    
-    // Event listener para el botón de filtrar
-    filterButton.addEventListener('click', filterByCountry);
-}
+				searchValue = searchValue.toLowerCase();
 
-// Modificar la función Get para inicializar la búsqueda después de cargar los datos
-function Get() {
-    fetch("http://localhost:63152/api/Products")
-        .then((response) => response.json())
-        .then((data) => {
-            const tbody = document.querySelector('tbody');
-            tbody.innerHTML = ''; // Limpiar tbody antes de agregar nuevos datos
-            
-            data.forEach((o) => {
-                let _tr = `<tr>
+				for (let row of rows) {
+					let codigo = row.cells[0].textContent.toLowerCase();
+					let nombre = row.cells[1].textContent.toLowerCase();
+					let descripcion = row.cells[2].textContent.toLowerCase();
+					let showRow = false;
+
+					switch (searchType) {
+						case 'codigo':
+							showRow = codigo.includes(searchValue);
+							break;
+						case 'nombre':
+							showRow = nombre.includes(searchValue);
+							break;
+						case 'all':
+							showRow = codigo.includes(searchValue) ||
+								nombre.includes(searchValue) ||
+								descripcion.includes(searchValue);
+							break;
+						default:
+							showRow = true;
+					}
+
+					row.style.display = showRow ? '' : 'none';
+				}
+			}
+
+			// Función para filtrar por país
+			function filterByCountry() {
+				const countryFilter = document.getElementById('countryFilter').value;
+				const tbody = document.querySelector('tbody');
+				const rows = tbody.getElementsByTagName('tr');
+
+				// Si hay texto en el buscador, primero aplicamos ese filtro
+				const searchInput = document.getElementById('searchInput');
+				const searchType = document.getElementById('searchType');
+				if (searchInput.value) {
+					filterProducts(searchInput.value, searchType.value);
+				}
+
+				// Luego aplicamos el filtro de país
+				for (let row of rows) {
+					// Solo procesamos las filas que están visibles después del filtro de búsqueda
+					if (row.style.display !== 'none') {
+						let nombre = row.cells[1].textContent.toLowerCase(); // Cambiamos a nombre en lugar de código
+						let showRow = false;
+
+						switch (countryFilter) {
+							case 'Argentina':
+								showRow = nombre.includes('GRIDO');
+								break;
+							case 'Paraguay':
+								showRow = nombre.includes('EXPO');
+								break;
+							case 'Peru':
+								showRow = nombre.includes('PE');
+								break;
+							case 'Uruguay':
+								showRow = nombre.includes('UY');
+								break;
+							case 'Chile':
+								showRow = nombre.includes('CL');
+								break;
+							case 'all':
+								showRow = true;
+								break;
+						}
+
+						row.style.display = showRow ? '' : 'none';
+					}
+				}
+
+				// Mostrar mensaje si no hay resultados
+				const visibleRows = [...rows].filter(row => row.style.display !== 'none');
+				const noResultsMessage = document.getElementById('noResultsMessage');
+
+				if (visibleRows.length === 0) {
+					if (!noResultsMessage) {
+						const message = document.createElement('div');
+						message.id = 'noResultsMessage';
+						message.className = 'no-results';
+						message.textContent = 'No se encontraron productos para los filtros seleccionados';
+						tbody.parentNode.insertBefore(message, tbody.nextSibling);
+					}
+				} else if (noResultsMessage) {
+					noResultsMessage.remove();
+				}
+			}
+
+			// Función para inicializar los event listeners
+			function initializeSearch() {
+				const searchInput = document.getElementById('searchInput');
+				const searchType = document.getElementById('searchType');
+				const filterButton = document.getElementById('filterButton');
+
+				// Event listener para el input de búsqueda
+				searchInput.addEventListener('input', function () {
+					filterProducts(this.value, searchType.value);
+				});
+
+				// Event listener para el cambio de tipo de búsqueda
+				searchType.addEventListener('change', function () {
+					if (searchInput.value) {
+						filterProducts(searchInput.value, this.value);
+					}
+				});
+
+				// Event listener para el botón de filtrar
+				filterButton.addEventListener('click', filterByCountry);
+			}
+
+			// Modificar la función Get para inicializar la búsqueda después de cargar los datos
+			function Get() {
+				fetch("http://localhost:63152/api/Products")
+					.then((response) => response.json())
+					.then((data) => {
+						const tbody = document.querySelector('tbody');
+						tbody.innerHTML = ''; // Limpiar tbody antes de agregar nuevos datos
+
+						data.forEach((o) => {
+							let _tr = `<tr>
                             <td>${o.CODIGO}</td>
                             <td>${o.PRODUCTO}</td>
                             <td>${o.DESCRIPCION}</td>
                             <td>${o.UM}</td>
                           </tr>`;
-                tbody.innerHTML += _tr;
-            });
-            
-            // Inicializar la búsqueda después de cargar los datos
-            initializeSearch();
-        })
-        .catch(error => {
-            console.error('Error al cargar los productos:', error);
-        });
-}
+							tbody.innerHTML += _tr;
+						});
 
-// Llamar a Get cuando se carga la página
-document.addEventListener('DOMContentLoaded', Get);
+						// Inicializar la búsqueda después de cargar los datos
+						initializeSearch();
+					})
+					.catch(error => {
+						console.error('Error al cargar los productos:', error);
+					});
+			}
 
-  </script>	
+			// Llamar a Get cuando se carga la página
+			document.addEventListener('DOMContentLoaded', Get);
+
+		</script>
 
 </body>
+
 </html>
