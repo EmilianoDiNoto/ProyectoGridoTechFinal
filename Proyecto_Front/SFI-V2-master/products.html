@@ -691,17 +691,16 @@
 		</div>
 
 		<div class="filter-container">
-			<label for="countryFilter">Filtrar por:</label>
-			<select id="countryFilter">
-				<option value="all">Todos los Países</option>
-				<option value="argentina">Argentina</option>
-				<option value="peru">Perú</option>
-				<option value="uruguay">Uruguay</option>
-				<option value="chile">Chile</option>
-				<option value="paraguay">Paraguay</option>
-			</select>
-			<button id="filterButton" class="btn btn-primary">Filtrar</button>
-		</div>
+    <label for="countryFilter">Filtrar por País:</label>
+    <select id="countryFilter">
+        <option value="all">Todos los Países</option>
+        <option value="Argentina">Argentina</option>
+        <option value="Chile">Chile</option>
+        <option value="Paraguay">Paraguay</option>
+        <option value="Uruguay">Uruguay</option>
+        <option value="Peru">Perú</option>
+    </select>
+</div>
 
 		</div>
 
@@ -888,67 +887,70 @@
 				}
 			}
 
-			// Función para filtrar por país
 			function filterByCountry() {
-				const countryFilter = document.getElementById('countryFilter').value;
-				const tbody = document.querySelector('tbody');
-				const rows = tbody.getElementsByTagName('tr');
+    const countryFilter = document.getElementById('countryFilter').value;
+    const tbody = document.querySelector('tbody');
+    const rows = tbody.getElementsByTagName('tr');
 
-				// Si hay texto en el buscador, primero aplicamos ese filtro
-				const searchInput = document.getElementById('searchInput');
-				const searchType = document.getElementById('searchType');
-				if (searchInput.value) {
-					filterProducts(searchInput.value, searchType.value);
-				}
+    for (let row of rows) {
+        let producto = row.cells[1].textContent.trim(); // Columna del nombre del producto
+        let showRow = false;
 
-				// Luego aplicamos el filtro de país
-				for (let row of rows) {
-					// Solo procesamos las filas que están visibles después del filtro de búsqueda
-					if (row.style.display !== 'none') {
-						let nombre = row.cells[1].textContent.toLowerCase(); // Cambiamos a nombre en lugar de código
-						let showRow = false;
+        if (countryFilter === 'all') {
+            showRow = true;
+        } else {
+            switch (countryFilter) {
+                case 'Argentina':
+                    showRow = producto.endsWith('GRIDO');
+                    break;
+                case 'Chile':
+                    showRow = producto.endsWith('CL');
+                    break;
+                case 'Paraguay':
+                    showRow = producto.endsWith('EXPO');
+                    break;
+                case 'Uruguay':
+                    showRow = producto.endsWith('UY');
+                    break;
+                case 'Peru':
+                    showRow = producto.endsWith('PE');
+                    break;
+            }
+        }
 
-						switch (countryFilter) {
-							case 'Argentina':
-								showRow = nombre.includes('GRIDO');
-								break;
-							case 'Paraguay':
-								showRow = nombre.includes('EXPO');
-								break;
-							case 'Peru':
-								showRow = nombre.includes('PE');
-								break;
-							case 'Uruguay':
-								showRow = nombre.includes('UY');
-								break;
-							case 'Chile':
-								showRow = nombre.includes('CL');
-								break;
-							case 'all':
-								showRow = true;
-								break;
-						}
+        row.style.display = showRow ? '' : 'none';
+    }
 
-						row.style.display = showRow ? '' : 'none';
-					}
-				}
+    // Mostrar mensaje si no hay resultados
+    const visibleRows = [...rows].filter(row => row.style.display !== 'none');
+    let noResultsMessage = document.getElementById('noResultsMessage');
 
-				// Mostrar mensaje si no hay resultados
-				const visibleRows = [...rows].filter(row => row.style.display !== 'none');
-				const noResultsMessage = document.getElementById('noResultsMessage');
+    if (visibleRows.length === 0) {
+        if (!noResultsMessage) {
+            noResultsMessage = document.createElement('div');
+            noResultsMessage.id = 'noResultsMessage';
+            noResultsMessage.className = 'no-results';
+            noResultsMessage.textContent = 'No se encontraron productos para el país seleccionado';
+            tbody.parentNode.insertBefore(noResultsMessage, tbody.nextSibling);
+        }
+    } else if (noResultsMessage) {
+        noResultsMessage.remove();
+    }
+}
 
-				if (visibleRows.length === 0) {
-					if (!noResultsMessage) {
-						const message = document.createElement('div');
-						message.id = 'noResultsMessage';
-						message.className = 'no-results';
-						message.textContent = 'No se encontraron productos para los filtros seleccionados';
-						tbody.parentNode.insertBefore(message, tbody.nextSibling);
-					}
-				} else if (noResultsMessage) {
-					noResultsMessage.remove();
-				}
-			}
+// Asegúrate de que este evento esté configurado
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButton = document.getElementById('filterButton');
+    if (filterButton) {
+        filterButton.addEventListener('click', filterByCountry);
+    }
+
+    // También puedes hacer que se filtre automáticamente al cambiar el select
+    const countryFilter = document.getElementById('countryFilter');
+    if (countryFilter) {
+        countryFilter.addEventListener('change', filterByCountry);
+    }
+});
 
 			// Función para inicializar los event listeners
 			function initializeSearch() {

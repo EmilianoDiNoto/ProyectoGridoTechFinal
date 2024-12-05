@@ -312,7 +312,7 @@
 
         /* Agregar estos estilos en la sección de estilos */
         .row-pending {
-            background-color: #ffd700 !important;
+            background-color: #f8e888 !important;
             /* Amarillo oscuro */
             color: black;
         }
@@ -429,61 +429,57 @@
             }
         }
 
-        /* Estilos base del navLateral */
-        .navLateral {
-            width: 300px;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: -300px;
-            z-index: 9999;
-            background-color: #fff;
-            transition: left 0.3s ease;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-        }
+     /* Estilos base del navLateral */
+.navLateral {
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -300px;
+    z-index: 9999;
+    background-color: #fff;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}
 
+/* Fondo oscuro cuando el menú está abierto */
+.navLateral-bg {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9998;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+}
 
+/* El contenedor principal ahora no necesita margen */
+.pageContent {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
 
-        /* Fondo oscuro cuando el menú está abierto */
-        .navLateral-bg {
-            width: 100vw;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none;
-        }
+/* Cuando el menú está abierto */
+.navLateral.active-menu {
+    left: 0;
+}
 
-        /* El contenedor principal ahora no necesita margen */
-        .pageContent {
-            width: 100%;
-            min-height: 100vh;
-            position: relative;
-            /* Eliminar cualquier margen o padding que pudiera estar causando el espacio */
-            margin: 0;
-            padding: 0;
-            overflow-y: auto !important;
-            /* Forzar scroll vertical */
-        }
+.navLateral.active-menu + .navLateral-bg {
+    display: block;
+}
 
-        /* Cuando el menú está abierto */
-        .navLateral.active-menu {
-            left: 0;
-        }
-
-        .navLateral.active-menu .navLateral-bg {
-            display: block;
-        }
-
-        /* Ajustes para móviles */
-        @media screen and (max-width: 768px) {
-            .navLateral {
-                width: 250px;
-                left: -250px;
-            }
-        }
+/* Ajustes para móviles */
+@media screen and (max-width: 768px) {
+    .navLateral {
+        width: 250px;
+        left: -250px;
+    }
+}
 
 
         /* Estilos para el formulario */
@@ -1827,25 +1823,30 @@
 
 
 
-            function toggleMenu(e) {
-                if (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-                navLateral.classList.toggle('active-menu');
-                document.body.style.overflow = navLateral.classList.contains('active-menu') ? 'hidden' : '';
-            }
-
-
-
             // Event listeners
-            btnMenu.addEventListener('click', toggleMenu);
+const btnVisual = document.getElementById('btn-menu');
+const navLatVisual = document.querySelector('.navLateral');
+const navLateralBg = document.querySelector('.navLateral-bg');
 
-            // Cerrar el menú cuando se hace clic en el fondo
-            document.querySelector('.navLateral-bg').addEventListener('click', toggleMenu);
+function toggleMenu(e) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    navLateral.classList.toggle('active-menu');
+    document.body.style.overflow = navLateral.classList.contains('active-menu') ? 'hidden' : '';
+}
 
-            // Cerrar el menú cuando se hace clic en el botón de cerrar
-            document.querySelector('.navLateral .btn-menu').addEventListener('click', toggleMenu);
+// Event listeners
+btnVisual.addEventListener('click', toggleMenu);
+
+// Cerrar el menú cuando se hace clic en el fondo
+document.querySelector('.navLateral-bg').addEventListener('click', toggleMenu);
+
+// Cerrar el menú cuando se hace clic en el botón de cerrar
+document.querySelector('.navLateral .btn-menu').addEventListener('click', toggleMenu);
+
+
 
 
             // Mapa de productos y sus nombres en la API
@@ -1924,7 +1925,7 @@
                     document.querySelector('.modal-product-title').textContent = modalTitle.textContent;
                     modal.style.display = 'block';
                     modalContent.innerHTML = `
-                    <span class="modal-close">&times;</span>Ñ
+                    <span class="modal-close">&times;</span>
                     <h2 class="modal-product-title text-center">${modalTitle.textContent}</h2>
                     <div class="tab-container">
                      <div class="modal-tabs">

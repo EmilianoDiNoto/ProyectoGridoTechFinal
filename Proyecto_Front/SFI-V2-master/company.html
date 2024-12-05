@@ -55,9 +55,12 @@
 		}
 
 		thead {
-			background-color: #f8f9fa;
-			border-bottom: 2px solid #dee2e6;
-		}
+    background-color: #468bc7; /* Este es el azul que usas en production */
+    color: white;
+    padding: 10px;
+    text-transform: uppercase;
+    border: 1px solid #ddd;
+}
 
 		th,
 		td {
@@ -67,10 +70,10 @@
 		}
 
 		th {
-			color: #495057;
-			font-weight: 600;
-			text-transform: uppercase;
-			font-size: 0.9em;
+			color: white; /* Para asegurar que el texto sea blanco */
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
 		}
 
 		tbody tr:hover {
@@ -379,7 +382,25 @@
 				background: #555;
 			}
 		}
-	</style>
+		/* Alineación de precios a la derecha y color azul oscuro */
+.table-container table td:nth-child(5) {
+    text-align: right;
+    color: #0000CC; /* Azul oscuro */
+    font-weight: 500; /* Un poco más grueso que el normal */
+}
+
+/* Alineación de precios y su encabezado a la derecha */
+.table-container table th:nth-child(5),
+.table-container table td:nth-child(5) {
+    text-align: right;
+    color: #0000CC; /* Azul oscuro solo para los precios */
+}
+
+/* Para que solo los valores de precio sean azules, no el encabezado */
+.table-container table td:nth-child(5) {
+    color: #0000CC;
+    font-weight: 500;
+}
 	</style>
 </head>
 
@@ -671,10 +692,10 @@
 							<i class="zmdi zmdi-power"></i>
 							<div class="mdl-tooltip" for="btn-exit">LogOut</div>
 						</li>
-						<li class="text-condensedLight noLink"><small>User Name</small></li>
+						<li class="text-condensedLight noLink"><small>Emiliano Di Noto</small></li>
 						<li class="noLink">
 							<figure>
-								<img src="assets/img/avatar-male.png" alt="Avatar" class="img-responsive">
+								<img src="assets/img/Emi (sin Fondo).png" alt="Avatar" class="img-responsive">
 							</figure>
 						</li>
 					</ul>
@@ -721,375 +742,105 @@
 			</table>
 		</div>
 
-		<!-- Modal para Alta/Modificación de Materiales -->
-		<!-- <div id="materialModal" class="modal">
-			<div class="modal-content">
-				<span class="modal-close">&times;</span>
-				<h2 id="modalTitle">Agregar Material</h2>
-				<form id="materialForm">
-					<input type="hidden" id="materialIdInput">
-					<input type="number" id="codigoInput" placeholder="Código" required>
-					<input type="text" id="nombreInput" placeholder="Nombre del Material" required>
-					<input type="number" step="0.01" id="stockMinInput" placeholder="Stock Mínimo" required>
-					<select id="umInput" required>
-						<option value="">Seleccione Unidad de Medida</option>
-						<option value="KG">Kilogramos</option>
-						<option value="LT">Litros</option>
-						<option value="UN">Unidades</option>
-					</select>
-					<input type="number" step="0.01" id="precioInput" placeholder="Precio" required>
-					<div>
-						<button type="submit" class="btn btn-primary" id="submitBtn">Guardar</button>
-						<button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
-					</div>
-				</form>
-			</div>
-		</div> -->
 		<script>
-			let allMaterials = []; // Variable global para almacenar todos los materiales
+		// Variable global para almacenar todos los materiales
+let allMaterials = [];
 
-			// Funciones de modal
-			const modal = document.getElementById('materialModal');
-			const modalClose = document.querySelector('.modal-close');
-			const addMaterialBtn = document.getElementById('addMaterialBtn');
-			const materialForm = document.getElementById('materialForm');
-			const cancelBtn = document.getElementById('cancelBtn');
+// Función para renderizar la tabla
+function renderMaterials(materials) {
+    const tbody = document.getElementById('materialsTableBody');
+    tbody.innerHTML = '';
 
-			// Abrir modal para agregar material
-			addMaterialBtn.addEventListener('click', () => {
-				document.getElementById('modalTitle').textContent = 'Agregar Material';
-				document.getElementById('materialIdInput').value = '';
-				materialForm.reset();
-				modal.style.display = 'block';
-			});
+    if (materials.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="no-results">
+                    No se encontraron resultados.
+                </td>
+            </tr>
+        `;
+        return;
+    }
 
-			// Cerrar modal
-			modalClose.addEventListener('click', () => modal.style.display = 'none');
-			cancelBtn.addEventListener('click', () => modal.style.display = 'none');
+    materials.forEach((material) => {
+        const row = `
+            <tr>
+                <td>${material.CODIGO || ''}</td>
+                <td>${material.MATERIAL || ''}</td>
+                <td>${material.STOCK_MIN || 0}</td>
+                <td>${material.UM || ''}</td>
+                <td>$${Number(material.PRECIO || 0).toFixed(2)}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
 
-			// Función para renderizar la tabla
-			function renderMaterials(materials) {
-				const tbody = document.getElementById('materialsTableBody');
-				tbody.innerHTML = '';
+// Función para obtener materiales de la API
+function Get() {
+    fetch("http://localhost:63152/api/Materials")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Limpiar y formatear los datos recibidos
+            allMaterials = data.map(material => ({
+                MaterialID: material.MaterialID,
+                CODIGO: material.CODIGO ? String(material.CODIGO).trim() : '',
+                MATERIAL: material.MATERIAL ? String(material.MATERIAL).trim() : '',
+                STOCK_MIN: material.STOCK_MIN ? Number(material.STOCK_MIN) : 0,
+                UM: material.UM ? String(material.UM).trim() : '',
+                PRECIO: material.PRECIO ? Number(material.PRECIO) : 0
+            }));
+            renderMaterials(allMaterials);
+        })
+        .catch(error => {
+            console.error('Error al obtener los materiales:', error);
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudieron cargar los materiales. Por favor, intente nuevamente.',
+                icon: 'error'
+            });
+        });
+}
 
-				if (materials.length === 0) {
-					tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="no-results">
-                            No se encontraron resultados.
-                        </td>
-                    </tr>
-                `;
-					return;
-				}
+// Función para filtrar materiales
+function filterMaterials() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
+    const searchType = document.getElementById('searchType').value;
 
-				materials.forEach((o) => {
-					let _tr = `
-                    <tr>
-                        <td>${o.CODIGO}</td>
-                        <td>${o.MATERIAL}</td>
-                        <td>${o.STOCK_MIN}</td>
-                        <td>${o.UM}</td>
-                        <td>$${Number(o.PRECIO).toFixed(2)}</td>
-                        <td>
-                            <button class="action-btn edit-btn" data-id="${o.MaterialID}">Modificar</button>
-                        </td>
-                    </tr>
-                `;
+    const filteredMaterials = allMaterials.filter(material => {
+        const codigo = String(material.CODIGO).toLowerCase();
+        const nombre = String(material.MATERIAL).toLowerCase();
+        const precio = String(material.PRECIO).toLowerCase();
 
-					tbody.innerHTML += _tr;
-				});
+        switch (searchType) {
+            case 'codigo':
+                return codigo.includes(searchInput);
+            case 'nombre':
+                return nombre.includes(searchInput);
+            case 'precio':
+                return precio.includes(searchInput);
+            default: // all
+                return codigo.includes(searchInput) || 
+                       nombre.includes(searchInput) || 
+                       precio.includes(searchInput);
+        }
+    });
 
-				// Agregar eventos de modificación
-				document.querySelectorAll('.edit-btn').forEach(btn => {
-					btn.addEventListener('click', (e) => {
-						const materialId = e.target.dataset.id;
-						const material = allMaterials.find(m => m.MaterialID == materialId);
+    renderMaterials(filteredMaterials);
+}
 
-						if (material) {
-							document.getElementById('modalTitle').textContent = 'Modificar Material';
-							document.getElementById('materialIdInput').value = material.MaterialID;
+// Configurar eventos de búsqueda
+document.getElementById('searchInput').addEventListener('input', filterMaterials);
+document.getElementById('searchType').addEventListener('change', filterMaterials);
 
-							// Establecer el valor y deshabilitar el campo código
-							const codigoInput = document.getElementById('codigoInput');
-							codigoInput.value = material.CODIGO;
-							codigoInput.setAttribute('readonly', true);
-							codigoInput.style.backgroundColor = '#f0f0f0'; // Opcional: da feedback visual
-
-							document.getElementById('nombreInput').value = material.MATERIAL;
-							document.getElementById('stockMinInput').value = material.STOCK_MIN;
-							document.getElementById('umInput').value = material.UM;
-							document.getElementById('precioInput').value = material.PRECIO;
-
-							modal.style.display = 'block';
-						}
-					});
-				});
-			}
-
-			// Obtener materiales
-			function Get() {
-				fetch("http://localhost:63152/api/Materials")
-					.then((response) => response.json())
-					.then((data) => {
-						allMaterials = data.map(material => ({
-							MaterialID: material.MaterialID,
-							CODIGO: material.CODIGO ? String(material.CODIGO).trim() : '',
-							MATERIAL: material.MATERIAL ? String(material.MATERIAL).trim() : '',
-							STOCK_MIN: material.STOCK_MIN ? Number(material.STOCK_MIN) : 0,
-							UM: material.UM ? String(material.UM).trim() : '',
-							PRECIO: material.PRECIO ? Number(material.PRECIO) : 0
-						}));
-						renderMaterials(allMaterials);
-					})
-					.catch((error) => {
-						console.error('Error fetching materials:', error);
-					});
-			}
-
-			// Añade esto para asegurarte de que el campo código esté habilitado cuando se abre el modal para agregar
-			addMaterialBtn.addEventListener('click', () => {
-				document.getElementById('modalTitle').textContent = 'Agregar Material';
-				document.getElementById('materialIdInput').value = '';
-				const codigoInput = document.getElementById('codigoInput');
-				codigoInput.removeAttribute('readonly');
-				codigoInput.style.backgroundColor = ''; // Elimina el background gris
-				materialForm.reset();
-				modal.style.display = 'block';
-			});
-
-			// Manejar submit del formulario (Alta o Modificación)
-			materialForm.addEventListener('submit', function (e) {
-				e.preventDefault();
-
-				const materialCodigo = document.getElementById('codigoInput').value;
-				const material = {
-					CODIGO: parseInt(materialCodigo),
-					MATERIAL: document.getElementById('nombreInput').value,
-					STOCK_MIN: parseFloat(document.getElementById('stockMinInput').value),
-					UM: document.getElementById('umInput').value,
-					PRECIO: parseFloat(document.getElementById('precioInput').value)
-				};
-
-				const isModificacion = document.getElementById('modalTitle').textContent === 'Modificar Material';
-
-				Swal.fire({
-					title: isModificacion ? '¿Desea modificar el material?' : '¿Desea insertar un nuevo material?',
-					icon: 'question',
-					showCancelButton: true,
-					confirmButtonText: 'Sí',
-					cancelButtonText: 'No',
-					reverseButtons: true
-				}).then((result) => {
-					if (result.isConfirmed) {
-						// Proceder con la operación
-						const url = isModificacion
-							? `http://localhost:63152/api/Materials/${materialCodigo}`
-							: "http://localhost:63152/api/Materials";
-
-						fetch(url, {
-							method: isModificacion ? 'PUT' : 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-								'Accept': 'application/json',
-							},
-							body: JSON.stringify(material)
-						})
-							.then(response => {
-								if (!response.ok) throw new Error('Error en la operación');
-								return response.text();
-							})
-							.then(() => {
-								Swal.fire({
-									title: isModificacion ? 'Material modificado correctamente' : 'Material insertado correctamente',
-									icon: 'success'
-								}).then(() => {
-									modal.style.display = 'none';
-									materialForm.reset();
-									Get();
-								});
-							})
-							.catch(error => {
-								Swal.fire({
-									title: 'Error al completar operación',
-									text: 'Intente nuevamente',
-									icon: 'error'
-								});
-							});
-					} else if (result.dismiss === Swal.DismissReason.cancel) {
-						// Si se presiona "No", preguntar si desea cancelar
-						Swal.fire({
-							title: '¿Desea cancelar la operación?',
-							icon: 'warning',
-							showCancelButton: true,
-							confirmButtonText: 'Sí',
-							cancelButtonText: 'No',
-							reverseButtons: true
-						}).then((cancelResult) => {
-							if (cancelResult.isConfirmed) {
-								modal.style.display = 'none';
-								materialForm.reset();
-							}
-							// Si presiona "No" en el diálogo de cancelación, no hacemos nada
-						});
-					}
-				});
-			});
-
-			// Modificar también el evento del botón cancelar
-			cancelBtn.addEventListener('click', () => {
-				Swal.fire({
-					title: '¿Desea cancelar la operación?',
-					icon: 'warning',
-					showCancelButton: true,
-					confirmButtonText: 'Sí',
-					cancelButtonText: 'No',
-					reverseButtons: true
-				}).then((result) => {
-					if (result.isConfirmed) {
-						modal.style.display = 'none';
-						materialForm.reset();
-					}
-					// Si presiona "No", el modal permanece abierto
-				});
-			});
-
-			// En la función de edición, deshabilitar el input de código
-			function setupEditModal(material) {
-				document.getElementById('modalTitle').textContent = 'Modificar Material';
-				document.getElementById('codigoInput').value = material.CODIGO;
-				document.getElementById('codigoInput').setAttribute('readonly', true); // Hacer el código de solo lectura
-				// ... resto del código de configuración del modal
-			}
-			// Búsqueda de materiales (previa implementación)
-			function filterMaterials() {
-				const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
-				const searchType = document.getElementById('searchType').value;
-
-				const filteredMaterials = allMaterials.filter(material => {
-					const codigo = String(material.CODIGO).toLowerCase();
-					const nombre = String(material.MATERIAL).toLowerCase();
-					const precio = String(material.PRECIO).toLowerCase();
-
-					switch (searchType) {
-						case 'codigo':
-							return codigo.includes(searchInput);
-						case 'nombre':
-							return nombre.includes(searchInput);
-						case 'precio':
-							return precio.includes(searchInput);
-						default: // all
-							return (
-								codigo.includes(searchInput) ||
-								nombre.includes(searchInput) ||
-								precio.includes(searchInput)
-							);
-					}
-				});
-
-				renderMaterials(filteredMaterials);
-			}
-
-			// Eventos de búsqueda
-			document.getElementById('searchInput').addEventListener('input', filterMaterials);
-			document.getElementById('searchType').addEventListener('change', filterMaterials);
-
-			// Cargar materiales al iniciar
-			Get();
+// Cargar materiales al iniciar la página
+document.addEventListener('DOMContentLoaded', Get);
 		</script>
-</body>
-<!-- <section class="full-width header-well">
-			<div class="full-width header-well-icon">
-				<i class="zmdi zmdi-balance"></i>
-			</div>
-			<div class="full-width header-well-text">
-				<p class="text-condensedLight">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde aut nulla accusantium minus corporis accusamus fuga harum natus molestias necessitatibus.
-				</p>
-			</div>
-		</section> -->
-<!-- <div class="full-width divider-menu-h"></div>
-		<div class="mdl-grid">
-			<div class="mdl-cell mdl-cell--12-col">
-				<div class="full-width panel mdl-shadow--2dp">
-					<div class="full-width panel-tittle bg-primary text-center tittles">
-						New company
-					</div>
-					<div class="full-width panel-content">
-						<form>
-							<div class="mdl-grid">
-								<div class="mdl-cell mdl-cell--12-col">
-		                            <legend class="text-condensedLight"><i class="zmdi zmdi-border-color"></i> &nbsp; DATA COMPANY</legend><br>
-		                        </div>
-								<div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="DNICompany">
-										<label class="mdl-textfield__label" for="DNICompany">DNI</label>
-										<span class="mdl-textfield__error">Invalid number</span>
-									</div>
-								</div>
-								<div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="text" pattern="-?[A-Za-z0-9áéíóúÁÉÍÓÚ ]*(\.[0-9]+)?" id="NameCompany">
-										<label class="mdl-textfield__label" for="NameCompany">Name</label>
-										<span class="mdl-textfield__error">Invalid name</span>
-									</div>
-								</div>
-								<div class="mdl-cell mdl-cell--12-col">
-									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="text" id="addressCompany">
-										<label class="mdl-textfield__label" for="addressCompany">Address</label>
-										<span class="mdl-textfield__error">Invalid address</span>
-									</div>
-								</div>
-								<div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="email" id="emailCompany">
-										<label class="mdl-textfield__label" for="emailCompany">E-mail</label>
-										<span class="mdl-textfield__error">Invalid E-mail</span>
-									</div>
-								</div>
-								<div class="mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet">
-									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="text" id="urlCompany">
-										<label class="mdl-textfield__label" for="urlCompany">Web</label>
-										<span class="mdl-textfield__error">Invalid web</span>
-									</div>
-								</div>
-								<div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
-									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="tel" pattern="-?[0-9+()- ]*(\.[0-9]+)?" id="phoneCompany">
-										<label class="mdl-textfield__label" for="phoneCompany">Phone</label>
-										<span class="mdl-textfield__error">Invalid phone number</span>
-									</div>
-								</div>
-								<div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
-									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="tel" pattern="-?[0-9+()- ]*(\.[0-9]+)?" id="faxCompany">
-										<label class="mdl-textfield__label" for="faxCompany">Fax</label>
-										<span class="mdl-textfield__error">Invalid fax number</span>
-									</div>
-								</div>
-								<div class="mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet">
-									<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-										<input class="mdl-textfield__input" type="text" id="coinCompany">
-										<label class="mdl-textfield__label" for="coinCompany">Coin</label>
-										<span class="mdl-textfield__error">Invalid coin</span>
-									</div>
-								</div>
-							</div>
-							<p class="text-center">
-								<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored bg-primary" id="btn-addCompany">
-									<i class="zmdi zmdi-plus"></i>
-								</button>
-								<div class="mdl-tooltip" for="btn-addCompany">Add company</div>
-							</p>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section> -->
 </body>
 
 </html>
