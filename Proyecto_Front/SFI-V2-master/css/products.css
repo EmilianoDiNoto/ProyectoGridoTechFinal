@@ -1,0 +1,353 @@
+/* Estilo para centrar el título "Listar productos" */
+.header-well-text {
+    text-align: center;
+    width: 100%;
+}
+
+.header-well-text p {
+    font-size: 24px;
+    margin: 0;
+    padding: 20px 0;
+}
+
+/* Alineación de precios a la derecha */
+.table-responsive td:nth-child(5) {
+    /* Columna de precios */
+    text-align: right;
+}
+
+/* Contenedor de la tabla */
+.table-container {
+    flex: 2;
+    /* Ocupa más espacio que el gráfico */
+    min-width: 500px;
+    /* Ancho mínimo */
+    overflow-x: auto;
+    /* Permite scroll horizontal si la tabla es muy ancha */
+    padding: 0 20px;
+    /* Espaciado interno lateral */
+    margin: 0 auto;
+    /* Centrar horizontalmente */
+}
+
+thead {
+    background-color: #468bc7;
+    /* Verde */
+    color: white;
+    padding: 10px;
+    text-transform: uppercase;
+    border: 1px solid #ddd;
+}
+
+th,
+td {
+    padding: 12px 15px;
+
+    border-bottom: 1px solid #e9ecef;
+}
+
+th {
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+ table tbody tr:hover {
+    background-color: #bec9d4;
+    transition: background-color 0.1s ease;
+}
+
+td {
+    color: #212529;
+}
+
+.las {
+    margin-right: 5px;
+    color: #adb5bd;
+    cursor: pointer;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+td:last-child {
+    width: 15%;
+    /* font-weight: bold; */
+    text-align: center;
+
+}
+
+/* Estilos para modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content input,
+.modal-content select {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.action-btn:hover {
+    text-decoration: underline;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    /* Espacio entre elementos */
+    padding: 2rem;
+    /* Padding alrededor del contenedor */
+    margin: 1rem auto;
+    /* Margen arriba y abajo, auto para centrar */
+    max-width: 1200px;
+    /* Ancho máximo para mantener todo junto */
+}
+
+#searchInput {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    min-width: 300px;
+    /* Ancho mínimo del input */
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+#searchType {
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    min-width: 150px;
+    /* Ancho mínimo del select */
+    font-size: 0.875rem;
+    background-color: white;
+    cursor: pointer;
+}
+
+#addMaterialBtn {
+    padding: 0.75rem 1.5rem;
+    background-color: #4a90e2;
+    /* Color azul que coincide con tu diseño */
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#addMaterialBtn:hover {
+    background-color: #357abd;
+    /* Un tono más oscuro al hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    #searchInput,
+    #searchType,
+    #addMaterialBtn {
+        width: 100%;
+        min-width: unset;
+    }
+
+    /* Contenedor principal de la tabla */
+    .table-container {
+        width: 100%;
+        overflow-x: auto;
+        margin: 1rem auto;
+        padding: 0 1rem;
+        max-width: 1200px;
+    }
+
+    /* Estilos base de la tabla */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        min-width: 800px;
+        /* Asegura que la tabla tenga un ancho mínimo */
+    }
+
+    /* Estilos para el encabezado */
+    thead {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    th {
+        padding: 1rem;
+        text-align: left;
+        color: #495057;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9em;
+        white-space: nowrap;
+    }
+
+    /* Estilos para el cuerpo de la tabla */
+    td {
+        padding: 1rem;
+        color: #212529;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    /* Estilos para filas alternas */
+    tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    tbody tr:hover {
+        background-color: #f1f3f5;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Estilos para los botones de acción */
+    .action-btn {
+        padding: 0.5rem 1rem;
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .action-btn:hover {
+        background-color: #357abd;
+    }
+
+    /* Responsive para móviles */
+    @media screen and (max-width: 768px) {
+        .table-container {
+            padding: 0.5rem;
+        }
+
+        /* Hacer que la tabla se pueda scrollear horizontalmente */
+        table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        th,
+        td {
+            padding: 0.75rem;
+        }
+
+        /* Opcional: Hacer que algunas columnas sean más pequeñas en móvil */
+        th:nth-child(3),
+        /* Stock Mínimo */
+        td:nth-child(3),
+        th:nth-child(4),
+        /* Unidad de Medida */
+        td:nth-child(4) {
+            max-width: 100px;
+        }
+    }
+
+    /* Mensaje de no resultados */
+    .no-results {
+        text-align: center;
+        padding: 2rem;
+        color: #666;
+        font-style: italic;
+    }
+
+    /* Estilos para el scrollbar horizontal en la tabla (opcional) */
+    .table-container::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+    .table-container::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}
