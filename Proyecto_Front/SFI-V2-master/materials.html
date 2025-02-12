@@ -18,6 +18,12 @@
 	<link rel="stylesheet" href="css/materials.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+
+	<!-- BOOTRSTRAP -->
+	<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
 	<!-- SweetAlert2 (una sola versión) -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -25,7 +31,23 @@
 	<script src="js/material.min.js"></script>
 	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="js/main.js"></script>
+	<script src="js/menuControl.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+	<!-- DataTables CSS -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+	<!-- DataTables JS -->
+	<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 
 </head>
 
@@ -98,374 +120,280 @@
 			</a>
 		</section>
 	</section>
-	<!-- navLateral -->
-	<section class="full-width navLateral">
-		<div class="full-width navLateral-bg btn-menu"></div>
-		<div class="full-width navLateral-body">
-			<div class="full-width navLateral-body-logo text-center tittles">
-				<i class="zmdi zmdi-close btn-menu"></i> Grido Tech Advance
-			</div>
-			<figure class="full-width navLateral-body-tittle-menu">
-				<div>
-					<img src="assets/img/Emi (sin Fondo).png" alt="Avatar" class="img-responsive">
+	<div class="wrapper">
+		<!-- Sidebar -->
+		<aside id="sidebar">
+			<div class="d-flex">
+				<button class="toggle-btn" type="button">
+					<i class="lni lni-grid-alt"></i>
+				</button>
+				<div class="sidebar-logo">
+					<a href="#">Grido Tech Advance</a>
 				</div>
-				<figcaption>
-					<span>
-						Emiliano Di Noto<br>
-						<small>Administrador</small>
-					</span>
-				</figcaption>
-			</figure>
-			<nav class="full-width">
-				<ul class="full-width list-unstyle menu-principal">
-					<li class="full-width">
-						<a href="home.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-view-dashboard"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Inicio
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="production.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-washing-machine"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Declarar Producción
-							</div>
-						</a>
-					</li>
-
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="workOders.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-washing-machine"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Ordenes de Trabajo
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-
-						<a href="#!" class="full-width btn-subMenu">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-case"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Materiales
-							</div>
-							<span class="zmdi zmdi-chevron-left"></span>
-						</a>
-						<ul class="full-width menu-principal sub-menu-options">
-							<li class="full-width">
-								<a href="materials.html" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-balance"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Materiales
-									</div>
-								</a>
-							</li>
-							<li class="full-width">
-								<a href="providers.html" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-truck"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Materiales Descartados
-									</div>
-								</a>
-							</li>
-							<li class="full-width">
-								<a href="payments.html" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-card"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Materiales Retenidos
-									</div>
-								</a>
-							</li>
-						</ul>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="products.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-washing-machine"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Productos
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="productStore.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-store"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Almacen
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<!-- <li class="full-width">
-						<a href="sales.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-shopping-cart"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Informes
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li> -->
-					<li class="full-width">
-						<a href="#!" class="full-width btn-subMenu">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-face"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Gestión de Usuarios
-							</div>
-							<span class="zmdi zmdi-chevron-left"></span>
-						</a>
-						<ul class="full-width menu-principal sub-menu-options">
-							<li class="full-width">
-								<a href="admin.html" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-account"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Administradores
-									</div>
-								</a>
-							</li>
-							<li class="full-width">
-								<a href="client.html" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-accounts"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Usuarios
-									</div>
-								</a>
-							</li>
-						</ul>
-					</li>
-					<li class="full-width">
-						<a href="#!" class="full-width btn-subMenu">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-wrench"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Configuración
-							</div>
-							<span class="zmdi zmdi-chevron-left"></span>
-						</a>
-						<ul class="full-width menu-principal sub-menu-options">
-							<li class="full-width">
-								<a href="#!" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-widgets"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Opción 1
-									</div>
-								</a>
-							</li>
-							<li class="full-width">
-								<a href="#!" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-widgets"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Opción 2
-									</div>
-								</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</section>
-	<!-- pageContent -->
-	<section class="full-width pageContent">
-		<!-- navBar -->
-		<div class="full-width navBar">
-			<div class="full-width navBar-options">
-				<i class="zmdi zmdi-swap btn-menu" id="btn-menu"></i>
-				<div class="mdl-tooltip" for="btn-menu">Hide / Show MENU</div>
-				<nav class="navBar-options-list">
-					<ul class="list-unstyle">
-						<li class="btn-Notification" id="notifications">
-							<i class="zmdi zmdi-notifications"></i>
-							<div class="mdl-tooltip" for="notifications">Notifications</div>
+			</div>
+			<ul class="sidebar-nav">
+				<li class="sidebar-item">
+					<a href="home.html" class="sidebar-link">
+						<i class="zmdi zmdi-view-dashboard"></i>
+						<span>Inicio</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="production.html" class="sidebar-link">
+						<i class="zmdi zmdi-washing-machine"></i>
+						<span>Declarar Producción</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="workOders.html" class="sidebar-link">
+						<i class="zmdi zmdi-assignment"></i>
+						<span>Órdenes de Trabajo</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+						data-bs-target="#materials" aria-expanded="false" aria-controls="materials">
+						<i class="zmdi zmdi-case"></i>
+						<span>Materiales</span>
+					</a>
+					<ul id="materials" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+						<li class="sidebar-item">
+							<a href="materials.html" class="sidebar-link">Materiales</a>
 						</li>
-						<li class="btn-exit" id="btn-exit">
-							<i class="zmdi zmdi-power"></i>
-							<div class="mdl-tooltip" for="btn-exit">LogOut</div>
+						<li class="sidebar-item">
+							<a href="providers.html" class="sidebar-link">Materiales Descartados</a>
 						</li>
-						<li class="text-condensedLight noLink"><small>Emiliano Di Noto</small></li>
-						<li class="noLink">
-							<figure>
-								<img src="assets/img/Emi (sin Fondo).png" alt="Avatar" class="img-responsive">
-							</figure>
+						<li class="sidebar-item">
+							<a href="payments.html" class="sidebar-link">Materiales Retenidos</a>
 						</li>
 					</ul>
-				</nav>
+				</li>
+				<li class="sidebar-item">
+					<a href="products.html" class="sidebar-link">
+						<i class="zmdi zmdi-store"></i>
+						<span>Productos</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="productStore.html" class="sidebar-link">
+						<i class="zmdi zmdi-store"></i>
+						<span>Almacén</span>
+					</a>
+				</li>
+			</ul>
+		</aside>
+	
+		<!-- Main Content -->
+		<div class="main">
+			<!-- NavBar -->
+			<div class="navBar">
+				<div class="navBar-options">
+					<nav class="navBar-options-list">
+						<ul class="list-unstyle">
+							<li class="btn-Notification" id="notifications">
+								<i class="zmdi zmdi-notifications"></i>
+								<div class="mdl-tooltip" for="notifications">Notifications</div>
+							</li>
+							<li class="btn-exit" id="btn-exit">
+								<i class="zmdi zmdi-power"></i>
+								<div class="mdl-tooltip" for="btn-exit">LogOut</div>
+							</li>
+							<li class="text-condensedLight noLink"><small>Emiliano Di Noto</small></li>
+							<li class="noLink">
+								<figure>
+									<img src="assets/img/Emi (sin Fondo).png" alt="Avatar" class="img-responsive">
+								</figure>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+	
+			<!-- Header -->
+			<div class="header-well">
+				<div class="header-well-icon">
+					<!-- <i class="zmdi zmdi-washing-machine"></i> -->
+				</div>
+				<div class="header-well-text">
+					<p class="text-condensedLight">
+						Listar materiales de almacen
+					</p>
+				</div>
+			</div>
+	
+			<!-- Table Container -->
+			<div class="table-container">
+				<table id="materialsTable" class="display responsive nowrap" style="width:100%">
+					<thead>
+						<tr>
+							<th>CODIGO</th>
+							<th>MATERIAL</th>
+							<th>STOCK MINIMO</th>
+							<th>UNIDAD DE MEDIDA</th>
+							<th>PRECIO POR KILO</th>
+						</tr>
+					</thead>
+					<tbody id="materialsTableBody">
+						<!-- Los datos se insertarán dinámicamente aquí -->
+					</tbody>
+				</table>
 			</div>
 		</div>
-		<section class="full-width header-well">
-			<div class="full-width header-well-icon">
-				<!-- <i class="zmdi zmdi-washing-machine"></i> -->
-			</div>
-			<div class="full-width header-well-text">
-				<p class="text-condensedLight">
-					Listar materiales de almacen
-				</p>
-			</div>
-		</section>
-		</div>
-
-		<div class="search-container">
-			<input type="text" id="searchInput" placeholder="Buscar...">
-			<select id="searchType">
-				<option value="all">Buscar en Todo</option>
-				<option value="codigo">Código</option>
-				<option value="nombre">Nombre</option>
-				<option value="precio">Precio</option>
-			</select>
-		</div>
-
-		<div class="table-container">
-			<table>
-				<thead>
-					<tr>
-						<th>CODIGO</th>
-						<th>MATERIAL</th>
-						<th>STOCK MINIMO</th>
-						<th>UNIDAD DE MEDIDA</th>
-						<th>PRECIO POR KILO</th>
-
-					</tr>
-				</thead>
-				<tbody id="materialsTableBody">
-					<!-- Los datos se insertarán dinámicamente aquí -->
-				</tbody>
-			</table>
-		</div>
+	</div>
 
 		<script>
-		// Variable global para almacenar todos los materiales
-let allMaterials = [];
+			// Agregar esto al inicio de tu script, antes de la definición de initializeDataTable
+			document.addEventListener('DOMContentLoaded', function () {
+				// Referencias a elementos
+				const sidebar = document.querySelector('.sidebar');
+				const mainContent = document.querySelector('.main-content');
+				const toggleBtn = document.querySelector('.toggle-btn');
+				const submenuToggles = document.querySelectorAll('.submenu-toggle');
 
-// Función para renderizar la tabla
-function renderMaterials(materials) {
-    const tbody = document.getElementById('materialsTableBody');
-    tbody.innerHTML = '';
+				// Verificar que existan los elementos necesarios
+				if (!sidebar || !mainContent || !toggleBtn) {
+					console.error('No se encontraron los elementos necesarios del sidebar');
+					return;
+				}
 
-    if (materials.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="5" class="no-results">
-                    No se encontraron resultados.
-                </td>
-            </tr>
-        `;
-        return;
-    }
+				// Función para ajustar la tabla
+				function adjustTable() {
+					if (window.materialsTable) {
+						setTimeout(() => {
+							window.materialsTable.columns.adjust().responsive.recalc();
+						}, 300);
+					}
+				}
 
-    materials.forEach((material) => {
-        const row = `
-            <tr>
-                <td>${material.CODIGO || ''}</td>
-                <td>${material.MATERIAL || ''}</td>
-                <td>${material.STOCK_MIN || 0}</td>
-                <td>${material.UM || ''}</td>
-                <td>$${Number(material.PRECIO || 0).toFixed(2)}</td>
-            </tr>
-        `;
-        tbody.innerHTML += row;
-    });
-}
+				// Toggle sidebar
+				if (toggleBtn) {
+					toggleBtn.addEventListener('click', () => {
+						sidebar.classList.toggle('collapsed');
+						mainContent.classList.toggle('expanded');
+						adjustTable();
+					});
+				}
 
-// Función para obtener materiales de la API
-function Get() {
-    fetch("http://localhost:63152/api/Materials")
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Limpiar y formatear los datos recibidos
-            allMaterials = data.map(material => ({
-                MaterialID: material.MaterialID,
-                CODIGO: material.CODIGO ? String(material.CODIGO).trim() : '',
-                MATERIAL: material.MATERIAL ? String(material.MATERIAL).trim() : '',
-                STOCK_MIN: material.STOCK_MIN ? Number(material.STOCK_MIN) : 0,
-                UM: material.UM ? String(material.UM).trim() : '',
-                PRECIO: material.PRECIO ? Number(material.PRECIO) : 0
-            }));
-            renderMaterials(allMaterials);
-        })
-        .catch(error => {
-            console.error('Error al obtener los materiales:', error);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se pudieron cargar los materiales. Por favor, intente nuevamente.',
-                icon: 'error'
-            });
-        });
-}
+				// Toggle submenus
+				submenuToggles.forEach(toggle => {
+					toggle.addEventListener('click', (e) => {
+						e.preventDefault();
+						if (!sidebar.classList.contains('collapsed')) {
+							const parent = toggle.parentElement;
+							parent.classList.toggle('active');
+						}
+					});
+				});
 
-// Función para filtrar materiales
-function filterMaterials() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase().trim();
-    const searchType = document.getElementById('searchType').value;
+				// Manejar resize de la ventana
+				window.addEventListener('resize', adjustTable);
+			});
 
-    const filteredMaterials = allMaterials.filter(material => {
-        const codigo = String(material.CODIGO).toLowerCase();
-        const nombre = String(material.MATERIAL).toLowerCase();
-        const precio = String(material.PRECIO).toLowerCase();
 
-        switch (searchType) {
-            case 'codigo':
-                return codigo.includes(searchInput);
-            case 'nombre':
-                return nombre.includes(searchInput);
-            case 'precio':
-                return precio.includes(searchInput);
-            default: // all
-                return codigo.includes(searchInput) || 
-                       nombre.includes(searchInput) || 
-                       precio.includes(searchInput);
-        }
-    });
 
-    renderMaterials(filteredMaterials);
-}
 
-// Configurar eventos de búsqueda
-document.getElementById('searchInput').addEventListener('input', filterMaterials);
-document.getElementById('searchType').addEventListener('change', filterMaterials);
+			let materialsTable;
 
-// Cargar materiales al iniciar la página
-document.addEventListener('DOMContentLoaded', Get);
+			function initializeDataTable(data) {
+				if (materialsTable) {
+					materialsTable.destroy();
+				}
+
+				materialsTable = $('#materialsTable').DataTable({
+					data: data,
+					columns: [
+						{ data: 'CODIGO' },
+						{ data: 'MATERIAL' },
+						{ data: 'STOCK_MIN' },
+						{ data: 'UM' },
+						{
+							data: 'PRECIO',
+							render: function (data) {
+								return `$${Number(data).toFixed(2)}`;
+							}
+						}
+					],
+					responsive: true,
+					dom: 'Bfrtip',
+					buttons: [
+						{
+							extend: 'excel',
+							text: 'Exportar a Excel',
+							className: 'btn btn-success',
+							exportOptions: {
+								columns: [0, 1, 2, 3, 4]
+							}
+						}
+					],
+					language: {
+						url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+					},
+					pageLength: 10,
+					order: [[0, 'asc']],
+					columnDefs: [
+						{
+							targets: 4,
+							className: 'text-right'
+						}
+					],
+					drawCallback: function () {
+						// Solo ajustar si la tabla existe y tiene el método adjust
+						if (this.api) {
+							this.api().columns.adjust();
+							if (this.api().responsive) {
+								this.api().responsive.recalc();
+							}
+						}
+					}
+				});
+
+				// Hacer la tabla globalmente accesible
+				window.materialsTable = materialsTable;
+			}
+
+			function Get() {
+				fetch("http://localhost:63152/api/Materials")
+					.then(response => {
+						if (!response.ok) {
+							throw new Error('Error en la respuesta del servidor');
+						}
+						return response.json();
+					})
+					.then(data => {
+						// Limpiar y formatear los datos recibidos
+						const formattedData = data.map(material => ({
+							MaterialID: material.MaterialID,
+							CODIGO: material.CODIGO ? String(material.CODIGO).trim() : '',
+							MATERIAL: material.MATERIAL ? String(material.MATERIAL).trim() : '',
+							STOCK_MIN: material.STOCK_MIN ? Number(material.STOCK_MIN) : 0,
+							UM: material.UM ? String(material.UM).trim() : '',
+							PRECIO: material.PRECIO ? Number(material.PRECIO) : 0
+						}));
+
+						initializeDataTable(formattedData);
+					})
+					.catch(error => {
+						console.error('Error al obtener los materiales:', error);
+						Swal.fire({
+							title: 'Error',
+							text: 'No se pudieron cargar los materiales. Por favor, intente nuevamente.',
+							icon: 'error'
+						});
+					});
+			}
+
+			// Cargar materiales al iniciar la página
+			document.addEventListener('DOMContentLoaded', Get);
+
+
+
 		</script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+			crossorigin="anonymous"></script>
+		</section>
+	</div>
+
 </body>
 
 </html>

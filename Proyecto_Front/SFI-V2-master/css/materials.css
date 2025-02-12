@@ -223,10 +223,8 @@
 			/* Contenedor principal de la tabla */
 			.table-container {
 				width: 100%;
-				overflow-x: auto;
-				margin: 1rem auto;
-				padding: 0 1rem;
-				max-width: 1200px;
+				padding: 20px;
+				transition: all 0.35s ease-in-out;
 			}
 
 			/* Estilos base de la tabla */
@@ -370,4 +368,412 @@
 .table-container table td:nth-child(5) {
     color: #0000CC;
     font-weight: 500;
+}
+
+* Estilos para DataTables */
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 20px;
+}
+
+.dataTables_wrapper .dataTables_length {
+    margin-bottom: 20px;
+}
+
+.dataTables_wrapper .dt-buttons {
+    margin-bottom: 20px;
+}
+
+.dt-button {
+    background-color: #468bc7 !important;
+    color: white !important;
+    border: none !important;
+    padding: 8px 16px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+}
+
+.dt-button:hover {
+    background-color: #357abd !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #468bc7 !important;
+    color: white !important;
+    border: 1px solid #468bc7 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #357abd !important;
+    color: white !important;
+    border: 1px solid #357abd !important;
+}
+
+/* Ajustes responsive */
+@media screen and (max-width: 768px) {
+    .dataTables_wrapper .dataTables_filter,
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dt-buttons {
+        text-align: center;
+        float: none;
+    }
+}
+
+/* Estilos para el nuevo sidebar */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 260px;
+    background: #1a237e; /* Azul oscuro */
+    color: #fff;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    white-space: nowrap;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 0;
+}
+
+.sidebar-nav {
+    padding: 20px 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li {
+    margin-bottom: 5px;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.sidebar-nav a:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.sidebar-nav i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.sidebar-nav span {
+    white-space: nowrap;
+}
+
+/* Submenu styles */
+.submenu {
+    display: none;
+    padding-left: 20px;
+    background: rgba(0,0,0,0.1);
+}
+
+.has-submenu.active .submenu {
+    display: block;
+}
+
+/* Main content styles */
+.main-content {
+    margin-left: 260px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.main-content.expanded {
+    margin-left: 70px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .main-content.expanded {
+        margin-left: 0;
+    }
+
+}
+
+/* Ajustes para el sidebar */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 260px;
+    background: #1a237e;
+    color: #fff;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar.collapsed {
+    width: 60px; /* Reducido para mostrar solo los íconos */
+}
+
+.sidebar.collapsed .sidebar-header h3,
+.sidebar.collapsed .sidebar-nav span,
+.sidebar.collapsed .zmdi-chevron-down {
+    display: none; /* Ocultar texto cuando está colapsado */
+}
+
+.sidebar.collapsed .submenu {
+    display: none !important; /* Forzar ocultar submenús */
+}
+
+.sidebar.collapsed .sidebar-nav a {
+    padding: 12px 15px;
+    justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-nav i {
+    margin-right: 0;
+    font-size: 1.4rem;
+}
+
+/* Ajustes para el contenido principal */
+.main-content {
+    margin-left: 260px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    width: calc(100% - 260px);
+}
+
+.main-content.expanded {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+}
+
+/* Ajustes específicos para DataTables */
+.dataTables_wrapper {
+    width: 100%;
+    transition: all 0.35s ease-in-out;
+}
+
+/* Ajuste para el contenedor de la tabla */
+.table-container {
+    width: 100%;
+    transition: all 0.3s ease;
+    overflow-x: auto;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #fafbfe;
+}
+
+#sidebar {
+    width: 70px;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+    background-color: #0e2238;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+.main {
+    flex: 1;
+    transition: all 0.35s ease-in-out;
+    background-color: #fafbfe;
+    width: calc(100% - 70px);
+    margin-left: 70px;
+}
+
+#sidebar.expand + .main {
+    width: calc(100% - 260px);
+    margin-left: 260px;
+}
+
+
+/* Resto de tus estilos del sidebar de Bootstrap */
+.toggle-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: 1rem 1.5rem;
+}
+
+.toggle-btn i {
+    font-size: 1.5rem;
+    color: #FFF;
+}
+
+.sidebar-logo {
+    margin: auto 0;
+}
+
+.sidebar-logo a {
+    color: #FFF;
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) .sidebar-link span {
+    display: none;
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        left: -70px;
+    }
+
+    #sidebar.expand {
+        left: 0;
+    }
+
+    .main {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    .main {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+    
+    .table-container {
+        padding: 10px;
+    }
+} 
+
+/* Estilos del wrapper y contenido principal */
+.wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #fafbfe;
+}
+
+/* Ajustes del sidebar */
+#sidebar {
+    position: fixed;
+    height: 100vh;
+    width: 70px;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+    background-color: #0e2238;
+}
+
+#sidebar.expand {
+    width: 260px;
+}
+
+/* Ajustes del contenido principal */
+.main {
+    flex: 1;
+    margin-left: 70px; /* Ancho inicial del sidebar */
+    width: calc(100% - 70px);
+    min-height: 100vh;
+    transition: all 0.25s ease-in-out;
+    padding: 20px;
+}
+
+#sidebar.expand + .main {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+}
+
+/* Ajustes para la tabla */
+.table-container {
+    width: 100%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Título de la página */
+.header-well-text {
+    margin-bottom: 20px;
+}
+
+/* Ajustes de navegación superior */
+.navBar {
+    background-color: white;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    #sidebar {
+        left: -70px;
+    }
+
+    #sidebar.expand {
+        left: 0;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 10px;
+    }
+
+    #sidebar.expand + .main {
+        margin-left: 0;
+        width: 100%;
+    }
 }

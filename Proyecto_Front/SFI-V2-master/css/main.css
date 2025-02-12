@@ -374,19 +374,15 @@ html, body{
 }
 /*=============Estilos navegacion lateral*/
 .navLateral{
-	left: 0;
-	width: 300px;
-	z-index: 100;
-	transition: all .3s ease-in-out;
-	background-image: url("../assets/img/FontNavLateral.jpg");
-	background-size: cover;
-	color: #fff;
-	overflow: hidden;
-}
-.navLateral-change{
-	pointer-events: none;
-	opacity: 0;
-	width: 0;
+
+   position: fixed;
+    left: 0;
+    width: 300px;
+    z-index: 100;
+    background-image: url("../assets/img/FontNavLateral.jpg");
+    background-size: cover;
+    color: #fff;
+    overflow: hidden;
 }
 .navLateral-body{
 	z-index: 82;
