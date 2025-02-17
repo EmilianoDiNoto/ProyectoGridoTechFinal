@@ -228,3 +228,76 @@ table tbody tr:hover {
     justify-content: center; /* Centra el contenido horizontalmente */
     gap: 20px; /* Espacio entre el gráfico y la etiqueta */
   }
+
+  /* Estilos para la barra de navegación */
+.navBar {
+    background-color: var(--primary-color);
+    height: 45px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.navBar-options {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+    justify-content: space-between;
+}
+
+.navBar-options h5 {
+    color: white;
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.navBar-options-list {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navBar-options-list ul {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.navBar-options-list li {
+    margin-left: 15px;
+    color: white;
+}
+
+.navBar-options-list figure {
+    margin: 0;
+}
+
+.navBar-options-list .img-responsive {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+/* Ajuste del contenido principal */
+.pageContent {
+    padding-top: 45px; /* Altura del navbar */
+}
+
+.content-container {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Ajuste del gráfico */
+#orderChart {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 300px; /* O el tamaño que prefieras */
+}

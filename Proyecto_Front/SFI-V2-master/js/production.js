@@ -1,5 +1,3 @@
-
-
 // Definir showMaterials globalmente (fuera del DOMContentLoaded)
 window.showMaterials = function (ot) {
     fetch(`http://localhost:63152/api/WorkOrderMaterial/GetWorkOrderMaterials?ot=${ot}`)
@@ -307,30 +305,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
-
-    // Event listeners
-const btnVisual = document.getElementById('btn-menu');
-const navLatVisual = document.querySelector('.navLateral');
-const navLateralBg = document.querySelector('.navLateral-bg');
-
-function toggleMenu(e) {
-if (e) {
-e.preventDefault();
-e.stopPropagation();
-}
-navLateral.classList.toggle('active-menu');
-document.body.style.overflow = navLateral.classList.contains('active-menu') ? 'hidden' : '';
-}
-
-// Event listeners
-btnVisual.addEventListener('click', toggleMenu);
-
-// Cerrar el menú cuando se hace clic en el fondo
-document.querySelector('.navLateral-bg').addEventListener('click', toggleMenu);
-
-// Cerrar el menú cuando se hace clic en el botón de cerrar
-document.querySelector('.navLateral .btn-menu').addEventListener('click', toggleMenu);
 
 
 
@@ -1457,4 +1431,6 @@ function initializeTabSystem() {
             }
         });
     });
+
+    
 }

@@ -1,8 +1,19 @@
+@font-face{
+    font-family: "RobotoCondensedLight";
+    src: url("../fonts/robotocondensed-light.ttf"), 
+    url("../fonts/robotocondensed-light.eot"), 
+    url("../fonts/robotocondensed-light.woff"), 
+    url("../fonts/robotocondensed-light.woff2"), 
+    url("../fonts/robotocondensed-light.svg");
+}
+
+
 
 /* Estilos para el mensaje de alerta */
 
 body {
     background-color: #f0f0f0 !important;
+    font-family: "RobotoRegular" !important;
     /* Gris claro */
 }
 
@@ -746,4 +757,371 @@ left: -250px;
 
 .submit-btn:hover {
     background-color: #0056b3;
+}
+
+
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #fafbfe;
+}
+
+/* Estilos del sidebar */
+#sidebar {
+    width: 70px;
+    min-width: 70px;
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+    background-color: #0e2238;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+/* Contenido principal */
+.main {
+    flex: 1;
+    transition: all 0.35s ease-in-out;
+    background-color: #fafbfe;
+    width: calc(100% - 70px);
+    margin-left: 70px;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+#sidebar.expand + .main {
+    width: calc(100% - 260px);
+    margin-left: 260px;
+}
+
+/* Estilos del botón toggle y logo */
+.toggle-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: 1rem 1.5rem;
+}
+
+.toggle-btn i {
+    font-size: 1.5rem;
+    color: #FFF;
+}
+
+.sidebar-logo {
+    margin: auto 0;
+}
+
+.sidebar-logo a {
+    color: #FFF;
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Ocultar elementos cuando el sidebar está colapsado */
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) .sidebar-link span {
+    display: none;
+}
+
+/* Estilos de navegación del sidebar */
+.sidebar-nav {
+    padding: 20px 0;
+    list-style: none;
+    margin: 0;
+}
+
+.sidebar-item {
+    position: relative;
+}
+
+.sidebar-link {
+    padding: 10px 15px;
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.25s ease-in-out;
+}
+
+.sidebar-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-link i {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+/* Estilos del submenu */
+.sidebar-dropdown {
+    padding-left: 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease-in-out;
+}
+
+.sidebar-dropdown.show {
+    max-height: 1000px;
+}
+
+.sidebar-dropdown .sidebar-link {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+}
+
+/* Media queries para responsive */
+@media (max-width: 768px) {
+    #sidebar {
+        position: fixed;
+        left: -70px;
+    }
+
+    #sidebar.expand {
+        left: 0;
+    }
+
+    .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 10px;
+    }
+
+    #sidebar.expand + .main {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* Estilos para DataTables */
+.dataTables_wrapper {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.dataTables_filter input {
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    padding: 6px 12px !important;
+    margin-left: 8px !important;
+}
+
+.dataTables_length select {
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+    padding: 6px 12px !important;
+    margin: 0 4px !important;
+}
+
+.dt-buttons {
+    margin-bottom: 15px;
+}
+
+.dt-button {
+    background-color: #007bff !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    padding: 6px 12px !important;
+    margin-right: 5px !important;
+}
+
+.dt-button:hover {
+    background-color: #0056b3 !important;
+}
+
+#productionTable thead th {
+    background-color: #4a90e2;
+    color: white;
+    padding: 12px;
+    font-weight: 600;
+}
+
+#productionTable tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+#productionTable tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .dataTables_wrapper {
+        padding: 10px;
+    }
+    
+    .dt-buttons {
+        text-align: center;
+        float: none !important;
+        margin-bottom: 10px;
+    }
+    
+    .dataTables_filter {
+        text-align: center;
+        float: none !important;
+        margin-top: 10px;
+    }
+}
+
+
+.table-container {
+    width: 100%;
+    padding: 20px;
+    transition: all 0.35s ease-in-out;
+}
+
+/* Estilos base de la tabla */
+.table-container {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 20px auto;
+    /* Centrará la tabla horizontalmente */
+    font-family: "RobotoRegular";
+    font-size: 14px;
+    text-align: center;
+    /* Centra el texto de las celdas */
+    background-color: #f9f9f9;
+    /* Fondo claro */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra para darle un efecto elevado */
+}
+
+/* Estilos para el encabezado */
+thead {
+    background-color: #4a90e2;
+    /* Verde */
+    color: white;
+    padding: 10px;
+    text-transform: uppercase;
+    border: 1px solid #ddd;
+}
+
+th {
+    padding: 1rem;
+    text-align: left;
+    color: #495057;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+/* Estilos para el cuerpo de la tabla */
+td {
+    padding: 1rem;
+    color: #212529;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Estilos para filas alternas */
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tbody tr:hover {
+    background-color: #f1f3f5;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilos para los botones de acción */
+.action-btn {
+    padding: 0.5rem 1rem;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.action-btn:hover {
+    background-color: #357abd;
+}
+
+/* Responsive para móviles */
+@media screen and (max-width: 768px) {
+    .table-container {
+        padding: 0.5rem;
+    }
+
+    /* Hacer que la tabla se pueda scrollear horizontalmente */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    th,
+    td {
+        padding: 0.75rem;
+    }
+
+    /* Opcional: Hacer que algunas columnas sean más pequeñas en móvil */
+    th:nth-child(3),
+    /* Stock Mínimo */
+    td:nth-child(3),
+    th:nth-child(4),
+    /* Unidad de Medida */
+    td:nth-child(4) {
+        max-width: 100px;
+    }
+}
+
+/* Mensaje de no resultados */
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* Estilos para el scrollbar horizontal en la tabla (opcional) */
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Alineación de precios a la derecha y color azul oscuro */
+.table-container table td:nth-child(5) {
+text-align: right;
+color:#4a90e2;
+font-weight: 500; /* Un poco más grueso que el normal */
+}
+
+/* Alineación de precios y su encabezado a la derecha */
+.table-container table th:nth-child(5),
+.table-container table td:nth-child(5) {
+text-align: right;
+color:#4a90e2; /* Azul oscuro solo para los precios */
+}
+
+/* Para que solo los valores de precio sean azules, no el encabezado */
+.table-container table td:nth-child(5) {
+color: #0000CC;
+font-weight: 500;
 }

@@ -11,21 +11,6 @@ $(document).ready(function(){
             ContainerNoty.addClass('container-notifications-show');
         }
     });
- // Eliminar o comentar este bloque
-/*$('.btn-menu').on('click', function(){
-    var navLateral=$('.navLateral');
-    var pageContent=$('.pageContent');
-    var navOption=$('.navBar-options');
-    if(navLateral.hasClass('navLateral-change')&&pageContent.hasClass('pageContent-change')){
-        navLateral.removeClass('navLateral-change');
-        pageContent.removeClass('pageContent-change');
-        navOption.removeClass('navBar-options-change');
-    }else{
-        navLateral.addClass('navLateral-change');
-        pageContent.addClass('pageContent-change');
-        navOption.addClass('navBar-options-change');
-    }
-});*/
     /*Salir del sistema*/
     $('.btn-exit').on('click', function(){
     	swal({
@@ -71,3 +56,137 @@ $(document).ready(function(){
             });
         });
 })(jQuery);
+
+// Función para actualizar el reloj
+function updateClock() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('es-AR', { 
+        timeZone: 'America/Argentina/Cordoba',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+    document.getElementById('clock').textContent = timeString;
+}
+
+// Actualizar el reloj cada segundo
+setInterval(updateClock, 1000);
+updateClock(); // Actualización inicial
+
+// Creamos una función separada para inicializar los gráficos
+function initCharts() {
+    // Asegurarnos de que los elementos canvas existen
+    const mainMetricsCtx = document.getElementById('mainMetrics');
+    const workDistributionCtx = document.getElementById('workDistribution');
+    const comparativeChartCtx = document.getElementById('comparativeChart');
+    const monthlyProgressCtx = document.getElementById('monthlyProgress');
+
+    if (mainMetricsCtx) {
+        new Chart(mainMetricsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+                datasets: [{
+                    label: 'Productividad',
+                    data: [65, 59, 80, 81, 56],
+                    backgroundColor: '#4e73df'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    if (workDistributionCtx) {
+        new Chart(workDistributionCtx, {
+            type: 'pie',
+            data: {
+                labels: ['En Proceso', 'Completado', 'Pendiente', 'Cancelado'],
+                datasets: [{
+                    data: [30, 40, 20, 10],
+                    backgroundColor: ['#4e73df', '#1cc88a', '#f6c23e', '#e74a3b']
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true
+            }
+        });
+    }
+
+    if (comparativeChartCtx) {
+        new Chart(comparativeChartCtx, {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May'],
+                datasets: [{
+                    label: '2024',
+                    data: [65, 59, 80, 81, 56],
+                    borderColor: '#4e73df',
+                    tension: 0.1
+                }, {
+                    label: '2023',
+                    data: [45, 70, 65, 75, 50],
+                    borderColor: '#1cc88a',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true
+            }
+        });
+    }
+
+    if (monthlyProgressCtx) {
+        new Chart(monthlyProgressCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May'],
+                datasets: [{
+                    label: 'Completado',
+                    data: [30, 40, 35, 45, 40],
+                    backgroundColor: '#1cc88a'
+                }, {
+                    label: 'En Proceso',
+                    data: [20, 15, 25, 20, 15],
+                    backgroundColor: '#4e73df'
+                }, {
+                    label: 'Pendiente',
+                    data: [10, 5, 15, 10, 5],
+                    backgroundColor: '#f6c23e'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true
+                    },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Asegurarnos de que el DOM está completamente cargado
+document.addEventListener('DOMContentLoaded', function() {
+    initCharts();
+});
+
+// También podemos reinicializar los gráficos cuando se redimensiona la ventana
+window.addEventListener('resize', function() {
+    initCharts();
+});

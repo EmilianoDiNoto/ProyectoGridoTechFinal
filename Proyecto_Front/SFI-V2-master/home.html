@@ -11,12 +11,42 @@
 	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
 	<link rel="stylesheet" href="css/main.css">
+
+	<!-- Chart.js -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
 	<script src="js/material.min.js"></script>
 	<script src="js/sweetalert2.min.js"></script>
 	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="js/main.js"></script>
+	<script src="js/menuControl.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+	<!-- BOOTSTRAP -->
+	<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- DataTables CSS -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+	<!-- DataTables JS -->
+	<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
+
+
+
 </head>
 
 <body>
@@ -88,294 +118,126 @@
 			</a>
 		</section>
 	</section>
-	<!-- navLateral -->
-	<section class="full-width navLateral">
-		<div class="full-width navLateral-bg btn-menu"></div>
-		<div class="full-width navLateral-body">
-			<div class="full-width navLateral-body-logo text-center tittles">
-				<i class="zmdi zmdi-close btn-menu"></i> Grido Tech Advance
-			</div>
-			<figure class="full-width navLateral-body-tittle-menu">
-				<div>
-					<img src="assets/img/Emi (sin Fondo).png" alt="Avatar" class="img-responsive">
+	<div class="wrapper">
+		<!-- Sidebar -->
+		<aside id="sidebar">
+			<div class="d-flex">
+				<button class="toggle-btn" type="button">
+					<i class="lni lni-grid-alt"></i>
+				</button>
+				<div class="sidebar-logo">
+					<a href="#">Grido Tech Advance</a>
 				</div>
-				<figcaption>
-					<span>
-						Emiliano Di Noto<br>
-						<small>Administrador</small>
-					</span>
-				</figcaption>
-			</figure>
-			<nav class="full-width">
-				<ul class="full-width list-unstyle menu-principal">
-					<li class="full-width">
-						<a href="home.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-view-dashboard"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Inicio
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="production.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-washing-machine"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Declarar Producción
-							</div>
-						</a>
-					</li>
-
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="workOders.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-washing-machine"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Ordenes de Trabajo
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-
-						<a href="#!" class="full-width btn-subMenu">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-case"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Materiales
-							</div>
-							<span class="zmdi zmdi-chevron-left"></span>
-						</a>
-						<ul class="full-width menu-principal sub-menu-options">
-							<li class="full-width">
-								<a href="materials.html" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-balance"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Materiales
-									</div>
-								</a>
-							</li>
-							<li class="full-width">
-								<a href="providers.html" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-truck"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Materiales Descartados
-									</div>
-								</a>
-							</li>
-							<li class="full-width">
-								<a href="payments.html" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-card"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Materiales Retenidos
-									</div>
-								</a>
-							</li>
-						</ul>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="products.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-washing-machine"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Productos
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<li class="full-width">
-						<a href="productStore.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-store"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Almacen
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li>
-					<!-- <li class="full-width">
-						<a href="sales.html" class="full-width">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-shopping-cart"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Informes
-							</div>
-						</a>
-					</li>
-					<li class="full-width divider-menu-h"></li> -->
-					<li class="full-width">
-						<a href="#!" class="full-width btn-subMenu">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-face"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Gestión de Usuarios
-							</div>
-							<span class="zmdi zmdi-chevron-left"></span>
-						</a>
-						<ul class="full-width menu-principal sub-menu-options">
-							<li class="full-width">
-								<a href="admin.html" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-account"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Administradores
-									</div>
-								</a>
-							</li>
-							<li class="full-width">
-								<a href="client.html" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-accounts"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Usuarios
-									</div>
-								</a>
-							</li>
-						</ul>
-					</li>
-					<li class="full-width">
-						<a href="#!" class="full-width btn-subMenu">
-							<div class="navLateral-body-cl">
-								<i class="zmdi zmdi-wrench"></i>
-							</div>
-							<div class="navLateral-body-cr">
-								Configuración
-							</div>
-							<span class="zmdi zmdi-chevron-left"></span>
-						</a>
-						<ul class="full-width menu-principal sub-menu-options">
-							<li class="full-width">
-								<a href="#!" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-widgets"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Opción 1
-									</div>
-								</a>
-							</li>
-							<li class="full-width">
-								<a href="#!" class="full-width">
-									<div class="navLateral-body-cl">
-										<i class="zmdi zmdi-widgets"></i>
-									</div>
-									<div class="navLateral-body-cr">
-										Opción 2
-									</div>
-								</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</section>
-	<!-- pageContent -->
-	<section class="full-width pageContent">
-		<!-- navBar -->
-		<div class="full-width navBar">
-			<div class="full-width navBar-options">
-				<i class="zmdi zmdi-swap btn-menu" id="btn-menu"></i>
-				<div class="mdl-tooltip" for="btn-menu">Hide / Show MENU</div>
-				<nav class="navBar-options-list">
-					<ul class="list-unstyle">
-						<li class="btn-Notification" id="notifications">
-							<i class="zmdi zmdi-notifications"></i>
-							<div class="mdl-tooltip" for="notifications">Notificationes</div>
+			</div>
+			<ul class="sidebar-nav">
+				<li class="sidebar-item">
+					<a href="home.html" class="sidebar-link">
+						<i class="zmdi zmdi-view-dashboard"></i>
+						<span>Inicio</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="production.html" class="sidebar-link">
+						<i class="zmdi zmdi-washing-machine"></i>
+						<span>Declarar Producción</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="workOders.html" class="sidebar-link">
+						<i class="zmdi zmdi-assignment"></i>
+						<span>Órdenes de Trabajo</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+						data-bs-target="#materials" aria-expanded="false" aria-controls="materials">
+						<i class="zmdi zmdi-case"></i>
+						<span>Materiales</span>
+					</a>
+					<ul id="materials" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+						<li class="sidebar-item">
+							<a href="materials.html" class="sidebar-link">Materiales</a>
 						</li>
-						<li class="btn-exit" id="btn-exit">
-							<i class="zmdi zmdi-power"></i>
-							<div class="mdl-tooltip" for="btn-exit">Cerrar Sesión</div>
+						<li class="sidebar-item">
+							<a href="providers.html" class="sidebar-link">Materiales Descartados</a>
 						</li>
-						<li class="text-condensedLight noLink"><small>Emiliano Di Noto</small></li>
-						<li class="noLink">
-							<figure>
-								<img src="assets/img/Emi (sin Fondo).png" alt="Avatar" class="img-responsive">
-							</figure>
+						<li class="sidebar-item">
+							<a href="payments.html" class="sidebar-link">Materiales Retenidos</a>
 						</li>
 					</ul>
-				</nav>
+				</li>
+				<li class="sidebar-item">
+					<a href="products.html" class="sidebar-link">
+						<i class="zmdi zmdi-store"></i>
+						<span>Productos</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="productStore.html" class="sidebar-link">
+						<i class="zmdi zmdi-store"></i>
+						<span>Almacén</span>
+					</a>
+				</li>
+			</ul>
+		</aside>
+
+		<div class="main">
+			<div class="welcome-section">
+				<h1>Bienvenido, Emiliano</h1>
+			</div>
+
+			<div class="dashboard-container">
+				<div class="row">
+					<!-- Reloj -->
+					<div class="col-12">
+						<div class="clock-container">
+							<h2>Hora en Córdoba Capital</h2>
+							<div id="clock" class="clock"></div>
+						</div>
+					</div>
+					<!-- Gráficos -->
+
+					<!-- Nuevo gráfico de Producción Mensual -->
+					<div class="col-12">
+						<div class="chart-container">
+							<h3 class="chart-title">Producción Mensual</h3>
+							<canvas id="monthlyProduction"></canvas>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="chart-container">
+							<h3 class="chart-title">Producción Anual</h3>
+							<canvas id="mainMetrics"></canvas>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="chart-container">
+							<h3 class="chart-title">Ordenes de Trabajo</h3>
+							<canvas id="workDistribution"></canvas>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="chart-container">
+							<h3 class="chart-title">Producción en Órdenes de trabajo</h3>
+							<canvas id="comparativeChart"></canvas>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="chart-container">
+							<h3 class="chart-title">Producción por Turnos de trabajo </h3>
+							<canvas id="monthlyProgress"></canvas>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<section class="full-width text-center" style="padding: 40px 0;">
-			<h3 class="text-center tittles">Panel de Control</h3>
-			<!-- Tiles -->
-			<article class="full-width tile">
-				<div class="tile-text">
-					<span class="text-condensedLight">
-						3<br>
-						<small>Administradores</small>
-					</span>
-				</div>
-				<i class="zmdi zmdi-account tile-icon"></i>
-			</article>
-			<article class="full-width tile">
-				<div class="tile-text">
-					<span class="text-condensedLight">
-						10<br>
-						<small>Usuarios</small>
-					</span>
-				</div>
-				<i class="zmdi zmdi-accounts tile-icon"></i>
-			</article>
-			<!-- <article class="full-width tile">
-				<div class="tile-text">
-					<span class="text-condensedLight">
-						7<br>
-						<small>Providers</small>
-					</span>
-				</div>
-				<i class="zmdi zmdi-truck tile-icon"></i>
-			</article>
-			<article class="full-width tile">
-				<div class="tile-text">
-					<span class="text-condensedLight">
-						9<br>
-						<small>Categories</small>
-					</span>
-				</div>
-				<i class="zmdi zmdi-label tile-icon"></i>
-			</article> -->
-			<article class="full-width tile">
-				<div class="tile-text">
-					<span class="text-condensedLight">
-						121<br>
-						<small>Productos</small>
-					</span>
-				</div>
-				<i class="zmdi zmdi-washing-machine tile-icon"></i>
-			</article>
-			<article class="full-width tile">
-				<div class="tile-text">
-					<span class="text-condensedLight">
-						247<br>
-						<small>Órdenes de producción</small>
-					</span>
-				</div>
-				<i class="zmdi zmdi-shopping-cart tile-icon"></i>
-			</article>
-		</section>
-	</section>
+	</div>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+		crossorigin="anonymous"></script>
 </body>
 
 </html>
