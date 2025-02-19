@@ -65,6 +65,30 @@ namespace WebApplicationGridoTech.Models
 
         }
 
+        public DataTable SelectByProductName(string productName)
+        {
+            string sqlSentencia = "SP_Get_WorkOrderName";
+
+            using (SqlConnection sqlCnn = new SqlConnection(conectionString))
+            {
+                sqlCnn.Open();
+                using (SqlCommand sqlCom = new SqlCommand(sqlSentencia, sqlCnn))
+                {
+                    sqlCom.CommandType = CommandType.StoredProcedure;
+                    sqlCom.Parameters.AddWithValue("@ProductName", productName);
+
+                    DataSet ds = new DataSet();
+                    using (SqlDataAdapter da = new SqlDataAdapter(sqlCom))
+                    {
+                        da.Fill(ds);
+                    }
+
+                    return ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
+                }
+            }
+        }
+
+
         public void Insert()
         {
 

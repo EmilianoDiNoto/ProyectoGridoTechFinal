@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using WebApplicationGridoTech.Models;
 
@@ -12,61 +8,69 @@ namespace WebApplicationGridoTech.Controllers
 {
     public class WorkOrdersController : ApiController
     {
+        private readonly WorkOrders _workOrdersRepository;
+
+        public WorkOrdersController()
+        {
+            _workOrdersRepository = new WorkOrders();
+        }
+
         // GET: api/WorkOrders
         public List<WorkOrders> Get()
         {
-            WorkOrders oWorkOrders = new WorkOrders();
-            var dt = oWorkOrders.SelectAll();
-
+            var dt = _workOrdersRepository.SelectAll();
             var ListaJson = JsonConvert.SerializeObject(dt);
-            var Lista = JsonConvert.DeserializeObject<List<WorkOrders>>(ListaJson);
-            return Lista;
+            return JsonConvert.DeserializeObject<List<WorkOrders>>(ListaJson);
         }
 
-        // GET: api/WorkOrders/5
-        //public string Get(int id)
-        //{
-        //return "value";
-        //}
+        // GET: api/WorkOrders/by-product/{productName}
+        [HttpGet]
+        [Route("api/WorkOrders/by-product/{productName}")]
+        public List<WorkOrders> GetByProductName(string productName)
+        {
+            if (string.IsNullOrEmpty(productName))
+                return new List<WorkOrders>();
+
+            var dt = _workOrdersRepository.SelectByProductName(productName);
+            var ListaJson = JsonConvert.SerializeObject(dt);
+            return JsonConvert.DeserializeObject<List<WorkOrders>>(ListaJson);
+        }
 
         // POST: api/WorkOrders
         public void Post([FromBody] WorkOrders value)
         {
-            WorkOrders oWorkOrders = new WorkOrders();
-            oWorkOrders.PRODUCTOID = value.PRODUCTOID;
-            oWorkOrders.CODIGO = value.CODIGO;
-            oWorkOrders.DEMANDA = value.DEMANDA;
-            oWorkOrders.UM = value.UM;
-            oWorkOrders.FECHACREADA = value.FECHACREADA;
-            oWorkOrders.FECHAMODIFICADA = value.FECHAMODIFICADA;
-            oWorkOrders.ESTADO = value.ESTADO;
-            oWorkOrders.FECHAELABORACION = value.FECHAELABORACION;
+            WorkOrders oWorkOrders = new WorkOrders
+            {
+                PRODUCTOID = value.PRODUCTOID,
+                CODIGO = value.CODIGO,
+                DEMANDA = value.DEMANDA,
+                UM = value.UM,
+                FECHACREADA = value.FECHACREADA,
+                FECHAMODIFICADA = value.FECHAMODIFICADA,
+                ESTADO = value.ESTADO,
+                FECHAELABORACION = value.FECHAELABORACION
+            };
 
             oWorkOrders.Insert();
-
         }
 
-        //// PUT: api/WorkOrders/5
+        // PUT: api/WorkOrders/5
         public void Put(int id, [FromBody] WorkOrders value)
         {
-            WorkOrders oWorkOrders = new WorkOrders();
-            oWorkOrders.OT = id;
-            oWorkOrders.PRODUCTOID = value.PRODUCTOID;
-            oWorkOrders.CODIGO = value.CODIGO;
-            oWorkOrders.DEMANDA = value.DEMANDA;
-            oWorkOrders.UM = value.UM;
-            oWorkOrders.FECHACREADA = value.FECHACREADA;
-            oWorkOrders.FECHAMODIFICADA = value.FECHAMODIFICADA;
-            oWorkOrders.ESTADO = value.ESTADO;
-            oWorkOrders.FECHAELABORACION = value.FECHAELABORACION;
+            WorkOrders oWorkOrders = new WorkOrders
+            {
+                OT = id,
+                PRODUCTOID = value.PRODUCTOID,
+                CODIGO = value.CODIGO,
+                DEMANDA = value.DEMANDA,
+                UM = value.UM,
+                FECHACREADA = value.FECHACREADA,
+                FECHAMODIFICADA = value.FECHAMODIFICADA,
+                ESTADO = value.ESTADO,
+                FECHAELABORACION = value.FECHAELABORACION
+            };
 
             oWorkOrders.Actualizar();
-
         }
-
-        // DELETE: api/WorkOrders/5
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

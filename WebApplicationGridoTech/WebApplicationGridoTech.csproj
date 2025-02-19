@@ -539,6 +539,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DiscardedMaterial.cs" />
+    <Compile Include="Models\IdVarios.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\InventoryE.cs" />
     <Compile Include="Models\Materials.cs" />
