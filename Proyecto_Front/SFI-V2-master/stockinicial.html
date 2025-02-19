@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Inicial</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Declaración de Stock Inicial</h2>
+        <form id="stockForm">
+            <label for="workOrder">Orden de Trabajo:</label>
+            <select id="workOrder" name="workOrder">
+                <option value="">Seleccione una orden</option>
+                <!-- Opciones cargadas dinámicamente -->
+            </select>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Proveedor</th>
+                        <th>Lote</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody id="stockTableBody">
+                    <!-- Filas generadas dinámicamente -->
+                </tbody>
+            </table>
+            
+            <button type="button" id="confirmStock">Confirmar Stock Inicial</button>
+        </form>
+    </div>
+
+
+    
+
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
+            data-bs-target="#profile-tab-pane" type="button" role="tab"
+            aria-controls="profile-tab-pane" aria-selected="false">SOLICITAR</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab"
+            data-bs-target="#contact-tab-pane" type="button" role="tab"
+            aria-controls="contact-tab-pane" aria-selected="false">RECEPCIONAR</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab"
+            data-bs-target="#contact-tab-pane" type="button" role="tab"
+            aria-controls="contact-tab-pane" aria-selected="false">DEVOLUCION</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab"
+            data-bs-target="#contact-tab-pane" type="button" role="tab"
+            aria-controls="contact-tab-pane" aria-selected="false">SCRAP</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab"
+            data-bs-target="#contact-tab-pane" type="button" role="tab"
+            aria-controls="contact-tab-pane" aria-selected="false">STOCK FINAL</button>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
+                aria-labelledby="home-tab" tabindex="0">
+            </div>
+        </div>
+    </li>
+</body>
+</html>

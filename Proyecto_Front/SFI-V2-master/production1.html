@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Production</title>
+    <link rel="stylesheet" href="css/sweetalert2.css">
+    <link rel="stylesheet" href="css/material.min.css">
+    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/production1.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- SweetAlert2 (una sola versión) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Tus otros scripts locales -->
+    <script src="js/material.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/production_datatable.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="js/material.min.js"></script>
+    <script src="js/sweetalert2.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/menuControl.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
+
+
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside id="sidebar">
+        <div class="d-flex">
+            <button class="toggle-btn" type="button">
+                <i class="lni lni-grid-alt"></i>
+            </button>
+            <div class="sidebar-logo">
+                <a href="#">Grido Tech Advance</a>
+            </div>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-item">
+                <a href="home.html" class="sidebar-link">
+                    <i class="zmdi zmdi-view-dashboard"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="production.html" class="sidebar-link">
+                    <i class="zmdi zmdi-washing-machine"></i>
+                    <span>Declarar Producción</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="workOders.html" class="sidebar-link">
+                    <i class="zmdi zmdi-assignment"></i>
+                    <span>Órdenes de Trabajo</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                    data-bs-target="#materials" aria-expanded="false" aria-controls="materials">
+                    <i class="zmdi zmdi-case"></i>
+                    <span>Materiales</span>
+                </a>
+                <ul id="materials" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="materials.html" class="sidebar-link">Materiales</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="providers.html" class="sidebar-link">Materiales Descartados</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="payments.html" class="sidebar-link">Materiales Retenidos</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="products.html" class="sidebar-link">
+                    <i class="zmdi zmdi-store"></i>
+                    <span>Productos</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="productStore.html" class="sidebar-link">
+                    <i class="zmdi zmdi-store"></i>
+                    <span>Almacén</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+    <section class="full-width main">
+        <section class="full-width main">
+            <!-- navBar -->
+            <div class="full-width navBar">
+                <div class="full-width navBar-options">
+                    <i class="zmdi zmdi-swap btn-menu" id="btn-menu"></i>
+                    <div class="mdl-tooltip" for="btn-menu">Hide / Show MENU</div>
+                    <nav class="navBar-options-list">
+                        <ul class="list-unstyle">
+                            <li class="btn-Notification" id="notifications">
+                                <i class="zmdi zmdi-notifications"></i>
+                                <div class="mdl-tooltip" for="notifications">Notifications</div>
+                            </li>
+                            <li class="btn-exit" id="btn-exit">
+                                <i class="zmdi zmdi-power"></i>
+                                <div class="mdl-tooltip" for="btn-exit">LogOut</div>
+                            </li>
+                            <li class="text-condensedLight noLink"><small>Emiliano Di Noto</small></li>
+                            <li class="noLink">
+                                <figure>
+                                    <img src="assets/img/Emi (sin Fondo).png" alt="Avatar" class="img-responsive">
+                                </figure>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <section>
+                <div class="ice-cream-container">
+                    <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND CREAM - GRIDO">
+                        <img src="assets/img/Torta-cookies-and-cream.jpg" alt="Cookie">
+                        <p>Torta Cookies and Cream</p>
+                        <button id="btnProduct1" class="order-btn">Orden de Trabajo</button>
+                    </div>
+                    <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND MOUSSE - GRIDO">
+                        <img src="assets/img/Torta-cookies-mousse.jpg" alt="Crema">
+                        <p>Torta Cookies Mousse</p>
+                        <button id="btnProduct2" class="order-btn">Orden de Trabajo</button>
+                    </div>
+                    <div class="ice-cream-item" data-product="PACK TORTA GRIDO CON RELLENO - GRIDO">
+                        <img src="assets/img/Torta-Grido360X360.jpg" alt="Chocolate">
+                        <p>Torta Grido c/ Relleno</p>
+                        <button id="btnProduct3" class="order-btn">Orden de Trabajo</button>
+                    </div>
+                </div>
+                <br>
+
+                <div>
+                    <H2>DECLARAR PRODUCCION</H2>
+                    <form class="row g-3 needs-validation" novalidate>
+                        <div class="col-md-4">
+                            <label for="validationCustom04" class="form-label">FECHA</label>
+                            <input type="date" class="form-control" id="validationCustom04">
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="validationCustom05" class="form-label">TURNO</label>
+                            <input type="text" class="form-control" id="validationCustom05">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="validationCustom06" class="form-label">RESPONSABLE</label>
+                            <input type="text" class="form-control" id="validationCustom06">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="validationCustom01" class="form-label">OT</label>
+                            <input type="text" class="form-control" id="validationCustom01">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="validationCustom02" class="form-label">PRODUCTO</label>
+                            <input type="text" class="form-control" id="validationCustom02">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="validationCustom03" class="form-label">CANTIDAD</label>
+                            <input type="text" class="form-control" id="validationCustom03">
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">REALIZADO</button>
+                        </div>
+                    </form>
+                    <br>
+                    <h2>GESTION DE MATERIALES</h2>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                                data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane"
+                                aria-selected="true">STOCK INICIAL</button>
+
+                            <div class="tab-content" id="myTabContent">
+                                <table id="materialTable" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Material</th>
+                                            <th>Cantidad</th>
+                                            <th>Proveedor</th>
+                                            <th>Lote</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="stockInicialTableBody">
+                                        <!-- FILAS GENERADAS DINÁMICAMENTE POR LA OT -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Botón para enviar los datos a la API -->
+                            <button type="button" id="stockInicialForm" class="btn btn-primary" title="Enviar los datos de stock inicial">
+                                Enviar Stock Inicial
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
+                            aria-labelledby="home-tab" tabindex="0">...</div>
+                        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
+                            tabindex="0">...</div>
+                        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab"
+                            tabindex="0">...</div>
+                        <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab"
+                            tabindex="0">...</div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        </script>
+
+        <!-- Librerías necesarias -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Archivo JavaScript separado -->
+        <script src="js/production1.js"></script>
+
+</body>
+
+</html>

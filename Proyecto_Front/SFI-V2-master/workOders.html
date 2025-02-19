@@ -21,33 +21,33 @@
 	<script src="js/main.js"></script>
 
 
-		<!-- BOOTSTRAP -->
-		<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-	
-		<!-- DataTables CSS -->
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
-		<link rel="stylesheet" type="text/css"
-			href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-		<link rel="stylesheet" type="text/css"
-			href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-	
-		<!-- DataTables JS -->
-		<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
-		<script type="text/javascript"
-			src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-		<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-		<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-	
+	<!-- BOOTSTRAP -->
+	<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- DataTables CSS -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+	<!-- DataTables JS -->
+	<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
 </head>
 
 <body>
 	<div class=" nav-container">
 
 		<!-- navLateral -->
-		
+
 		<!-- Notifications area -->
 		<section class="full-width container-notifications">
 
@@ -152,71 +152,65 @@
 				</div>
 			</section>
 		</section>
-		<!-- Graficos -->
-<div class="content-container">
-    <div style="width: 20%; margin: 0;">
-        <canvas id="orderChart"></canvas>
+	
+		<!-- Tablas y filtros -->
+		<div class="table-container">
+    <h5 style="text-align: center;">LISTAR ORDENES DE TRABAJO</h5>
+
+    <div class="filters">
+        <label for="filter-ot"></label>
+        <input type="text" id="filter-ot" placeholder="Ingrese OT">
+
+        <label for="filter-producto"></label>
+        <input type="text" id="filter-producto" placeholder="Ingrese Producto">
+
+        <label for="filter-fecha-desde">DESDE</label>
+        <input type="date" id="filter-fecha-desde">
+
+        <label for="filter-fecha-hasta">HASTA</label>
+        <input type="date" id="filter-fecha-hasta">
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>OT</th>
+                <th>CODIGO</th>
+                <th>PRODUCTO</th>
+                <th>DEMANDA</th>
+                <th>UM</th>
+                <th>ESTADO</th>
+                <th>FECHA ELABORACION</th>
+            </tr>
+        </thead>
+        <tbody id="orders-table">
+            <!-- Aquí se generarán las filas dinámicamente -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal para mostrar los materiales -->
+<div id="materials-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>NECESIDAD DE MATERIALES</h3>
+        <table id="materials-table">
+            <thead>
+                <tr>
+                    <th>MATERIAL</th>
+                    <th>NECESIDAD</th>
+                    <th>UM</th>
+                    <th>CODIGO</th>
+                    <th>FECHA ENTREGA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los materiales aparecerán aquí -->
+            </tbody>
+        </table>
     </div>
 </div>
-		<!-- Tablas y filtros -->
-		<div class="contenedor">
 
-			<div class="table-container">
-				<table>
-
-					<thead>
-			</div>
-			<H5 style="text-align: center;">LISTAR ORDENES DE TRABAJO</H5>
-			<div class="filters">
-
-				<label for="filter-ot"></label>
-				<input type="text" id="filter-ot" placeholder="Ingrese OT">
-
-				<label for="filter-producto"></label>
-				<input type="text" id="filter-producto" placeholder="Ingrese Producto">
-
-				<label for="filter-fecha-desde">DESDE</label>
-				<input type="date" id="filter-fecha-desde">
-
-				<label for="filter-fecha-hasta">HASTA</label>
-				<input type="date" id="filter-fecha-hasta">
-			</div>
-			<tr>
-				<th><span class="las la-sort"></span>OT</th>
-				<th><span class="las la-sort"></span>CODIGO</th>
-				<th><span class="las la-sort"></span>PRODUCTO</th>
-				<th><span class="las la-sort"></span>DEMANDA</th>
-				<th><span class="las la-sort"></span>UM</th>
-				<th><span class="las la-sort"></span>ESTADO</th>
-				<th><span class="las la-sort"></span>FECHA ELABORACION</th>
-			</tr>
-			</thead>
-			<tbody>
-			</tbody>
-			</table>
-			<!-- Modal para mostrar los materiales -->
-			<div id="materials-modal" class="modal">
-				<div class="modal-content">
-					<span class="close">&times;</span>
-					<h3>NECESIDAD DE MATERIALES</h3>
-					<table id="materials-table">
-						<thead>
-							<tr>
-								<th>MATERIAL</th>
-								<th>NECESIDAD</th>
-								<th>UM</th>
-								<th>CODIGO</th>
-								<th>FECHA ENTREGA</th>
-							</tr>
-						</thead>
-						<tbody>
-							<!-- Los materiales aparecerán aquí -->
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="js/workorders.js"></script>

@@ -1,0 +1,50 @@
+.ice-cream-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Alinea los elementos verticalmente */
+    gap: 50px; /* Espaciado entre imágenes */
+    margin-top: 10px; /* Ajusta la distancia desde la parte superior */
+    flex-wrap: nowrap; /* Evita que se apilen en pantallas grandes */
+}
+
+.ice-cream-item {
+    text-align: center; /* Centra el texto debajo de la imagen */
+}
+
+.ice-cream-item img {
+    width: 250px; /* Ajusta el tamaño de las imágenes */
+    height: auto;
+    border-radius: 100px; /* Bordes redondeados */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+}
+
+
+.order-btn {
+    margin-top: 10px; /* Espacio entre la imagen y el botón */
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #007bff; /* Azul predeterminado */
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.order-btn.btn-warning {
+    background-color: #ffcc00 !important; /* Amarillo para advertencia */
+    color: #000 !important;
+    font-weight: bold;
+}
+
+.has-work-order {
+    background-color: #ff5733; /* Color rojo si tiene orden de trabajo */
+}
+
+.notification {
+    font-size: 14px;
+    color: red;
+    margin-left: 5px;
+}
+
+
