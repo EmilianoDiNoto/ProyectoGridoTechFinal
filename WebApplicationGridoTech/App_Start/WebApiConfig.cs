@@ -14,6 +14,7 @@ namespace WebApplicationGridoTech
 
             config.EnableCors(cors);
 
+
             // Configuración y servicios de API web
 
             // Rutas de API web
