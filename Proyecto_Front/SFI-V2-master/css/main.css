@@ -988,41 +988,164 @@ html, body{
 .dashboard-container {
 	padding: 20px;
 }
-.clock-container {
-	background: white;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-	text-align: center;
-	margin-bottom: 20px;
+
+/* Estilos para los contenedores de gráficos */
+.chart-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 400px;
+    margin-bottom: 30px;
 }
+
 .clock {
 	font-size: 2.5em;
 	font-weight: bold;
 	color: #333;
 }
-.chart-container {
-	background: white;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-	margin-bottom: 20px;
-	height: 300px; /* Altura fija para los gráficos */
-    position: relative;
-}
-.chart-title {
-	font-size: 1.2em;
-	margin-bottom: 15px;
-	color: #333;
+
+/* Contenedor específico para el gráfico de producción mensual */
+.col-12 .chart-container {
+    height: 450px; /* Más alto que los otros gráficos */
+    padding-bottom: 60px;
 }
 
+/* Contenedor del canvas del gráfico */
+.chart-canvas-container {
+    flex: 1;
+    min-height: 300px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Estilos para el canvas */
 canvas {
     width: 100% !important;
     height: 100% !important;
 }
 
-/* Estilo específico para el gráfico de producción mensual */
-.col-12 .chart-container {
+/* Título del gráfico */
+.chart-title {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Contenedor del botón */
+.chart-button-container {
+    margin-top: 10px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.alerts-container {
+    padding: 20px;
+}
+
+.alert {
+    margin-bottom: 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.alert-heading {
+    font-size: 1.2em;
+    margin-bottom: 0.5rem;
+}
+
+.alert p {
+    margin-bottom: 0;
+}
+
+.modal-xl {
+    max-width: 95% !important;
+}
+
+.dataTables_wrapper {
+    padding: 20px;
+}
+
+.dt-buttons {
+    margin-bottom: 15px;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body h6 {
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 400px;
+    padding: 20px;
+    position: relative;
     margin-bottom: 30px;
-    height: 350px; /* Un poco más alto que los otros gráficos */
+	text-align: center;
+}
+
+
+.chart-canvas-container {
+    flex: 1;
+    min-height: 300px;
+    margin-bottom: 20px;
+}
+
+.chart-title {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.chart-button-container {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.btn-consultar {
+    background-color: #0e2238 !important;
+    color: white !important;
+    border: 2px solid #000 !important;
+    padding: 8px 20px !important;
+    border-radius: 4px !important;
+    font-size: 0.9em !important;
+    transition: all 0.3s ease !important;
+    width: auto !important;
+    min-width: 120px !important;
+    max-width: 150px !important;
+    position: relative !important;
+    z-index: 10 !important;
+    margin: 10px auto !important;
+    display: block !important; /* Cambiado a block para centrado */
+}
+
+.btn-consultar:hover {
+    background-color: #1a3b5d !important;
+    color: white !important;
+}
+
+/* Ajustes para el contenedor de los gráficos circulares */
+.pie-charts-row {
+    margin-bottom: 30px;
+}
+
+/* Asegurarse que el gráfico de producción mensual no cubra los botones */
+#monthlyProduction {
+    margin-bottom: 50px;
+}
+
+/* Contenedor específico para el gráfico de producción mensual */
+.col-12 .chart-container {
+    padding-bottom: 60px;
 }

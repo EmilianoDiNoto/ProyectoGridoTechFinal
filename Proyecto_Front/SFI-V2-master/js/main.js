@@ -59,14 +59,17 @@ $(document).ready(function(){
 
 // Función para actualizar el reloj
 function updateClock() {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('es-AR', { 
-        timeZone: 'America/Argentina/Cordoba',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    });
-    document.getElementById('clock').textContent = timeString;
+    const clockElement = document.getElementById('clock');
+    if (clockElement) { // Verificar que el elemento existe
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('es-AR', { 
+            timeZone: 'America/Argentina/Cordoba',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        clockElement.textContent = timeString;
+    }
 }
 
 // Actualizar el reloj cada segundo
@@ -181,12 +184,4 @@ function initCharts() {
     }
 }
 
-// Asegurarnos de que el DOM está completamente cargado
-document.addEventListener('DOMContentLoaded', function() {
-    initCharts();
-});
 
-// También podemos reinicializar los gráficos cuando se redimensiona la ventana
-window.addEventListener('resize', function() {
-    initCharts();
-});

@@ -44,7 +44,34 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 
+	<!-- SWEETALERT -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+	<!-- PRUEBA-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		// Configuración para DataTables
+		window.dataTablesLanguage = {
+			"decimal": "",
+			"emptyTable": "No hay datos disponibles",
+			"info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+			"infoEmpty": "Mostrando 0 a 0 de 0 registros",
+			"infoFiltered": "(filtrado de _MAX_ registros totales)",
+			"infoPostFix": "",
+			"thousands": ",",
+			"lengthMenu": "Mostrar _MENU_ registros",
+			"loadingRecords": "Cargando...",
+			"processing": "Procesando...",
+			"search": "Buscar:",
+			"zeroRecords": "No se encontraron coincidencias",
+			"paginate": {
+				"first": "Primero",
+				"last": "Último",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			}
+		};
+	</script>
 
 
 </head>
@@ -137,7 +164,7 @@
 					</a>
 				</li>
 				<li class="sidebar-item">
-					<a href="production.html" class="sidebar-link">
+					<a href="production1.html" class="sidebar-link">
 						<i class="zmdi zmdi-washing-machine"></i>
 						<span>Declarar Producción</span>
 					</a>
@@ -186,21 +213,167 @@
 				<h1>Bienvenido, Emiliano</h1>
 			</div>
 
+			<!-- <div class="alerts-container">
+				<div class="row g-4">
+					<div class="col-md-4">
+						<div class="alert alert-primary" role="alert">
+							<h4 class="alert-heading">Continuar Producción</h4>
+							<p>Orden de trabajo 19 - GRIDO C/RELLENO</p>
+						</div>
+					</div>
+				</div>
+			</div> -->
+
+			<!-- Modificar los divs de los gráficos circulares para incluir botones -->
+			<div class="row mt-4">
+				<!-- Primera fila: Producción y Stock Final -->
+				<div class="col-md-6">
+					<div class="chart-container">
+						<h3 class="chart-title">Última Producción</h3>
+						<div class="chart-canvas-container">
+							<canvas id="productionPieChart"></canvas>
+						</div>
+						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#productionModal">
+							Consultar
+						</button>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="chart-container">
+						<h3 class="chart-title">Stock Final</h3>
+						<div class="chart-canvas-container">
+							<canvas id="stockPieChart"></canvas>
+						</div>
+						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#stockModal">
+							Consultar
+						</button>
+					</div>
+				</div>
+				<!-- Segunda fila: Balance de Masas a ancho completo -->
+				<div class="col-12">
+					<div class="chart-container chart-container-large">
+						<h3 class="chart-title">Balance de Masas General</h3>
+						<div class="chart-canvas-container">
+							<canvas id="balancePieChart"></canvas>
+						</div>
+						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#balanceModal">
+							Consultar
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal Producción -->
+			<div class="modal fade" id="productionModal" tabindex="-1" aria-labelledby="productionModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="productionModalLabel">Última Producción</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-6">
+									<h6>Producción OT 4</h6>
+									<table id="productionTable" class="display nowrap" style="width:100%">
+										<thead>
+											<tr>
+												<th>FECHA</th>
+												<th>TURNO</th>
+												<th>RESPONSABLE</th>
+												<th>OT</th>
+												<th>PRODUCTO</th>
+												<th>PRODUCIDO</th>
+												<th>PERFORMANCE</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div class="col-md-6">
+									<h6>Balance de Masas OT 4</h6>
+									<table id="theoricalTableInProduction" class="display nowrap" style="width:100%">
+										<thead>
+											<tr>
+												<th>Material</th>
+												<th>Teórico</th>
+												<th>Real</th>
+												<th>Desvío</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal Balance de Masas -->
+			<div class="modal fade" id="balanceModal" tabindex="-1" aria-labelledby="balanceModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="balanceModalLabel">BALANCE DE MASAS TOTAL</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<table id="consolidadoBMTable" class="display nowrap" style="width:100%">
+								<thead>
+									<tr>
+										<th>Material</th>
+										<th>Consumo Teórico</th>
+										<th>Consumo Real</th>
+										<th>Desvío</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal Stock Final -->
+			<div class="modal fade" id="stockModal" tabindex="-1" aria-labelledby="stockModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="stockModalLabel">Stock Final</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<table id="stockTable" class="display nowrap" style="width:100%">
+								<thead>
+									<tr>
+										<th>FECHA</th>
+										<th>TURNO</th>
+										<th>RESPONSABLE</th>
+										<th>OT</th>
+										<th>MATERIAL</th>
+										<th>CANTIDAD</th>
+										<th>PROVEEDOR</th>
+										<th>LOTE</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
 			<div class="dashboard-container">
 				<div class="row">
 					<!-- Reloj -->
-					<div class="col-12">
-						<div class="clock-container">
-							<h2>Hora en Córdoba Capital</h2>
-							<div id="clock" class="clock"></div>
-						</div>
-					</div>
+
 					<!-- Gráficos -->
 
 					<!-- Nuevo gráfico de Producción Mensual -->
 					<div class="col-12">
 						<div class="chart-container">
-							<h3 class="chart-title">Producción Mensual</h3>
+							<h3 class="chart-title">Producción por Temporada</h3>
 							<canvas id="monthlyProduction"></canvas>
 						</div>
 					</div>
@@ -211,7 +384,7 @@
 							<canvas id="mainMetrics"></canvas>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<div class="chart-container">
 							<h3 class="chart-title">Ordenes de Trabajo</h3>
 							<canvas id="workDistribution"></canvas>
