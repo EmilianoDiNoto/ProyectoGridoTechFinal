@@ -30,5 +30,19 @@ namespace WebApplicationGridoTech.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("GetTRPIDs")]
+        public async Task<IHttpActionResult> GetTRPIDsAsync(string turno, string usuario, string producto)
+        {
+            var result = await _idService.GetTRPIDsAsync(turno, usuario, producto);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
     }
 }

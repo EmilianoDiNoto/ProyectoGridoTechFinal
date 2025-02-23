@@ -45,6 +45,35 @@ namespace WebApplicationGridoTech.Models
             }
             return null; // Si no hay resultados
         }
+
+        public async Task<IDResponse> GetTRPIDsAsync(string turno, string usuario, string producto)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SP_GetTUPIDs", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@TurnoNombre", turno);
+                    cmd.Parameters.AddWithValue("@UsuarioNombre", usuario);
+                    cmd.Parameters.AddWithValue("@ProductoNombre", producto);
+
+                    await conn.OpenAsync();
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            return new IDResponse
+                            {
+                                TurnoID = reader["TurnoID"] != DBNull.Value ? Convert.ToInt32(reader["TurnoID"]) : 0,
+                                UsuarioID = reader["UsuarioID"] != DBNull.Value ? Convert.ToInt32(reader["UsuarioID"]) : 0,
+                                ProductID = reader["ProductID"] != DBNull.Value ? Convert.ToInt32(reader["ProductID"]) : 0,
+                            };
+                        }
+                    }
+                }
+            }
+            return null; // Si no hay resultados
+        }
     }
 
     public class IDResponse
@@ -53,5 +82,6 @@ namespace WebApplicationGridoTech.Models
         public int UsuarioID { get; set; }
         public int MaterialID { get; set; }
         public int ProveedorID { get; set; }
+        public int ProductID { get; set; }
     }
 }

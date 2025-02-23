@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WebApplicationGridoTech.Models;
 using YourNamespace;
 using System;
+using System.Net;
 
 namespace WebApplicationGridoTech.Controllers
 {
@@ -112,6 +113,29 @@ namespace WebApplicationGridoTech.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [HttpPut]
+        [Route("api/SolicitudMaterialRepository/UpdateSolicitudEstado")]
+        public IHttpActionResult UpdateSolicitudEstado([FromBody] SolicitudMaterial solicitud)
+        {
+            if (solicitud == null || solicitud.SolicitudID <= 0 || string.IsNullOrEmpty(solicitud.Estado))
+            {
+                return Content(HttpStatusCode.BadRequest, new { mensaje = "❌ Datos de solicitud inválidos." });
+            }
+
+            try
+            {
+                // Llamar al repositorio para actualizar el estado de la solicitud
+                _SolicitudMaterialRepository.UpdateSolicitudMaterialEstado(solicitud.SolicitudID, solicitud.Estado);
+
+                return Ok(new { mensaje = "✅ Solicitud actualizada exitosamente." });
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, new { error = "❌ Error al actualizar la solicitud", detalle = ex.Message });
+            }
+        }
+
 
 
 
