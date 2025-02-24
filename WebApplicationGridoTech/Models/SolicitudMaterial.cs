@@ -143,6 +143,23 @@ namespace WebApplicationGridoTech.Models
                 command.ExecuteNonQuery();
             }
         }
+
+        public void UpdateSolicitudMaterialEstado(int SolicitudID, string Estado)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("SP_Update_SolMatEstado", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                command.Parameters.AddWithValue("@ORDEN", SolicitudID);
+                command.Parameters.AddWithValue("@ESTADO", Estado ?? (object)DBNull.Value);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 
 

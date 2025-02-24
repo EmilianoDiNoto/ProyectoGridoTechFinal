@@ -522,6 +522,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\DiscardedMaterialController.cs" />
+    <Compile Include="Controllers\IDController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\InventoryEController.cs" />
     <Compile Include="Controllers\MaterialsController.cs" />
@@ -541,7 +542,7 @@
     </Compile>
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Models\DiscardedMaterial.cs" />
-    <Compile Include="Models\IdVarios.cs" />
+    <Compile Include="Models\ID.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\InventoryE.cs" />
     <Compile Include="Models\Materials.cs" />
