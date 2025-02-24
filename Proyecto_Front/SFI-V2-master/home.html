@@ -77,74 +77,7 @@
 </head>
 
 <body>
-	<!-- Notifications area -->
-	<section class="full-width container-notifications">
-		<div class="full-width container-notifications-bg btn-Notification"></div>
-		<section class="NotificationArea">
-			<div class="full-width text-center NotificationArea-title tittles">Notifications <i
-					class="zmdi zmdi-close btn-Notification"></i></div>
-			<a href="#" class="Notification" id="notifation-unread-1">
-				<div class="Notification-icon"><i class="zmdi zmdi-accounts-alt bg-info"></i></div>
-				<div class="Notification-text">
-					<p>
-						<i class="zmdi zmdi-circle"></i>
-						<strong>New User Registration</strong>
-						<br>
-						<small>Just Now</small>
-					</p>
-				</div>
-				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-unread-1">Notification as UnRead</div>
-			</a>
-			<a href="#" class="Notification" id="notifation-read-1">
-				<div class="Notification-icon"><i class="zmdi zmdi-cloud-download bg-primary"></i></div>
-				<div class="Notification-text">
-					<p>
-						<i class="zmdi zmdi-circle-o"></i>
-						<strong>New Updates</strong>
-						<br>
-						<small>30 Mins Ago</small>
-					</p>
-				</div>
-				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-1">Notification as Read</div>
-			</a>
-			<a href="#" class="Notification" id="notifation-unread-2">
-				<div class="Notification-icon"><i class="zmdi zmdi-upload bg-success"></i></div>
-				<div class="Notification-text">
-					<p>
-						<i class="zmdi zmdi-circle"></i>
-						<strong>Archive uploaded</strong>
-						<br>
-						<small>31 Mins Ago</small>
-					</p>
-				</div>
-				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-unread-2">Notification as UnRead</div>
-			</a>
-			<a href="#" class="Notification" id="notifation-read-2">
-				<div class="Notification-icon"><i class="zmdi zmdi-mail-send bg-danger"></i></div>
-				<div class="Notification-text">
-					<p>
-						<i class="zmdi zmdi-circle-o"></i>
-						<strong>New Mail</strong>
-						<br>
-						<small>37 Mins Ago</small>
-					</p>
-				</div>
-				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-2">Notification as Read</div>
-			</a>
-			<a href="#" class="Notification" id="notifation-read-3">
-				<div class="Notification-icon"><i class="zmdi zmdi-folder bg-primary"></i></div>
-				<div class="Notification-text">
-					<p>
-						<i class="zmdi zmdi-circle-o"></i>
-						<strong>Folder delete</strong>
-						<br>
-						<small>1 hours Ago</small>
-					</p>
-				</div>
-				<div class="mdl-tooltip mdl-tooltip--left" for="notifation-read-3">Notification as Read</div>
-			</a>
-		</section>
-	</section>
+
 	<div class="wrapper">
 		<!-- Sidebar -->
 		<aside id="sidebar">
@@ -205,6 +138,18 @@
 						<span>Almacén</span>
 					</a>
 				</li>
+				<li class="sidebar-item">
+					<a href="Users_Gestion.html" class="sidebar-link">
+						<i class="zmdi zmdi-store"></i>
+						<span>Gestión de Usuarios</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="index.html" class="sidebar-link">
+						<i class="zmdi zmdi-store"></i>
+						<span>Cerrar Sesión</span>
+					</a>
+				</li>
 			</ul>
 		</aside>
 
@@ -213,55 +158,104 @@
 				<h1>Bienvenido, Emiliano</h1>
 			</div>
 
-			<!-- <div class="alerts-container">
-				<div class="row g-4">
-					<div class="col-md-4">
-						<div class="alert alert-primary" role="alert">
-							<h4 class="alert-heading">Continuar Producción</h4>
-							<p>Orden de trabajo 19 - GRIDO C/RELLENO</p>
-						</div>
-					</div>
-				</div>
-			</div> -->
+			<!-- Contadores superiores -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="counter-card">
+            <h3>TOTAL INVENTARIO VALORIZADO</h3>
+            <p class="counter-value text-primary" id="inventario-valorizado">$0,00</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="counter-card">
+            <h3>TOTAL DE DESVÍO PRODUCCIÓN</h3>
+            <p class="counter-value text-danger" id="desvio-total">$0,00</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="counter-card">
+            <h3>PEDIDOS PENDIENTES</h3>
+            <p class="counter-value text-warning">0</p>
+        </div>
+    </div>
+</div>
 
-			<!-- Modificar los divs de los gráficos circulares para incluir botones -->
-			<div class="row mt-4">
-				<!-- Primera fila: Producción y Stock Final -->
-				<div class="col-md-6">
-					<div class="chart-container">
-						<h3 class="chart-title">Última Producción</h3>
-						<div class="chart-canvas-container">
-							<canvas id="productionPieChart"></canvas>
-						</div>
-						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#productionModal">
-							Consultar
-						</button>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="chart-container">
-						<h3 class="chart-title">Stock Final</h3>
-						<div class="chart-canvas-container">
-							<canvas id="stockPieChart"></canvas>
-						</div>
-						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#stockModal">
-							Consultar
-						</button>
-					</div>
-				</div>
-				<!-- Segunda fila: Balance de Masas a ancho completo -->
-				<div class="col-12">
-					<div class="chart-container chart-container-large">
-						<h3 class="chart-title">Balance de Masas General</h3>
-						<div class="chart-canvas-container">
-							<canvas id="balancePieChart"></canvas>
-						</div>
-						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#balanceModal">
-							Consultar
-						</button>
-					</div>
-				</div>
-			</div>
+		<!-- Contadores superiores -->
+
+<!-- Estructura principal de gráficos -->
+<div class="row">
+    <!-- Columna izquierda (col-md-8) -->
+    <div class="col-md-8">
+        <!-- Balance de Masas General -->
+        <div class="chart-container chart-container-large mb-4">
+            <h3 class="chart-title">Balance de Masas General</h3>
+            <div class="chart-canvas-container">
+                <canvas id="balancePieChart"></canvas>
+            </div>
+            <button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#balanceModal">
+                Consultar
+            </button>
+        </div>
+
+        <!-- Producción por Temporada -->
+        <div class="chart-container chart-container-medium mb-4">
+            <h3 class="chart-title">Producción por Temporada</h3>
+            <div class="chart-canvas-container">
+                <canvas id="monthlyProduction"></canvas>
+            </div>
+        </div>
+
+        <!-- Producción Anual -->
+        <div class="chart-container">
+            <h3 class="chart-title">Producción Anual</h3>
+            <div class="chart-canvas-container">
+                <canvas id="mainMetrics"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna derecha (col-md-4) -->
+    <div class="col-md-4">
+        <!-- Última Producción -->
+        <div class="chart-container chart-container-small mb-4">
+            <h3 class="chart-title">Última Producción</h3>
+            <div class="chart-canvas-container">
+                <canvas id="productionPieChart"></canvas>
+            </div>
+            <button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#productionModal">
+                Consultar
+            </button>
+        </div>
+
+        <!-- Stock Final -->
+        <div class="chart-container chart-container-small mb-4">
+            <h3 class="chart-title">Stock Final</h3>
+            <div class="chart-canvas-container">
+                <canvas id="stockPieChart"></canvas>
+            </div>
+            <button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#stockModal">
+                Consultar
+            </button>
+        </div>
+
+        <!-- Órdenes de Trabajo -->
+        <div class="chart-container chart-container-small mb-4">
+            <h3 class="chart-title">Ordenes de Trabajo</h3>
+            <div class="chart-canvas-container">
+                <canvas id="workDistribution"></canvas>
+            </div>
+        </div>
+
+        <!-- Producción por Órdenes de Trabajo -->
+        <div class="chart-container chart-container-small">
+            <h3 class="chart-title">Producción en Órdenes de trabajo</h3>
+            <div class="chart-canvas-container">
+                <canvas id="comparativeChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 			<!-- Modal Producción -->
 			<div class="modal fade" id="productionModal" tabindex="-1" aria-labelledby="productionModalLabel"
@@ -364,53 +358,10 @@
 
 
 
-			<div class="dashboard-container">
-				<div class="row">
-					<!-- Reloj -->
 
-					<!-- Gráficos -->
-
-					<!-- Nuevo gráfico de Producción Mensual -->
-					<div class="col-12">
-						<div class="chart-container">
-							<h3 class="chart-title">Producción por Temporada</h3>
-							<canvas id="monthlyProduction"></canvas>
-						</div>
-					</div>
-
-					<div class="col-md-6">
-						<div class="chart-container">
-							<h3 class="chart-title">Producción Anual</h3>
-							<canvas id="mainMetrics"></canvas>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="chart-container">
-							<h3 class="chart-title">Ordenes de Trabajo</h3>
-							<canvas id="workDistribution"></canvas>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="chart-container">
-							<h3 class="chart-title">Producción en Órdenes de trabajo</h3>
-							<canvas id="comparativeChart"></canvas>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="chart-container">
-							<h3 class="chart-title">Producción por Turnos de trabajo </h3>
-							<canvas id="monthlyProgress"></canvas>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-		crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+			crossorigin="anonymous"></script>
 </body>
 
 </html>

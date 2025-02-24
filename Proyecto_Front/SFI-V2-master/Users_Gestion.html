@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Inicio</title>
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/sweetalert2.css">
+	<link rel="stylesheet" href="css/material.min.css">
+	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+	<link rel="stylesheet" href="css/main.css">
+
+	<!-- Chart.js -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+	<script src="js/material.min.js"></script>
+	<script src="js/sweetalert2.min.js"></script>
+	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/menuControl.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+	<!-- BOOTSTRAP -->
+	<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- DataTables CSS -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+	<!-- DataTables JS -->
+	<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
+	<!-- SWEETALERT -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<!-- PRUEBA-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		// Configuración para DataTables
+		window.dataTablesLanguage = {
+			"decimal": "",
+			"emptyTable": "No hay datos disponibles",
+			"info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+			"infoEmpty": "Mostrando 0 a 0 de 0 registros",
+			"infoFiltered": "(filtrado de _MAX_ registros totales)",
+			"infoPostFix": "",
+			"thousands": ",",
+			"lengthMenu": "Mostrar _MENU_ registros",
+			"loadingRecords": "Cargando...",
+			"processing": "Procesando...",
+			"search": "Buscar:",
+			"zeroRecords": "No se encontraron coincidencias",
+			"paginate": {
+				"first": "Primero",
+				"last": "Último",
+				"next": "Siguiente",
+				"previous": "Anterior"
+			}
+		};
+	</script>
+
+
+</head>
+
+<body>
+
+	<div class="wrapper">
+		<!-- Sidebar -->
+		<aside id="sidebar">
+			<div class="d-flex">
+				<button class="toggle-btn" type="button">
+					<i class="lni lni-grid-alt"></i>
+				</button>
+				<div class="sidebar-logo">
+					<a href="#">Grido Tech Advance</a>
+				</div>
+			</div>
+			<ul class="sidebar-nav">
+				<li class="sidebar-item">
+					<a href="home.html" class="sidebar-link">
+						<i class="zmdi zmdi-view-dashboard"></i>
+						<span>Inicio</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="production1.html" class="sidebar-link">
+						<i class="zmdi zmdi-washing-machine"></i>
+						<span>Declarar Producción</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="workOders.html" class="sidebar-link">
+						<i class="zmdi zmdi-assignment"></i>
+						<span>Órdenes de Trabajo</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+						data-bs-target="#materials" aria-expanded="false" aria-controls="materials">
+						<i class="zmdi zmdi-case"></i>
+						<span>Materiales</span>
+					</a>
+					<ul id="materials" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+						<li class="sidebar-item">
+							<a href="materials.html" class="sidebar-link">Materiales</a>
+						</li>
+						<li class="sidebar-item">
+							<a href="providers.html" class="sidebar-link">Materiales Descartados</a>
+						</li>
+						<li class="sidebar-item">
+							<a href="payments.html" class="sidebar-link">Materiales Retenidos</a>
+						</li>
+					</ul>
+				</li>
+				<li class="sidebar-item">
+					<a href="products.html" class="sidebar-link">
+						<i class="zmdi zmdi-store"></i>
+						<span>Productos</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="productStore.html" class="sidebar-link">
+						<i class="zmdi zmdi-store"></i>
+						<span>Almacén</span>
+					</a>
+				</li>
+                <li class="sidebar-item">
+					<a href="Users_Gestion.html" class="sidebar-link">
+						<i class="zmdi zmdi-store"></i>
+						<span>Gestión de Usuarios</span>
+					</a>
+				</li>
+				<li class="sidebar-item">
+					<a href="index.html" class="sidebar-link">
+						<i class="zmdi zmdi-store"></i>
+						<span>Cerrar Sesión</span>
+					</a>
+				</li>
+			</ul>
+		</aside>
+
+		<div class="main">
+			<div class="welcome-section">
+				<h1>Bienvenido, Emiliano</h1>
+			</div>
+
+			
+
+
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+			crossorigin="anonymous"></script>
+</body>
+
+</html>

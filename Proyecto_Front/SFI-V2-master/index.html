@@ -1,81 +1,94 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Loginn</title>
-	<!-- <link rel="stylesheet" href="css/normalize.css"> -->
-	<link rel="stylesheet" href="css/sweetalert2.css">
+	<title>Grido Tech Advance - Login</title>
+	
+	<!-- CSS -->
 	<link rel="stylesheet" href="css/material.min.css">
 	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
     <link rel="stylesheet" href="css/index.css">
-	<!-- <link rel="stylesheet" href="css/main.css"> -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
-	<script src="js/material.min.js" ></script>
-	<script src="js/sweetalert2.min.js" ></script>
-	<script src="js/jquery.mCustomScrollbar.concat.min.js" ></script>
-	<script src="js/main.js" ></script>
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	
+	<!-- SweetAlert2 - IMPORTANTE: asegurarse de que el JS esté correctamente cargado -->
+	<link rel="stylesheet" href="css/sweetalert2.css">
+	<!-- Asegúrate de que el JS de SweetAlert se cargue correctamente -->
+	<script src="js/sweetalert2.min.js"></script>
+	<!-- Fallback CDN para SweetAlert2 en caso de que el archivo local falle -->
+	<script>
+		if (typeof Swal === 'undefined') {
+			document.write('<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><\/script>');
+		}
+	</script>
+	
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+	
+	<!-- Otras bibliotecas JS -->
+	<script src="js/material.min.js"></script>
+	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="js/main.js"></script>
 </head>
 <body>
+	<!-- Fondo de video -->
 	<div class="video-background">
 		<video autoplay loop muted>
 			<source src="./assets/img/Cámara de frío más grande de LATAM - Grido - Grido Helado (1080p, h264, youtube) (online-video-cutter.com).mp4" type="video/mp4">
 			Tu navegador no soporta la etiqueta de video.
 		</video>
 	</div>
+	
+	<!-- Formulario de login -->
 	<div class="container login-form">
 		<h2 class="login-title">Iniciar Sesión</h2>
 		<div class="panel panel-default">
 			<div class="panel-body">
-				<form>
+				<form id="loginForm">
+					<!-- Campo de usuario -->
 					<div class="input-group login-userinput">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
 						<input id="txtUser" type="text" class="form-control" name="username" placeholder="Username">
 					</div>
+					
+					<!-- Campo de contraseña -->
 					<div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-						<input  id="txtPassword" type="password" class="form-control" name="password" placeholder="Password">
+						<input id="txtPassword" type="password" class="form-control" name="password" placeholder="Password">
 						<span id="showPassword" class="input-group-btn">
-				<button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-			  </span>  
-					</div><button onclick="window.location.href='home.html'" class="btn btn-primary btn-block login-button" type="button">
+							<button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+						</span>  
+					</div>
+					
+					<!-- Botón de ingreso -->
+					<button type="button" class="btn btn-primary btn-block login-button">
 						<i class="fa fa-sign-in"></i> INGRESAR
 					</button>
+					
+					<!-- Enlaces adicionales -->
 					<div class="checkbox login-options">
-					<!--	<label><input type="checkbox"/>Recordarme</label>-->
-						<a href="#" class="login-forgot">Olvidate tu contraseña?</a>
+						<a href="#" class="login-forgot">¿Olvidaste tu contraseña?</a>
 					</div>		
 				</form>			
 			</div>
 		</div>
 	</div>
+	
+	<!-- Script de login personalizado (al final) -->
 	<script src="js/index.js"></script>
-	<!-- <div class="login-wrap cover">
-		<div class="container-login">
-			<p class="text-center" style="font-size: 80px;">
-				<i class="zmdi zmdi-account-circle"></i>
-			</p>
-			<p class="text-center text-condensedLight">Iniciar Sesión</p>
-			<form action="home.html">
-				<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				    <input class="mdl-textfield__input" type="text" id="userName">
-				    <label class="mdl-textfield__label" for="userName">Nombre de Usuario</label>
-				</div>
-				<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-				    <input class="mdl-textfield__input" type="password" id="pass">
-				    <label class="mdl-textfield__label" for="pass">Contraseña</label>
-				</div>
-                <button class="mdl-button mdl-js-button mdl-js-ripple-effect" style="color: #3F51B5;">
-                    INGRESAR
-                </button>
-			</form>
-		</div>
-	</div> -->
+	
+	<!-- Script para probar si SweetAlert está disponible -->
+	<script>
+		$(document).ready(function() {
+			if (typeof Swal === 'undefined') {
+				console.error("SweetAlert no está disponible después de cargar todos los scripts");
+			} else {
+				console.log("SweetAlert está correctamente cargado");
+			}
+		});
+	</script>
 </body>
 </html>

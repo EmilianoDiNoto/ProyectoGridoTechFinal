@@ -1149,3 +1149,274 @@ canvas {
 .col-12 .chart-container {
     padding-bottom: 60px;
 }
+.chart-container-small {
+    height: calc(33vh - 20px);
+    min-height: 300px;
+    margin-bottom: 15px;
+    padding: 15px;
+}
+
+.chart-canvas-container {
+    flex: 1;
+    min-height: 200px;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.chart-title {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.btn-consultar {
+    margin: 5px auto !important;
+    padding: 6px 15px !important;
+}
+
+@media (max-width: 768px) {
+    .chart-container-small {
+        height: 350px;
+        margin-bottom: 20px;
+    }
+}
+
+/* Ajustar el padding del contenedor principal */
+.main {
+    padding: 15px;
+}
+
+/* Optimizar el espacio en los gráficos */
+.chart-container-small canvas {
+    max-height: calc(100% - 80px) !important;
+}
+
+/* Mejorar la respuesta en pantallas más pequeñas */
+@media (min-width: 769px) and (max-width: 1200px) {
+    .chart-container-small {
+        height: calc(40vh - 20px);
+    }
+}
+
+/* Estilos para los contadores */
+.counter-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.counter-card h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 600;
+}
+
+.counter-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Colores específicos para los contadores */
+.text-primary {
+    color: #0c169f !important;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+/* Ajustes para los contenedores de gráficos */
+.chart-container-small {
+    height: 350px;
+    margin-bottom: 20px;
+}
+
+.chart-container-large {
+    height: 500px;
+    margin-bottom: 30px;
+}
+
+.chart-canvas-container {
+    flex: 1;
+    min-height: 200px;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .counter-card {
+        margin-bottom: 15px;
+    }
+    
+    .chart-container-small,
+    .chart-container-large {
+        height: 300px;
+    }
+}
+/* Estilos para los contadores */
+.counter-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.counter-card h3 {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+}
+
+.counter-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Colores de los contadores */
+.text-primary { color: #0c169f !important; }
+.text-danger { color: #dc3545 !important; }
+.text-warning { color: #ffc107 !important; }
+
+/* Contenedores de gráficos */
+.chart-container {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    height: 350px;
+}
+
+.chart-container-small {
+    height: 235px;
+    margin-bottom: 20px;
+}
+
+.chart-container-medium {
+    height: 300px;
+}
+
+.chart-canvas-container {
+    height: calc(100% - 60px);
+    position: relative;
+}
+
+/* Ajustes para el gráfico de temporada */
+.col-12 .chart-container {
+    height: 400px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .chart-container,
+    .chart-container-small,
+    .chart-container-medium {
+        height: 350px;
+    }
+
+    .counter-card {
+        margin-bottom: 10px;
+    }
+}
+
+/* Botón consultar */
+.btn-consultar {
+    background-color: #0e2238 !important;
+    color: white !important;
+    border: none !important;
+    padding: 6px 15px !important;
+    border-radius: 4px !important;
+    font-size: 0.9em !important;
+    transition: all 0.3s ease !important;
+    margin: 5px auto !important;
+    display: block !important;
+}
+
+.btn-consultar:hover {
+    background-color: #1a3b5d !important;
+}
+
+/* Títulos de gráficos */
+.chart-title {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #333;
+}
+/* Ajuste de espaciado */
+.mt-4 {
+    margin-top: 2rem !important;
+}
+
+chart-container-large {
+    height: 400px;
+}
+
+.chart-container-medium {
+    height: 350px;
+}
+
+.chart-container-small {
+    height: 300px;
+}
+
+/* Márgenes entre gráficos */
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Ajustes para los contadores */
+.counter-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+.counter-card h3 {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+}
+
+.counter-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    .chart-container-large,
+    .chart-container-medium,
+    .chart-container-small {
+        height: 300px;
+        margin-bottom: 1rem;
+    }
+}
+
+
+
+

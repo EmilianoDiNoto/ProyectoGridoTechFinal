@@ -96,16 +96,16 @@ function initCharts() {
             }
         });
     }
-    
+
     if (workDistributionCtx) {
         // Hacer la llamada a la API
         $.ajax({
             url: 'http://localhost:63152/api/WorkOrders',
-            success: function(workOrdersData) {
+            success: function (workOrdersData) {
                 // Contar órdenes por estado
                 const realizadas = workOrdersData.filter(item => item.ESTADO === 'REALIZADA').length;
                 const pendientes = workOrdersData.filter(item => item.ESTADO === 'PENDIENTE').length;
-    
+
                 let chart = new Chart(workDistributionCtx, {
                     type: 'doughnut', // Cambiado a doughnut para mejor estética
                     data: {
@@ -136,7 +136,7 @@ function initCharts() {
                                     font: {
                                         size: 14
                                     },
-                                    generateLabels: function(chart) {
+                                    generateLabels: function (chart) {
                                         const data = chart.data;
                                         if (data.labels.length && data.datasets.length) {
                                             return data.labels.map((label, i) => ({
@@ -159,17 +159,17 @@ function initCharts() {
                                     usePointStyle: true,
                                     boxWidth: 20
                                 },
-                                onClick: function(e, legendItem, legend) {
+                                onClick: function (e, legendItem, legend) {
                                     const index = legendItem.index;
                                     const chart = legend.chart;
-                                    
+
                                     chart.toggleDataVisibility(index);
                                     chart.update();
                                 }
                             },
                             tooltip: {
                                 callbacks: {
-                                    label: function(context) {
+                                    label: function (context) {
                                         const label = context.label || '';
                                         const value = context.raw;
                                         const total = context.dataset.data.reduce((acc, current) => acc + current, 0);
@@ -182,13 +182,13 @@ function initCharts() {
                     }
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error al cargar datos de órdenes de trabajo:', error);
                 const ctx = workDistributionCtx.getContext('2d');
                 ctx.font = '14px Arial';
                 ctx.fillStyle = 'red';
                 ctx.textAlign = 'center';
-                ctx.fillText('Error al cargar datos', workDistributionCtx.width/2, workDistributionCtx.height/2);
+                ctx.fillText('Error al cargar datos', workDistributionCtx.width / 2, workDistributionCtx.height / 2);
             }
         });
     }
@@ -198,7 +198,7 @@ function initCharts() {
             type: 'bar', // Cambiado a tipo bar para mostrar barras agrupadas
             data: {
                 labels: ['Grido Cookie and Cream', 'Grido Mousse', 'Grido con Relleno'],
-                datasets: [ {
+                datasets: [{
                     label: 'Producción establecida en OT',
                     data: [82567, 71230, 90120],
                     backgroundColor: '#1cc88a',
@@ -389,7 +389,7 @@ function initTables() {
             }
         }
     };
-    
+
 
 
     // Tabla de Producción
@@ -570,7 +570,6 @@ function initTables() {
 }
 
 function initPieCharts() {
-    // Gráfico de Producción
     const productionPieCtx = document.getElementById('productionPieChart');
     if (productionPieCtx) {
         $.ajax({
@@ -578,58 +577,145 @@ function initPieCharts() {
             success: function (productionData) {
                 const otData = productionData.filter(item => item.OT === 4);
                 const totalProducido = otData.reduce((sum, item) => sum + item.PRODUCIDO, 0);
+                const produccionSolicitada = 1446;
+
+                // Calcular porcentajes
+                const porcentajeProducido = ((totalProducido / produccionSolicitada) * 100).toFixed(1);
+                const porcentajeFaltante = (100 - porcentajeProducido).toFixed(1);
 
                 new Chart(productionPieCtx, {
-                    type: 'bar',
+                    type: 'doughnut', // Usando doughnut para mejor visualización
                     data: {
-                        labels: ['Producción OT 4'],
+                        labels: ['Producción Real', 'Pendiente'],
                         datasets: [{
-                            label: 'Producción Solicitada',
-                            data: [1466],
-                            backgroundColor: '#1cc88a',
-                            barPercentage: 0.25
-                        },
-                        {
-                            label: 'Producción Real',
-                            data: [totalProducido],
-                            backgroundColor: '#0c169f',
-                            barPercentage: 0.25
+                            data: [totalProducido, produccionSolicitada - totalProducido],
+                            backgroundColor: ['#0c169f', '#e74a3b'],
+                            borderWidth: 1,
+                            borderColor: '#ffffff'
                         }]
                     },
                     options: {
-                        indexAxis: 'x',
                         maintainAspectRatio: false,
                         responsive: true,
+                        cutout: '60%', // Tamaño del agujero central
                         plugins: {
                             legend: {
-                                position: 'top',
+                                position: 'bottom',
                                 labels: {
-                                    boxWidth: 12,
-                                    padding: 10
+                                    padding: 20,
+                                    usePointStyle: true
                                 }
                             },
-                            title: {
-                                display: true,
-                                text: 'Comparación de Producción'
-                            }
-                        },
-                        scales: {
-                            y: {
-                                min: 1000, // Establecer mínimo en 1000
-                                max: 1600, // Establecer máximo en 1600
-                                ticks: {
-                                    stepSize: 100, // Incrementos de 100
-                                    callback: function (value) {
-                                        return value.toLocaleString();
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const label = context.label || '';
+                                        const value = context.raw;
+                                        const percentage = context.parsed;
+                                        return `${label}: ${value.toLocaleString()} (${percentage.toFixed(1)}%)`;
                                     }
+                                }
+                            },
+                            // Agregar título central
+                            datalabels: {
+                                color: '#ffffff',
+                                font: {
+                                    weight: 'bold',
+                                    size: 13
+                                },
+                                formatter: (value, context) => {
+                                    return `${value.toLocaleString()}\n(${context.chart.data.labels[context.dataIndex]})`;
                                 }
                             }
                         }
-                    }
+                    },
+                    plugins: [{
+                        id: 'centerText',
+                        afterDraw: (chart) => {
+                            const width = chart.width;
+                            const height = chart.height;
+                            const ctx = chart.ctx;
+
+                            ctx.restore();
+                            ctx.save();
+                            ctx.textBaseline = 'middle';
+                            ctx.textAlign = 'center';
+
+                            // Título
+                            ctx.font = '14px Arial';
+                            ctx.fillStyle = '#666';
+                            ctx.fillText('OT 4', width / 2, height / 2 - 15);
+
+                            // Valor total
+                            ctx.font = 'bold 16px Arial';
+                            ctx.fillStyle = '#333';
+                            ctx.fillText(`${porcentajeProducido}%`, width / 2, height / 2 + 15);
+
+                            ctx.restore();
+                        }
+                    }]
                 });
+
+                // Agregar información adicional debajo del gráfico
+                const container = productionPieCtx.parentElement;
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'production-info';
+                infoDiv.innerHTML = `
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Producción Solicitada:</span>
+                        <span class="info-value">${produccionSolicitada.toLocaleString()}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Producción Real:</span>
+                        <span class="info-value">${totalProducido.toLocaleString()}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Avance:</span>
+                        <span class="info-value">${porcentajeProducido}%</span>
+                    </div>
+                </div>
+            `;
+                container.appendChild(infoDiv);
             }
         });
     }
+
+    // Estilos para la información adicional
+    const style = document.createElement('style');
+    style.textContent = `
+.production-info {
+    margin-top: 15px;
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    text-align: center;
+}
+
+.info-item {
+    padding: 5px;
+}
+
+.info-label {
+    display: block;
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+.info-value {
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+`;
+    document.head.appendChild(style);
 
     // Gráfico de Balance de Masas - Barras apiladas
     const balancePieCtx = document.getElementById('balancePieChart');
@@ -827,6 +913,69 @@ function initPieCharts() {
         });
     }
 }
+
+
+// AGREGAR EL NUEVO CÓDIGO AQUÍ
+async function calcularInventarioValorizado() {
+    try {
+        // Obtener datos de stock final
+        const stockResponse = await fetch('http://localhost:63152/api/ProductionStore/GetAllProductionStore');
+        const stockData = await stockResponse.json();
+        const stockFinal = stockData.filter(item => item.OT === 4 && item.TIPOMOV === 'STOCK FINAL');
+
+        // Obtener precios de materiales
+        const materialsResponse = await fetch('http://localhost:63152/api/Materials');
+        const materialsData = await materialsResponse.json();
+
+        // Calcular el valor total
+        let valorTotal = 0;
+        stockFinal.forEach(stockItem => {
+            const material = materialsData.find(m => m.MATERIAL === stockItem.MATERIAL);
+            if (material) {
+                valorTotal += stockItem.CANTIDAD * material.PRECIO;
+            }
+        });
+
+        // Actualizar el contador
+        document.querySelector('#inventario-valorizado').textContent = 
+            `$${valorTotal.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    } catch (error) {
+        console.error('Error al calcular inventario valorizado:', error);
+        document.querySelector('#inventario-valorizado').textContent = 'Error al calcular';
+    }
+}
+
+// Función para calcular el desvío total
+async function calcularDesvioTotal() {
+    try {
+        const response = await fetch('http://localhost:63152/api/TheoricalConsumption/Consolidadobm');
+        const balanceData = await response.json();
+
+        // Calcular el desvío total
+        const desvioTotal = balanceData.reduce((total, item) => {
+            return total + parseFloat(item.DESVIO || 0);
+        }, 0);
+
+        // Actualizar el contador
+        document.querySelector('#desvio-total').textContent = 
+            `$${desvioTotal.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    } catch (error) {
+        console.error('Error al calcular desvío total:', error);
+        document.querySelector('#desvio-total').textContent = 'Error al calcular';
+    }
+}
+
+// Función para actualizar todos los contadores
+async function actualizarContadores() {
+    await calcularInventarioValorizado();
+    await calcularDesvioTotal();
+}
+
+
+// El resto de tu código existente continúa aquí...
+
+
+
 function initializeAll() {
     // Destruir gráficos existentes
     Chart.helpers.each(Chart.instances, function (instance) {
@@ -836,13 +985,30 @@ function initializeAll() {
     // Inicializar los gráficos
     initPieCharts();
     initCharts();
+    actualizarContadores();
 }
 
 // Modificar la inicialización
 $(document).ready(function () {
     initializeAll();
     initTables();
+    actualizarContadores();
 });
+
+
+// FINALMENTE, AGREGAR ESTOS EVENTOS JUSTO DESPUÉS DE initializeAll:
+$('#stockModal').on('shown.bs.modal', function() {
+    if (window.stockTable) {
+        window.stockTable.ajax.reload();
+        actualizarContadores();
+    }
+});
+
+$('#balanceModal').on('shown.bs.modal', function() {
+    actualizarContadores();
+});
+
+
 
 // Manejar el redimensionamiento de la ventana con debounce
 let resizeTimeout;
