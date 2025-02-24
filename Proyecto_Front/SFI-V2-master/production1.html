@@ -24,6 +24,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -152,6 +157,7 @@
             </div>
 
             <section>
+                <!--IMAGENES-->
                 <div class="ice-cream-container">
                     <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND CREAM - GRIDO">
                         <img src="assets/img/Torta-cookies-and-cream.jpg" alt="Cookie">
@@ -170,90 +176,380 @@
                     </div>
                 </div>
                 <br>
-
+                <!--DECLARACION DE PRODUCCION-->
                 <div>
                     <H2>DECLARAR PRODUCCION</H2>
-                    <form class="row g-3 needs-validation" novalidate>
-                        <div class="col-md-4">
-                            <label for="validationCustom04" class="form-label">FECHA</label>
-                            <input type="date" class="form-control" id="validationCustom04">
-                            <div class="valid-feedback">
-                                Looks good!
+                    <h4>Ciclo de Avance</h4>
+                    <div class="position-relative m-4">
+                        <div class="progress-container">
+                            <div class="progress-step">
+                                <p>Stock Inicial</p>
+                                <button type="button"
+                                    class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
+                            </div>
+                            <div class="progress-step">
+                                <p>Solicitar</p>
+                                <button type="button"
+                                    class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
+                            </div>
+                            <div class="progress-step">
+                                <p>Devolución</p>
+                                <button type="button"
+                                    class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
+                            </div>
+                            <div class="progress-step">
+                                <p>Scrap</p>
+                                <button type="button"
+                                    class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
+                            </div>
+                            <div class="progress-step">
+                                <p>Stock Final</p>
+                                <button type="button"
+                                    class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
                             </div>
                         </div>
-                        <div class="col-md-4">
+
+                        <div class="progress" role="progressbar">
+                            <div id="progressBar" class="progress-bar bg-primary"></div>
+                        </div>
+                    </div>
+                    <form class="row g-3 needs-validation p-3" novalidate>
+                        <!-- Primera fila -->
+                        <div class="col-md-2">
+                            <label for="validationCustom04" class="form-label">FECHA</label>
+                            <input type="date" class="form-control" id="validationCustom04">
+                        </div>
+                        <div class="col-md-2">
                             <label for="validationCustom05" class="form-label">TURNO</label>
                             <input type="text" class="form-control" id="validationCustom05">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <label for="validationCustom06" class="form-label">RESPONSABLE</label>
                             <input type="text" class="form-control" id="validationCustom06">
                         </div>
-                        <div class="col-md-4">
-                            <label for="validationCustom01" class="form-label">OT</label>
+                        <div class="col-md-3">
+                            <label for="validationCustom01" class="form-label">ORDEN DE TRABAJO</label>
                             <input type="text" class="form-control" id="validationCustom01">
                         </div>
-                        <div class="col-md-4">
+                        <!-- Segunda fila -->
+                        <div class="col-md-6">
                             <label for="validationCustom02" class="form-label">PRODUCTO</label>
                             <input type="text" class="form-control" id="validationCustom02">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <label for="validationCustom03" class="form-label">CANTIDAD</label>
-                            <input type="text" class="form-control" id="validationCustom03">
+                            <input type="text" class="form-control text-end" id="validationCustom03">
                         </div>
-                        <div class="col-12">
-                            <button class="btn btn-primary" type="submit">REALIZADO</button>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button class="btn btn-primary w-100" type="submit">REALIZADO</button>
                         </div>
                     </form>
-                    <br>
-                    <h2>GESTION DE MATERIALES</h2>
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-                                data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane"
-                                aria-selected="true">STOCK INICIAL</button>
 
-                            <div class="tab-content" id="myTabContent">
-                                <table id="materialTable" class="table">
+                    <hr class="my-3">
+                    <h2>GESTION DE ALMACEN</h2>
+                    <div>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <!-- STOCK INICIAL -->
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="stock-inicial-tab" data-bs-toggle="tab"
+                                    data-bs-target="#stock-inicial-pane" type="button" role="tab"
+                                    aria-controls="stock-inicial-pane" aria-selected="true">
+                                    STOCK INICIAL
+                                </button>
+                            </li>
+
+                            <!-- SOLICITAR -->
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="solicitar-tab" data-bs-toggle="tab"
+                                    data-bs-target="#solicitar-pane" type="button" role="tab"
+                                    aria-controls="solicitar-pane" aria-selected="false">
+                                    SOLICITAR
+                                </button>
+                            </li>
+
+                            <!-- RECEPCIONAR -->
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="recepcionar-tab" data-bs-toggle="tab"
+                                    data-bs-target="#recepcionar-pane" type="button" role="tab"
+                                    aria-controls="recepcionar-pane" aria-selected="false">
+                                    RECEPCIONAR
+                                </button>
+                            </li>
+
+                            <!-- SCRAP -->
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="scrap-tab" data-bs-toggle="tab"
+                                    data-bs-target="#scrap-pane" type="button" role="tab" aria-controls="scrap-pane"
+                                    aria-selected="false">
+                                    SCRAP
+                                </button>
+                            </li>
+
+                            <!-- DEVOLUCION -->
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="devolucion-tab" data-bs-toggle="tab"
+                                    data-bs-target="#devolucion-pane" type="button" role="tab"
+                                    aria-controls="devolucion-pane" aria-selected="false">
+                                    DEVOLUCIÓN
+                                </button>
+                            </li>
+
+                            <!-- STOCK FINAL -->
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="stock-final-tab" data-bs-toggle="tab"
+                                    data-bs-target="#stock-final-pane" type="button" role="tab"
+                                    aria-controls="stock-final-pane" aria-selected="false">
+                                    STOCK FINAL
+                                </button>
+                            </li>
+                        </ul>
+
+                        <!-- CONTENIDO DE LAS PESTAÑAS -->
+                        <div class="tab-content" id="myTabContent">
+                            <!-- STOCK INICIAL -->
+                            <div class="tab-pane fade show active" id="stock-inicial-pane" role="tabpanel"
+                                aria-labelledby="stock-inicial-tab">
+                                <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>Material</th>
-                                            <th>Cantidad</th>
-                                            <th>Proveedor</th>
-                                            <th>Lote</th>
+                                            <th style="width: 40%;">Material</th>
+                                            <th style="width: 10%;">Cantidad</th>
+                                            <th style="width: 25%;">Proveedor</th>
+                                            <th style="width: 20%;">Lote</th>
+                                            <th style="width: 5%;">Ok</th>
                                         </tr>
                                     </thead>
                                     <tbody id="stockInicialTableBody">
-                                        <!-- FILAS GENERADAS DINÁMICAMENTE POR LA OT -->
+                                        <!-- FILAS DINÁMICAS -->
                                     </tbody>
                                 </table>
+                                <button type="button" id="stockInicialForm" class="btn btn-primary">
+                                    Enviar Stock Inicial
+                                </button>
                             </div>
 
-                            <!-- Botón para enviar los datos a la API -->
-                            <button type="button" id="stockInicialForm" class="btn btn-primary" title="Enviar los datos de stock inicial">
-                                Enviar Stock Inicial
-                            </button>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
-                            aria-labelledby="home-tab" tabindex="0">...</div>
-                        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
-                            tabindex="0">...</div>
-                        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab"
-                            tabindex="0">...</div>
-                        <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab"
-                            tabindex="0">...</div>
+                            <!-- SOLICITAR -->
+                            <div class="tab-pane fade" id="solicitar-pane" role="tabpanel"
+                                aria-labelledby="solicitar-tab">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40%;">Material</th>
+                                            <th style="width: 10%;">Cantidad</th>
+                                            <th style="width: 5%;">Ok</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="solicitarTableBody">
+                                        <!-- FILAS DINÁMICAS -->
+                                    </tbody>
+                                </table>
+                                <button type="button" id="verSolicitudes" class="btn btn-primary">Solicitar</button>
+                                <!-- Botón para enviar los datos a la API SOLICITAR -->
+                                <button id="verSolicitudes1">Ver Solicitudes</button>
+                                <!-- Modal -->
+                                <div id="modalSolicitudes" class="modal">
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <h2>Solicitudes</h2>
+                                        <div class="modal-body">
+                                            <table id="myTable" class="display" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Orden</th>
+                                                        <th>Fecha Solicitud</th>
+                                                        <th>Estado</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- RECEPCIONAR -->
+                            <div class="tab-pane fade" id="recepcionar-pane" role="tabpanel"
+                                aria-labelledby="recepcionar-tab">
+                                <p>Nùmero de Orden: <span id="numeroOrden">0</span></p>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40%;">Material</th>
+                                            <th style="width: 10%;">Cantidad</th>
+                                            <th style="width: 25%;">Proveedor</th>
+                                            <th style="width: 20%;">Lote</th>
+                                            <th style="width: 5%;">Ok</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recepcionarTableBody">
+                                        <!-- FILAS DINÁMICAS -->
+                                    </tbody>
+                                </table>
+                                <button type="button" id="recepcionarForm" class="btn btn-primary">Recibido</button>
+                                <!-- Botón para enviar los datos a la API RECEPCIONAR -->
+                                <button id="verSolicitudesR">Ver Solicitudes</button>
+                                <!-- Modal -->
+                                <div id="modalSolicitudesR" class="modal">
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <h2>Solicitudes</h2>
+                                        <div class="modal-body">
+                                            <table id="myTableR" class="display" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Orden</th>
+                                                        <th>Fecha Solicitud</th>
+                                                        <th>Estado</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SCRAP -->
+                            <div class="tab-pane fade" id="scrap-pane" role="tabpanel" aria-labelledby="scrap-tab">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40%;">Material</th>
+                                            <th style="width: 10%;">Cantidad</th>
+                                            <th style="width: 25%;">Proveedor</th>
+                                            <th style="width: 20%;">Lote</th>
+                                            <th style="width: 5%;">Ok</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="scrapTableBody">
+                                        <!-- FILAS DINÁMICAS -->
+                                    </tbody>
+                                </table>
+                                <button type="button" id="scrapForm" class="btn btn-primary">Enviar Scrap</button>
+                            </div>
+
+                            <!-- DEVOLUCION -->
+                            <div class="tab-pane fade" id="devolucion-pane" role="tabpanel"
+                                aria-labelledby="devolucion-tab">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40%;">Material</th>
+                                            <th style="width: 10%;">Cantidad</th>
+                                            <th style="width: 25%;">Proveedor</th>
+                                            <th style="width: 20%;">Lote</th>
+                                            <th style="width: 5%;">Ok</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="devolucionTableBody">
+                                        <!-- FILAS DINÁMICAS -->
+                                    </tbody>
+                                </table>
+                                <button type="button" id="devolucionForm" class="btn btn-primary">Enviar
+                                    Devolución</button>
+                            </div>
+
+                            <!-- STOCK FINAL -->
+                            <div class="tab-pane fade" id="stock-final-pane" role="tabpanel"
+                                aria-labelledby="stock-final-tab">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40%;">Material</th>
+                                            <th style="width: 10%;">Cantidad</th>
+                                            <th style="width: 25%;">Proveedor</th>
+                                            <th style="width: 20%;">Lote</th>
+                                            <th style="width: 5%;">Ok</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="stockFinalTableBody">
+                                        <!-- FILAS DINÁMICAS -->
+                                    </tbody>
+                                </table>
+                                <button type="button" id="stockFinalForm" class="btn btn-primary">Enviar Stock
+                                    Final</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
+
             </section>
         </section>
+        
+        <!--Barra de progreso-->
+        <script>
+            async function cargarMovimientos(ordenTrabajoID) {
+                try {
+                    const response = await fetch("http://localhost:63152/api/ProductionStore/GetAllProductionStore");
+                    if (!response.ok) throw new Error("Error al obtener los datos");
 
+                    const data = await response.json();
+
+                    // Filtrar los datos por la OT seleccionada
+                    const movimientosOT = data.filter(item => item.OT == ordenTrabajoID);
+
+                    // Definir los tipos de movimiento en orden secuencial
+                    const tiposOrdenados = ["STOCK INICIAL", "PEDIDO", "DEVOLUCION", "SCRAP", "STOCK FINAL"];
+
+                    // Identificar qué niveles tienen al menos un registro
+                    let nivelesAlcanzados = tiposOrdenados.map(tipo =>
+                        movimientosOT.some(item => item.TIPOMOV.toUpperCase() === tipo)
+                    );
+
+                    // Calcular el porcentaje de avance según los niveles alcanzados
+                    let totalNiveles = tiposOrdenados.length;
+                    let nivelesCompletados = nivelesAlcanzados.filter(v => v).length;
+                    let progreso = (nivelesCompletados / totalNiveles) * 100;
+
+                    // Ajustar la barra de progreso
+                    let progressBar = document.getElementById("progressBar");
+                    progressBar.style.width = `${progreso}%`;
+
+                    // Ajustar la posición de los botones en la barra de progreso
+                    let buttons = document.querySelectorAll(".progress-btn");
+
+                    buttons.forEach((btn, index) => {
+                        if (index < totalNiveles) {
+                            let posicion = (index / (totalNiveles - 1)) * 100;
+                            btn.style.left = `${posicion}%`;
+
+                            // Resaltar los niveles completados
+                            if (nivelesAlcanzados[index]) {
+                                btn.classList.remove("btn-secondary");
+                                btn.classList.add("btn-primary");
+                            } else {
+                                btn.classList.remove("btn-primary");
+                                btn.classList.add("btn-secondary");
+                            }
+                        }
+                    });
+
+                } catch (error) {
+                    console.error("Error:", error);
+                }
+            }
+            //ESTAPAS
+            document.addEventListener("DOMContentLoaded", function () {
+                const otInput = document.getElementById("validationCustom01");
+                let lastValue = otInput.value.trim();
+
+                setInterval(function () {
+                    const currentValue = otInput.value.trim();
+                    if (currentValue !== lastValue && currentValue !== "") {
+                        console.log("OT detectada automáticamente:", currentValue);
+                        lastValue = currentValue;
+                        cargarMovimientos(currentValue);
+                    }
+                }, 1000); // Revisa cada segundo
+            });
         </script>
 
         <!-- Librerías necesarias -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- CSS de DataTables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+
+        <!-- JS de DataTables -->
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
         <!-- Archivo JavaScript separado -->
         <script src="js/production1.js"></script>
