@@ -532,12 +532,14 @@
     <Compile Include="Controllers\RetainedMaterialController.cs" />
     <Compile Include="Controllers\SolicitudMaterialController.cs" />
     <Compile Include="Controllers\TheoricalConsumptionController.cs" />
+    <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WorkOrderMaterialController.cs" />
     <Compile Include="Controllers\WorkOrdersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Models\DiscardedMaterial.cs" />
     <Compile Include="Models\IdVarios.cs" />
     <Compile Include="Models\Inventory.cs" />
@@ -550,6 +552,7 @@
     <Compile Include="Models\RetainedMaterial.cs" />
     <Compile Include="Models\SolicitudMaterial.cs" />
     <Compile Include="Models\TheoricalConsumption.cs" />
+    <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\WorkOrderMaterial.cs" />
     <Compile Include="Models\WorkOrders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
