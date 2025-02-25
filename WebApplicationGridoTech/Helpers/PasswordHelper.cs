@@ -6,11 +6,8 @@ namespace WebApplicationGridoTech.Helpers
 {
     public static class PasswordHelper
     {
-        // Constante para el salting (para mayor seguridad)
-        private const string Salt = "GridoTechAdv@nce2024";
-
         /// <summary>
-        /// Encripta una contraseña utilizando algoritmo SHA256
+        /// Encripta una contraseña utilizando algoritmo SHA256 sin salt
         /// </summary>
         /// <param name="password">Contraseña en texto plano</param>
         /// <returns>Contraseña encriptada</returns>
@@ -19,14 +16,11 @@ namespace WebApplicationGridoTech.Helpers
             if (string.IsNullOrEmpty(password))
                 return string.Empty;
 
-            // Combinar contraseña con salt
-            string passwordWithSalt = string.Concat(password, Salt);
-
             // Crear instancia de SHA256
             using (SHA256 sha256 = SHA256.Create())
             {
                 // Convertir la cadena a bytes
-                byte[] bytes = Encoding.UTF8.GetBytes(passwordWithSalt);
+                byte[] bytes = Encoding.UTF8.GetBytes(password);
 
                 // Calcular el hash
                 byte[] hash = sha256.ComputeHash(bytes);
@@ -37,7 +31,6 @@ namespace WebApplicationGridoTech.Helpers
                 {
                     result.Append(hash[i].ToString("x2"));
                 }
-
                 return result.ToString();
             }
         }
@@ -54,6 +47,11 @@ namespace WebApplicationGridoTech.Helpers
                 return false;
 
             string encryptedEnteredPassword = EncryptPassword(enteredPassword);
+
+            // Para depuración
+            System.Diagnostics.Debug.WriteLine($"Contraseña ingresada hash: {encryptedEnteredPassword}");
+            System.Diagnostics.Debug.WriteLine($"Contraseña almacenada hash: {storedPassword}");
+
             return string.Equals(encryptedEnteredPassword, storedPassword, StringComparison.OrdinalIgnoreCase);
         }
     }

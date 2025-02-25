@@ -522,6 +522,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\DiscardedMaterialController.cs" />
+    <Compile Include="Controllers\GestionUsuariosController.cs" />
     <Compile Include="Controllers\IDController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\InventoryEController.cs" />

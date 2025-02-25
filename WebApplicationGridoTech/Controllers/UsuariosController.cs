@@ -43,8 +43,8 @@ namespace WebApplicationGridoTech.Controllers
                         {
                             string storedPassword = reader["UserPass"].ToString();
 
-                            // VERSIÓN TEMPORAL: Comparar directamente las contraseñas sin encriptar
-                            if (request.Password == storedPassword)
+                            // Verificar la contraseña utilizando el helper que compara el hash
+                            if (PasswordHelper.VerifyPassword(request.Password, storedPassword))
                             {
                                 return Ok(new
                                 {
@@ -162,9 +162,9 @@ namespace WebApplicationGridoTech.Controllers
 
                 // Actualizar la contraseña y limpiar el token
                 using (SqlCommand cmd = new SqlCommand(@"
-                    UPDATE Users 
-                    SET UserPass = @NewPassword, ResetToken = NULL, ResetTokenExpiry = NULL 
-                    WHERE Email = @Email AND ResetToken = @Token", conn))
+            UPDATE Users 
+            SET UserPass = @NewPassword, ResetToken = NULL, ResetTokenExpiry = NULL 
+            WHERE Email = @Email AND ResetToken = @Token", conn))
                 {
                     cmd.Parameters.AddWithValue("@NewPassword", encryptedPassword);
                     cmd.Parameters.AddWithValue("@Email", request.Email);
@@ -244,5 +244,45 @@ namespace WebApplicationGridoTech.Controllers
 
             return Ok(new { message = $"Se han migrado {updatedCount} contraseñas" });
         }
+            // POST: api/gestion-usuarios/check-email
+            [HttpPost]
+            [Route("api/gestion-usuarios/check-email")]
+            public IHttpActionResult CheckEmailExists([FromBody] dynamic request)
+            {
+            if (request == null || request.email == null)
+            {
+                return BadRequest("Email requerido");
+            }
+
+            string email = request.email.ToString();
+            int? userId = request.userId != null ? (int?)request.userId : null;
+
+            bool exists = false;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT COUNT(1) FROM Users WHERE Email = @Email";
+
+                // Si estamos en modo edición, excluir el usuario actual
+                if (userId.HasValue)
+                {
+                    sql += " AND UserID <> @UserId";
+                }
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    if (userId.HasValue)
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", userId.Value);
+                    }
+
+                    exists = (int)cmd.ExecuteScalar() > 0;
+                }
+            }
+
+            return Ok(new { exists });
+        }
+
     }
 }
