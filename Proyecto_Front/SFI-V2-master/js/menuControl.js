@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.addEventListener('resize', handleResize);
     handleResize();
+
+    
 });
 
 // Creamos una función separada para inicializar los gráficos
