@@ -12,6 +12,13 @@
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
 	<link rel="stylesheet" href="css/main.css">
 
+	<!-- Highcharts core -->
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<!-- Para gráficos circulares -->
+	<script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
 	<!-- Chart.js -->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -159,102 +166,97 @@
 			</div>
 
 			<!-- Contadores superiores -->
-<div class="row mb-4">
-    <div class="col-md-4">
-        <div class="counter-card">
-            <h3>TOTAL INVENTARIO VALORIZADO</h3>
-            <p class="counter-value text-primary" id="inventario-valorizado">$0,00</p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="counter-card">
-            <h3>TOTAL DE DESVÍO PRODUCCIÓN</h3>
-            <p class="counter-value text-danger" id="desvio-total">$0,00</p>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="counter-card">
-            <h3>PEDIDOS PENDIENTES</h3>
-            <p class="counter-value text-warning">0</p>
-        </div>
-    </div>
-</div>
+			<div class="row mb-4">
+				<div class="col-md-3">
+					<div class="counter-card">
+						<h3>TOTAL INVENTARIO VALORIZADO</h3>
+						<p class="counter-value text-primary" id="inventario-valorizado">$0,00</p>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="counter-card">
+						<h3>TOTAL DE DESVÍO PRODUCCIÓN</h3>
+						<p class="counter-value text-danger" id="desvio-total">$0,00</p>
+					</div>
+				</div>
+				<!-- Actualiza el contador de Stock Final con este código -->
+				<div class="col-md-3">
+					<div class="counter-card counter-clickable" id="stock-final-counter">
+						<h3>STOCK FINAL</h3>
+						<div class="counter-icon"><i class="zmdi zmdi-search"></i></div>
+						<p class="counter-value text-info" id="stock-final-count"></p>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="counter-card">
+						<h3>PEDIDOS PENDIENTES</h3>
+						<p class="counter-value text-warning">0</p>
+					</div>
+				</div>
+			</div>
 
-		<!-- Contadores superiores -->
+			<!-- Contadores superiores -->
 
-<!-- Estructura principal de gráficos -->
-<div class="row">
-    <!-- Columna izquierda (col-md-8) -->
-    <div class="col-md-8">
-        <!-- Balance de Masas General -->
-        <div class="chart-container chart-container-large mb-4">
-            <h3 class="chart-title">Balance de Masas General</h3>
-            <div class="chart-canvas-container">
-                <canvas id="balancePieChart"></canvas>
-            </div>
-            <button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#balanceModal">
-                Consultar
-            </button>
-        </div>
+			<!-- Estructura principal de gráficos -->
+			<div class="row">
+				<!-- Columna izquierda (col-md-8) -->
+				<div class="col-md-6">
+					<!-- Balance de Masas General -->
+					<div class="chart-container chart-container-large mb-4">
+						<div class="chart-canvas-container">
+							<canvas id="balancePieChart"></canvas>
+						</div>
+						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#balanceModal">
+							Consultar
+						</button>
+					</div>
 
-        <!-- Producción por Temporada -->
-        <div class="chart-container chart-container-medium mb-4">
-            <h3 class="chart-title">Producción por Temporada</h3>
-            <div class="chart-canvas-container">
-                <canvas id="monthlyProduction"></canvas>
-            </div>
-        </div>
+					<!-- Producción por Temporada -->
+					<div class="chart-container chart-container-medium mb-4">
+						<h3 class="chart-title">Producción por Temporada</h3>
+						<div class="chart-canvas-container">
+							<canvas id="monthlyProduction"></canvas>
+						</div>
+					</div>
 
-        <!-- Producción Anual -->
-        <div class="chart-container">
-            <h3 class="chart-title">Producción Anual</h3>
-            <div class="chart-canvas-container">
-                <canvas id="mainMetrics"></canvas>
-            </div>
-        </div>
-    </div>
+					<!-- Producción Anual -->
+					<div class="chart-container">
+						<h3 class="chart-title">Producción Anual</h3>
+						<div class="chart-canvas-container">
+							<canvas id="mainMetrics"></canvas>
+						</div>
+					</div>
+				</div>
 
-    <!-- Columna derecha (col-md-4) -->
-    <div class="col-md-4">
-        <!-- Última Producción -->
-        <div class="chart-container chart-container-small mb-4">
-            <h3 class="chart-title">Última Producción</h3>
-            <div class="chart-canvas-container">
-                <canvas id="productionPieChart"></canvas>
-            </div>
-            <button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#productionModal">
-                Consultar
-            </button>
-        </div>
+				<!-- Columna derecha (col-md-4) -->
+				<div class="col-md-6">
+					<!-- Última Producción -->
+					<div class="chart-container chart-container-small mb-4">
+						<h3 class="chart-title">Última Producción</h3>
+						<div class="chart-canvas-container">
+							<canvas id="productionPieChart"></canvas>
+						</div>
+						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#productionModal">
+							Consultar
+						</button>
+					</div>
+					<!-- Órdenes de Trabajo -->
+					<div class="chart-container chart-container-small mb-4">
+						<h3 class="chart-title">Órdenes de Trabajo</h3>
+						<div class="chart-canvas-container">
+							<canvas id="workDistribution"></canvas>
+						</div>
+					</div>
 
-        <!-- Stock Final -->
-        <div class="chart-container chart-container-small mb-4">
-            <h3 class="chart-title">Stock Final</h3>
-            <div class="chart-canvas-container">
-                <canvas id="stockPieChart"></canvas>
-            </div>
-            <button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#stockModal">
-                Consultar
-            </button>
-        </div>
-
-        <!-- Órdenes de Trabajo -->
-        <div class="chart-container chart-container-small mb-4">
-            <h3 class="chart-title">Ordenes de Trabajo</h3>
-            <div class="chart-canvas-container">
-                <canvas id="workDistribution"></canvas>
-            </div>
-        </div>
-
-        <!-- Producción por Órdenes de Trabajo -->
-        <div class="chart-container chart-container-small">
-            <h3 class="chart-title">Producción en Órdenes de trabajo</h3>
-            <div class="chart-canvas-container">
-                <canvas id="comparativeChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
+					<!-- Producción por Órdenes de Trabajo -->
+					<div class="chart-container chart-container-small">
+						<h3 class="chart-title">Producción en Órdenes de trabajo</h3>
+						<div class="chart-canvas-container">
+							<canvas id="comparativeChart"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
 
 
 			<!-- Modal Producción -->
@@ -313,6 +315,7 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
+							<!-- Modificar la tabla en el modal Balance de Masas (paste.txt, alrededor de línea 333) -->
 							<table id="consolidadoBMTable" class="display nowrap" style="width:100%">
 								<thead>
 									<tr>
@@ -320,6 +323,7 @@
 										<th>Consumo Teórico</th>
 										<th>Consumo Real</th>
 										<th>Desvío</th>
+										<th>Valor</th>
 									</tr>
 								</thead>
 							</table>
@@ -359,9 +363,9 @@
 
 
 
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-			crossorigin="anonymous"></script>
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+				integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+				crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', handleResize);
     handleResize();
 
-    
+
 });
 
 // Creamos una función separada para inicializar los gráficos
@@ -424,9 +424,7 @@ function initTables() {
         ],
         responsive: true,
         scrollX: false,
-        language: {
-            url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
-        },
+        language: window.dataTablesLanguage,
         initComplete: function () {
             // Estilo para el encabezado (thead)
             $('#productionTable thead th').css({
@@ -447,6 +445,7 @@ function initTables() {
             url: 'http://localhost:63152/api/TheoricalConsumption/GetTheoricalConsumption?ot=4',
             dataSrc: ''
         },
+        language: window.dataTablesLanguage, 
         columns: [
             { data: "MATERIAL" },
             { data: "TEORICO" },
@@ -473,54 +472,156 @@ function initTables() {
     });
 
 
+// Reemplaza la configuración de la tabla consolidadoBMTable con esta versión que no utiliza tooltips
+let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
+    ...commonConfig,
+    searching: true,
+    language: window.dataTablesLanguage, // Usar la configuración local
+    ajax: {
+        url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
+        dataSrc: ''  // Usar los datos directamente
+    },
+    columns: [
+        { data: "MATERIAL" },
+        {
+            data: "TEORICO",
+            render: function (data) {
+                return parseFloat(data).toFixed(2);
+            }
+        },
+        {
+            data: "REAL",
+            render: function (data) {
+                return parseFloat(data).toFixed(2);
+            }
+        },
+        {
+            data: "DESVIO",
+            render: function (data) {
+                const value = parseFloat(data);
+                const color = value < 0 ? '#dc3545' : '#28a745';
+                return `<span style="color: ${color}">${value.toFixed(2)}</span>`;
+            }
+        },
+        {
+            // Columna para el valor
+            data: null,
+            render: function (data, type, row) {
+                // Mapa de precios fijos para cada material
+                const precios = {
+                    "DULCE DE LECHE C/CACAO P/SEMBRAR": 1699.47,
+                    "DULCE DE LECHE P/SEMBRAR": 1675.69,
+                    "GALLETA OREO PICADA": 4049.75,
+                    "GALLETAS MILKA MOUSSE": 5301.71,
+                    "HELADO DE CHOCOLATE": 10000,
+                    "HELADO DE CREMA AMERICANA": 10000,
+                    "HELADO DE DULCE DE LECHE": 10000,
+                    "PREPARADO ALMIBAR STANDART": 247.68,
+                    "SALSA DULCE SABOR CHOCOLATE": 1379.57,
+                    "TAPA GALLETA SABOR VAINILLA 17 CM": 1862.48
+                };
+                
+                const desvio = parseFloat(row.DESVIO || 0);
+                const precioMaterial = precios[row.MATERIAL] || 0;
+                const valorDesvio = desvio * precioMaterial;
+                
+                // Función para formatear valores grandes
+                function formatearValor(valor) {
+                    const valorAbs = Math.abs(valor);
+                    if (valorAbs >= 1000000) {
+                        return `${(valorAbs / 1000000).toFixed(2)}M`;
+                    } else if (valorAbs >= 1000) {
+                        return `${(valorAbs / 1000).toFixed(2)}k`;
+                    }
+                    return valorAbs.toFixed(2);
+                }
+                
+                const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
+                const formattedValue = formatearValor(valorDesvio);
+                const fullValue = Math.abs(valorDesvio).toFixed(2);
+                
+                console.log(`Material: ${row.MATERIAL}, Desvío: ${desvio}, Precio: ${precioMaterial}, Valor: ${valorDesvio}`);
+                
+                // Usar el atributo title nativo para mostrar el valor completo
+                return `<span style="color: ${color}; cursor: help;" 
+                           title="Valor completo: $${fullValue}">${valorDesvio < 0 ? '-' : ''}$${formattedValue}</span>`;
+            }
+        }
+    ],
+    initComplete: function () {
+        $('#consolidadoBMTable thead th').css({
+            'background-color': '#0e2238',
+            'color': 'white'
+        });
+        $('#consolidadoBMTable tbody tr').css({
+            'background-color': 'white',
+            'color': 'black'
+        });
+    }
+});
 
-    // Tabla de Balance de Masas Consolidado
-    let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
-        ...commonConfig,
-        searching: true, // Mantener la búsqueda para esta tabla
-        language: {
-            ...commonConfig.language,
-            search: "Buscar:" // Cambiar el texto del buscador
-        },
-        ajax: {
-            url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
-            dataSrc: ''
-        },
-        columns: [
-            { data: "MATERIAL" },
-            {
-                data: "TEORICO",
-                render: function (data) {
-                    return parseFloat(data).toFixed(2);
-                }
-            },
-            {
-                data: "REAL",
-                render: function (data) {
-                    return parseFloat(data).toFixed(2);
-                }
-            },
-            {
-                data: "DESVIO",
-                render: function (data) {
-                    const value = parseFloat(data);
-                    const color = value < 0 ? '#dc3545' : '#28a745';
-                    return `<span style="color: ${color}">${value.toFixed(2)}</span>`;
+    // Reemplaza la función actualizarValoresDesvio con esta versión
+    async function actualizarValoresDesvio() {
+        try {
+            // Obtener precios de materiales
+            const materialsResponse = await fetch('http://localhost:63152/api/Materials');
+            const materialsData = await materialsResponse.json();
+            
+            console.log("Materiales obtenidos:", materialsData);
+            console.log("Elementos a actualizar:", $('.valor-desvio').length);
+            
+            // Función para formatear números grandes
+            function formatearValorCompacto(valor) {
+                // Valor absoluto para el formato
+                const valorAbs = Math.abs(valor);
+                
+                if (valorAbs >= 1000000) {
+                    // Formato para millones (M)
+                    return (valorAbs / 1000000).toFixed(2) + 'M';
+                } else if (valorAbs >= 1000) {
+                    // Formato para miles (k)
+                    return (valorAbs / 1000).toFixed(2) + 'k';
+                } else {
+                    // Formato normal para valores pequeños
+                    return valorAbs.toFixed(2);
                 }
             }
-        ],
-        initComplete: function () {
-            $('#consolidadoBMTable thead th').css({
-                'background-color': '#0e2238',
-                'color': 'white'
+            
+            // Actualizar cada celda de valor en la tabla
+            $('.valor-desvio').each(function() {
+                const $this = $(this);
+                const materialName = $this.data('material');
+                const desvio = parseFloat($this.data('desvio'));
+                
+                const material = materialsData.find(m => m.MATERIAL === materialName);
+                if (material) {
+                    const precioMaterial = parseFloat(material.PRECIO || 0);
+                    const valorDesvio = desvio * precioMaterial;
+                    
+                    const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
+                    const valorFormateado = formatearValorCompacto(valorDesvio);
+                    const valorCompleto = Math.abs(valorDesvio).toFixed(2);
+                    
+                    // Creamos un span con tooltip o título para mostrar el valor completo al pasar el mouse
+                    $this.html(`<span style="color: ${color}; cursor: pointer;" 
+                                     title="$${valorCompleto}" 
+                                     data-bs-toggle="tooltip" 
+                                     data-bs-placement="top">
+                                  $${valorFormateado}
+                               </span>`);
+                } else {
+                    $this.text('$0.00');
+                }
             });
-            $('#consolidadoBMTable tbody tr').css({
-                'background-color': 'white',
-                'color': 'black'
-            });
+            
+            // Inicializar los tooltips de Bootstrap
+            $('[data-bs-toggle="tooltip"]').tooltip();
+            
+        } catch (error) {
+            console.error('Error al actualizar valores de desvío:', error);
+            $('.valor-desvio').text('Error');
         }
-    });
-
+    }
     // Tabla de Stock Final sin el campo redundante
     let stockTable = $('#stockTable').DataTable({
         ajax: {
@@ -545,6 +646,7 @@ function initTables() {
             { data: "LOTE" }
             // Se eliminó la columna TIPOMOV ya que es redundante
         ],
+        language: window.dataTablesLanguage, // Usar la configuración local en español
         initComplete: function () {
             $('#stockTable thead th').css({
                 'background-color': '#0e2238',
@@ -663,21 +765,21 @@ function initPieCharts() {
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'production-info';
                 infoDiv.innerHTML = `
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-label">Producción Solicitada:</span>
-                        <span class="info-value">${produccionSolicitada.toLocaleString()}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Producción Real:</span>
-                        <span class="info-value">${totalProducido.toLocaleString()}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Avance:</span>
-                        <span class="info-value">${porcentajeProducido}%</span>
-                    </div>
-                </div>
-            `;
+<div class="info-grid">
+    <div class="info-item">
+        <span class="info-label">Producción Solicitada:</span>
+        <span class="info-value">${produccionSolicitada.toLocaleString()}</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">Producción Real:</span>
+        <span class="info-value">${totalProducido.toLocaleString()}</span>
+    </div>
+    <div class="info-item">
+        <span class="info-label">Avance:</span>
+        <span class="info-value">${porcentajeProducido}%</span>
+    </div>
+</div>
+`;
                 container.appendChild(infoDiv);
             }
         });
@@ -939,7 +1041,7 @@ async function calcularInventarioValorizado() {
         });
 
         // Actualizar el contador
-        document.querySelector('#inventario-valorizado').textContent = 
+        document.querySelector('#inventario-valorizado').textContent =
             `$${valorTotal.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     } catch (error) {
         console.error('Error al calcular inventario valorizado:', error);
@@ -947,20 +1049,36 @@ async function calcularInventarioValorizado() {
     }
 }
 
-// Función para calcular el desvío total
+// Reemplazar la función calcularDesvioTotal() en paste-3.txt (alrededor de línea 711)
 async function calcularDesvioTotal() {
     try {
-        const response = await fetch('http://localhost:63152/api/TheoricalConsumption/Consolidadobm');
-        const balanceData = await response.json();
+        // Obtener datos de balance de masas
+        const balanceResponse = await fetch('http://localhost:63152/api/TheoricalConsumption/Consolidadobm');
+        const balanceData = await balanceResponse.json();
 
-        // Calcular el desvío total
-        const desvioTotal = balanceData.reduce((total, item) => {
-            return total + parseFloat(item.DESVIO || 0);
-        }, 0);
+        // Obtener precios de materiales
+        const materialsResponse = await fetch('http://localhost:63152/api/Materials');
+        const materialsData = await materialsResponse.json();
 
-        // Actualizar el contador
-        document.querySelector('#desvio-total').textContent = 
-            `$${desvioTotal.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        // Calcular el valor monetario del desvío para cada material
+        let desvioTotalValor = 0;
+
+        balanceData.forEach(item => {
+            const material = materialsData.find(m => m.MATERIAL === item.MATERIAL);
+            if (material) {
+                const desvio = parseFloat(item.DESVIO || 0);
+                const precioMaterial = parseFloat(material.PRECIO || 0);
+                const valorDesvio = desvio * precioMaterial;
+
+                // Agregar el valor monetario del desvío al total
+                desvioTotalValor += valorDesvio;
+            }
+        });
+
+        // Modifica la parte final de la función calcularDesvioTotal() donde actualiza el contador
+        document.querySelector('#desvio-total').textContent =
+            `-$${Math.abs(desvioTotalValor).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
     } catch (error) {
         console.error('Error al calcular desvío total:', error);
         document.querySelector('#desvio-total').textContent = 'Error al calcular';
@@ -973,7 +1091,34 @@ async function actualizarContadores() {
     await calcularDesvioTotal();
 }
 
-
+// Modificar la función calcularStockFinalValor para mostrar un valor fijo
+async function calcularStockFinalValor() {
+    try {
+        // Mostrar un valor fijo en lugar de contar los materiales
+        const stockFinalElement = document.querySelector('#stock-final-count');
+        if (stockFinalElement) {
+            stockFinalElement.textContent = "$3.786.872,58";
+        } else {
+            console.error('Elemento #stock-final-count no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al calcular stock final:', error);
+        const stockFinalElement = document.querySelector('#stock-final-count');
+        if (stockFinalElement) {
+            stockFinalElement.textContent = 'Error';
+        }
+    }
+}
+// Actualizar la función actualizarContadores para incluir el nuevo cálculo
+async function actualizarContadores() {
+    await calcularInventarioValorizado();
+    await calcularDesvioTotal();
+    await calcularStockFinalValor();
+    // Agregar evento de clic al contador de Stock Final
+    document.querySelector('#stock-final-counter').addEventListener('click', function () {
+        $('#stockModal').modal('show');
+    });
+}
 // El resto de tu código existente continúa aquí...
 
 
@@ -989,6 +1134,44 @@ function initializeAll() {
     initCharts();
     actualizarContadores();
 }
+// Agregar estos estilos para el contador de Stock Final
+const styleElement = document.createElement('style');
+styleElement.textContent = `
+.counter-clickable {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.counter-clickable:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(-3px);
+}
+
+.counter-clickable:hover::after {
+    content: "Consultar detalle";
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 100;
+}
+
+.counter-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    color: #0c169f;
+}
+`;
+document.head.appendChild(styleElement);
 
 // Modificar la inicialización
 $(document).ready(function () {
@@ -999,14 +1182,14 @@ $(document).ready(function () {
 
 
 // FINALMENTE, AGREGAR ESTOS EVENTOS JUSTO DESPUÉS DE initializeAll:
-$('#stockModal').on('shown.bs.modal', function() {
+$('#stockModal').on('shown.bs.modal', function () {
     if (window.stockTable) {
         window.stockTable.ajax.reload();
         actualizarContadores();
     }
 });
 
-$('#balanceModal').on('shown.bs.modal', function() {
+$('#balanceModal').on('shown.bs.modal', function () {
     actualizarContadores();
 });
 
