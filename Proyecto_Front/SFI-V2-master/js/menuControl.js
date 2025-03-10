@@ -36,366 +36,983 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-// Creamos una función separada para inicializar los gráficos
-function initCharts() {
-    // Asegurarnos de que los elementos canvas existen
-    const mainMetricsCtx = document.getElementById('mainMetrics');
-    const workDistributionCtx = document.getElementById('workDistribution');
-    const comparativeChartCtx = document.getElementById('comparativeChart');
-    const monthlyProgressCtx = document.getElementById('monthlyProgress');
-    const monthlyProductionCtx = document.getElementById('monthlyProduction');
 
-    // Gráfico de Producción Anual (Rediseñado)
-    if (mainMetricsCtx) {
-        new Chart(mainMetricsCtx, {
+// 1. Mejora para el menú contextual de Highcharts - mostrar por fuera y con scroll
+Highcharts.setOptions({
+    navigation: {
+        menuItemStyle: {
+            padding: '0.5em 1em',
+            color: '#333',
+            fontSize: '12px'
+        },
+        menuStyle: {
+            border: '1px solid #ccc',
+            background: '#fff',
+            padding: '5px 0',
+            borderRadius: '4px',
+            boxShadow: '2px 2px 8px rgba(0,0,0,0.3)',
+            zIndex: 9999,
+            overflow: 'auto',           // Permitir scroll si hay muchas opciones
+            maxHeight: '300px',         // Altura máxima antes de activar scroll
+            position: 'absolute',
+            // Colocar el menú fuera de la zona de gráficos
+            marginTop: '10px',
+            marginLeft: '10px'
+        },
+        // Asegura que el menú contextual no afecte el tamaño del gráfico
+        bindings: {
+            contextMenu: function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                
+                // Referencia al gráfico actual
+                const chart = this;
+                
+                // Posición del menú contextual
+                let x = e.chartX;
+                let y = e.chartY;
+                
+                // Comprobar si el menú saldría del viewport
+                const menuWidth = 150;  // Ancho aproximado del menú
+                const menuHeight = 200; // Altura aproximada del menú
+                const chartRect = chart.container.getBoundingClientRect();
+                const viewportWidth = window.innerWidth;
+                const viewportHeight = window.innerHeight;
+                
+                // Ajustar posición si el menú sale del viewport
+                if (chartRect.left + x + menuWidth > viewportWidth) {
+                    x = Math.max(0, viewportWidth - chartRect.left - menuWidth - 10);
+                }
+                if (chartRect.top + y + menuHeight > viewportHeight) {
+                    y = Math.max(0, viewportHeight - chartRect.top - menuHeight - 10);
+                }
+                
+                // Mostrar el menú contextual en la posición ajustada
+                if (chart.contextMenu) {
+                    chart.contextMenu.style.left = x + 'px';
+                    chart.contextMenu.style.top = y + 'px';
+                    chart.contextMenu.style.zIndex = 9999;
+                    chart.contextMenu.style.display = 'block';
+                }
+            }
+        }
+    }
+});
+
+// Función para detectar y corregir menús contextuales fuera de los límites
+function fixContextMenuPosition() {
+    // Aplicar después de que aparezca cualquier menú contextual
+    $(document).on('mousedown', '.highcharts-contextmenu', function() {
+        const menu = $(this);
+        const menuRect = this.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // Comprobar si el menú sale por la derecha
+        if (menuRect.right > viewportWidth) {
+            const newLeft = viewportWidth - menuRect.width - 10;
+            menu.css('left', newLeft + 'px');
+        }
+        
+        // Comprobar si el menú sale por abajo
+        if (menuRect.bottom > viewportHeight) {
+            const newTop = viewportHeight - menuRect.height - 10;
+            menu.css('top', newTop + 'px');
+        }
+    });
+}
+
+
+
+
+// Función para inicializar todos los gráficos con Highcharts
+function initHighcharts() {
+    // 1. Última Producción (gráfico circular)
+    initUltimaProduccionChart();
+    
+    // 2. Órdenes de Trabajo (gráfico circular)
+    initOrdenesTrabajoChart();
+    
+    // 3. Producción por Temporada (barras)
+    initProduccionTemporadaChart();
+    
+    // 4. Producción por Órdenes de Trabajo (barras)
+    initProduccionOTChart();
+    
+    // 5. Producción Anual (líneas)
+    initProduccionAnualChart();
+    
+    // 6. Balance de Masas (barras) - ya implementado previamente
+    initBalanceMasasChart();
+}
+
+
+// 1. Última Producción (gráfico circular)
+// 2. Para el gráfico de Última Producción - Mostrar la leyenda siempre visible
+function initUltimaProduccionChart() {
+    // Función para inicializar el gráfico de Última Producción con los 3 contadores
+  window.initUltimaProduccionChart = function() {
+    const container = document.getElementById('ultima-produccion-container');
+    if (!container) return;
+    
+    // Obtener datos de producción
+    $.ajax({
+      url: 'http://localhost:63152/api/Production/GetAllProduction',
+      success: function(productionData) {
+        // Filtrar datos para OT 4
+        const otData = productionData.filter(item => item.OT === 4);
+        // Calcular producción total
+        const totalProducido = otData.reduce((sum, item) => sum + item.PRODUCIDO, 0);
+        // Demanda fija como indicaste
+        const produccionSolicitada = 1446;
+        
+        // Calcular porcentajes y performance
+        const porcentajeProducido = ((totalProducido / produccionSolicitada) * 100).toFixed(1);
+        const porcentajeFaltante = (100 - porcentajeProducido).toFixed(1);
+        
+        // Performance (mismo valor que porcentaje producido en este caso)
+        const performance = porcentajeProducido;
+        
+        // Crear el gráfico circular
+        Highcharts.chart('ultima-produccion-container', {
+          chart: {
+            type: 'pie',
+            backgroundColor: 'transparent',
+            // Dejar espacio suficiente para los contadores
+            spacingBottom: 20,
+            // Altura para ajustarse al contenedor
+            height: '100%'
+          },
+          title: {
+            text: undefined
+          },
+          credits: {
+            enabled: false
+          },
+          tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          },
+          plotOptions: {
+            pie: {
+              innerSize: '60%', // Estilo donut
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: false
+              },
+              // Reducir tamaño para dejar espacio a los contadores
+              size: '90%',
+              // Mostrar leyenda solo si hay espacio
+              showInLegend: true
+            }
+          },
+          legend: {
+            enabled: false // Desactivar leyenda para dar más espacio a los contadores
+          },
+          series: [{
+            name: 'Producción',
+            colorByPoint: true,
+            data: [{
+              name: 'Producción Real',
+              y: parseFloat(porcentajeProducido),
+              color: '#0c169f'
+            }, {
+              name: 'Pendiente',
+              y: parseFloat(porcentajeFaltante),
+              color: '#e74a3b'
+            }]
+          }]
+        });
+        
+        // Agregar información central (OT 4 y porcentaje)
+        // Eliminar cualquier info central existente primero
+        const existingInfo = container.querySelector('.highcharts-center-info');
+        if (existingInfo) existingInfo.remove();
+        
+        const centerInfo = document.createElement('div');
+        centerInfo.className = 'highcharts-center-info';
+        centerInfo.innerHTML = `
+          <div class="center-title">OT 4</div>
+          <div class="center-value">${porcentajeProducido}%</div>
+        `;
+        container.appendChild(centerInfo);
+        
+        // Crear los 3 contadores solicitados
+        // Eliminar cualquier contador existente primero
+        const existingCounters = container.querySelector('.production-counters');
+        if (existingCounters) existingCounters.remove();
+        
+        const countersContainer = document.createElement('div');
+        countersContainer.className = 'production-counters';
+        countersContainer.innerHTML = `
+          <div class="counters-wrapper">
+            <div class="counter-box">
+              <div class="counter-icon"><i class="zmdi zmdi-check-circle"></i></div>
+              <div class="counter-value">${totalProducido.toLocaleString()}</div>
+              <div class="counter-label">Producido</div>
+            </div>
+            <div class="counter-box">
+              <div class="counter-icon"><i class="zmdi zmdi-assignment-o"></i></div>
+              <div class="counter-value">${produccionSolicitada.toLocaleString()}</div>
+              <div class="counter-label">Demanda</div>
+            </div>
+            <div class="counter-box">
+              <div class="counter-icon"><i class="zmdi zmdi-trending-up"></i></div>
+              <div class="counter-value">${performance}%</div>
+              <div class="counter-label">Performance</div>
+            </div>
+          </div>
+        `;
+        container.appendChild(countersContainer);
+        
+        // Aplicar estilos personalizados para los contadores
+        const styleElement = document.createElement('style');
+        styleElement.textContent = `
+          /* Estilos para el contenedor de contadores */
+          .production-counters {
+            padding: 10px;
+            margin-top: 5px;
+            width: 100%;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+          }
+          
+          /* Wrapper para los contadores */
+          .counters-wrapper {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+          }
+          
+          /* Cada contador individual */
+          .counter-box {
+            flex: 1;
+            min-width: 75px;
+            text-align: center;
+            padding: 8px 5px;
+            background-color: white;
+            border-radius: 5px;
+            margin: 0 3px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+          }
+          
+          .counter-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+          }
+          
+          /* Iconos distintivos para cada contador */
+          .counter-icon {
+            font-size: 18px;
+            margin-bottom: 3px;
+          }
+          
+          .counter-box:nth-child(1) .counter-icon {
+            color: #0c169f; /* Azul para Producido */
+          }
+          
+          .counter-box:nth-child(2) .counter-icon {
+            color: #e74a3b; /* Rojo para Demanda */
+          }
+          
+          .counter-box:nth-child(3) .counter-icon {
+            color: #1cc88a; /* Verde para Performance */
+          }
+          
+          /* Valores de los contadores */
+          .counter-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 2px;
+          }
+          
+          /* Etiquetas de los contadores */
+          .counter-label {
+            font-size: 11px;
+            color: #666;
+          }
+          
+          /* Ajuste para dispositivos móviles */
+          @media (max-width: 767px) {
+            .counter-box {
+              margin-bottom: 5px;
+              flex-basis: 100%;
+            }
+          }
+        `;
+        
+        // Añadir los estilos al documento
+        if (!document.getElementById('ultima-produccion-styles')) {
+          styleElement.id = 'ultima-produccion-styles';
+          document.head.appendChild(styleElement);
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error("Error al cargar datos de producción:", error);
+        container.innerHTML = '<div class="error-message">Error al cargar datos de producción</div>';
+      }
+    });
+  };
+}
+
+// 2. Órdenes de Trabajo (gráfico circular)
+function initOrdenesTrabajoChart() {
+    const container = document.getElementById('ordenes-trabajo-container');
+    if (!container) return;
+    
+    $.ajax({
+        url: 'http://localhost:63152/api/WorkOrders',
+        success: function(workOrdersData) {
+            // Contar órdenes por estado
+            const realizadas = workOrdersData.filter(item => item.ESTADO === 'REALIZADA').length;
+            const pendientes = workOrdersData.filter(item => item.ESTADO === 'PENDIENTE').length;
+            
+            Highcharts.chart('ordenes-trabajo-container', {
+                chart: {
+                    type: 'pie',
+                    backgroundColor: 'transparent'
+                },
+                title: {
+                    text: undefined
+                },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        innerSize: '60%',
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.y}'
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle',
+                    itemStyle: {
+                        fontSize: '12px'
+                    }
+                },
+                series: [{
+                    name: 'Órdenes',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Pendientes',
+                        y: pendientes,
+                        color: '#0c169f'
+                    }, {
+                        name: 'Realizadas',
+                        y: realizadas,
+                        color: '#1cc88a'
+                    }]
+                }]
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Error al cargar datos de órdenes de trabajo:", error);
+            container.innerHTML = '<div class="error-message">Error al cargar datos de órdenes de trabajo</div>';
+        }
+    });
+}
+
+// 3. Producción por Temporada (barras)
+function initProduccionTemporadaChart() {
+    const container = document.getElementById('produccion-temporada-container');
+    if (!container) return;
+    
+    Highcharts.chart('produccion-temporada-container', {
+        chart: {
+            type: 'column',
+            backgroundColor: 'transparent'
+        },
+        title: {
+            text: undefined
+        },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            categories: ['Grido Cookie and Cream', 'Grido Mousse', 'Grido con Relleno'],
+            crosshair: true
+        },
+        yAxis: {
+            min: 50000,
+            max: 95000,
+            title: {
+                text: 'Cantidad'
+            },
+            labels: {
+                formatter: function() {
+                    return this.value.toLocaleString();
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0,
+                borderRadius: 5
+            }
+        },
+        series: [{
+            name: 'Producción febrero 2025',
+            color: '#0c169f',
+            data: [70000, 80000, 90000]
+        }]
+    });
+}
+
+// 4. Producción por Órdenes de Trabajo (barras)
+function initProduccionOTChart() {
+    const container = document.getElementById('produccion-ot-container');
+    if (!container) return;
+    
+    Highcharts.chart('produccion-ot-container', {
+        chart: {
+            type: 'column',
+            backgroundColor: 'transparent'
+        },
+        title: {
+            text: undefined
+        },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            categories: ['Grido Cookie and Cream', 'Grido Mousse', 'Grido con Relleno'],
+            crosshair: true
+        },
+        yAxis: {
+            min: 50000,
+            max: 100000,
+            title: {
+                text: 'Cantidad',
+                style: {
+                    fontWeight: 'bold'
+                }
+            },
+            labels: {
+                formatter: function() {
+                    return this.value.toLocaleString();
+                }
+            }
+        },
+        legend: {
+            align: 'center',
+            verticalAlign: 'top',
+            floating: false,
+            backgroundColor: undefined,
+            shadow: false
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0,
+                borderRadius: 5
+            }
+        },
+        series: [{
+            name: 'Producción establecida en OT',
+            color: '#1cc88a',
+            data: [82567, 71230, 90120]
+        }, {
+            name: 'Producción realizada en OT',
+            color: '#0c169f',
+            data: [80000, 70000, 90000]
+        }]
+    });
+}
+
+// 5. Producción Anual (líneas)
+function initProduccionAnualChart() {
+    const container = document.getElementById('produccion-anual-container');
+    if (!container) return;
+    
+    Highcharts.chart('produccion-anual-container', {
+        chart: {
             type: 'line',
-            data: {
-                labels: ['Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic', 'Ene', 'Feb'],
-                datasets: [{
-                    label: 'Grido Cookie and Cream',
-                    data: [80000, 82000, 78000, 85000, 88000, 84000, 87000, 90000, 86000, 89000, 85000, 88000],
-                    borderColor: '#0e2238',
-                    backgroundColor: '0c169f',
-                    borderWidth: 3
-                }, {
-                    label: 'Grido Mousse',
-                    data: [70000, 73000, 71000, 75000, 78000, 74000, 77000, 80000, 76000, 79000, 75000, 78000],
-                    borderColor: '#f6c23e',
-                    backgroundColor: 'rgba(246, 194, 62, 0.1)',
-                    borderWidth: 3
-                }, {
-                    label: 'Grido con Relleno',
-                    data: [90000, 92000, 88000, 95000, 98000, 94000, 97000, 100000, 96000, 99000, 95000, 98000],
-                    borderColor: '#e74a3b',
-                    backgroundColor: 'rgba(231, 74, 59, 0.1)',
-                    borderWidth: 3
-                }]
+            backgroundColor: 'transparent'
+        },
+        title: {
+            text: undefined
+        },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            categories: ['Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic', 'Ene', 'Feb'],
+            crosshair: true
+        },
+        yAxis: {
+            min: 50000,
+            max: 110000,
+            title: {
+                text: 'Cantidad'
             },
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 50000,
-                        max: 110000,
-                        ticks: {
-                            callback: function (value) {
-                                return value.toLocaleString();
+            labels: {
+                formatter: function() {
+                    return this.value.toLocaleString();
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        legend: {
+            layout: 'horizontal',
+            align: 'center',
+            verticalAlign: 'top',
+            borderWidth: 0
+        },
+        plotOptions: {
+            line: {
+                marker: {
+                    radius: 3
+                },
+                lineWidth: 3
+            }
+        },
+        series: [{
+            name: 'Grido Cookie and Cream',
+            color: '#0e2238',
+            data: [80000, 82000, 78000, 85000, 88000, 84000, 87000, 90000, 86000, 89000, 85000, 88000]
+        }, {
+            name: 'Grido Mousse',
+            color: '#f6c23e',
+            data: [70000, 73000, 71000, 75000, 78000, 74000, 77000, 80000, 76000, 79000, 75000, 78000]
+        }, {
+            name: 'Grido con Relleno',
+            color: '#e74a3b',
+            data: [90000, 92000, 88000, 95000, 98000, 94000, 97000, 100000, 96000, 99000, 95000, 98000]
+        }]
+    });
+}
+
+// Función mejorada para el gráfico Balance de Masas
+// 3. Mejorar el gráfico de Balance de Masas
+function initBalanceMasasChart() {
+    const container = document.getElementById('balance-highchart-container');
+    if (!container) {
+        console.error('El contenedor balance-highchart-container no existe');
+        return;
+    }
+    
+    // Limpiar el contenedor antes de crear un nuevo gráfico
+    container.innerHTML = '';
+    
+    $.ajax({
+        url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
+        success: function(balanceData) {
+            // Calcular totales
+            const totales = balanceData.reduce((acc, item) => {
+                return {
+                    teorico: acc.teorico + parseFloat(item.TEORICO || 0),
+                    real: acc.real + parseFloat(item.REAL || 0),
+                    desvio: acc.desvio + parseFloat(item.DESVIO || 0)
+                };
+            }, { teorico: 0, real: 0, desvio: 0 });
+            
+            // Crear el gráfico con opciones mejoradas
+            Highcharts.chart('balance-highchart-container', {
+                chart: {
+                    type: 'column',
+                    backgroundColor: 'transparent',
+                    height: '100%',
+                    reflow: true,
+                    events: {
+                        // Controlar dimensiones para evitar desbordamiento
+                        load: function() {
+                            const chart = this;
+                            
+                            // Reajustar el gráfico para asegurar que se mantenga
+                            // dentro de sus límites al cargar
+                            setTimeout(() => {
+                                chart.reflow();
+                            }, 100);
+                        }
+                    }
+                },
+                title: {
+                    text: undefined
+                },
+                credits: {
+                    enabled: false
+                },
+                xAxis: {
+                    categories: ['Balance de Masas'],
+                    labels: {
+                        style: {
+                            fontSize: '12px'
+                        }
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Cantidad Total',
+                        style: {
+                            fontSize: '12px',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labels: {
+                        formatter: function() {
+                            return this.value.toLocaleString();
+                        }
+                    }
+                },
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'top',
+                    itemStyle: {
+                        fontSize: '12px'
+                    },
+                    // Asegurar que la leyenda no cause desbordamiento
+                    floating: false,
+                    width: '100%'
+                },
+                tooltip: {
+                    // Configurar el tooltip para que no cause desbordamiento
+                    outside: true,
+                    useHTML: true,
+                    formatter: function() {
+                        let value = this.y;
+                        
+                        // Si es el desvío y es negativo en los datos originales
+                        if (this.series.name === 'Desvío Total' && totales.desvio < 0) {
+                            value = -value;
+                        }
+                        
+                        return `<b>${this.series.name}</b>: ${value.toFixed(2)}`;
+                    }
+                },
+                plotOptions: {
+                    column: {
+                        borderWidth: 0,
+                        borderRadius: 5,
+                        dataLabels: {
+                            enabled: true,
+                            crop: false,
+                            overflow: 'none',
+                            formatter: function() {
+                                return this.y.toLocaleString(undefined, {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0
+                                });
                             }
                         }
                     }
                 },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 20
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    if (workDistributionCtx) {
-        // Hacer la llamada a la API
-        $.ajax({
-            url: 'http://localhost:63152/api/WorkOrders',
-            success: function (workOrdersData) {
-                // Contar órdenes por estado
-                const realizadas = workOrdersData.filter(item => item.ESTADO === 'REALIZADA').length;
-                const pendientes = workOrdersData.filter(item => item.ESTADO === 'PENDIENTE').length;
-
-                let chart = new Chart(workDistributionCtx, {
-                    type: 'doughnut', // Cambiado a doughnut para mejor estética
-                    data: {
-                        labels: ['Pendientes', 'Realizadas'],
-                        datasets: [{
-                            data: [pendientes, realizadas],
-                            backgroundColor: ['#0c169f', '#1cc88a'],
-                            borderWidth: 2,
-                            borderColor: '#ffffff'
-                        }]
-                    },
-                    options: {
-                        maintainAspectRatio: false,
-                        responsive: true,
-                        layout: {
-                            padding: {
-                                left: 10,
-                                right: 10,
-                                top: 10,
-                                bottom: 10
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                position: 'right',
-                                labels: {
-                                    padding: 20,
-                                    font: {
-                                        size: 14
-                                    },
-                                    generateLabels: function (chart) {
-                                        const data = chart.data;
-                                        if (data.labels.length && data.datasets.length) {
-                                            return data.labels.map((label, i) => ({
-                                                text: `${label}: ${data.datasets[0].data[i]}`,
-                                                fillStyle: data.datasets[0].backgroundColor[i],
-                                                hidden: !chart.getDataVisibility(i),
-                                                lineCap: 'round',
-                                                lineDash: [],
-                                                lineDashOffset: 0,
-                                                lineJoin: 'round',
-                                                strokeStyle: data.datasets[0].borderColor,
-                                                pointStyle: 'rect', // Cambiado a rect para mejor visibilidad
-                                                rotation: 0,
-                                                datasetIndex: 0,
-                                                index: i
-                                            }));
-                                        }
-                                        return [];
-                                    },
-                                    usePointStyle: true,
-                                    boxWidth: 20
-                                },
-                                onClick: function (e, legendItem, legend) {
-                                    const index = legendItem.index;
-                                    const chart = legend.chart;
-
-                                    chart.toggleDataVisibility(index);
-                                    chart.update();
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function (context) {
-                                        const label = context.label || '';
-                                        const value = context.raw;
-                                        const total = context.dataset.data.reduce((acc, current) => acc + current, 0);
-                                        const percentage = ((value / total) * 100).toFixed(1);
-                                        return `${label}: ${value} (${percentage}%)`;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error('Error al cargar datos de órdenes de trabajo:', error);
-                const ctx = workDistributionCtx.getContext('2d');
-                ctx.font = '14px Arial';
-                ctx.fillStyle = 'red';
-                ctx.textAlign = 'center';
-                ctx.fillText('Error al cargar datos', workDistributionCtx.width / 2, workDistributionCtx.height / 2);
-            }
-        });
-    }
-
-    if (comparativeChartCtx) {
-        new Chart(comparativeChartCtx, {
-            type: 'bar', // Cambiado a tipo bar para mostrar barras agrupadas
-            data: {
-                labels: ['Grido Cookie and Cream', 'Grido Mousse', 'Grido con Relleno'],
-                datasets: [{
-                    label: 'Producción establecida en OT',
-                    data: [82567, 71230, 90120],
-                    backgroundColor: '#1cc88a',
-                    borderRadius: 5,
-                    order: 2
-                },
-                {
-                    label: 'Producción realizada en OT',
-                    data: [80000, 70000, 90000],
-                    backgroundColor: '#0c169f',
-                    borderRadius: 5,
-                    order: 2
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-                barPercentage: 0.5,
-                categoryPercentage: 0.8,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        align: 'end',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 20,
-                            // Hacer las leyendas clickeables para mostrar/ocultar datasets
-                            generateLabels: function (chart) {
-                                const datasets = chart.data.datasets;
-                                return datasets.map((dataset, i) => ({
-                                    text: dataset.label,
-                                    fillStyle: dataset.backgroundColor,
-                                    hidden: !chart.isDatasetVisible(i),
-                                    lineCap: 'round',
-                                    lineDash: [],
-                                    lineDashOffset: 0,
-                                    lineJoin: 'round',
-                                    strokeStyle: dataset.backgroundColor,
-                                    pointStyle: 'rect',
-                                    datasetIndex: i
-                                }));
-                            }
-                        },
-                        onClick: function (e, legendItem, legend) {
-                            const index = legendItem.datasetIndex;
-                            const chart = legend.chart;
-                            const meta = chart.getDatasetMeta(index);
-
-                            meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden : null;
-                            chart.update();
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function (context) {
-                                let label = context.dataset.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed.y !== null) {
-                                    label += context.parsed.y.toLocaleString();
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 50000,
-                        max: 100000,
-                        title: {
-                            display: true,
-                            text: 'Cantidad',
-                            font: {
-                                weight: 'bold'
-                            }
-                        },
-                        ticks: {
-                            callback: function (value) {
-                                return value.toLocaleString();
-                            }
-                        }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    if (monthlyProgressCtx) {
-        new Chart(monthlyProgressCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Turno Mañana', 'Turno Tarde', 'Turno Noche'],
-                datasets: [{
-                    label: 'Ordenes de trabajo Completadas',
-                    data: [15, 14, 14],
-                    backgroundColor: '#0c169f'
+                series: [{
+                    name: 'Consumo Teórico',
+                    data: [Math.abs(totales.teorico)],
+                    color: '#0c169f'
                 }, {
-                    label: 'Ordenes de trabajo Pendientes',
-                    data: [1, 1, 1],
-                    backgroundColor: '#4e73df'
+                    name: 'Consumo Real',
+                    data: [Math.abs(totales.real)],
+                    color: '#1cc88a'
                 }, {
-                    label: 'Ordenes de trabajo Canceladas',
-                    data: [0, 0, 1],
-                    backgroundColor: '#f6c23e'
+                    name: 'Desvío Total',
+                    data: [Math.abs(totales.desvio)],
+                    color: '#e74a3b'
                 }]
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al obtener datos para el balance de masas:', error);
+            container.innerHTML = `
+                <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <p style="color: red; text-align: center;">Error al cargar los datos del balance de masas</p>
+                </div>
+            `;
+        }
+    });
+}
+
+
+
+
+
+
+
+// Función principal para inicializar todo
+function initializeAllHighcharts() {
+    // Prepara los contenedores, reemplazando los elementos canvas por divs para Highcharts
+    prepareContainers();
+    
+    // Inicializa todos los gráficos con Highcharts
+    initHighcharts();
+    
+    // Inicializa las tablas y contadores (mantenemos estas funciones tal como están)
+    if (typeof initTables === 'function') initTables();
+    if (typeof actualizarContadores === 'function') actualizarContadores();
+}
+
+// Prepara los contenedores para Highcharts
+function prepareContainers() {
+    // Función auxiliar para reemplazar canvas por div
+    function replaceCanvasWithDiv(canvasId, newDivId) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return false;
+        
+        const container = canvas.parentElement;
+        const newDiv = document.createElement('div');
+        newDiv.id = newDivId;
+        newDiv.style.width = '100%';
+        newDiv.style.height = '100%';
+        
+        container.replaceChild(newDiv, canvas);
+        return true;
+    }
+    
+    // Reemplazar cada canvas por un div para Highcharts
+    replaceCanvasWithDiv('productionPieChart', 'ultima-produccion-container');
+    replaceCanvasWithDiv('workDistribution', 'ordenes-trabajo-container');
+    replaceCanvasWithDiv('monthlyProduction', 'produccion-temporada-container');
+    replaceCanvasWithDiv('comparativeChart', 'produccion-ot-container');
+    replaceCanvasWithDiv('mainMetrics', 'produccion-anual-container');
+    
+    // Balance de Masas ya está preparado
+}
+
+// Actualizar la función window.onload o document.ready
+$(document).ready(function() {
+    initializeAllHighcharts();
+    
+    // Carga de scripts adicionales de Highcharts si fuera necesario
+    loadHighchartsModules();
+});
+
+// Función para cargar módulos adicionales de Highcharts si fuera necesario
+function loadHighchartsModules() {
+    // Si necesitas más módulos de Highcharts, puedes cargarlos aquí
+    if (typeof Highcharts !== 'undefined') {
+        // Configuraciones globales de Highcharts
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: '.',
+                decimalPoint: ','
             },
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-                barPercentage: 0.4,
-                categoryPercentage: 0.8,
-                scales: {
-                    x: {
-                        stacked: true
-                    },
-                    y: {
-                        stacked: true,
-                        beginAtZero: true
-                    }
-                }
-            }
+            colors: ['#0c169f', '#1cc88a', '#e74a3b', '#f6c23e', '#4e73df']
         });
     }
+}
 
-    // Gráfico de Producción Mensual
-    if (monthlyProductionCtx) {
-        new Chart(monthlyProductionCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Grido Cookie and Cream', 'Grido Mousse', 'Grido con Relleno'],
-                datasets: [{
-                    label: 'Producción febrero 2025',
-                    data: [70000, 80000, 90000],
-                    backgroundColor: '#0c169f',
-                    borderRadius: 5,
-                    barPercentage: 0.4 // Barras más delgadas
-                }]
+
+
+// 1. Configuración global para Highcharts
+function configureHighcharts() {
+    // Configuraciones globales comunes para todos los gráficos
+    if (typeof Highcharts !== 'undefined') {
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: '.',
+                decimalPoint: ','
             },
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 50000,
-                        max: 95000,
-                        ticks: {
-                            callback: function (value) {
-                                return value.toLocaleString();
-                            }
-                        }
+            colors: ['#0c169f', '#1cc88a', '#e74a3b', '#f6c23e', '#4e73df'],
+            chart: {
+                style: {
+                    fontFamily: "'RobotoRegular', sans-serif" // Fuente consistente
+                },
+                events: {
+                    // Corregir problema de superposición del menú
+                    beforeShowContextMenu: function() {
+                        // Ajustar botones consultar
+                        $('.btn-consultar').css('z-index', 5);
+                    },
+                    afterHideContextMenu: function() {
+                        // Restaurar z-index
+                        $('.btn-consultar').css('z-index', 10);
                     }
                 }
+            },
+            // Mejora de accesibilidad y tooltips
+            tooltip: {
+                outside: true // Para evitar problemas de superposición
+            },
+            // Mejora para leyendas
+            legend: {
+                itemDistance: 8,
+                itemMarginBottom: 5
             }
         });
     }
 }
 
-/// Función para inicializar las tablas DataTables
-function initTables() {
-    // Configuración común para las DataTables
-    let commonConfig = {
-        dom: 'Bfrtip', // Elimina el filtro de entries
-        buttons: ['pdfHtml5', 'excelHtml5'],
-        searching: false, // Elimina la búsqueda
-        language: {
-            "decimal": "",
-            "emptyTable": "No hay datos disponibles",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-            "infoEmpty": "Mostrando 0 a 0 de 0 registros",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "thousands": ",",
-            "search": "Buscar:",
-            "zeroRecords": "No se encontraron coincidencias",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
+// 2. Ajustes a los gráficos de dona para corregir visualización y tamaño
+function fixPieChartsConfig() {
+    // Configuración común para gráficos de dona
+    const pieChartDefaults = {
+        chart: {
+            type: 'pie',
+            backgroundColor: 'transparent',
+            // Asegurar renderizado completo
+            margin: [0, 0, 0, 0],
+            // Tamaño dinámico basado en contenedor
+            height: '100%',
+            events: {
+                // Ajuste después de renderizar
+                render: function() {
+                    // Ajustar posición de leyendas si es necesario
+                    if (this.legend && this.legend.options.align === 'right') {
+                        this.reflow();
+                    }
+                }
+            }
+        },
+        plotOptions: {
+            pie: {
+                innerSize: '60%',
+                size: '90%', // Asegurar que el gráfico no sea demasiado grande
+                allowPointSelect: true,
+                cursor: 'pointer',
+                borderWidth: 0, // Eliminar bordes
+                dataLabels: {
+                    distance: -25, // Ajustar etiquetas
+                    style: {
+                        textOutline: 'none', // Mejorar legibilidad
+                        fontWeight: 'normal'
+                    }
+                },
+                showInLegend: true,
+                // Posición central para textos
+                center: ['50%', '50%']
             }
         }
     };
 
+    // Aplicar configuración a gráficos específicos
+    // 1. Última Producción
+    const ultimaProduccionConfig = window.ultimaProduccionChart?.userOptions;
+    if (ultimaProduccionConfig) {
+        window.ultimaProduccionChart.update(Highcharts.merge(pieChartDefaults, {}));
+    }
+
+    // 2. Órdenes de Trabajo
+    const ordenesTrabajoConfig = window.ordenesTrabajoChart?.userOptions;
+    if (ordenesTrabajoConfig) {
+        window.ordenesTrabajoChart.update(Highcharts.merge(pieChartDefaults, {
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            }
+        }));
+    }
+}
+
+// 3. Fix para el error de SweetAlert
+function fixSweetAlertError() {
+    // Verificar si Swal existe pero está causando un error
+    if (typeof Swal !== 'undefined' && typeof swal !== 'undefined' && !swal.init) {
+        // Proporcionar una implementación temporal
+        swal.init = function() {
+            console.log('SweetAlert init polyfill');
+            return Swal.isVisible();
+        };
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/// Función para inicializar las tablas DataTables
+function initTables() {
+
+ // Verificar si las tablas ya están inicializadas y destruirlas
+ if ($.fn.DataTable.isDataTable('#productionTable')) {
+    $('#productionTable').DataTable().destroy();
+}
+if ($.fn.DataTable.isDataTable('#theoricalTableInProduction')) {
+    $('#theoricalTableInProduction').DataTable().destroy();
+}
+if ($.fn.DataTable.isDataTable('#consolidadoBMTable')) {
+    $('#consolidadoBMTable').DataTable().destroy();
+}
+if ($.fn.DataTable.isDataTable('#stockTable')) {
+    $('#stockTable').DataTable().destroy();
+}
+
+
+        // Configuración común para las DataTables
+        let commonConfig = {
+            dom: 'Bfrtip', // Elimina el filtro de entries
+            buttons: ['pdfHtml5', 'excelHtml5'],
+            searching: false, // Elimina la búsqueda
+            language: window.dataTablesLanguage || {
+                "decimal": "",
+                "emptyTable": "No hay datos disponibles",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+                "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "thousands": ",",
+                "search": "Buscar:",
+                "zeroRecords": "No se encontraron coincidencias",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        };
+
 
 
     // Tabla de Producción
-    let productionTable = $('#productionTable').DataTable({
+     // Tabla de Producción
+     let productionTable = $('#productionTable').DataTable({
         ...commonConfig,
         ajax: {
             url: 'http://localhost:63152/api/Production/GetAllProduction',
@@ -438,8 +1055,11 @@ function initTables() {
             });
         }
     });
+    window.productionTable = productionTable;
 
-    // Tabla de Balance de Masas con colores en desvíos
+
+
+     // Tabla de Balance de Masas con colores en desvíos
     let theoricalTableInProduction = $('#theoricalTableInProduction').DataTable({
         ajax: {
             url: 'http://localhost:63152/api/TheoricalConsumption/GetTheoricalConsumption?ot=4',
@@ -470,16 +1090,16 @@ function initTables() {
             });
         }
     });
+    window.theoricalTableInProduction = theoricalTableInProduction;
 
-
-// Reemplaza la configuración de la tabla consolidadoBMTable con esta versión que no utiliza tooltips
-let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
+  // Tabla para el consolidado de Balance de Masas
+  let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
     ...commonConfig,
     searching: true,
-    language: window.dataTablesLanguage, // Usar la configuración local
+    language: window.dataTablesLanguage,
     ajax: {
         url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
-        dataSrc: ''  // Usar los datos directamente
+        dataSrc: ''
     },
     columns: [
         { data: "MATERIAL" },
@@ -504,7 +1124,6 @@ let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
             }
         },
         {
-            // Columna para el valor
             data: null,
             render: function (data, type, row) {
                 // Mapa de precios fijos para cada material
@@ -540,8 +1159,6 @@ let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
                 const formattedValue = formatearValor(valorDesvio);
                 const fullValue = Math.abs(valorDesvio).toFixed(2);
                 
-                console.log(`Material: ${row.MATERIAL}, Desvío: ${desvio}, Precio: ${precioMaterial}, Valor: ${valorDesvio}`);
-                
                 // Usar el atributo title nativo para mostrar el valor completo
                 return `<span style="color: ${color}; cursor: help;" 
                            title="Valor completo: $${fullValue}">${valorDesvio < 0 ? '-' : ''}$${formattedValue}</span>`;
@@ -558,7 +1175,10 @@ let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
             'color': 'black'
         });
     }
-});
+  });
+window.consolidadoBMTable = consolidadoBMTable;
+
+
 
     // Reemplaza la función actualizarValoresDesvio con esta versión
     async function actualizarValoresDesvio() {
@@ -622,7 +1242,9 @@ let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
             $('.valor-desvio').text('Error');
         }
     }
-    // Tabla de Stock Final sin el campo redundante
+
+
+    // Tabla de Stock Final
     let stockTable = $('#stockTable').DataTable({
         ajax: {
             url: 'http://localhost:63152/api/ProductionStore/GetAllProductionStore',
@@ -644,9 +1266,8 @@ let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
             { data: "CANTIDAD" },
             { data: "PROVEEDOR" },
             { data: "LOTE" }
-            // Se eliminó la columna TIPOMOV ya que es redundante
         ],
-        language: window.dataTablesLanguage, // Usar la configuración local en español
+        language: window.dataTablesLanguage,
         initComplete: function () {
             $('#stockTable thead th').css({
                 'background-color': '#0e2238',
@@ -658,21 +1279,27 @@ let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
             });
         }
     });
+    window.stockTable = stockTable;
 
 
 
 
-    // Recargar tablas cuando se abren los modales
-    $('#productionModal').on('shown.bs.modal', function () {
-        productionTable.ajax.reload();
-        theoricalTableInProduction.ajax.reload();
-    });
+   // Recargar tablas cuando se abren los modales
+   $('#productionModal').on('shown.bs.modal', function () {
+    if (window.productionTable) window.productionTable.ajax.reload();
+    if (window.theoricalTableInProduction) window.theoricalTableInProduction.ajax.reload();
+});
 
-    $('#balanceModal').on('shown.bs.modal', function () {
-        consolidadoBMTable.ajax.reload();
-    });
+$('#balanceModal').on('shown.bs.modal', function () {
+    if (window.consolidadoBMTable) window.consolidadoBMTable.ajax.reload();
+});
+
+$('#stockModal').on('shown.bs.modal', function () {
+    if (window.stockTable) window.stockTable.ajax.reload();
+});
 }
 
+// Reemplazar la función initPieCharts para modificar el gráfico de balance de masas con Highcharts
 function initPieCharts() {
     const productionPieCtx = document.getElementById('productionPieChart');
     if (productionPieCtx) {
@@ -821,9 +1448,33 @@ function initPieCharts() {
 `;
     document.head.appendChild(style);
 
-    // Gráfico de Balance de Masas - Barras apiladas
-    const balancePieCtx = document.getElementById('balancePieChart');
-    if (balancePieCtx) {
+    // Gráfico de Balance de Masas con Highcharts
+    const balancePieChartContainer = document.getElementById('balancePieChart');
+    if (balancePieChartContainer) {
+        // Crear un contenedor para Highcharts que reemplace el canvas
+        const highchartsContainer = document.createElement('div');
+        highchartsContainer.id = 'balance-highchart-container';
+        highchartsContainer.style.width = '100%';
+        highchartsContainer.style.height = '100%';
+        
+        // Reemplazar el canvas con el nuevo contenedor
+        balancePieChartContainer.parentNode.replaceChild(highchartsContainer, balancePieChartContainer);
+        
+        // Agregar un título al gráfico
+        const titleElement = document.createElement('h3');
+        titleElement.className = 'chart-title';
+        titleElement.textContent = 'Balance de Masas Total';
+        highchartsContainer.parentNode.insertBefore(titleElement, highchartsContainer);
+        
+        // Crear el botón de consulta
+        const buttonContainer = document.createElement('div');
+        buttonContainer.innerHTML = `
+            <button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#balanceModal">
+                Consultar
+            </button>
+        `;
+        highchartsContainer.parentNode.appendChild(buttonContainer);
+        
         $.ajax({
             url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
             success: function (balanceData) {
@@ -836,92 +1487,92 @@ function initPieCharts() {
                     };
                 }, { teorico: 0, real: 0, desvio: 0 });
 
-                new Chart(balancePieCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Balance de Masas'],
-                        datasets: [
-                            {
-                                label: 'Consumo Teórico',
-                                data: [Math.abs(totales.teorico)],
-                                backgroundColor: '#0c169f',
-                                borderWidth: 1,
-                                borderColor: '#ffffff'
-                            },
-                            {
-                                label: 'Consumo Real',
-                                data: [Math.abs(totales.real)],
-                                backgroundColor: '#1cc88a',
-                                borderWidth: 1,
-                                borderColor: '#ffffff'
-                            },
-                            {
-                                label: 'Desvío Total',
-                                data: [Math.abs(totales.desvio)],
-                                backgroundColor: '#e74a3b',
-                                borderWidth: 1,
-                                borderColor: '#ffffff'
-                            }
-                        ]
+                // Configurar y crear el gráfico Highcharts
+                Highcharts.chart('balance-highchart-container', {
+                    chart: {
+                        type: 'column',
+                        backgroundColor: 'transparent'
                     },
-                    options: {
-                        maintainAspectRatio: false,
-                        responsive: true,
-                        scales: {
-                            x: {
-                                stacked: false,
-                                grid: {
-                                    display: false
-                                }
-                            },
-                            y: {
-                                stacked: false,
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Cantidad Total'
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                                labels: {
-                                    usePointStyle: true,
-                                    padding: 15,
-                                    font: {
-                                        size: 12
-                                    }
-                                }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Balance de Masas Total',
-                                font: {
-                                    size: 16
-                                }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function (context) {
-                                        let label = context.dataset.label || '';
-                                        let value = context.raw;
-
-                                        // Si es el desvío y es negativo en los datos originales
-                                        if (context.dataset.label === 'Desvío Total' && totales.desvio < 0) {
-                                            value = -value;
-                                        }
-
-                                        return `${label}: ${value.toFixed(2)}`;
-                                    }
-                                }
+                    title: {
+                        text: undefined // No mostrar título en el gráfico (ya lo agregamos arriba)
+                    },
+                    credits: {
+                        enabled: false // Quitar los créditos de Highcharts
+                    },
+                    xAxis: {
+                        categories: ['Balance de Masas'],
+                        labels: {
+                            style: {
+                                fontSize: '12px'
                             }
                         }
-                    }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Cantidad Total',
+                            style: {
+                                fontSize: '12px',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labels: {
+                            formatter: function() {
+                                return this.value.toLocaleString();
+                            }
+                        }
+                    },
+                    legend: {
+                        align: 'center',
+                        verticalAlign: 'top',
+                        itemStyle: {
+                            fontSize: '12px'
+                        }
+                    },
+                    tooltip: {
+                        formatter: function() {
+                            let value = this.y;
+                            
+                            // Si es el desvío y es negativo en los datos originales
+                            if (this.series.name === 'Desvío Total' && totales.desvio < 0) {
+                                value = -value;
+                            }
+                            
+                            return `<b>${this.series.name}</b>: ${value.toFixed(2)}`;
+                        }
+                    },
+                    plotOptions: {
+                        column: {
+                            borderWidth: 0,
+                            borderRadius: 5
+                        }
+                    },
+                    series: [{
+                        name: 'Consumo Teórico',
+                        data: [Math.abs(totales.teorico)],
+                        color: '#0c169f'
+                    }, {
+                        name: 'Consumo Real',
+                        data: [Math.abs(totales.real)],
+                        color: '#1cc88a'
+                    }, {
+                        name: 'Desvío Total',
+                        data: [Math.abs(totales.desvio)],
+                        color: '#e74a3b'
+                    }]
                 });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error al obtener datos para el balance de masas:', error);
+                // Mostrar mensaje de error en el contenedor
+                highchartsContainer.innerHTML = `
+                    <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <p style="color: red; text-align: center;">Error al cargar los datos del balance de masas</p>
+                    </div>
+                `;
             }
         });
     }
+
     // Gráfico de Stock Final con checkboxes interactivos
     const stockPieCtx = document.getElementById('stockPieChart');
     if (stockPieCtx) {
@@ -1017,6 +1668,38 @@ function initPieCharts() {
         });
     }
 }
+
+//highcharts:
+
+// Esta función se puede ejecutar cuando el documento esté listo
+function prepareBalanceChart() {
+    const balancePieChartContainer = document.querySelector('.chart-container-large');
+    if (balancePieChartContainer) {
+        // Asegurarnos de que el contenedor tenga las clases adecuadas
+        balancePieChartContainer.classList.add('chart-container-large');
+        balancePieChartContainer.style.display = 'flex';
+        balancePieChartContainer.style.flexDirection = 'column';
+        balancePieChartContainer.style.alignItems = 'center';
+        balancePieChartContainer.style.justifyContent = 'space-between';
+        
+        // Asegurarnos de que tenemos un contenedor para el canvas con las clases adecuadas
+        if (!balancePieChartContainer.querySelector('.chart-canvas-container')) {
+            const canvasContainer = document.createElement('div');
+            canvasContainer.className = 'chart-canvas-container';
+            canvasContainer.style.width = '100%';
+            canvasContainer.style.height = 'calc(100% - 60px)';
+            
+            const canvas = document.createElement('canvas');
+            canvas.id = 'balancePieChart';
+            
+            canvasContainer.appendChild(canvas);
+            balancePieChartContainer.appendChild(canvasContainer);
+        }
+    }
+}
+
+
+
 
 
 // AGREGAR EL NUEVO CÓDIGO AQUÍ
@@ -1129,6 +1812,9 @@ function initializeAll() {
         instance.destroy();
     });
 
+    // Preparar el contenedor para el gráfico de balance
+    prepareBalanceChart();
+    
     // Inicializar los gráficos
     initPieCharts();
     initCharts();
@@ -1173,13 +1859,121 @@ styleElement.textContent = `
 `;
 document.head.appendChild(styleElement);
 
-// Modificar la inicialización
-$(document).ready(function () {
-    initializeAll();
+
+// 4. Añadir esto a tu función de inicialización para aplicar los arreglos
+function applyHighchartsFixes() {
+    // Asegurarse de que los arreglos se aplican después de que Highcharts está listo
+    if (typeof Highcharts !== 'undefined') {
+        // Configurar el menú contextual para que esté siempre por encima
+        // y no afecte el layout de la página
+        $(document).on('mousedown', '.highcharts-contextmenu', function(e) {
+            // Prevenir que el evento bubbling afecte otros elementos
+            e.stopPropagation();
+            
+            // Asegurar que el menú esté por encima de todo
+            $(this).css('z-index', 9999);
+        });
+        
+        // Ajustar cualquier menú contextual existente
+        $('.highcharts-contextmenu').css('z-index', 9999);
+    }
+}
+
+// 3. Función para inicializar todas las mejoras
+function initializeChartImprovements() {
+    // Aplicar correcciones al menú contextual
+    fixContextMenuPosition();
+    
+    // Observar cambios en el DOM para capturar menús contextuales nuevos
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes && mutation.addedNodes.length > 0) {
+                for (let i = 0; i < mutation.addedNodes.length; i++) {
+                    const node = mutation.addedNodes[i];
+                    if (node.classList && node.classList.contains('highcharts-contextmenu')) {
+                        fixContextMenuPosition();
+                    }
+                }
+            }
+        });
+    });
+    
+    // Empezar a observar el documento
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    // Añadir un manejador global para cerrar los menús contextuales al hacer clic fuera
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.highcharts-contextmenu').length) {
+            $('.highcharts-contextmenu').hide();
+        }
+    });
+}
+
+// 5. Modificar la inicialización general
+$(document).ready(function() {
+    initializeAllHighcharts();
     initTables();
     actualizarContadores();
+    
+    // Aplicar los arreglos después de que se inicialicen los gráficos
+    setTimeout(applyHighchartsFixes,initializeChartImprovements, 500);
+    
+    // Ajustar en cambios de tamaño
+    $(window).on('resize', function() {
+        clearTimeout(window.resizeTimer);
+        window.resizeTimer = setTimeout(function() {
+            // Reajustar gráficos
+            $('.highcharts-container').each(function() {
+                const chart = $(this).highcharts();
+                if (chart) chart.reflow();
+            });
+            
+            // Volver a aplicar los arreglos
+            applyHighchartsFixes();
+        }, 250);
+        
+    });
 });
 
+// Agregar estilos CSS para controlar el menú contextual
+const style = document.createElement('style');
+style.textContent = `
+    /* Estilos para controlar el menú contextual */
+    .highcharts-contextmenu {
+        position: absolute !important;
+        z-index: 9999 !important;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        padding: 5px 0;
+        overflow: visible !important;
+    }
+    
+    /* Evitar que el contenedor se estire */
+    .chart-container {
+        overflow: hidden !important;
+        position: relative !important;
+    }
+    
+    /* Asegurar que los gráficos permanezcan dentro de sus contenedores */
+    .highchart-wrapper {
+        overflow: hidden !important;
+        position: relative !important;
+    }
+    
+    /* Mejorar la visibilidad de la leyenda */
+    .highcharts-legend-item text {
+        font-weight: normal !important;
+    }
+    
+    /* Posicionar correctamente el botón consultar */
+    .btn-consultar {
+        position: relative !important;
+        z-index: 5 !important;
+    }
+`;
+document.head.appendChild(style);
 
 // FINALMENTE, AGREGAR ESTOS EVENTOS JUSTO DESPUÉS DE initializeAll:
 $('#stockModal').on('shown.bs.modal', function () {
