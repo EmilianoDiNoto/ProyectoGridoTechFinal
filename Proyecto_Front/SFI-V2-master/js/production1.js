@@ -168,32 +168,23 @@ $(document).ready(function () {
     const producto = urlParams.get("producto");
 
     if (ot && producto) {
-        // Autocompletar los campos del formulario
         $("#validationCustom01").val(ot);
         $("#validationCustom02").val(producto);
 
-        // Llamar a la API para obtener los materiales de la OT
         fetch(`http://localhost:63152/api/WorkOrderMaterial/GetWorkOrderMaterials?ot=${ot}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error en la API: ${response.status}`);
-                }
-                return response.json();
-            })
+            .then(response => response.ok ? response.json() : Promise.reject(`Error: ${response.status}`))
             .then(materials => {
                 const stockFinalContainer = $(".tab-content .col-md-4");
-                stockFinalContainer.empty(); // Limpiar antes de agregar nuevos datos
+                stockFinalContainer.empty();
 
-                // Agregar tabla con estilos en línea
                 const table = `
                     <table class="table table-bordered">
                         <thead class="table-dark">
-                            <tr class="material-row">
+                            <tr>
                                 <th>Material</th>
                                 <th>Cantidad</th>
                                 <th>Proveedor</th>
                                 <th>Lote</th>
-                                <th>Seleccionar</th>
                             </tr>
                         </thead>
                         <tbody id="stockInicialTableBody"></tbody>
@@ -207,38 +198,46 @@ $(document).ready(function () {
                 materials.forEach((material, index) => {
                     const row = `
                         <tr class="material-row">
-                            <td><input type="text" class="form-control" id="material${index}" data-id="${material.ID}" value="${material.MATERIAL}" readonly></td>
+                            <td style="display: flex; align-items: center; gap: 8px;">
+                            ${material.MATERIAL}
+                                <span id="icono${index}" style="display: none; color: green; font-size: 20px;">
+                                    <i class="fa-solid fa-check"></i>
+                                </span>
+                            </td>
                             <td><input type="number" class="form-control cantidad-input" id="cantidad${index}"></td>
-                            <td><input type="text" class="form-control" id="proveedor${index}" data-id="${material.PROVEEDOR_ID}"></td>
-                            <td><input type="text" class="form-control" id="lote${index}"></td>
-                            <td style="text-align: center; vertical-align: middle;"><div class="form-check"><input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate${index}"></div></td>
+                            <td>
+                            <input type="text" class="form-control proveedor-input" id="proveedor${index}" data-id="${material.PROVEEDOR_ID}">
+                            </td>
+                            <td><input type="text" class="form-control lote-input" id="lote${index}"></td>
                         </tr>
                     `;
-
                     tableBody.append(row);
                 });
-                //bloquea numero negativo
-                document.querySelectorAll(".cantidad-input").forEach(input => {
-                    input.addEventListener("input", function () {
-                        if (this.value < 0) {
-                            this.value = ""; // Borra el valor si es negativo
-                        }
-                    });
+
+                // Evitar números negativos en "cantidad"
+                $(".cantidad-input").on("input", function () {
+                    if ($(this).val() < 0) $(this).val("");
                 });
-                // Evento para verificar si se completaron los campos en Stock Final
+
+                // Evento para verificar si los campos están completos
                 $(document).on("input", ".material-row input", function () {
                     const row = $(this).closest(".material-row");
                     const cantidad = row.find("input[id^='cantidad']").val().trim();
                     const proveedor = row.find("input[id^='proveedor']").val().trim();
                     const lote = row.find("input[id^='lote']").val().trim();
-                    const checkbox = row.find("input[type='checkbox']");
+                    const icono = row.find("span[id^='icono']");
 
-                    // Si todos los campos tienen datos, marcar el checkbox
-                    checkbox.prop("checked", cantidad !== "" && proveedor !== "" && lote !== "");
+                    // Mostrar icono si los campos están completos
+                    if (cantidad !== "" && proveedor !== "" && lote !== "") {
+                        icono.css("display", "block");
+                    } else {
+                        icono.css("display", "none");
+                    }
                 });
             })
             .catch(error => console.error("Error al obtener materiales:", error));
     }
+
 
     // Evento click para enviar los datos a la API
     $(document).on("click", "#stockInicialForm", async function () {
@@ -253,9 +252,9 @@ $(document).ready(function () {
                 return;
             }
 
-            // Filtrar filas seleccionadas con checkbox marcado
+            // Filtrar filas seleccionadas donde el ícono está visible
             let filasSeleccionadas = $(".material-row").filter(function () {
-                return $(this).find("input[type='checkbox']").prop("checked");
+                return $(this).find("span[id^='icono']").is(":visible");
             });
 
             console.log("Filas seleccionadas:", filasSeleccionadas.length);
@@ -270,10 +269,10 @@ $(document).ready(function () {
             for (let i = 0; i < filasSeleccionadas.length; i++) {
                 let row = $(filasSeleccionadas[i]);
 
-                const materialNombre = row.find("input[id^='material']").val();
-                const proveedorNombre = row.find("input[id^='proveedor']").val();
-                const cantidad = row.find("input[id^='cantidad']").val();
-                const lote = row.find("input[id^='lote']").val();
+                const materialNombre = row.find("td:first").text().trim(); // El nombre del material está en el primer <td>
+                const proveedorNombre = row.find("input[id^='proveedor']").val().trim();
+                const cantidad = row.find("input[id^='cantidad']").val().trim();
+                const lote = row.find("input[id^='lote']").val().trim();
 
                 if (!materialNombre || !proveedorNombre || !cantidad || !lote) {
                     console.warn(`Fila ${i} tiene datos incompletos.`);
@@ -1170,9 +1169,16 @@ $(document).ready(function () {
 
     // Evento click para abrir el modal y cargar los datos
     $('#verSolicitudes1').on('click', function () {
-        console.log("El botón fue presionado.");
+        console.log("El botón fue presionado. Recargando la tabla...");
 
-        // Mostrar el modal
+        // Recargar la tabla antes de mostrar el modal
+        table.ajax.reload(null, false); // 'false' mantiene la página actual
+
+        // Mostrar el modal después de recargar los datos
+        setTimeout(() => {
+            $("#modalSolicitudes").show();
+        }, 500);
+
         $("#modalSolicitudes").show();
 
         // Llamar a la API para obtener los datos
@@ -1204,7 +1210,24 @@ $(document).ready(function () {
 
 //ENVIAR PEDIDO
 $(document).ready(function () {
-    let table = $('#myTableR').DataTable({
+    $('#verSolicitudes1').on('click', function () {
+        console.log("El botón fue presionado. Recargando la tabla...");
+
+        // Recargar la tabla antes de mostrar el modal
+        table.ajax.reload(null, false); // 'false' mantiene la página actual
+
+        // Mostrar el modal después de recargar los datos
+        setTimeout(() => {
+            $("#modalSolicitudes").show();
+        }, 500); // Pequeño retraso para garantizar la actualización
+        
+        });
+
+        if ($.fn.DataTable.isDataTable('#myTableR')) {
+            $('#myTableR').DataTable().destroy(); // Destruir instancia previa
+        }
+
+        let table = $('#myTableR').DataTable({
         autoWidth: false,
         scrollX: true,  // Habilita desplazamiento horizontal
         responsive: true,
@@ -1372,6 +1395,13 @@ $(document).ready(function () {
                 document.getElementById("modalSolicitudesR").style.display = "none";
 
                 alert("✅ Todos los materiales han sido agregados correctamente.");
+                // Recargar la tabla antes de mostrar el modal
+                table.ajax.reload(null, false); // 'false' mantiene la página actual
+
+                // Mostrar el modal después de recargar los datos
+                setTimeout(() => {
+                    $("#modalSolicitudes").show();
+                }, 500); // Pequeño retraso para garantizar la actualización
             },
             error: function () {
                 alert("❌ No se pudieron obtener los detalles.");
@@ -1683,7 +1713,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let result = await saveResponse.json();
             alert("Producción registrada exitosamente.");
-            
+
 
             // Limpiar el campo de PRODUCIDO
             document.getElementById("validationCustom01").value = "";
@@ -1696,6 +1726,138 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error("❌ Error al guardar la producción:", error.message);
             alert("Error al guardar la producción. Verifique la consola.");
+        }
+    });
+});
+
+//INCIDENCIA
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("✅ Script cargado correctamente");
+
+    const icono = document.getElementById("iconoAbrirDetencion");
+    const modal = document.getElementById("modalDetencionLinea");
+    const cerrarModal = document.querySelector(".close-detencion");
+
+    // Obtener los campos del modal
+    const inputOT = document.getElementById("modalOTDetencion");
+    const inputFecha = document.getElementById("modalFechaDetencion");
+    const inputHora = document.getElementById("modalHoraDetencion");
+
+    icono.addEventListener("click", function (event) {
+        event.stopPropagation(); // Evita que otros eventos lo activen
+
+        if (modal.style.display === "flex") {
+            console.warn("⚠️ El modal ya está abierto, no se volverá a abrir.");
+            return;
+        }
+
+        console.log("✅ Se abrirá el modal desde el icono.");
+
+        const otValue = document.getElementById("validationCustom01").value;
+
+        // Obtener la fecha y hora actual
+        const fechaActual = new Date();
+        const fechaFormateada = fechaActual.toISOString().split("T")[0]; // Formato YYYY-MM-DD
+        const horaFormateada = fechaActual.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+        inputOT.value = otValue;
+        inputFecha.value = fechaFormateada;
+        inputHora.value = horaFormateada;
+
+        modal.style.display = "flex";
+
+        // Agregar la animación de parpadeo
+        document.querySelector(".modal-content-detencion").classList.add("borde-parpadeante");
+    });
+
+    document.getElementById("validationCustom01").addEventListener("change", function () {
+        console.log("🔄 Cambio en OT detectado, pero el modal NO se abrirá.");
+    });
+
+    // INSERT DE DETENCIÓN
+    const botonReinicio = document.querySelector(".btn-guardar-detencion");
+
+    if (!botonReinicio) {
+        console.error("❌ No se encontró el botón REINICIO. Verifica el selector.");
+        return;
+    }
+
+    botonReinicio.addEventListener("click", async function (event) {
+        event.preventDefault(); // ⛔ Evita que el formulario se envíe automáticamente
+
+        const otValue = inputOT?.value;
+        const detalleValue = document.getElementById("modalDetalleDetencion")?.value;
+        const tallerValue = document.getElementById("modalTallerDetencion")?.value;
+        const fechaInicioValue = inputFecha?.value;
+        const horaInicioValue = inputHora?.value;
+
+        if (!otValue || !fechaInicioValue || !horaInicioValue || !detalleValue || !tallerValue) {
+            console.error("❌ Datos incompletos, revisa los campos del formulario.");
+            alert("Faltan datos por completar. Verifica la OT, fecha, hora y detalles.");
+            return;
+        }
+
+        const fechaFin = new Date();
+        const fechaFinFormateada = fechaFin.toISOString().split("T")[0]; // YYYY-MM-DD
+        const horaFinFormateada = fechaFin.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+        const datos = {
+            OT: parseInt(otValue),
+            FECHA: `${fechaInicioValue}T00:00:00.000Z`,
+            HSINICIO: horaInicioValue,
+            FECHAFIN: `${fechaFinFormateada}T00:00:00.000Z`,
+            HSFIN: horaFinFormateada,
+            DETALLE: detalleValue,
+            TALLER: tallerValue
+        };
+
+        console.log("📤 Enviando datos a la API:", datos);
+
+        try {
+            const response = await fetch("http://localhost:63152/api/Unplanned/InsertUnplanned", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(datos)
+            });
+
+            console.log("📥 Respuesta recibida:", response);
+
+            if (!response.ok) {
+                throw new Error(`Error en la API: ${response.status} - ${response.statusText}`);
+            }
+
+            const resultado = await response.json();
+
+            alert("Reinicio registrado exitosamente");
+
+            // Limpiar los campos después del reinicio
+            inputOT.value = "";
+            inputFecha.value = "";
+            inputHora.value = "";
+            document.getElementById("modalDetalleDetencion").value = "";
+            document.getElementById("modalTallerDetencion").value = "";
+
+            // Cerrar el modal
+            modal.style.display = "none";
+
+        } catch (error) {
+            console.error("❌ Error al insertar:", error);
+            alert(`Error al registrar: ${error.message}`);
+        }
+    });
+
+    cerrarModal.addEventListener("click", function () {
+        modal.style.display = "none";
+
+        document.querySelector(".modal-content-detencion").classList.remove("borde-parpadeante");
+    });
+
+    window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            document.querySelector(".modal-content-detencion").classList.remove("borde-parpadeante");
         }
     });
 });

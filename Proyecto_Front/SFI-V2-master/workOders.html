@@ -4,202 +4,169 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>WorkOrders</title>
-
-<!-- CSS en este orden -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-<link rel="stylesheet" type="text/css"href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-	<!-- Primero los CSS -->
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/stylesWO.css">
-	<link rel="stylesheet" href="css/normalize.css">
+	<title>Production</title>
 	<link rel="stylesheet" href="css/sweetalert2.css">
 	<link rel="stylesheet" href="css/material.min.css">
 	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/production1.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+	<!-- SweetAlert2 (una sola versión) -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-	<!-- Bootstrap CSS -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet">
-
-	<!-- SweetAlert2 CSS -->
+	<!-- Tus otros scripts locales -->
+	<script src="js/material.min.js"></script>
+	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/production_datatable.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-	<script>
-		// Configuración para DataTables
-		window.dataTablesLanguage = {
-			"decimal": "",
-			"emptyTable": "No hay datos disponibles",
-			"info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-			"infoEmpty": "Mostrando 0 a 0 de 0 registros",
-			"infoFiltered": "(filtrado de _MAX_ registros totales)",
-			"infoPostFix": "",
-			"thousands": ",",
-			"lengthMenu": "Mostrar _MENU_ registros",
-			"loadingRecords": "Cargando...",
-			"processing": "Procesando...",
-			"search": "Buscar:",
-			"zeroRecords": "No se encontraron coincidencias",
-			"paginate": {
-				"first": "Primero",
-				"last": "Último",
-				"next": "Siguiente",
-				"previous": "Anterior"
-			}
-		};
-	</script>
+
+
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+
+
+	<!-- Chart.js -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+	<script src="js/material.min.js"></script>
+	<script src="js/sweetalert2.min.js"></script>
+	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/menuControl.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+	<!-- BOOTSTRAP -->
+	<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- DataTables CSS -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+
+	<!-- DataTables JS -->
+	<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+	<script type="text/javascript"
+		src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
 
 
 </head>
 
 <body>
-	<div class="wrapper">
-		<aside id="sidebar">
-			<div class="d-flex">
-				<button class="toggle-btn" type="button">
-					<i class="lni lni-grid-alt"></i>
-				</button>
-				<div class="sidebar-logo">
-					<a href="#">Grido Tech Advance</a>
-				</div>
-			</div>
-			<ul class="sidebar-nav">
-				<li class="sidebar-item">
-					<a href="home.html" class="sidebar-link">
-						<i class="zmdi zmdi-view-dashboard"></i>
-						<span>Inicio</span>
-					</a>
-				</li>
-				<li class="sidebar-item">
-					<a href="production1.html" class="sidebar-link">
-						<i class="zmdi zmdi-washing-machine"></i>
-						<span>Declarar Producción</span>
-					</a>
-				</li>
-				<li class="sidebar-item">
-					<a href="workOders.html" class="sidebar-link">
-						<i class="zmdi zmdi-assignment"></i>
-						<span>Órdenes de Trabajo</span>
-					</a>
-				</li>
-				<li class="sidebar-item">
-					<a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-						data-bs-target="#materials" aria-expanded="false" aria-controls="materials">
-						<i class="zmdi zmdi-case"></i>
-						<span>Materiales</span>
-					</a>
-					<ul id="materials" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-						<li class="sidebar-item">
-							<a href="materials.html" class="sidebar-link">Materiales</a>
-						</li>
-						<li class="sidebar-item">
-							<a href="providers.html" class="sidebar-link">Materiales Descartados</a>
-						</li>
-						<li class="sidebar-item">
-							<a href="payments.html" class="sidebar-link">Materiales Retenidos</a>
-						</li>
-					</ul>
-				</li>
-				<li class="sidebar-item">
-					<a href="products.html" class="sidebar-link">
-						<i class="zmdi zmdi-store"></i>
-						<span>Productos</span>
-					</a>
-				</li>
-				<li class="sidebar-item">
-					<a href="productStore.html" class="sidebar-link">
-						<i class="zmdi zmdi-store"></i>
-						<span>Almacén</span>
-					</a>
-				</li>
-			</ul>
-		</aside>
-
-		<div class="main">
-			<!-- Tablas y filtros -->
-			<div class="table-container">
-				<h5 style="text-align: center;">LISTAR ORDENES DE TRABAJO</h5>
-
-				<div class="filters mb-4">
-					<div class="row justify-content-center">
-						<div class="col-md-3">
-							<label for="filter-fecha-desde">DESDE</label>
-							<input type="date" id="filter-fecha-desde" class="form-control">
-						</div>
-						<div class="col-md-3">
-							<label for="filter-fecha-hasta">HASTA</label>
-							<input type="date" id="filter-fecha-hasta" class="form-control">
-						</div>
-					</div>
-				</div>
-
-				<table id="workOrdersTable" class="display nowrap" style="width:100%">
-					<thead>
-						<tr>
-							<th>OT</th>
-							<th>CODIGO</th>
-							<th>PRODUCTO</th>
-							<th>DEMANDA</th>
-							<th>UM</th>
-							<th>ESTADO</th>
-							<th>FECHA ELABORACION</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
-			<!-- Modal para mostrar los materiales -->
-			<!-- Verifica que el modal tenga esta estructura exacta -->
-			<div class="modal fade" id="materialsModal" tabindex="-1" aria-labelledby="materialsModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog modal-xl">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="materialsModalLabel">NECESIDAD DE MATERIALES</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<table id="materialsTable" class="display nowrap" style="width:100%">
-								<thead>
-									<tr>
-										<th>MATERIAL</th>
-										<th>NECESIDAD</th>
-										<th>UM</th>
-										<th>CODIGO</th>
-										<th>FECHA ENTREGA</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
+	<!-- Sidebar -->
+	<aside id="sidebar">
+		<div class="d-flex">
+			<button class="toggle-btn" type="button">
+				<i class="lni lni-grid-alt"></i>
+			</button>
+			<div class="sidebar-logo">
+				<a href="#">Grido Tech Advance</a>
 			</div>
 		</div>
+		<ul class="sidebar-nav">
+			<li class="sidebar-item">
+				<a href="home.html" class="sidebar-link">
+					<i class="zmdi zmdi-view-dashboard"></i>
+					<span>Inicio</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="production.html" class="sidebar-link">
+					<i class="zmdi zmdi-washing-machine"></i>
+					<span>Declarar Producción</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="productionTable.html" class="sidebar-link">
+					<i class="zmdi zmdi-washing-machine"></i>
+					<span>Producción Confirmada</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="workOders.html" class="sidebar-link">
+					<i class="zmdi zmdi-assignment"></i>
+					<span>Órdenes de Trabajo</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+					data-bs-target="#materials" aria-expanded="false" aria-controls="materials">
+					<i class="zmdi zmdi-case"></i>
+					<span>Materiales</span>
+				</a>
+				<ul id="materials" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+					<li class="sidebar-item">
+						<a href="materials.html" class="sidebar-link">Materiales</a>
+					</li>
+					<li class="sidebar-item">
+						<a href="providers.html" class="sidebar-link">Materiales Descartados</a>
+					</li>
+					<li class="sidebar-item">
+						<a href="payments.html" class="sidebar-link">Materiales Retenidos</a>
+					</li>
+				</ul>
+			</li>
+			<li class="sidebar-item">
+				<a href="products.html" class="sidebar-link">
+					<i class="zmdi zmdi-store"></i>
+					<span>Productos</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="productStore.html" class="sidebar-link">
+					<i class="zmdi zmdi-store"></i>
+					<span>Almacén</span>
+				</a>
+			</li>
+		</ul>
+	</aside>
+	<section class="full-width main">
+		<table id="workOrdersTable" class="display nowrap" style="width:100%">
+			<thead>
+				<tr>
+					<th>ORDE DE TRABAJO</th>
+					<th>CODIGO</th>
+					<th>PRODUCTO</th>
+					<th>DEMANDA</th>
+					<th>UM</th>
+					<th>ESTADO</th>
+					<th>FECHA ELABORACION</th>
+				</tr>
+			</thead>
+		</table>
 
+	</section>
+	<script>
+		
+	</script>
 
+	<!-- Librerías necesarias -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+	<!-- CSS de DataTables -->
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 
-<!-- jQuery primero -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+	<!-- JS de DataTables -->
+	<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
-<!-- Luego Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Archivo JavaScript separado -->
+	<script src="js/production1.js"></script>
 
-<!-- DataTables y sus plugins -->
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-
-<!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- Scripts específicos de la página -->
-<script src="js/workorders-menu.js"></script>
-<script src="js/workorders.js"></script>
 </body>
 
 </html>
