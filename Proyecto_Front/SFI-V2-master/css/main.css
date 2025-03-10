@@ -1474,4 +1474,441 @@ canvas {
     margin: 0 auto;
 }
 
+/* Estilos para asegurar que el gráfico Highcharts mantenga el mismo aspecto */
+.chart-container-large {
+    height: 500px;
+    margin-bottom: 30px;
+    position: relative;
+    text-align: center;
+}
 
+#balance-highchart-container {
+    width: 100%;
+    height: calc(100% - 80px); /* Ajustar altura para dejar espacio para título y botón */
+    margin: 0 auto;
+}
+
+.chart-container-large .btn-consultar {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+/* Asegurar que el tooltip de Highcharts esté siempre visible */
+.highcharts-tooltip {
+    z-index: 9999 !important;
+}
+
+/* Estilo personalizado para las columnas */
+.highcharts-column-series .highcharts-point {
+    stroke-width: 0;
+}
+
+/* Mejorar el aspecto de las leyendas */
+.highcharts-legend-item text {
+    font-weight: normal !important;
+}
+
+/* Estilo para el tooltip */
+.highcharts-tooltip-box {
+    fill: rgba(255, 255, 255, 0.95);
+    stroke: rgba(0, 0, 0, 0.1);
+    stroke-width: 1px;
+    border-radius: 4px;
+}
+
+.highcharts-tooltip text {
+    fill: #333;
+}
+
+/* Estilos generales para los contenedores de Highcharts */
+.chart-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.chart-container-large {
+    height: 500px;
+}
+
+.chart-container-medium {
+    height: 350px;
+}
+
+.chart-container-small {
+    height: 300px;
+}
+
+.chart-title {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Estilos para los contenedores específicos de Highcharts */
+#balance-highchart-container,
+#ultima-produccion-container,
+#ordenes-trabajo-container,
+#produccion-temporada-container,
+#produccion-ot-container,
+#produccion-anual-container {
+    width: 100%;
+    height: calc(100% - 80px);
+    margin: 0 auto;
+}
+
+/* Estilo para el botón de consulta */
+.btn-consultar {
+    background-color: #0e2238 !important;
+    color: white !important;
+    border: none !important;
+    padding: 6px 15px !important;
+    border-radius: 4px !important;
+    font-size: 0.9em !important;
+    transition: all 0.3s ease !important;
+    margin: 10px auto !important;
+    display: block !important;
+    cursor: pointer !important;
+}
+
+.btn-consultar:hover {
+    background-color: #1a3b5d !important;
+}
+
+/* Estilos para la información central en gráficos de donut */
+.highcharts-center-info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+}
+
+.center-title {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.center-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Estilos para la información adicional */
+.production-info {
+    margin-top: 15px;
+    padding: 10px;
+    border-top: 1px solid #eee;
+    width: 100%;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    text-align: center;
+}
+
+.info-item {
+    padding: 5px;
+}
+
+.info-label {
+    display: block;
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+.info-value {
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Mensaje de error */
+.error-message {
+    color: #e74a3b;
+    text-align: center;
+    font-weight: bold;
+    padding: 20px;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+    .chart-container-large,
+    .chart-container-medium,
+    .chart-container-small {
+        height: 300px;
+    }
+    
+    .chart-title {
+        font-size: 1em;
+    }
+}
+
+/* Estilos corregidos para los contenedores de Highcharts */
+
+/* Contenedor general de gráficos */
+.chart-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Tamaños específicos para los diferentes contenedores */
+.chart-container-large {
+    height: 500px;
+}
+
+.chart-container-medium {
+    height: 350px;
+}
+
+.chart-container-small {
+    height: 300px;
+}
+
+/* Wrapper para los contenedores de Highcharts - IMPORTANTE */
+.highchart-wrapper {
+    width: 100%;
+    height: calc(100% - 60px);
+    position: relative;
+    margin-bottom: 10px;
+}
+
+/* Título del gráfico */
+.chart-title {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+}
+
+/* Botón consultar - Posición mejorada */
+.btn-consultar {
+    background-color: #0e2238 !important;
+    color: white !important;
+    border: none !important;
+    padding: 6px 15px !important;
+    border-radius: 4px !important;
+    font-size: 0.9em !important;
+    transition: all 0.3s ease !important;
+    margin: 5px auto !important;
+    display: block !important;
+    position: relative;
+    z-index: 10;
+}
+
+.btn-consultar:hover {
+    background-color: #1a3b5d !important;
+}
+
+/* Información central para gráficos de dona */
+.highcharts-center-info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.center-title {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.center-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Información adicional en gráficos */
+.production-info {
+    margin-top: 10px;
+    padding: 10px;
+    border-top: 1px solid #eee;
+    width: 100%;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    text-align: center;
+}
+
+.info-item {
+    padding: 5px;
+}
+
+.info-label {
+    display: block;
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+.info-value {
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Mensaje de error */
+.error-message {
+    color: #e74a3b;
+    text-align: center;
+    font-weight: bold;
+    padding: 20px;
+}
+
+/* Z-index para leyendas de Highcharts - IMPORTANTE */
+.highcharts-legend,
+.highcharts-legend-item,
+.highcharts-legend-item-hidden {
+    z-index: 1 !important;
+}
+
+/* Mayor z-index para menús dropdown */
+.highcharts-context-menu,
+.highcharts-menu {
+    z-index: 100 !important;
+}
+
+/* Ajuste responsivo */
+@media (max-width: 768px) {
+    .chart-container-large,
+    .chart-container-medium,
+    .chart-container-small {
+        height: 300px;
+    }
+    
+    .chart-title {
+        font-size: 1em;
+    }
+}
+
+/* Mejoras específicas para el contenedor de Balance de Masas */
+.chart-container-large {
+    height: 500px;
+    margin-bottom: 30px;
+    position: relative;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Asegurar que el contenedor del gráfico ocupe todo el espacio disponible */
+#balance-highchart-container {
+    width: 100%;
+    height: calc(100% - 80px);
+    min-height: 350px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Centrar correctamente el título */
+.chart-title {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+}
+
+/* Asegurar que el botón de consulta esté bien posicionado */
+.btn-consultar {
+    background-color: #0e2238 !important;
+    color: white !important;
+    border: none !important;
+    padding: 6px 15px !important;
+    border-radius: 4px !important;
+    font-size: 0.9em !important;
+    transition: all 0.3s ease !important;
+    margin: 10px auto 5px auto !important;
+    display: block !important;
+    position: relative;
+    z-index: 10;
+}
+
+/* Wrapper para los contenedores de Highcharts */
+.highchart-wrapper {
+    width: 100%;
+    height: calc(100% - 70px);
+    position: relative;
+    margin-bottom: 10px;
+}
+
+/* Asegurar que Highcharts esté siempre visible */
+.highcharts-container {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+/* Prevenir superposición con el menú de contexto */
+.highcharts-contextmenu {
+    z-index: 1000 !important;
+}
+
+/* Mejorar visualización en dispositivos pequeños */
+@media (max-width: 768px) {
+    .chart-container-large {
+        height: 450px;
+    }
+    
+    #balance-highchart-container {
+        height: calc(100% - 70px);
+    }
+}
+
+/* Optimizar el contenedor principal */
+.chart-container-large {
+    height: 500px;
+    padding: 15px;
+    margin-bottom: 30px !important; /* Sobrescribir cualquier otro margen */
+}
+
+/* Asegurar que el contenedor del gráfico ocupa todo el espacio disponible */
+#balance-highchart-container {
+    width: 100% !important;
+    height: calc(100% - 80px) !important; /* Espacio para título y botón */
+    min-height: 350px;
+}
+
+/* Forzar que las gráficas de Highcharts ocupen todo el espacio */
+.highcharts-container {
+    width: 100% !important;
+    height: 100% !important;
+}

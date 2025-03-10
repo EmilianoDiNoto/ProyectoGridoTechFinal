@@ -856,7 +856,7 @@ html, body{
     min-width: 70px;
     z-index: 1000;
     transition: all .25s ease-in-out;
-    background-color: #0e2238;
+    background-color: #0c169f !important; /* El color que pediste, con !important para asegurar que se aplique */
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -1439,7 +1439,7 @@ chart-container-large {
     min-width: 70px;
     z-index: 1000;
     transition: all .25s ease-in-out;
-    background-color: var(--color-primary-dark);
+    background-color: #0c169f;
     display: flex;
     flex-direction: column;
     position: fixed;
