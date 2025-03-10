@@ -521,6 +521,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\ChatbotController.cs" />
     <Compile Include="Controllers\DiscardedMaterialController.cs" />
     <Compile Include="Controllers\GestionUsuariosController.cs" />
     <Compile Include="Controllers\IDController.cs" />
