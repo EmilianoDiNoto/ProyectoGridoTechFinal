@@ -533,7 +533,9 @@
     <Compile Include="Controllers\RecipesController.cs" />
     <Compile Include="Controllers\RetainedMaterialController.cs" />
     <Compile Include="Controllers\SolicitudMaterialController.cs" />
+    <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\TheoricalConsumptionController.cs" />
+    <Compile Include="Controllers\UnplannedStopsController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WorkOrderMaterialController.cs" />
@@ -553,7 +555,9 @@
     <Compile Include="Models\Recipes.cs" />
     <Compile Include="Models\RetainedMaterial.cs" />
     <Compile Include="Models\SolicitudMaterial.cs" />
+    <Compile Include="Models\Suppliers.cs" />
     <Compile Include="Models\TheoricalConsumption.cs" />
+    <Compile Include="Models\UnplannedStops.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\WorkOrderMaterial.cs" />
     <Compile Include="Models\WorkOrders.cs" />
