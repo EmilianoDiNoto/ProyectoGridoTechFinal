@@ -34,86 +34,431 @@ document.addEventListener('DOMContentLoaded', function () {
     handleResize();
 
 
+    //NUEVO 
+    // 1. Reorganizar la estructura de los contenedores de gráficos
+    function reorganizarGraficos() {
+        // Ajustar el contenedor principal
+        const mainContainer = document.querySelector('.main');
+        if (mainContainer) {
+            mainContainer.style.paddingTop = '20px';
+            mainContainer.style.overflow = 'visible';
+        }
+
+        // Ajustar espaciado de filas
+        const rows = document.querySelectorAll('.row');
+        rows.forEach(row => {
+            row.style.marginBottom = '30px';
+            row.style.overflow = 'visible';
+        });
+
+        // Aumentar el espacio entre los gráficos verticalmente
+        const chartContainers = document.querySelectorAll('.chart-container');
+        chartContainers.forEach(container => {
+            container.style.marginBottom = '40px';
+            container.style.overflow = 'visible';
+        });
+
+        // Reorganizar la columna izquierda para que ocupe todo el ancho en dispositivos pequeños
+        const leftColumn = document.querySelector('.col-md-6:first-child');
+        if (leftColumn) {
+            // En dispositivos móviles, hacerlo full width
+            if (window.innerWidth < 992) {
+                leftColumn.className = 'col-12';
+            } else {
+                // En dispositivos grandes, mantener el 50%
+                leftColumn.className = 'col-md-6';
+            }
+        }
+
+        // Reorganizar la columna derecha igual
+        const rightColumn = document.querySelector('.col-md-6:last-child');
+        if (rightColumn) {
+            if (window.innerWidth < 992) {
+                rightColumn.className = 'col-12';
+            } else {
+                rightColumn.className = 'col-md-6';
+            }
+        }
+
+        // Ajustar alturas de los contenedores según el tipo
+        const largeContainers = document.querySelectorAll('.chart-container-large');
+        largeContainers.forEach(container => {
+            container.style.height = '450px';
+            container.style.marginBottom = '30px';
+        });
+
+        const mediumContainers = document.querySelectorAll('.chart-container-medium');
+        mediumContainers.forEach(container => {
+            container.style.height = '350px';
+            container.style.marginBottom = '30px';
+        });
+
+        const smallContainers = document.querySelectorAll('.chart-container-small');
+        smallContainers.forEach(container => {
+            container.style.height = '300px';
+            container.style.marginBottom = '30px';
+        });
+    }
+
+    // Ejecutar la reorganización de gráficos
+    reorganizarGraficos();
 });
 
+// Función para solucionar problemas de botones - FUERA del DOMContentLoaded
+function solucionarProblemasBotones() {
+    // Asegurarse de que los botones de consulta estén posicionados correctamente
+    const consultarButtons = document.querySelectorAll('.btn-consultar');
+    consultarButtons.forEach(button => {
+        button.style.position = 'relative';
+        button.style.zIndex = '100';
+        button.style.marginTop = '10px';
+        button.style.marginBottom = '5px';
+    });
 
-// 1. Mejora para el menú contextual de Highcharts - mostrar por fuera y con scroll
-Highcharts.setOptions({
-    navigation: {
-        menuItemStyle: {
-            padding: '0.5em 1em',
-            color: '#333',
-            fontSize: '12px'
-        },
-        menuStyle: {
-            border: '1px solid #ccc',
-            background: '#fff',
-            padding: '5px 0',
-            borderRadius: '4px',
-            boxShadow: '2px 2px 8px rgba(0,0,0,0.3)',
-            zIndex: 9999,
-            overflow: 'auto',           // Permitir scroll si hay muchas opciones
-            maxHeight: '300px',         // Altura máxima antes de activar scroll
-            position: 'absolute',
-            // Colocar el menú fuera de la zona de gráficos
-            marginTop: '10px',
-            marginLeft: '10px'
-        },
-        // Asegura que el menú contextual no afecte el tamaño del gráfico
-        bindings: {
-            contextMenu: function (e) {
-                e.stopPropagation();
-                e.preventDefault();
-                
-                // Referencia al gráfico actual
-                const chart = this;
-                
-                // Posición del menú contextual
-                let x = e.chartX;
-                let y = e.chartY;
-                
-                // Comprobar si el menú saldría del viewport
-                const menuWidth = 150;  // Ancho aproximado del menú
-                const menuHeight = 200; // Altura aproximada del menú
-                const chartRect = chart.container.getBoundingClientRect();
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-                
-                // Ajustar posición si el menú sale del viewport
-                if (chartRect.left + x + menuWidth > viewportWidth) {
-                    x = Math.max(0, viewportWidth - chartRect.left - menuWidth - 10);
+    // Ajustar la posición del menú hamburguesa para Highcharts
+    const style = document.createElement('style');
+    style.textContent = `
+        /* Asegurar que el menú contextual de Highcharts siempre esté por encima */
+        .highcharts-contextmenu, 
+        .highcharts-menu {
+            position: fixed !important; /* Usar fixed en lugar de absolute */
+            z-index: 9999 !important;
+            max-height: 80vh !important; /* Limitar altura en ventanas pequeñas */
+            overflow-y: auto !important; /* Permitir scroll */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+            border-radius: 6px !important;
+        }
+        
+        /* Mejorar la visibilidad de los botones */
+        .btn-consultar {
+            background-color: #0e2238 !important;
+            color: white !important;
+            transition: all 0.3s ease !important;
+            padding: 8px 20px !important;
+            border-radius: 4px !important;
+            display: inline-block !important;
+            margin: 10px auto !important;
+            position: relative !important;
+            z-index: 100 !important;
+        }
+        
+        /* Hacer los gráficos "click-through" para los menús */
+        .highchart-wrapper {
+            overflow: visible !important;
+        }
+        
+        /* Asegurar que los contenedores no oculten elementos */
+        .chart-container, 
+        .chart-container-large, 
+        .chart-container-medium, 
+        .chart-container-small {
+            overflow: visible !important;
+            position: relative !important;
+        }
+        
+        /* Asegurar que el sidebar esté por encima de todo */
+        #sidebar {
+            z-index: 1050 !important;
+        }
+        
+        /* Ajustar el botón de hamburguesa para que sea más visible */
+        .toggle-btn {
+            background-color: #0e2238 !important;
+            color: white !important;
+            border-radius: 4px !important;
+            z-index: 1051 !important;
+            position: relative !important;
+        }
+        
+        /* Estilos para pantallas pequeñas */
+        @media (max-width: 991px) {
+            .chart-container-large,
+            .chart-container-medium,
+            .chart-container-small {
+                height: 350px !important;
+                margin-bottom: 40px !important;
+            }
+            
+            .btn-consultar {
+                margin: 15px auto !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+
+
+// Sobrescribir configuración de Highcharts para el menú contextual
+if (typeof Highcharts !== 'undefined') {
+    Highcharts.setOptions({
+        navigation: {
+            menuItemStyle: {
+                padding: '0.5em 1em',
+                fontSize: '14px'
+            },
+            menuStyle: {
+                border: '1px solid #ccc',
+                background: '#fff',
+                padding: '5px 0',
+                borderRadius: '4px',
+                boxShadow: '2px 2px 10px rgba(0,0,0,0.3)',
+                zIndex: 9999
+            },
+            buttonOptions: {
+                theme: {
+                    'stroke-width': 1,
+                    stroke: '#666',
+                    fill: '#f8f8f8',
+                    r: 4
                 }
-                if (chartRect.top + y + menuHeight > viewportHeight) {
-                    y = Math.max(0, viewportHeight - chartRect.top - menuHeight - 10);
-                }
-                
-                // Mostrar el menú contextual en la posición ajustada
-                if (chart.contextMenu) {
-                    chart.contextMenu.style.left = x + 'px';
-                    chart.contextMenu.style.top = y + 'px';
-                    chart.contextMenu.style.zIndex = 9999;
-                    chart.contextMenu.style.display = 'block';
+            }
+        },
+        exporting: {
+            buttons: {
+                contextButton: {
+                    menuClassName: 'highcharts-contextmenu-fixed',
+                    symbol: 'menu',
+                    symbolStrokeWidth: 1
                 }
             }
         }
+    });
+}
+
+
+// Función para mejorar el posicionamiento del menú contextual - FUERA del DOMContentLoaded
+function mejorarMenuContextual() {
+    // Añadir un listener para detectar clics en el botón del menú contextual
+    document.addEventListener('click', function (e) {
+        // Verificar si el clic fue en un botón de menú contextual
+        if (e.target.closest('.highcharts-button') ||
+            e.target.closest('.highcharts-contextmenu')) {
+
+            // Dar tiempo a que el menú se muestre
+            setTimeout(function () {
+                const menu = document.querySelector('.highcharts-contextmenu');
+                if (menu) {
+                    // Obtener posición del clic
+                    const x = e.clientX;
+                    const y = e.clientY;
+
+                    // Obtener dimensiones del viewport
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+
+                    // Obtener dimensiones del menú
+                    const menuWidth = menu.offsetWidth;
+                    const menuHeight = menu.offsetHeight;
+
+                    // Calcular posición óptima
+                    let newX = x;
+                    let newY = y;
+
+                    // Ajustar si sale por la derecha
+                    if (x + menuWidth > viewportWidth) {
+                        newX = viewportWidth - menuWidth - 10;
+                    }
+
+                    // Ajustar si sale por abajo
+                    if (y + menuHeight > viewportHeight) {
+                        newY = viewportHeight - menuHeight - 10;
+                    }
+
+                    // Aplicar nueva posición
+                    menu.style.position = 'fixed';
+                    menu.style.left = newX + 'px';
+                    menu.style.top = newY + 'px';
+                    menu.style.zIndex = '9999';
+                }
+            }, 10);
+        }
+    }, true);
+
+    // Añadir un listener para cerrar el menú al hacer clic fuera
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.highcharts-contextmenu') &&
+            !e.target.closest('.highcharts-button')) {
+            const menus = document.querySelectorAll('.highcharts-contextmenu');
+            menus.forEach(menu => {
+                menu.style.display = 'none';
+            });
+        }
+    });
+}
+
+// Ejecutar las funciones después de un tiempo para asegurar que todo el DOM está cargado
+setTimeout(function () {
+    solucionarProblemasBotones();
+    mejorarMenuContextual();
+}, 500);
+
+
+
+
+
+
+// Función para crear un botón de exportación personalizado para el gráfico de Balance de Masas
+function crearBotonExportacionPersonalizado() {
+    // Configurar el gráfico de Balance de Masas para que no muestre el botón hamburguesa
+    if (typeof Highcharts !== 'undefined') {
+        const opcionesChart = {
+            exporting: {
+                enabled: false // Desactivar el botón de exportación nativo de Highcharts
+            }
+        };
+
+        // Aplicar al gráfico de Balance de Masas
+        const chart = Highcharts.charts.find(chart =>
+            chart && chart.renderTo.id === 'balance-highchart-container'
+        );
+
+        if (chart) {
+            chart.update(opcionesChart);
+        }
     }
+
+    // Crear botón de exportación personalizado
+    const contenedor = document.querySelector('.chart-container-large');
+    if (contenedor && !document.getElementById('export-balance-chart-btn')) {
+        // Crear un contenedor para posicionar el botón de exportación
+        const exportBtnContainer = document.createElement('div');
+        exportBtnContainer.className = 'export-btn-container';
+        exportBtnContainer.style.position = 'absolute';
+        exportBtnContainer.style.top = '15px';
+        exportBtnContainer.style.right = '15px';
+        exportBtnContainer.style.zIndex = '90';
+
+        // Crear el botón de exportación
+        const exportBtn = document.createElement('button');
+        exportBtn.id = 'export-balance-chart-btn';
+        exportBtn.className = 'btn btn-sm btn-outline-secondary';
+        exportBtn.innerHTML = '<i class="zmdi zmdi-download"></i>';
+        exportBtn.title = 'Exportar gráfico';
+        exportBtn.style.padding = '5px 10px';
+
+        // Agregar el botón al contenedor
+        exportBtnContainer.appendChild(exportBtn);
+        contenedor.appendChild(exportBtnContainer);
+
+        // Agregar evento de clic al botón
+        exportBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+
+            // Eliminar menú existente si lo hay
+            const menuExistente = document.getElementById('export-balance-chart-menu');
+            if (menuExistente) {
+                menuExistente.remove();
+                return;
+            }
+
+            // Obtener el gráfico
+            const chart = Highcharts.charts.find(chart =>
+                chart && chart.renderTo.id === 'balance-highchart-container'
+            );
+
+            if (chart) {
+                // Obtener posición para el menú
+                const rect = this.getBoundingClientRect();
+
+                // Crear menú desplegable
+                const menu = document.createElement('div');
+                menu.id = 'export-balance-chart-menu';
+                menu.className = 'dropdown-menu show';
+                menu.style.position = 'absolute';
+                menu.style.left = rect.left + 'px';
+                menu.style.top = (rect.bottom + 5) + 'px';
+                menu.style.zIndex = '9999';
+                menu.style.backgroundColor = 'white';
+                menu.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+                menu.style.borderRadius = '4px';
+                menu.style.padding = '8px 0';
+
+                // Opciones del menú
+                menu.innerHTML = `
+          <h6 class="dropdown-header">Exportar como imagen</h6>
+          <a class="dropdown-item" href="#" data-format="png">PNG</a>
+          <a class="dropdown-item" href="#" data-format="jpeg">JPEG</a>
+          <a class="dropdown-item" href="#" data-format="svg">SVG</a>
+          <a class="dropdown-item" href="#" data-format="pdf">PDF</a>
+          <div class="dropdown-divider"></div>
+
+          <a class="dropdown-item" href="#" data-format="print">Imprimir gráfico</a>
+        `;
+
+                // Agregar el menú al documento
+                document.body.appendChild(menu);
+
+                // Manejar clics en opciones
+                const menuItems = menu.querySelectorAll('.dropdown-item');
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const formato = this.getAttribute('data-format');
+
+                        // Exportar usando las funciones nativas de Highcharts
+                        if (formato === 'png') {
+                            chart.exportChart({ type: 'image/png' });
+                        } else if (formato === 'jpeg') {
+                            chart.exportChart({ type: 'image/jpeg' });
+                        } else if (formato === 'pdf') {
+                            chart.exportChart({ type: 'application/pdf' });
+                        } else if (formato === 'svg') {
+                            chart.exportChart({ type: 'image/svg+xml' });
+                        } else if (formato === 'csv') {
+                            chart.downloadCSV();
+                        } else if (formato === 'xls') {
+                            chart.downloadXLS();
+                        } else if (formato === 'print') {
+                            chart.print();
+                        }
+
+                        // Eliminar menú
+                        menu.remove();
+                    });
+                });
+
+                // Cerrar menú al hacer clic fuera
+                document.addEventListener('click', function closeMenu(e) {
+                    if (!menu.contains(e.target) && e.target !== exportBtn) {
+                        menu.remove();
+                        document.removeEventListener('click', closeMenu);
+                    }
+                });
+            }
+        });
+    }
+}
+
+// Llamar a la función cuando el documento esté listo
+$(document).ready(function () {
+    setTimeout(crearBotonExportacionPersonalizado, 1000);
+
+    // Volver a crear el botón después de actualizar el gráfico
+    $(window).on('resize', function () {
+        setTimeout(crearBotonExportacionPersonalizado, 500);
+    });
 });
+
+
+
+
 
 // Función para detectar y corregir menús contextuales fuera de los límites
 function fixContextMenuPosition() {
     // Aplicar después de que aparezca cualquier menú contextual
-    $(document).on('mousedown', '.highcharts-contextmenu', function() {
+    $(document).on('mousedown', '.highcharts-contextmenu', function () {
         const menu = $(this);
         const menuRect = this.getBoundingClientRect();
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        
+
         // Comprobar si el menú sale por la derecha
         if (menuRect.right > viewportWidth) {
             const newLeft = viewportWidth - menuRect.width - 10;
             menu.css('left', newLeft + 'px');
         }
-        
+
         // Comprobar si el menú sale por abajo
         if (menuRect.bottom > viewportHeight) {
             const newTop = viewportHeight - menuRect.height - 10;
@@ -129,19 +474,19 @@ function fixContextMenuPosition() {
 function initHighcharts() {
     // 1. Última Producción (gráfico circular)
     initUltimaProduccionChart();
-    
+
     // 2. Órdenes de Trabajo (gráfico circular)
     initOrdenesTrabajoChart();
-    
+
     // 3. Producción por Temporada (barras)
     initProduccionTemporadaChart();
-    
+
     // 4. Producción por Órdenes de Trabajo (barras)
-    initProduccionOTChart();
-    
+    // initProduccionOTChart();
+
     // 5. Producción Anual (líneas)
     initProduccionAnualChart();
-    
+
     // 6. Balance de Masas (barras) - ya implementado previamente
     initBalanceMasasChart();
 }
@@ -151,100 +496,100 @@ function initHighcharts() {
 // 2. Para el gráfico de Última Producción - Mostrar la leyenda siempre visible
 function initUltimaProduccionChart() {
     // Función para inicializar el gráfico de Última Producción con los 3 contadores
-  window.initUltimaProduccionChart = function() {
-    const container = document.getElementById('ultima-produccion-container');
-    if (!container) return;
-    
-    // Obtener datos de producción
-    $.ajax({
-      url: 'http://localhost:63152/api/Production/GetAllProduction',
-      success: function(productionData) {
-        // Filtrar datos para OT 4
-        const otData = productionData.filter(item => item.OT === 4);
-        // Calcular producción total
-        const totalProducido = otData.reduce((sum, item) => sum + item.PRODUCIDO, 0);
-        // Demanda fija como indicaste
-        const produccionSolicitada = 1446;
-        
-        // Calcular porcentajes y performance
-        const porcentajeProducido = ((totalProducido / produccionSolicitada) * 100).toFixed(1);
-        const porcentajeFaltante = (100 - porcentajeProducido).toFixed(1);
-        
-        // Performance (mismo valor que porcentaje producido en este caso)
-        const performance = porcentajeProducido;
-        
-        // Crear el gráfico circular
-        Highcharts.chart('ultima-produccion-container', {
-          chart: {
-            type: 'pie',
-            backgroundColor: 'transparent',
-            // Dejar espacio suficiente para los contadores
-            spacingBottom: 20,
-            // Altura para ajustarse al contenedor
-            height: '100%'
-          },
-          title: {
-            text: undefined
-          },
-          credits: {
-            enabled: false
-          },
-          tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-          },
-          plotOptions: {
-            pie: {
-              innerSize: '60%', // Estilo donut
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                enabled: false
-              },
-              // Reducir tamaño para dejar espacio a los contadores
-              size: '90%',
-              // Mostrar leyenda solo si hay espacio
-              showInLegend: true
-            }
-          },
-          legend: {
-            enabled: false // Desactivar leyenda para dar más espacio a los contadores
-          },
-          series: [{
-            name: 'Producción',
-            colorByPoint: true,
-            data: [{
-              name: 'Producción Real',
-              y: parseFloat(porcentajeProducido),
-              color: '#0c169f'
-            }, {
-              name: 'Pendiente',
-              y: parseFloat(porcentajeFaltante),
-              color: '#e74a3b'
-            }]
-          }]
-        });
-        
-        // Agregar información central (OT 4 y porcentaje)
-        // Eliminar cualquier info central existente primero
-        const existingInfo = container.querySelector('.highcharts-center-info');
-        if (existingInfo) existingInfo.remove();
-        
-        const centerInfo = document.createElement('div');
-        centerInfo.className = 'highcharts-center-info';
-        centerInfo.innerHTML = `
+    window.initUltimaProduccionChart = function () {
+        const container = document.getElementById('ultima-produccion-container');
+        if (!container) return;
+
+        // Obtener datos de producción
+        $.ajax({
+            url: 'http://localhost:63152/api/Production/GetAllProduction',
+            success: function (productionData) {
+                // Filtrar datos para OT 4
+                const otData = productionData.filter(item => item.OT === 4);
+                // Calcular producción total
+                const totalProducido = otData.reduce((sum, item) => sum + item.PRODUCIDO, 0);
+                // Demanda fija como indicaste
+                const produccionSolicitada = 1446;
+
+                // Calcular porcentajes y performance
+                const porcentajeProducido = ((totalProducido / produccionSolicitada) * 100).toFixed(1);
+                const porcentajeFaltante = (100 - porcentajeProducido).toFixed(1);
+
+                // Performance (mismo valor que porcentaje producido en este caso)
+                const performance = porcentajeProducido;
+
+                // Crear el gráfico circular
+                Highcharts.chart('ultima-produccion-container', {
+                    chart: {
+                        type: 'pie',
+                        backgroundColor: 'transparent',
+                        // Dejar espacio suficiente para los contadores
+                        spacingBottom: 20,
+                        // Altura para ajustarse al contenedor
+                        height: '100%'
+                    },
+                    title: {
+                        text: undefined
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            innerSize: '60%', // Estilo donut
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false
+                            },
+                            // Reducir tamaño para dejar espacio a los contadores
+                            size: '90%',
+                            // Mostrar leyenda solo si hay espacio
+                            showInLegend: true
+                        }
+                    },
+                    legend: {
+                        enabled: false // Desactivar leyenda para dar más espacio a los contadores
+                    },
+                    series: [{
+                        name: 'Producción',
+                        colorByPoint: true,
+                        data: [{
+                            name: 'Producción Real',
+                            y: parseFloat(porcentajeProducido),
+                            color: '#0c169f'
+                        }, {
+                            name: 'Pendiente',
+                            y: parseFloat(porcentajeFaltante),
+                            color: '#e74a3b'
+                        }]
+                    }]
+                });
+
+                // Agregar información central (OT 4 y porcentaje)
+                // Eliminar cualquier info central existente primero
+                const existingInfo = container.querySelector('.highcharts-center-info');
+                if (existingInfo) existingInfo.remove();
+
+                const centerInfo = document.createElement('div');
+                centerInfo.className = 'highcharts-center-info';
+                centerInfo.innerHTML = `
           <div class="center-title">OT 4</div>
           <div class="center-value">${porcentajeProducido}%</div>
         `;
-        container.appendChild(centerInfo);
-        
-        // Crear los 3 contadores solicitados
-        // Eliminar cualquier contador existente primero
-        const existingCounters = container.querySelector('.production-counters');
-        if (existingCounters) existingCounters.remove();
-        
-        const countersContainer = document.createElement('div');
-        countersContainer.className = 'production-counters';
-        countersContainer.innerHTML = `
+                container.appendChild(centerInfo);
+
+                // Crear los 3 contadores solicitados
+                // Eliminar cualquier contador existente primero
+                const existingCounters = container.querySelector('.production-counters');
+                if (existingCounters) existingCounters.remove();
+
+                const countersContainer = document.createElement('div');
+                countersContainer.className = 'production-counters';
+                countersContainer.innerHTML = `
           <div class="counters-wrapper">
             <div class="counter-box">
               <div class="counter-icon"><i class="zmdi zmdi-check-circle"></i></div>
@@ -263,11 +608,11 @@ function initUltimaProduccionChart() {
             </div>
           </div>
         `;
-        container.appendChild(countersContainer);
-        
-        // Aplicar estilos personalizados para los contadores
-        const styleElement = document.createElement('style');
-        styleElement.textContent = `
+                container.appendChild(countersContainer);
+
+                // Aplicar estilos personalizados para los contadores
+                const styleElement = document.createElement('style');
+                styleElement.textContent = `
           /* Estilos para el contenedor de contadores */
           .production-counters {
             padding: 10px;
@@ -343,33 +688,222 @@ function initUltimaProduccionChart() {
             }
           }
         `;
-        
-        // Añadir los estilos al documento
-        if (!document.getElementById('ultima-produccion-styles')) {
-          styleElement.id = 'ultima-produccion-styles';
-          document.head.appendChild(styleElement);
-        }
-      },
-      error: function(xhr, status, error) {
-        console.error("Error al cargar datos de producción:", error);
-        container.innerHTML = '<div class="error-message">Error al cargar datos de producción</div>';
-      }
-    });
-  };
+
+                // Añadir los estilos al documento
+                if (!document.getElementById('ultima-produccion-styles')) {
+                    styleElement.id = 'ultima-produccion-styles';
+                    document.head.appendChild(styleElement);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al cargar datos de producción:", error);
+                container.innerHTML = '<div class="error-message">Error al cargar datos de producción</div>';
+            }
+        });
+    };
 }
+// Función corregida para cargar dinámicamente los datos de Última Producción
+function inicializarUltimaProduccion() {
+    // Seleccionar el contenedor de métricas
+    const metricsContainer = document.querySelector('.metrics-container');
+    if (!metricsContainer) {
+        console.error('No se encontró el contenedor de métricas de Última Producción');
+        return;
+    }
+
+    // Mostrar loader mientras se cargan los datos
+    metricsContainer.innerHTML = `
+        <div style="width: 100%; text-align: center; padding: 20px;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2">Cargando datos de producción...</p>
+        </div>
+    `;
+
+    // Crear promesas con manejo mejorado de errores
+    const getProduction = fetch('http://localhost:63152/api/Production/GetAllProduction')
+        .then(response => {
+            if (!response.ok) {
+                console.error('Error en respuesta de API de producción:', response.status);
+                throw new Error('Error al cargar datos de producción');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error al obtener datos de producción:', error);
+            // Devolver un array vacío para evitar errores en Promise.all
+            return [];
+        });
+    
+    const getOrders = fetch('http://localhost:63152/api/WorkOrders')
+        .then(response => {
+            if (!response.ok) {
+                console.error('Error en respuesta de API de órdenes:', response.status);
+                throw new Error('Error al cargar datos de órdenes de trabajo');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error al obtener datos de órdenes de trabajo:', error);
+            // Devolver un array vacío para evitar errores en Promise.all
+            return [];
+        });
+
+    // Realizar ambas solicitudes en paralelo con mejor manejo de errores
+    Promise.all([getProduction, getOrders])
+    .then(([produccionData, ordenesData]) => {
+        try {
+            // Verificar si los arrays existen y tienen datos
+            if (!Array.isArray(produccionData)) {
+                console.error('Datos de producción inválidos:', produccionData);
+                produccionData = [];
+            }
+
+            if (!Array.isArray(ordenesData)) {
+                console.error('Datos de órdenes inválidos:', ordenesData);
+                ordenesData = [];
+            }
+
+            // Filtrar datos para OT 4 con verificación adicional
+            const otProduccion = produccionData.filter(item => item && typeof item === 'object' && item.OT === 4);
+            const otOrden = ordenesData.find(item => item && typeof item === 'object' && item.OT === 4);
+            
+            // Muestra en consola para diagnóstico
+            console.log('Datos de producción filtrados:', otProduccion);
+            console.log('Orden encontrada:', otOrden);
+            
+            // Calcular producción total con validación adicional
+            const totalProducido = otProduccion.reduce((sum, item) => {
+                // Validar que PRODUCIDO sea un número
+                const producido = item && typeof item.PRODUCIDO === 'number' ? item.PRODUCIDO : 0;
+                return sum + producido;
+            }, 0);
+            
+            // Obtener demanda desde la orden de trabajo con validación
+            // *** CAMBIO CLAVE: Usar DEMANDA en lugar de CANTIDAD ***
+            const produccionSolicitada = otOrden && typeof otOrden.DEMANDA === 'number' ? otOrden.DEMANDA : 0;
+            
+            // Obtener el último performance registrado
+            // *** CAMBIO CLAVE: Usar PERFORMANCE de la API en lugar de calcularlo ***
+            let performance = "0.0";
+            if (otProduccion.length > 0) {
+                // Ordenar por fecha descendente para obtener el último registro
+                const produccionOrdenada = [...otProduccion].sort((a, b) => 
+                    new Date(b.FECHA) - new Date(a.FECHA)
+                );
+                
+                // Obtener el PERFORMANCE del último registro
+                if (produccionOrdenada[0] && typeof produccionOrdenada[0].PERFORMANCE === 'number') {
+                    // Dividir por 100 para convertir de 9308.0 a 93.08%
+                    const performanceValue = produccionOrdenada[0].PERFORMANCE / 100;
+                    performance = performanceValue.toFixed(2);
+                }
+            }
+            
+            // Mostrar valores en consola para diagnóstico
+            console.log('Valores calculados:', {
+                totalProducido,
+                produccionSolicitada,
+                performance
+            });
+            
+            // Actualizar el contenedor con los datos dinámicos
+            metricsContainer.innerHTML = `
+                <div class="metric-card"
+                    style="flex: 1; text-align: center; background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin: 0 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <div class="metric-icon" style="font-size: 18px; color: #0c169f; margin-bottom: 5px;">
+                        <i class="zmdi zmdi-check-circle"></i>
+                    </div>
+                    <div class="metric-value" style="font-size: 18px; font-weight: bold; color: #333;">${totalProducido.toLocaleString()}</div>
+                    <div class="metric-label" style="font-size: 12px; color: #666;">Producido</div>
+                </div>
+
+                <div class="metric-card"
+                    style="flex: 1; text-align: center; background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin: 0 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <div class="metric-icon" style="font-size: 18px; color: #e74a3b; margin-bottom: 5px;">
+                        <i class="zmdi zmdi-assignment-o"></i>
+                    </div>
+                    <div class="metric-value" style="font-size: 18px; font-weight: bold; color: #333;">${produccionSolicitada.toLocaleString()}</div>
+                    <div class="metric-label" style="font-size: 12px; color: #666;">Demanda</div>
+                </div>
+
+                <div class="metric-card"
+                    style="flex: 1; text-align: center; background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin: 0 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <div class="metric-icon" style="font-size: 18px; color: #1cc88a; margin-bottom: 5px;">
+                        <i class="zmdi zmdi-trending-up"></i>
+                    </div>
+                    <div class="metric-value" style="font-size: 18px; font-weight: bold; color: #333;">${performance}%</div>
+                    <div class="metric-label" style="font-size: 12px; color: #666;">Performance</div>
+                </div>
+            `;
+            
+            // Almacenar los datos para uso posterior si es necesario
+            window.ultimaProduccionData = {
+                producido: totalProducido,
+                demanda: produccionSolicitada,
+                performance: performance
+            };
+            
+            console.log('Datos de Última Producción cargados correctamente');
+            
+        } catch (error) {
+            // Capturar cualquier error en el procesamiento de datos
+            console.error('Error al procesar datos recibidos:', error);
+            
+            // Mostrar mensaje de error en el contenedor
+            metricsContainer.innerHTML = `
+                <div style="width: 100%; text-align: center; padding: 20px; color: #dc3545;">
+                    <i class="zmdi zmdi-alert-circle-o" style="font-size: 24px;"></i>
+                    <p class="mt-2">Error al procesar los datos. Por favor, intente de nuevo más tarde.</p>
+                    <button class="btn btn-sm btn-outline-danger mt-2" onclick="inicializarUltimaProduccion()">
+                        <i class="zmdi zmdi-refresh"></i> Reintentar
+                    </button>
+                </div>
+            `;
+        }
+    })
+    .catch(error => {
+        console.error('Error general al cargar datos de Última Producción:', error);
+        
+        // Mostrar mensaje de error en el contenedor con botón para reintentar
+        metricsContainer.innerHTML = `
+            <div style="width: 100%; text-align: center; padding: 20px; color: #dc3545;">
+                <i class="zmdi zmdi-alert-circle-o" style="font-size: 24px;"></i>
+                <p class="mt-2">Error al cargar los datos. Por favor, intente de nuevo más tarde.</p>
+                <button class="btn btn-sm btn-outline-danger mt-2" onclick="inicializarUltimaProduccion()">
+                    <i class="zmdi zmdi-refresh"></i> Reintentar
+                </button>
+            </div>
+        `;
+    });
+}
+
+// Asegurarse de que esta función se ejecute cuando se inicie el sistema
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar las métricas dinámicas
+    inicializarUltimaProduccion();
+    
+    // También se puede llamar a esta función cuando sea necesario actualizar los datos
+    // Por ejemplo, cuando se abra el modal de producción
+    document.querySelector('[data-bs-target="#productionModal"]')?.addEventListener('click', function() {
+        inicializarUltimaProduccion();
+    });
+});
+
 
 // 2. Órdenes de Trabajo (gráfico circular)
 function initOrdenesTrabajoChart() {
     const container = document.getElementById('ordenes-trabajo-container');
     if (!container) return;
-    
+
     $.ajax({
         url: 'http://localhost:63152/api/WorkOrders',
-        success: function(workOrdersData) {
+        success: function (workOrdersData) {
             // Contar órdenes por estado
             const realizadas = workOrdersData.filter(item => item.ESTADO === 'REALIZADA').length;
             const pendientes = workOrdersData.filter(item => item.ESTADO === 'PENDIENTE').length;
-            
+
             Highcharts.chart('ordenes-trabajo-container', {
                 chart: {
                     type: 'pie',
@@ -423,208 +957,349 @@ function initOrdenesTrabajoChart() {
                 }]
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error("Error al cargar datos de órdenes de trabajo:", error);
             container.innerHTML = '<div class="error-message">Error al cargar datos de órdenes de trabajo</div>';
         }
     });
 }
 
-// 3. Producción por Temporada (barras)
+// 3. Producción por Temporada (barras) - Modificado para ordenar de mayor a menor
 function initProduccionTemporadaChart() {
     const container = document.getElementById('produccion-temporada-container');
     if (!container) return;
-    
-    Highcharts.chart('produccion-temporada-container', {
-        chart: {
-            type: 'column',
-            backgroundColor: 'transparent'
-        },
-        title: {
-            text: undefined
-        },
-        credits: {
-            enabled: false
-        },
-        xAxis: {
-            categories: ['Grido Cookie and Cream', 'Grido Mousse', 'Grido con Relleno'],
-            crosshair: true
-        },
-        yAxis: {
-            min: 50000,
-            max: 95000,
-            title: {
-                text: 'Cantidad'
+
+    // Mostrar mensaje de carga mientras se obtienen los datos
+    container.innerHTML = '<div class="loading-message">Cargando datos de producción...</div>';
+
+    // Arrays para almacenar los nombres de tortas y cantidades
+    let datosProduccion = [];
+    let promesasCargadas = 0;
+    const totalPromesas = 3;
+
+    // Función para actualizar el gráfico cuando todos los datos estén cargados
+    function actualizarGrafico() {
+        // Ordenar los datos de mayor a menor cantidad
+        datosProduccion.sort((a, b) => b.cantidad - a.cantidad);
+        
+        // Separar los arrays para el gráfico
+        const tortas = datosProduccion.map(item => item.nombre);
+        const cantidades = datosProduccion.map(item => item.cantidad);
+
+        Highcharts.chart('produccion-temporada-container', {
+            chart: {
+                type: 'column',
+                backgroundColor: 'transparent'
             },
-            labels: {
-                formatter: function() {
-                    return this.value.toLocaleString();
+            title: {
+                text: undefined
+            },
+            credits: {
+                enabled: false
+            },
+            xAxis: {
+                categories: tortas,
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Cantidad'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value.toLocaleString();
+                    }
                 }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0,
+                    borderRadius: 5
+                }
+            },
+            series: [{
+                name: 'Producción febrero 2025',
+                color: '#0c169f',
+                data: cantidades
+            }]
+        });
+    }
+
+    // 1. Obtener datos de la torta Cookies and Cream
+    $.ajax({
+        url: 'http://localhost:63152/api/production/report/gridocookie',
+        success: function (data) {
+            datosProduccion.push({
+                nombre: 'Grido Cookie and Cream',
+                cantidad: data.TotalCantidad
+            });
+            
+            promesasCargadas++;
+            
+            // Verificar si ya se cargaron las tres APIs
+            if (promesasCargadas === totalPromesas) {
+                actualizarGrafico();
             }
         },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0,
-                borderRadius: 5
+        error: function (xhr, status, error) {
+            console.error("Error al cargar datos de Cookies and Cream:", error);
+            datosProduccion.push({
+                nombre: 'Grido Cookie and Cream',
+                cantidad: 0
+            });
+            
+            promesasCargadas++;
+            
+            if (promesasCargadas === totalPromesas) {
+                actualizarGrafico();
+            }
+        }
+    });
+
+    // 2. Obtener datos de la torta Mousse
+    $.ajax({
+        url: 'http://localhost:63152/api/production/report/mousse',
+        success: function (data) {
+            datosProduccion.push({
+                nombre: 'Grido Mousse',
+                cantidad: data.TotalCantidad
+            });
+            
+            promesasCargadas++;
+            
+            if (promesasCargadas === totalPromesas) {
+                actualizarGrafico();
             }
         },
-        series: [{
-            name: 'Producción febrero 2025',
-            color: '#0c169f',
-            data: [70000, 80000, 90000]
-        }]
+        error: function (xhr, status, error) {
+            console.error("Error al cargar datos de Mousse:", error);
+            datosProduccion.push({
+                nombre: 'Grido Mousse',
+                cantidad: 0
+            });
+            
+            promesasCargadas++;
+            
+            if (promesasCargadas === totalPromesas) {
+                actualizarGrafico();
+            }
+        }
+    });
+
+    // 3. Obtener datos de la torta Grido con Relleno
+    $.ajax({
+        url: 'http://localhost:63152/api/production/report/tortagrido',
+        success: function (data) {
+            datosProduccion.push({
+                nombre: 'Grido con Relleno',
+                cantidad: data.TotalCantidad
+            });
+            
+            promesasCargadas++;
+            
+            if (promesasCargadas === totalPromesas) {
+                actualizarGrafico();
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error al cargar datos de Torta Grido con Relleno:", error);
+            datosProduccion.push({
+                nombre: 'Grido con Relleno',
+                cantidad: 0
+            });
+            
+            promesasCargadas++;
+            
+            if (promesasCargadas === totalPromesas) {
+                actualizarGrafico();
+            }
+        }
     });
 }
 
-// 4. Producción por Órdenes de Trabajo (barras)
-function initProduccionOTChart() {
-    const container = document.getElementById('produccion-ot-container');
-    if (!container) return;
-    
-    Highcharts.chart('produccion-ot-container', {
-        chart: {
-            type: 'column',
-            backgroundColor: 'transparent'
-        },
-        title: {
-            text: undefined
-        },
-        credits: {
-            enabled: false
-        },
-        xAxis: {
-            categories: ['Grido Cookie and Cream', 'Grido Mousse', 'Grido con Relleno'],
-            crosshair: true
-        },
-        yAxis: {
-            min: 50000,
-            max: 100000,
-            title: {
-                text: 'Cantidad',
-                style: {
-                    fontWeight: 'bold'
-                }
-            },
-            labels: {
-                formatter: function() {
-                    return this.value.toLocaleString();
-                }
-            }
-        },
-        legend: {
-            align: 'center',
-            verticalAlign: 'top',
-            floating: false,
-            backgroundColor: undefined,
-            shadow: false
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0,
-                borderRadius: 5
-            }
-        },
-        series: [{
-            name: 'Producción establecida en OT',
-            color: '#1cc88a',
-            data: [82567, 71230, 90120]
-        }, {
-            name: 'Producción realizada en OT',
-            color: '#0c169f',
-            data: [80000, 70000, 90000]
-        }]
-    });
-}
 
-// 5. Producción Anual (líneas)
+// Función actualizada para el gráfico de Producción Anual
 function initProduccionAnualChart() {
     const container = document.getElementById('produccion-anual-container');
     if (!container) return;
-    
-    Highcharts.chart('produccion-anual-container', {
-        chart: {
-            type: 'line',
-            backgroundColor: 'transparent'
-        },
-        title: {
-            text: undefined
-        },
-        credits: {
-            enabled: false
-        },
-        xAxis: {
-            categories: ['Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic', 'Ene', 'Feb'],
-            crosshair: true
-        },
-        yAxis: {
-            min: 50000,
-            max: 110000,
-            title: {
-                text: 'Cantidad'
-            },
-            labels: {
-                formatter: function() {
-                    return this.value.toLocaleString();
+
+    // Mostrar mensaje de carga mientras se obtienen los datos
+    container.innerHTML = '<div class="loading-message">Cargando datos de producción anual...</div>';
+
+    // Obtener datos de la API CORRECTA
+    $.ajax({
+        url: 'http://localhost:63152/api/Production/GetAllProduction',
+        success: function(data) {
+            // Filtrar datos por los últimos 13 meses (desde marzo 2024 hasta marzo 2025)
+            const fechaInicio = new Date(2024, 2, 1); // Marzo 2024 (0-indexed months)
+            const fechaFin = new Date(2025, 2, 31); // Marzo 2025
+
+            // Nombres exactos de productos a filtrar
+            const productosAFiltrar = [
+                "PACK TORTA COOKIES AND MOUSSE - GRIDO",
+                "PACK TORTA GRIDO CON RELLENO - GRIDO",
+                "PACK TORTA COOKIES AND CREAM - GRIDO"
+            ];
+
+            // Función para mapear nombres de productos a series
+            const mapProductoASerie = (producto) => {
+                if (producto === "PACK TORTA COOKIES AND CREAM - GRIDO") {
+                    return "Grido Cookie and Cream";
+                } else if (producto === "PACK TORTA COOKIES AND MOUSSE - GRIDO") {
+                    return "Grido Mousse";
+                } else if (producto === "PACK TORTA GRIDO CON RELLENO - GRIDO") {
+                    return "Grido con Relleno";
+                } else {
+                    return "Otros";
                 }
+            };
+
+            // Filtrar datos en el rango de fechas y agrupar por producto y mes
+            const produccionPorProductoYMes = {};
+            
+            data.forEach(item => {
+                // Verificar que la fecha sea válida y el producto esté en nuestra lista
+                if (!item.FECHA || !productosAFiltrar.includes(item.PRODUCTO)) return;
+                
+                // Parsear la fecha (formato: 2024-11-07T00:00:00)
+                const fechaStr = item.FECHA;
+                const fecha = new Date(fechaStr);
+                
+                // Verificar que la fecha esté en el rango deseado
+                if (fecha >= fechaInicio && fecha <= fechaFin) {
+                    // Determinar a qué serie pertenece
+                    const nombreSerie = mapProductoASerie(item.PRODUCTO);
+                    
+                    // Obtener año y mes de la fecha
+                    const año = fecha.getFullYear();
+                    const mes = fecha.getMonth(); // 0-indexed (0=enero, 11=diciembre)
+                    
+                    // Crear clave para agrupar por año-mes y serie
+                    const clave = `${año}-${mes}-${nombreSerie}`;
+                    
+                    // Inicializar si no existe
+                    if (!produccionPorProductoYMes[clave]) {
+                        produccionPorProductoYMes[clave] = 0;
+                    }
+                    
+                    // Sumar la cantidad PRODUCIDO (en lugar de CANTIDAD)
+                    produccionPorProductoYMes[clave] += parseFloat(item.PRODUCIDO || 0);
+                }
+            });
+
+            console.log("Datos procesados:", produccionPorProductoYMes);
+
+            // Preparar datos para el gráfico
+            const meses = [];
+            const series = {
+                "Grido Cookie and Cream": [],
+                "Grido Mousse": [],
+                "Grido con Relleno": []
+            };
+            
+            // Generar array de meses desde marzo 2024 hasta marzo 2025
+            for (let m = 0; m < 13; m++) {
+                const fecha = new Date(2024, 2 + m, 1); // Empezar en marzo 2024
+                const año = fecha.getFullYear();
+                const mes = fecha.getMonth();
+                
+                // Nombre del mes para mostrar en el gráfico
+                const nombreMes = fecha.toLocaleString('es', { month: 'short' });
+                meses.push(nombreMes);
+                
+                // Inicializar datos para cada serie en este mes
+                Object.keys(series).forEach(nombreSerie => {
+                    const clave = `${año}-${mes}-${nombreSerie}`;
+                    series[nombreSerie].push(produccionPorProductoYMes[clave] || 0);
+                });
             }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        legend: {
-            layout: 'horizontal',
-            align: 'center',
-            verticalAlign: 'top',
-            borderWidth: 0
-        },
-        plotOptions: {
-            line: {
-                marker: {
-                    radius: 3
+
+            console.log("Series de datos para el gráfico:", series);
+
+            // Crear el gráfico
+            Highcharts.chart('produccion-anual-container', {
+                chart: {
+                    type: 'line',
+                    backgroundColor: 'transparent'
                 },
-                lineWidth: 3
-            }
+                title: {
+                    text: undefined
+                },
+                credits: {
+                    enabled: false
+                },
+                xAxis: {
+                    categories: meses,
+                    crosshair: true
+                },
+                yAxis: {
+                    title: {
+                        text: 'Cantidad'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value.toLocaleString();
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'top',
+                    borderWidth: 0
+                },
+                plotOptions: {
+                    line: {
+                        marker: {
+                            radius: 3
+                        },
+                        lineWidth: 3
+                    }
+                },
+                series: [
+                    {
+                        name: 'Grido Cookie and Cream',
+                        color: '#0e2238',
+                        data: series['Grido Cookie and Cream']
+                    },
+                    {
+                        name: 'Grido Mousse',
+                        color: '#f6c23e',
+                        data: series['Grido Mousse']
+                    },
+                    {
+                        name: 'Grido con Relleno',
+                        color: '#e74a3b',
+                        data: series['Grido con Relleno']
+                    }
+                ]
+            });
         },
-        series: [{
-            name: 'Grido Cookie and Cream',
-            color: '#0e2238',
-            data: [80000, 82000, 78000, 85000, 88000, 84000, 87000, 90000, 86000, 89000, 85000, 88000]
-        }, {
-            name: 'Grido Mousse',
-            color: '#f6c23e',
-            data: [70000, 73000, 71000, 75000, 78000, 74000, 77000, 80000, 76000, 79000, 75000, 78000]
-        }, {
-            name: 'Grido con Relleno',
-            color: '#e74a3b',
-            data: [90000, 92000, 88000, 95000, 98000, 94000, 97000, 100000, 96000, 99000, 95000, 98000]
-        }]
+        error: function(xhr, status, error) {
+            console.error("Error al cargar datos de producción anual:", error);
+            container.innerHTML = '<div class="error-message">Error al cargar datos de producción anual. Por favor, intente nuevamente más tarde.</div>';
+        }
     });
 }
 
-// Función mejorada para el gráfico Balance de Masas
 // 3. Mejorar el gráfico de Balance de Masas
 function initBalanceMasasChart() {
     const container = document.getElementById('balance-highchart-container');
@@ -632,13 +1307,13 @@ function initBalanceMasasChart() {
         console.error('El contenedor balance-highchart-container no existe');
         return;
     }
-    
+
     // Limpiar el contenedor antes de crear un nuevo gráfico
     container.innerHTML = '';
-    
+
     $.ajax({
         url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
-        success: function(balanceData) {
+        success: function (balanceData) {
             // Calcular totales
             const totales = balanceData.reduce((acc, item) => {
                 return {
@@ -647,7 +1322,7 @@ function initBalanceMasasChart() {
                     desvio: acc.desvio + parseFloat(item.DESVIO || 0)
                 };
             }, { teorico: 0, real: 0, desvio: 0 });
-            
+
             // Crear el gráfico con opciones mejoradas
             Highcharts.chart('balance-highchart-container', {
                 chart: {
@@ -657,9 +1332,9 @@ function initBalanceMasasChart() {
                     reflow: true,
                     events: {
                         // Controlar dimensiones para evitar desbordamiento
-                        load: function() {
+                        load: function () {
                             const chart = this;
-                            
+
                             // Reajustar el gráfico para asegurar que se mantenga
                             // dentro de sus límites al cargar
                             setTimeout(() => {
@@ -691,7 +1366,7 @@ function initBalanceMasasChart() {
                         }
                     },
                     labels: {
-                        formatter: function() {
+                        formatter: function () {
                             return this.value.toLocaleString();
                         }
                     }
@@ -710,14 +1385,14 @@ function initBalanceMasasChart() {
                     // Configurar el tooltip para que no cause desbordamiento
                     outside: true,
                     useHTML: true,
-                    formatter: function() {
+                    formatter: function () {
                         let value = this.y;
-                        
+
                         // Si es el desvío y es negativo en los datos originales
                         if (this.series.name === 'Desvío Total' && totales.desvio < 0) {
                             value = -value;
                         }
-                        
+
                         return `<b>${this.series.name}</b>: ${value.toFixed(2)}`;
                     }
                 },
@@ -729,7 +1404,7 @@ function initBalanceMasasChart() {
                             enabled: true,
                             crop: false,
                             overflow: 'none',
-                            formatter: function() {
+                            formatter: function () {
                                 return this.y.toLocaleString(undefined, {
                                     minimumFractionDigits: 0,
                                     maximumFractionDigits: 0
@@ -753,7 +1428,7 @@ function initBalanceMasasChart() {
                 }]
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Error al obtener datos para el balance de masas:', error);
             container.innerHTML = `
                 <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
@@ -774,10 +1449,10 @@ function initBalanceMasasChart() {
 function initializeAllHighcharts() {
     // Prepara los contenedores, reemplazando los elementos canvas por divs para Highcharts
     prepareContainers();
-    
+
     // Inicializa todos los gráficos con Highcharts
     initHighcharts();
-    
+
     // Inicializa las tablas y contadores (mantenemos estas funciones tal como están)
     if (typeof initTables === 'function') initTables();
     if (typeof actualizarContadores === 'function') actualizarContadores();
@@ -789,31 +1464,31 @@ function prepareContainers() {
     function replaceCanvasWithDiv(canvasId, newDivId) {
         const canvas = document.getElementById(canvasId);
         if (!canvas) return false;
-        
+
         const container = canvas.parentElement;
         const newDiv = document.createElement('div');
         newDiv.id = newDivId;
         newDiv.style.width = '100%';
         newDiv.style.height = '100%';
-        
+
         container.replaceChild(newDiv, canvas);
         return true;
     }
-    
+
     // Reemplazar cada canvas por un div para Highcharts
     replaceCanvasWithDiv('productionPieChart', 'ultima-produccion-container');
     replaceCanvasWithDiv('workDistribution', 'ordenes-trabajo-container');
     replaceCanvasWithDiv('monthlyProduction', 'produccion-temporada-container');
     replaceCanvasWithDiv('comparativeChart', 'produccion-ot-container');
     replaceCanvasWithDiv('mainMetrics', 'produccion-anual-container');
-    
+
     // Balance de Masas ya está preparado
 }
 
 // Actualizar la función window.onload o document.ready
-$(document).ready(function() {
+$(document).ready(function () {
     initializeAllHighcharts();
-    
+
     // Carga de scripts adicionales de Highcharts si fuera necesario
     loadHighchartsModules();
 });
@@ -851,11 +1526,11 @@ function configureHighcharts() {
                 },
                 events: {
                     // Corregir problema de superposición del menú
-                    beforeShowContextMenu: function() {
+                    beforeShowContextMenu: function () {
                         // Ajustar botones consultar
                         $('.btn-consultar').css('z-index', 5);
                     },
-                    afterHideContextMenu: function() {
+                    afterHideContextMenu: function () {
                         // Restaurar z-index
                         $('.btn-consultar').css('z-index', 10);
                     }
@@ -887,7 +1562,7 @@ function fixPieChartsConfig() {
             height: '100%',
             events: {
                 // Ajuste después de renderizar
-                render: function() {
+                render: function () {
                     // Ajustar posición de leyendas si es necesario
                     if (this.legend && this.legend.options.align === 'right') {
                         this.reflow();
@@ -941,7 +1616,7 @@ function fixSweetAlertError() {
     // Verificar si Swal existe pero está causando un error
     if (typeof Swal !== 'undefined' && typeof swal !== 'undefined' && !swal.init) {
         // Proporcionar una implementación temporal
-        swal.init = function() {
+        swal.init = function () {
             console.log('SweetAlert init polyfill');
             return Swal.isVisible();
         };
@@ -970,49 +1645,55 @@ function fixSweetAlertError() {
 /// Función para inicializar las tablas DataTables
 function initTables() {
 
- // Verificar si las tablas ya están inicializadas y destruirlas
- if ($.fn.DataTable.isDataTable('#productionTable')) {
-    $('#productionTable').DataTable().destroy();
-}
-if ($.fn.DataTable.isDataTable('#theoricalTableInProduction')) {
-    $('#theoricalTableInProduction').DataTable().destroy();
-}
-if ($.fn.DataTable.isDataTable('#consolidadoBMTable')) {
-    $('#consolidadoBMTable').DataTable().destroy();
-}
-if ($.fn.DataTable.isDataTable('#stockTable')) {
-    $('#stockTable').DataTable().destroy();
-}
+    // Verificar si las tablas ya están inicializadas y destruirlas
+    if ($.fn.DataTable.isDataTable('#productionTable')) {
+        $('#productionTable').DataTable().destroy();
+    }
+    if ($.fn.DataTable.isDataTable('#theoricalTableInProduction')) {
+        $('#theoricalTableInProduction').DataTable().destroy();
+    }
+    if ($.fn.DataTable.isDataTable('#consolidadoBMTable')) {
+        $('#consolidadoBMTable').DataTable().destroy();
+    }
+    if ($.fn.DataTable.isDataTable('#stockTable')) {
+        $('#stockTable').DataTable().destroy();
+    }
 
 
-        // Configuración común para las DataTables
-        let commonConfig = {
-            dom: 'Bfrtip', // Elimina el filtro de entries
-            buttons: ['pdfHtml5', 'excelHtml5'],
-            searching: false, // Elimina la búsqueda
-            language: window.dataTablesLanguage || {
-                "decimal": "",
-                "emptyTable": "No hay datos disponibles",
-                "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-                "infoEmpty": "Mostrando 0 a 0 de 0 registros",
-                "infoFiltered": "(filtrado de _MAX_ registros totales)",
-                "thousands": ",",
-                "search": "Buscar:",
-                "zeroRecords": "No se encontraron coincidencias",
-                "paginate": {
-                    "first": "Primero",
-                    "last": "Último",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+    // Configuración común para las DataTables
+    let commonConfig = {
+        dom: 'Bfrtip', // Incluir botones en el DOM
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="zmdi zmdi-file-text"></i> Excel',
+                className: 'btn btn-sm btn-success export-btn',
+                titleAttr: 'Exportar a Excel',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                text: '<i class="zmdi zmdi-file"></i> CSV',
+                className: 'btn btn-sm btn-info export-btn',
+                titleAttr: 'Exportar a CSV',
+                exportOptions: {
+                    columns: ':visible'
                 }
             }
-        };
+        ],
+        searching: true, // Habilitar búsqueda
+        language: window.dataTablesLanguage || {
+            // configuración de idioma
+        }
+    };
 
 
 
     // Tabla de Producción
-     // Tabla de Producción
-     let productionTable = $('#productionTable').DataTable({
+    // Tabla de Producción
+    let productionTable = $('#productionTable').DataTable({
         ...commonConfig,
         ajax: {
             url: 'http://localhost:63152/api/Production/GetAllProduction',
@@ -1059,23 +1740,33 @@ if ($.fn.DataTable.isDataTable('#stockTable')) {
 
 
 
-     // Tabla de Balance de Masas con colores en desvíos
+    // Tabla de Balance de Masas con colores en desvíos
     let theoricalTableInProduction = $('#theoricalTableInProduction').DataTable({
         ajax: {
             url: 'http://localhost:63152/api/TheoricalConsumption/GetTheoricalConsumption?ot=4',
             dataSrc: ''
         },
-        language: window.dataTablesLanguage, 
+        language: window.dataTablesLanguage,
         columns: [
             { data: "MATERIAL" },
-            { data: "TEORICO" },
-            { data: "REAL" },
+            {
+                data: "TEORICO",
+                render: function (data) {
+                    return parseFloat(data).toFixed(2) + ' KG';
+                }
+            },
+            {
+                data: "REAL",
+                render: function (data) {
+                    return parseFloat(data).toFixed(2) + ' KG';
+                }
+            },
             {
                 data: "DESVIO",
                 render: function (data) {
                     const value = parseFloat(data);
                     const color = value < 0 ? '#dc3545' : '#28a745'; // Rojo para negativos, verde para positivos
-                    return `<span style="color: ${color}">${value.toFixed(2)}</span>`;
+                    return `<span style="color: ${color}">${value.toFixed(2)} KG</span>`;
                 }
             }
         ],
@@ -1092,91 +1783,91 @@ if ($.fn.DataTable.isDataTable('#stockTable')) {
     });
     window.theoricalTableInProduction = theoricalTableInProduction;
 
-  // Tabla para el consolidado de Balance de Masas
-  let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
-    ...commonConfig,
-    searching: true,
-    language: window.dataTablesLanguage,
-    ajax: {
-        url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
-        dataSrc: ''
-    },
-    columns: [
-        { data: "MATERIAL" },
-        {
-            data: "TEORICO",
-            render: function (data) {
-                return parseFloat(data).toFixed(2);
-            }
+    // Tabla para el consolidado de Balance de Masas
+    let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
+        ...commonConfig,
+        searching: true,
+        language: window.dataTablesLanguage,
+        ajax: {
+            url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
+            dataSrc: ''
         },
-        {
-            data: "REAL",
-            render: function (data) {
-                return parseFloat(data).toFixed(2);
-            }
-        },
-        {
-            data: "DESVIO",
-            render: function (data) {
-                const value = parseFloat(data);
-                const color = value < 0 ? '#dc3545' : '#28a745';
-                return `<span style="color: ${color}">${value.toFixed(2)}</span>`;
-            }
-        },
-        {
-            data: null,
-            render: function (data, type, row) {
-                // Mapa de precios fijos para cada material
-                const precios = {
-                    "DULCE DE LECHE C/CACAO P/SEMBRAR": 1699.47,
-                    "DULCE DE LECHE P/SEMBRAR": 1675.69,
-                    "GALLETA OREO PICADA": 4049.75,
-                    "GALLETAS MILKA MOUSSE": 5301.71,
-                    "HELADO DE CHOCOLATE": 10000,
-                    "HELADO DE CREMA AMERICANA": 10000,
-                    "HELADO DE DULCE DE LECHE": 10000,
-                    "PREPARADO ALMIBAR STANDART": 247.68,
-                    "SALSA DULCE SABOR CHOCOLATE": 1379.57,
-                    "TAPA GALLETA SABOR VAINILLA 17 CM": 1862.48
-                };
-                
-                const desvio = parseFloat(row.DESVIO || 0);
-                const precioMaterial = precios[row.MATERIAL] || 0;
-                const valorDesvio = desvio * precioMaterial;
-                
-                // Función para formatear valores grandes
-                function formatearValor(valor) {
-                    const valorAbs = Math.abs(valor);
-                    if (valorAbs >= 1000000) {
-                        return `${(valorAbs / 1000000).toFixed(2)}M`;
-                    } else if (valorAbs >= 1000) {
-                        return `${(valorAbs / 1000).toFixed(2)}k`;
-                    }
-                    return valorAbs.toFixed(2);
+        columns: [
+            { data: "MATERIAL" },
+            {
+                data: "TEORICO",
+                render: function (data) {
+                    return parseFloat(data).toFixed(2) + ' KG';
                 }
-                
-                const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
-                const formattedValue = formatearValor(valorDesvio);
-                const fullValue = Math.abs(valorDesvio).toFixed(2);
-                
-                // Usar el atributo title nativo para mostrar el valor completo
-                return `<span style="color: ${color}; cursor: help;" 
+            },
+            {
+                data: "REAL",
+                render: function (data) {
+                    return parseFloat(data).toFixed(2) + ' KG';
+                }
+            },
+            {
+                data: "DESVIO",
+                render: function (data) {
+                    const value = parseFloat(data);
+                    const color = value < 0 ? '#dc3545' : '#28a745';
+                    return `<span style="color: ${color}">${value.toFixed(2)} KG</span>`;
+                }
+            },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    // Mapa de precios fijos para cada material
+                    const precios = {
+                        "DULCE DE LECHE C/CACAO P/SEMBRAR": 1699.47,
+                        "DULCE DE LECHE P/SEMBRAR": 1675.69,
+                        "GALLETA OREO PICADA": 4049.75,
+                        "GALLETAS MILKA MOUSSE": 5301.71,
+                        "HELADO DE CHOCOLATE": 10000,
+                        "HELADO DE CREMA AMERICANA": 10000,
+                        "HELADO DE DULCE DE LECHE": 10000,
+                        "PREPARADO ALMIBAR STANDART": 247.68,
+                        "SALSA DULCE SABOR CHOCOLATE": 1379.57,
+                        "TAPA GALLETA SABOR VAINILLA 17 CM": 1862.48
+                    };
+
+                    const desvio = parseFloat(row.DESVIO || 0);
+                    const precioMaterial = precios[row.MATERIAL] || 0;
+                    const valorDesvio = desvio * precioMaterial;
+
+                    // Función para formatear valores grandes
+                    function formatearValor(valor) {
+                        const valorAbs = Math.abs(valor);
+                        if (valorAbs >= 1000000) {
+                            return `${(valorAbs / 1000000).toFixed(2)}M`;
+                        } else if (valorAbs >= 1000) {
+                            return `${(valorAbs / 1000).toFixed(2)}k`;
+                        }
+                        return valorAbs.toFixed(2);
+                    }
+
+                    const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
+                    const formattedValue = formatearValor(valorDesvio);
+                    const fullValue = Math.abs(valorDesvio).toFixed(2);
+
+                    // Usar el atributo title nativo para mostrar el valor completo
+                    return `<span style="color: ${color}; cursor: help;" 
                            title="Valor completo: $${fullValue}">${valorDesvio < 0 ? '-' : ''}$${formattedValue}</span>`;
+                }
             }
+        ],
+        initComplete: function () {
+            $('#consolidadoBMTable thead th').css({
+                'background-color': '#0e2238',
+                'color': 'white'
+            });
+            $('#consolidadoBMTable tbody tr').css({
+                'background-color': 'white',
+                'color': 'black'
+            });
         }
-    ],
-    initComplete: function () {
-        $('#consolidadoBMTable thead th').css({
-            'background-color': '#0e2238',
-            'color': 'white'
-        });
-        $('#consolidadoBMTable tbody tr').css({
-            'background-color': 'white',
-            'color': 'black'
-        });
-    }
-  });
-window.consolidadoBMTable = consolidadoBMTable;
+    });
+    window.consolidadoBMTable = consolidadoBMTable;
 
 
 
@@ -1186,15 +1877,15 @@ window.consolidadoBMTable = consolidadoBMTable;
             // Obtener precios de materiales
             const materialsResponse = await fetch('http://localhost:63152/api/Materials');
             const materialsData = await materialsResponse.json();
-            
+
             console.log("Materiales obtenidos:", materialsData);
             console.log("Elementos a actualizar:", $('.valor-desvio').length);
-            
+
             // Función para formatear números grandes
             function formatearValorCompacto(valor) {
                 // Valor absoluto para el formato
                 const valorAbs = Math.abs(valor);
-                
+
                 if (valorAbs >= 1000000) {
                     // Formato para millones (M)
                     return (valorAbs / 1000000).toFixed(2) + 'M';
@@ -1206,22 +1897,22 @@ window.consolidadoBMTable = consolidadoBMTable;
                     return valorAbs.toFixed(2);
                 }
             }
-            
+
             // Actualizar cada celda de valor en la tabla
-            $('.valor-desvio').each(function() {
+            $('.valor-desvio').each(function () {
                 const $this = $(this);
                 const materialName = $this.data('material');
                 const desvio = parseFloat($this.data('desvio'));
-                
+
                 const material = materialsData.find(m => m.MATERIAL === materialName);
                 if (material) {
                     const precioMaterial = parseFloat(material.PRECIO || 0);
                     const valorDesvio = desvio * precioMaterial;
-                    
+
                     const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
                     const valorFormateado = formatearValorCompacto(valorDesvio);
                     const valorCompleto = Math.abs(valorDesvio).toFixed(2);
-                    
+
                     // Creamos un span con tooltip o título para mostrar el valor completo al pasar el mouse
                     $this.html(`<span style="color: ${color}; cursor: pointer;" 
                                      title="$${valorCompleto}" 
@@ -1233,10 +1924,10 @@ window.consolidadoBMTable = consolidadoBMTable;
                     $this.text('$0.00');
                 }
             });
-            
+
             // Inicializar los tooltips de Bootstrap
             $('[data-bs-toggle="tooltip"]').tooltip();
-            
+
         } catch (error) {
             console.error('Error al actualizar valores de desvío:', error);
             $('.valor-desvio').text('Error');
@@ -1263,7 +1954,12 @@ window.consolidadoBMTable = consolidadoBMTable;
             { data: "RESPONSABLE" },
             { data: "OT" },
             { data: "MATERIAL" },
-            { data: "CANTIDAD" },
+            {
+                data: "CANTIDAD",
+                render: function (data) {
+                    return parseFloat(data).toFixed(2) + ' KG';
+                }
+            },
             { data: "PROVEEDOR" },
             { data: "LOTE" }
         ],
@@ -1284,19 +1980,19 @@ window.consolidadoBMTable = consolidadoBMTable;
 
 
 
-   // Recargar tablas cuando se abren los modales
-   $('#productionModal').on('shown.bs.modal', function () {
-    if (window.productionTable) window.productionTable.ajax.reload();
-    if (window.theoricalTableInProduction) window.theoricalTableInProduction.ajax.reload();
-});
+    // Recargar tablas cuando se abren los modales
+    $('#productionModal').on('shown.bs.modal', function () {
+        if (window.productionTable) window.productionTable.ajax.reload();
+        if (window.theoricalTableInProduction) window.theoricalTableInProduction.ajax.reload();
+    });
 
-$('#balanceModal').on('shown.bs.modal', function () {
-    if (window.consolidadoBMTable) window.consolidadoBMTable.ajax.reload();
-});
+    $('#balanceModal').on('shown.bs.modal', function () {
+        if (window.consolidadoBMTable) window.consolidadoBMTable.ajax.reload();
+    });
 
-$('#stockModal').on('shown.bs.modal', function () {
-    if (window.stockTable) window.stockTable.ajax.reload();
-});
+    $('#stockModal').on('shown.bs.modal', function () {
+        if (window.stockTable) window.stockTable.ajax.reload();
+    });
 }
 
 // Reemplazar la función initPieCharts para modificar el gráfico de balance de masas con Highcharts
@@ -1456,16 +2152,16 @@ function initPieCharts() {
         highchartsContainer.id = 'balance-highchart-container';
         highchartsContainer.style.width = '100%';
         highchartsContainer.style.height = '100%';
-        
+
         // Reemplazar el canvas con el nuevo contenedor
         balancePieChartContainer.parentNode.replaceChild(highchartsContainer, balancePieChartContainer);
-        
+
         // Agregar un título al gráfico
         const titleElement = document.createElement('h3');
         titleElement.className = 'chart-title';
         titleElement.textContent = 'Balance de Masas Total';
         highchartsContainer.parentNode.insertBefore(titleElement, highchartsContainer);
-        
+
         // Crear el botón de consulta
         const buttonContainer = document.createElement('div');
         buttonContainer.innerHTML = `
@@ -1474,7 +2170,7 @@ function initPieCharts() {
             </button>
         `;
         highchartsContainer.parentNode.appendChild(buttonContainer);
-        
+
         $.ajax({
             url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
             success: function (balanceData) {
@@ -1516,7 +2212,7 @@ function initPieCharts() {
                             }
                         },
                         labels: {
-                            formatter: function() {
+                            formatter: function () {
                                 return this.value.toLocaleString();
                             }
                         }
@@ -1529,14 +2225,14 @@ function initPieCharts() {
                         }
                     },
                     tooltip: {
-                        formatter: function() {
+                        formatter: function () {
                             let value = this.y;
-                            
+
                             // Si es el desvío y es negativo en los datos originales
                             if (this.series.name === 'Desvío Total' && totales.desvio < 0) {
                                 value = -value;
                             }
-                            
+
                             return `<b>${this.series.name}</b>: ${value.toFixed(2)}`;
                         }
                     },
@@ -1561,7 +2257,7 @@ function initPieCharts() {
                     }]
                 });
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error('Error al obtener datos para el balance de masas:', error);
                 // Mostrar mensaje de error en el contenedor
                 highchartsContainer.innerHTML = `
@@ -1681,17 +2377,17 @@ function prepareBalanceChart() {
         balancePieChartContainer.style.flexDirection = 'column';
         balancePieChartContainer.style.alignItems = 'center';
         balancePieChartContainer.style.justifyContent = 'space-between';
-        
+
         // Asegurarnos de que tenemos un contenedor para el canvas con las clases adecuadas
         if (!balancePieChartContainer.querySelector('.chart-canvas-container')) {
             const canvasContainer = document.createElement('div');
             canvasContainer.className = 'chart-canvas-container';
             canvasContainer.style.width = '100%';
             canvasContainer.style.height = 'calc(100% - 60px)';
-            
+
             const canvas = document.createElement('canvas');
             canvas.id = 'balancePieChart';
-            
+
             canvasContainer.appendChild(canvas);
             balancePieChartContainer.appendChild(canvasContainer);
         }
@@ -1814,7 +2510,7 @@ function initializeAll() {
 
     // Preparar el contenedor para el gráfico de balance
     prepareBalanceChart();
-    
+
     // Inicializar los gráficos
     initPieCharts();
     initCharts();
@@ -1866,14 +2562,14 @@ function applyHighchartsFixes() {
     if (typeof Highcharts !== 'undefined') {
         // Configurar el menú contextual para que esté siempre por encima
         // y no afecte el layout de la página
-        $(document).on('mousedown', '.highcharts-contextmenu', function(e) {
+        $(document).on('mousedown', '.highcharts-contextmenu', function (e) {
             // Prevenir que el evento bubbling afecte otros elementos
             e.stopPropagation();
-            
+
             // Asegurar que el menú esté por encima de todo
             $(this).css('z-index', 9999);
         });
-        
+
         // Ajustar cualquier menú contextual existente
         $('.highcharts-contextmenu').css('z-index', 9999);
     }
@@ -1883,10 +2579,10 @@ function applyHighchartsFixes() {
 function initializeChartImprovements() {
     // Aplicar correcciones al menú contextual
     fixContextMenuPosition();
-    
+
     // Observar cambios en el DOM para capturar menús contextuales nuevos
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
+    const observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
             if (mutation.addedNodes && mutation.addedNodes.length > 0) {
                 for (let i = 0; i < mutation.addedNodes.length; i++) {
                     const node = mutation.addedNodes[i];
@@ -1897,12 +2593,12 @@ function initializeChartImprovements() {
             }
         });
     });
-    
+
     // Empezar a observar el documento
     observer.observe(document.body, { childList: true, subtree: true });
-    
+
     // Añadir un manejador global para cerrar los menús contextuales al hacer clic fuera
-    $(document).on('click', function(e) {
+    $(document).on('click', function (e) {
         if (!$(e.target).closest('.highcharts-contextmenu').length) {
             $('.highcharts-contextmenu').hide();
         }
@@ -1910,28 +2606,28 @@ function initializeChartImprovements() {
 }
 
 // 5. Modificar la inicialización general
-$(document).ready(function() {
+$(document).ready(function () {
     initializeAllHighcharts();
     initTables();
     actualizarContadores();
-    
+
     // Aplicar los arreglos después de que se inicialicen los gráficos
-    setTimeout(applyHighchartsFixes,initializeChartImprovements, 500);
-    
+    setTimeout(applyHighchartsFixes, initializeChartImprovements, 500);
+
     // Ajustar en cambios de tamaño
-    $(window).on('resize', function() {
+    $(window).on('resize', function () {
         clearTimeout(window.resizeTimer);
-        window.resizeTimer = setTimeout(function() {
+        window.resizeTimer = setTimeout(function () {
             // Reajustar gráficos
-            $('.highcharts-container').each(function() {
+            $('.highcharts-container').each(function () {
                 const chart = $(this).highcharts();
                 if (chart) chart.reflow();
             });
-            
+
             // Volver a aplicar los arreglos
             applyHighchartsFixes();
         }, 250);
-        
+
     });
 });
 
@@ -1997,6 +2693,8 @@ window.addEventListener('resize', function () {
         initializeAll();
     }, 250);
 });
+
+
 
 
 
