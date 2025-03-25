@@ -28,6 +28,7 @@
 	<script src="js/material.min.js"></script>
 	<script src="js/sweetalert2.min.js"></script>
 	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+
 	<script src="js/main.js"></script>
 	<script src="js/menuControl.js"></script>
 	<script src="js/robot.js"></script>
@@ -212,53 +213,58 @@
 
 			<!-- Contadores superiores -->
 
-			<!-- Reemplaza toda la sección de gráficos del HTML con esta estructura -->
+			<!-- Nuevo layout para la sección de gráficos -->
 			<div class="row">
-				<!-- Columna izquierda (col-md-6) -->
-				<div class="col-md-6">
-					<!-- Balance de Masas General -->
-					<div class="chart-container chart-container-large mb-4">
+				<!-- Balance de Masas General (ocupa 8/12 columnas en desktop) -->
+				<div class="col-12 col-lg-8 mb-4">
+					<div class="chart-container chart-container-large">
 						<h3 class="chart-title">Balance de Masas Total</h3>
 						<div id="balance-highchart-container" class="highchart-wrapper"></div>
-						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#balanceModal">
+						<button id="balance-consultar-btn" class="btn btn-consultar" data-bs-toggle="modal"
+							data-bs-target="#balanceModal">
 							Consultar
 						</button>
 					</div>
 
 					<!-- Producción por Temporada -->
-					<div class="chart-container chart-container-medium mb-4">
+					<div class="chart-container chart-container-medium">
 						<h3 class="chart-title">Producción por Temporada</h3>
 						<div id="produccion-temporada-container" class="highchart-wrapper"></div>
 					</div>
-
-					<!-- Producción Anual -->
-					<div class="chart-container chart-container-medium">
-						<h3 class="chart-title">Producción Anual</h3>
-						<div id="produccion-anual-container" class="highchart-wrapper"></div>
-					</div>
 				</div>
 
-				<!-- Columna derecha (col-md-6) -->
-				<div class="col-md-6">
-					<!-- Última Producción -->
-					<div class="chart-container chart-container-small mb-4">
+				<!-- Columna derecha (ocupa 4/12 columnas en desktop) -->
+				<div class="col-12 col-lg-4 mb-4">
+					<!-- Última Producción - versión modificada sin gráfico de torta -->
+					<div class="chart-container chart-container-small">
 						<h3 class="chart-title">Última Producción</h3>
-						<div id="ultima-produccion-container" class="highchart-wrapper"></div>
-						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#productionModal">
+
+						<!-- Contenedor de tarjetas de métricas -->
+						<div class="metrics-container"style="display: flex; justify-content: space-between; padding: 15px 0; width: 100%;">
+
+						</div>
+
+						<!-- Mantener el botón de consultar -->
+						<button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#productionModal"
+							style="margin-top: 15px;">
 							Consultar
 						</button>
 					</div>
 
 					<!-- Órdenes de Trabajo -->
-					<div class="chart-container chart-container-small mb-4">
+					<div class="chart-container chart-container-small">
 						<h3 class="chart-title">Órdenes de Trabajo</h3>
 						<div id="ordenes-trabajo-container" class="highchart-wrapper"></div>
 					</div>
+				</div>
+			</div>
 
-					<!-- Producción por Órdenes de Trabajo -->
-					<div class="chart-container chart-container-small">
-						<h3 class="chart-title">Producción en Órdenes de trabajo</h3>
-						<div id="produccion-ot-container" class="highchart-wrapper"></div>
+			<!-- Nueva fila para Producción Anual (ocupa 12/12 columnas) -->
+			<div class="row">
+				<div class="col-12 mb-4">
+					<div class="chart-container chart-container-medium">
+						<h3 class="chart-title">Producción Anual</h3>
+						<div id="produccion-anual-container" class="highchart-wrapper"></div>
 					</div>
 				</div>
 			</div>
@@ -369,7 +375,10 @@
 			<!-- Chatbot Container -->
 			<div id="robot-grido-container" class="robot-grido-container">
 				<div class="robot-header">
-					<h3><i class="zmdi zmdi-android"></i> Robot Grido</h3>
+					<h3>
+						<img src="assets/img/bot.png" alt="Robot Grido" class="robot-grido-icon">
+						Robot Grido
+					</h3>
 					<div class="header-buttons">
 						<button id="clear-chat" class="clear-chat-btn" title="Limpiar conversación">
 							<i class="zmdi zmdi-brush"></i>
@@ -427,9 +436,160 @@
 
 		</div>
 	</div>
-			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-				integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-				crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+		crossorigin="anonymous"></script>
+	<script>
+		// Evitar duplicación de botones
+		window.addEventListener('resize', function () {
+			// Verificar si hay múltiples botones en el contenedor de Balance de Masas
+			const container = document.querySelector('.chart-container-large');
+			if (container) {
+				const buttons = container.querySelectorAll('.btn-consultar');
+				// Si hay más de un botón, eliminar los adicionales
+				if (buttons.length > 1) {
+					for (let i = 1; i < buttons.length; i++) {
+						buttons[i].remove();
+					}
+				}
+			}
+		});
+	</script>
+
+	<script>
+		// Script para actualizar el contador de pedidos pendientes
+		document.addEventListener('DOMContentLoaded', function () {
+			console.log("Iniciando contador de pedidos pendientes...");
+
+			// Función para actualizar el contador
+			async function actualizarPedidosPendientes() {
+				try {
+					console.log("Consultando API de solicitudes...");
+
+					// Realizar la petición a la API
+					const response = await fetch('http://localhost:63152/api/SolicitudMaterialRepository/GetAllSolicitudes');
+
+					// Verificar si la respuesta es correcta
+					if (!response.ok) {
+						throw new Error(`Error en la petición: ${response.status}`);
+					}
+
+					// Convertir la respuesta a JSON
+					const solicitudes = await response.json();
+					console.log("Solicitudes recibidas:", solicitudes.length);
+					console.log("Muestra de datos:", solicitudes.length > 0 ? solicitudes[0] : "No hay datos");
+
+					// Filtrar solo las solicitudes con estado "SOLICITADO" (ajustado a los nombres de propiedades correctos)
+					const pedidosPendientes = solicitudes.filter(solicitud =>
+						solicitud.Estado && solicitud.Estado.trim().toUpperCase() === "SOLICITADO"
+					);
+					console.log("Pedidos pendientes filtrados:", pedidosPendientes.length);
+
+					// Buscar el contador de pedidos pendientes
+					const contadores = document.querySelectorAll('.counter-card');
+					let contadorElement = null;
+
+					// Buscar la tarjeta que contiene "PEDIDOS PENDIENTES"
+					contadores.forEach(contador => {
+						const titulo = contador.querySelector('h3');
+						if (titulo && titulo.textContent.trim() === "PEDIDOS PENDIENTES") {
+							contadorElement = contador.querySelector('.counter-value');
+						}
+					});
+
+					if (!contadorElement) {
+						console.error("No se pudo encontrar el contador de pedidos pendientes.");
+						return;
+					}
+
+					// Actualizar el contador
+					contadorElement.textContent = pedidosPendientes.length;
+					console.log("Contador actualizado:", pedidosPendientes.length);
+
+					// Cambiar el color según la cantidad
+					if (pedidosPendientes.length > 5) {
+						contadorElement.className = 'counter-value text-danger';
+					} else if (pedidosPendientes.length > 0) {
+						contadorElement.className = 'counter-value text-warning';
+					} else {
+						contadorElement.className = 'counter-value text-success';
+					}
+
+					// Hacer la tarjeta clickeable
+					const tarjeta = contadorElement.closest('.counter-card');
+					if (tarjeta && !tarjeta.hasAttribute('data-clickeable')) {
+						tarjeta.style.cursor = 'pointer';
+						tarjeta.setAttribute('data-clickeable', 'true');
+						tarjeta.addEventListener('click', () => mostrarDetallesPedidos(pedidosPendientes));
+					}
+
+				} catch (error) {
+					console.error('Error al actualizar pedidos pendientes:', error);
+				}
+			}
+
+			// Función para mostrar detalles de pedidos solo cuando se hace clic en la tarjeta
+			function mostrarDetallesPedidos(pedidos) {
+				if (!pedidos || pedidos.length === 0) {
+					return; // No mostrar nada si no hay pedidos pendientes
+				}
+
+				// Crear tabla con los detalles
+				let tablaPedidos = `
+				<div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
+					<table class="table table-striped table-hover">
+						<thead class="thead-dark" style="background-color: #0e2238; color: white;">
+							<tr>
+								<th>ID</th>
+								<th>Fecha</th>
+								<th>Estado</th>
+								<th>Usuario</th>
+							</tr>
+						</thead>
+						<tbody>
+			`;
+
+				// Añadir cada pedido a la tabla con los nombres de propiedades correctos
+				pedidos.forEach(pedido => {
+					// Formatear la fecha si existe
+					const fecha = pedido.FechaSolicitud ? new Date(pedido.FechaSolicitud).toLocaleDateString() : 'N/A';
+
+					tablaPedidos += `
+					<tr>
+						<td>${pedido.SolicitudID || ''}</td>
+						<td>${fecha}</td>
+						<td>${pedido.Estado || ''}</td>
+						<td>${pedido.Usuario || 'Sin asignar'}</td>
+					</tr>
+				`;
+				});
+
+				// Cerrar la tabla
+				tablaPedidos += `
+						</tbody>
+					</table>
+				</div>
+			`;
+
+				// Mostrar la tabla en un modal de SweetAlert2 (solo cuando se hace clic)
+				Swal.fire({
+					title: 'Pedidos Pendientes',
+					html: tablaPedidos,
+					width: '80%',
+					showCloseButton: true,
+					showConfirmButton: false,
+					focusConfirm: false
+				});
+			}
+
+			// Ejecutar inmediatamente
+			actualizarPedidosPendientes();
+
+			// Actualizar cada 5 minutos
+			setInterval(actualizarPedidosPendientes, 5 * 60 * 1000);
+		});
+	</script>
+
 
 </body>
 

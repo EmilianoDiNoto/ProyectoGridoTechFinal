@@ -371,3 +371,20 @@
 .option-cards .option-card:nth-child(5) {
     animation-delay: 0.4s;
 }
+
+.robot-grido-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+    vertical-align: middle;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.robot-header h3 {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
