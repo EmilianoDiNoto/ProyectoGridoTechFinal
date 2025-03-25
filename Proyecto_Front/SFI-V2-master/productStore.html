@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
 	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/production1.css">
+	<link rel="stylesheet" href="css/productionstore.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<!-- SweetAlert2 (una sola versión) -->
@@ -61,8 +61,12 @@
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-
+	<!--Libreria del Calendario Domingo a Sabado-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 </head>
 
@@ -135,89 +139,545 @@
 		</ul>
 	</aside>
 	<section class="full-width main">
-		<table id="productionStoreTable" class="display nowrap" style="width:100%">
-			<thead>
-				<tr>
-					<th>Fecha</th>
-					<th>Turno</th>
-					<th>Responsable</th>
-					<th>OT</th>
-					<th>Material</th>
-					<th>Cantidad</th>
-					<th>Proveedor</th>
-					<th>Lote</th>
-					<th>Tipo de Movimiento</th>
-				</tr>
-			</thead>
-		</table>
+		<section>
+			<div class="form-container">
+				<div class="form-group">
+					<label for="fechaDesde">Fecha Desde:</label>
+					<input type="date" id="fechaDesde">
+				</div>
 
+				<div class="form-group">
+					<label for="fechaHasta">Fecha Hasta:</label>
+					<input type="date" id="fechaHasta">
+				</div>
+
+				<div class="form-group">
+					<label for="material">Material:</label>
+					<input type="text" id="material" list="materiales" placeholder="Ingrese material">
+					<datalist id="materiales">
+						<option value="DULCE DE LECHE P/SEMBRAR">
+						<option value="TAPA GALLETA SABOR VAINILLA 17 CM">
+						<option value="SALSA DULCE SABOR CHOCOLATE">
+						<option value="DULCE DE LECHE C/CACAO P/SEMBRAR">
+						<option value="GALLETAS MILKA MOUSSE">
+						<option value="GALLETA OREO PICADA">
+						<option value="PREPARADO ALMIBAR STANDART">
+						<option value="HELADO DE CREMA AMERICANA">
+						<option value="HELADO DE CHOCOLATE">
+						<option value="HELADO DE DULCE DE LECHE">
+					</datalist>
+				</div>
+
+				<button id="btnBuscar">Buscar</button>
+			</div>
+		</section>
+		<br>
+		<section>
+
+			<div class="container">
+				<div class="row d-flex justify-content-between">
+					<div class="col-md-3">
+						<H5 style="text-align: center;">STOCK INICIAL</H5>
+						<p id="mensajeSinDatosSI" style="color: red; display: none;">MATERIAL SIN STOCK INICIAL
+							REGISTRADO</p>
+
+						<table id="productionStoreTableSI">
+							<thead>
+								<tr>
+									<th>Fecha</th>
+									<th>Turno</th>
+									<th>Cantidad</th>
+									<th>Responsable</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+							<tfoot>
+								<tr>
+									<th colspan="2" style="text-align: right;">Total:</th>
+									<th id="totalCantidadSI" class="text-end">0 Kg</th>
+									<th></th>
+								</tr>
+							</tfoot>
+						</table>
+
+					</div>
+					<div class="col-md-3">
+						<H5 style="text-align: center;">PEDIDOS</H5>
+						<p id="mensajeSinDatos" style="color: red; display: none;">MATERIAL SIN PEDIDO REGISTRADO</p>
+
+						<table id="productionStoreTable">
+							<thead>
+								<tr>
+									<th>Fecha</th>
+									<th>Turno</th>
+									<th>Cantidad</th>
+									<th>Responsable</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+							<tfoot>
+								<tr>
+									<th colspan="2" style="text-align: right;">Total:</th>
+									<th id="totalCantidad" class="text-end">0 Kg</th>
+									<th></th>
+								</tr>
+							</tfoot>
+						</table>
+
+					</div>
+
+					<div class="col-md-3">
+						<H5 style="text-align: center;">DEVOLUCIONES</H5>
+						<p id="mensajeSinDatosD" style="color: red; display: none;">MATERIAL SIN DEVOLUCION REGISTRADA
+						</p>
+
+						<table id="productionStoreTableD">
+							<thead>
+								<tr>
+									<th>Fecha</th>
+									<th>Turno</th>
+									<th>Cantidad</th>
+									<th>Responsable</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+							<tfoot>
+								<tr>
+									<th colspan="2" style="text-align: right;">Total:</th>
+									<th id="totalCantidadD" class="text-end">0 Kg</th>
+									<th></th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+
+					<div class="col-md-3">
+						<H5 style="text-align: center;">SCRAP</H5>
+						<p id="mensajeSinDatosS" style="color: red; display: none;">MATERIAL SIN SCRAP REGISTRADA</p>
+
+						<table id="productionStoreTableS">
+							<thead>
+								<tr>
+									<th>Fecha</th>
+									<th>Turno</th>
+									<th>Cantidad</th>
+									<th>Responsable</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+							<tfoot>
+								<tr>
+									<th colspan="2" style="text-align: right;">Total:</th>
+									<th id="totalCantidadS" class="text-end">0 Kg</th>
+									<th></th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+					<div class="col-md-3">
+						<H5 style="text-align: center;">STOCK FINAL</H5>
+						<p id="mensajeSinDatosSF" style="color: red; display: none;">MATERIAL SIN STOCK FINAL REGISTRADO
+						</p>
+
+						<table id="productionStoreTableSF">
+							<thead>
+								<tr>
+									<th>Fecha</th>
+									<th>Turno</th>
+									<th>Cantidad</th>
+									<th>Responsable</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+							<tfoot>
+								<tr>
+									<th colspan="2" style="text-align: right;">Total:</th>
+									<th id="totalCantidadSF" class="text-end">0 Kg</th>
+									<th></th>
+								</tr>
+							</tfoot>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</section>
 	</section>
+
 	<script>
+		//CALENDARIO
+		document.addEventListener("DOMContentLoaded", function () {
+			const fechaDesde = document.getElementById("fechaDesde");
+			const fechaHasta = document.getElementById("fechaHasta");
+
+			// Bloquear fechas anteriores en Fecha Hasta
+			fechaDesde.addEventListener("change", function () {
+				fechaHasta.min = fechaDesde.value;
+			});
+
+			// Intentar cambiar el inicio de semana a domingo en navegadores compatibles
+			if (fechaDesde.showPicker) {
+				fechaDesde.setAttribute("locale", "es");
+				fechaHasta.setAttribute("locale", "es");
+			} else {
+				console.warn("El navegador no permite cambiar el inicio de semana.");
+			}
+		});
+
+		//STOCK INICIAL
 		$(document).ready(function () {
-			let table = $('#productionStoreTable').DataTable({
+			var table = $('#productionStoreTableSI').DataTable({
+				"processing": true,
+				"serverSide": false,
 				"ajax": {
-					"url": "http://localhost:63152/api/ProductionStore/GetAllProductionStore",
+					"url": "http://localhost:63152/api/ProductionStore/GetProductionStoreInitial",
 					"type": "GET",
-					"dataSrc": ""
+					"data": function (d) {
+						d.fechaDesde = $('#fechaDesde').val();
+						d.material = $('#material').val();
+						d.movimiento = "STOCK INICIAL";
+
+						console.log("Datos enviados a la API:", d); // 🔍 Depuración en consola
+					},
+					"dataSrc": function (json) {
+						console.log("Respuesta de la API:", json); // 🔍 Verifica la respuesta de la API
+
+						if (!json || json.length === 0) {
+							$("#mensajeSinDatosSI").show(); // Muestra el mensaje si no hay datos
+						} else {
+							$("#mensajeSinDatosSI").hide(); // Oculta el mensaje si hay datos
+						}
+
+						actualizarTotal(json); // Llamar a la función para calcular el total
+
+						return json;
+					},
+					"error": function (xhr, error, thrown) {
+						console.error("Error en la petición AJAX:", xhr.status, xhr.responseText);
+					}
 				},
 				"columns": [
 					{
-						"data": "FECHAMOV",
-						"render": function (data, type) {
-							if (type === "display" && data) {
-								let fecha = new Date(data);
-								let dia = fecha.getDate().toString().padStart(2, "0");
-								let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
-								let anio = fecha.getFullYear().toString().slice(-2);
-								return `${dia}-${mes}-${anio}`;
-							}
-							return data;
+						data: "FECHAMOV",
+						className: "text-center",
+						render: function (data) {
+							let date = new Date(data);
+							return date.toLocaleDateString();
 						}
 					},
 					{ "data": "TURNO" },
-					{ "data": "RESPONSABLE" },
-					{ "data": "OT", "className": "text-center" },
-					{ "data": "MATERIAL" },
 					{
 						"data": "CANTIDAD",
-						"className": "text-right",
-						"render": function (data) {
-							return new Intl.NumberFormat("es-ES").format(data);
+						className: "text-end", // Alinear valores a la derecha
+						render: function (data) {
+							return new Intl.NumberFormat("es-ES").format(data) + " Kg"; // Agregar separador de miles
 						}
 					},
-					{ "data": "PROVEEDOR" },
-					{ "data": "LOTE" },
-					{ "data": "TIPOMOV" }
+					{ "data": "RESPONSABLE" }
 				],
-				"order": [[0, "desc"]], // 🔥 Siempre mostrar los más nuevos primero
-				"processing": true,
-				"deferRender": true,
-				"language": {
-					"sProcessing": "Procesando...",
-					"sLengthMenu": "Mostrar _MENU_ registros",
-					"sZeroRecords": "No se encontraron resultados",
-					"sEmptyTable": "No hay datos disponibles",
-					"sInfo": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-					"sInfoEmpty": "Mostrando 0 a 0 de 0 registros",
-					"sInfoFiltered": "(filtrado de _MAX_ registros en total)",
-					"sSearch": "Buscar:",
-					"oPaginate": {
-						"sFirst": "Primero",
-						"sLast": "Último",
-						"sNext": "Siguiente",
-						"sPrevious": "Anterior"
-					}
+				"dom": "t", // Oculta search, show entries, paginación y otros elementos
+				"footerCallback": function (row, data, start, end, display) {
+					actualizarTotal(data); // También actualiza el total al cargar la tabla
 				}
 			});
 
-			// 🔒 Evita que el usuario cambie el orden de la fecha
-			table.on('order.dt', function (e, settings, order) {
-				if (order[0].column !== 0 || order[0].dir !== "desc") {
-					table.order([0, "desc"]).draw();
+			// Evento para actualizar la tabla con los filtros dinámicos
+			$('#btnBuscar').click(function () {
+				console.log("Botón de búsqueda presionado 🚀"); // ✅ Depuración
+				table.ajax.reload(); // Recargar la tabla con los nuevos filtros
+			});
+
+			// Función para calcular y mostrar el total de CANTIDAD
+			function actualizarTotal(data) {
+				let totalCantidad = data.reduce((sum, item) => sum + (parseFloat(item.CANTIDAD) || 0), 0);
+				$("#totalCantidadSI").text(new Intl.NumberFormat("es-ES").format(totalCantidad) + " Kg");
+			}
+		});
+
+		//PEDIDO
+		$(document).ready(function () {
+			var table = $('#productionStoreTable').DataTable({
+				"processing": true,
+				"serverSide": false,
+				"ajax": {
+					"url": "http://localhost:63152/api/ProductionStore/GetProductionStoreByDateRange",
+					"type": "GET",
+					"data": function (d) {
+						d.fechaDesde = $('#fechaDesde').val();
+						d.fechaHasta = $('#fechaHasta').val();
+						d.material = $('#material').val();
+						d.movimiento = "PEDIDO";
+
+						console.log("Datos enviados a la API:", d); // 🔍 Depuración en consola
+					},
+					"dataSrc": function (json) {
+						console.log("Respuesta de la API:", json); // 🔍 Verifica la respuesta de la API
+
+						if (!json || json.length === 0) {
+							$("#mensajeSinDatos").show(); // Muestra el mensaje si no hay datos
+						} else {
+							$("#mensajeSinDatos").hide(); // Oculta el mensaje si hay datos
+						}
+
+						actualizarTotal(json); // Llamar a la función para calcular el total
+
+						return json;
+					},
+					"error": function (xhr, error, thrown) {
+						console.error("Error en la petición AJAX:", xhr.status, xhr.responseText);
+					}
+				},
+				"columns": [
+					{
+						data: "FECHAMOV",
+						className: "text-center",
+						render: function (data) {
+							let date = new Date(data);
+							return date.toLocaleDateString();
+						}
+					},
+					{ "data": "TURNO" },
+					{
+						"data": "CANTIDAD",
+						className: "text-end", // Alinear valores a la derecha
+						render: function (data) {
+							return new Intl.NumberFormat("es-ES").format(data) + " Kg"; // Agregar separador de miles
+						}
+					},
+					{ "data": "RESPONSABLE" }
+				],
+				"dom": "t", // Oculta search, show entries, paginación y otros elementos
+				"footerCallback": function (row, data, start, end, display) {
+					actualizarTotal(data); // También actualiza el total al cargar la tabla
 				}
 			});
+
+			// Evento para actualizar la tabla con los filtros dinámicos
+			$('#btnBuscar').click(function () {
+				console.log("Botón de búsqueda presionado 🚀"); // ✅ Depuración
+				table.ajax.reload(); // Recargar la tabla con los nuevos filtros
+			});
+
+			// Función para calcular y mostrar el total de CANTIDAD
+			function actualizarTotal(data) {
+				let totalCantidad = data.reduce((sum, item) => sum + (parseFloat(item.CANTIDAD) || 0), 0);
+				$("#totalCantidad").text(new Intl.NumberFormat("es-ES").format(totalCantidad) + " Kg");
+			}
 		});
-		;
+
+
+		// DEVOLUCION
+		$(document).ready(function () {
+			var table = $('#productionStoreTableD').DataTable({
+				"processing": true,
+				"serverSide": false,
+				"ajax": {
+					"url": "http://localhost:63152/api/ProductionStore/GetProductionStoreByDateRange",
+					"type": "GET",
+					"data": function (d) {
+						d.fechaDesde = $('#fechaDesde').val();
+						d.fechaHasta = $('#fechaHasta').val();
+						d.material = $('#material').val();
+						d.movimiento = "DEVOLUCION";
+
+						console.log("Datos enviados a la API:", d); // 🔍 Depuración en consola
+					},
+					"dataSrc": function (json) {
+						console.log("Respuesta de la API:", json); // 🔍 Verifica la respuesta de la API
+
+						if (!json || json.length === 0) {
+							$("#mensajeSinDatosD").show(); // Muestra el mensaje si no hay datos
+						} else {
+							$("#mensajeSinDatosD").hide(); // Oculta el mensaje si hay datos
+						}
+
+						actualizarTotal(json); // Llamar a la función para calcular el total
+
+						return json;
+					},
+					"error": function (xhr, error, thrown) {
+						console.error("Error en la petición AJAX:", xhr.status, xhr.responseText);
+					}
+				},
+				"columns": [
+					{
+						data: "FECHAMOV",
+						className: "text-center",
+						render: function (data) {
+							let date = new Date(data);
+							return date.toLocaleDateString();
+						}
+					},
+					{ "data": "TURNO" },
+					{
+						"data": "CANTIDAD",
+						className: "text-end", // Alinear valores a la derecha
+						render: function (data) {
+							return new Intl.NumberFormat("es-ES").format(data) + " Kg"; // Agregar separador de miles
+						}
+					},
+					{ "data": "RESPONSABLE" }
+				],
+				"dom": "t", // Oculta search, show entries, paginación y otros elementos
+				"footerCallback": function (row, data, start, end, display) {
+					actualizarTotal(data); // También actualiza el total al cargar la tabla
+				}
+			});
+
+			// Evento para actualizar la tabla con los filtros dinámicos
+			$('#btnBuscar').click(function () {
+				console.log("Botón de búsqueda presionado 🚀"); // ✅ Depuración
+				table.ajax.reload(); // Recargar la tabla con los nuevos filtros
+			});
+
+			// Función para calcular y mostrar el total de CANTIDAD
+			function actualizarTotal(data) {
+				let totalCantidad = data.reduce((sum, item) => sum + (parseFloat(item.CANTIDAD) || 0), 0);
+				$("#totalCantidadD").text(new Intl.NumberFormat("es-ES").format(totalCantidad) + " Kg");
+			}
+		});
+
+
+		// SCRAP
+		$(document).ready(function () {
+			var table = $('#productionStoreTableS').DataTable({
+				"processing": true,
+				"serverSide": false,
+				"ajax": {
+					"url": "http://localhost:63152/api/ProductionStore/GetProductionStoreByDateRange",
+					"type": "GET",
+					"data": function (d) {
+						d.fechaDesde = $('#fechaDesde').val();
+						d.fechaHasta = $('#fechaHasta').val();
+						d.material = $('#material').val();
+						d.movimiento = "SCRAP";
+
+						console.log("Datos enviados a la API:", d); // 🔍 Depuración en consola
+					},
+					"dataSrc": function (json) {
+						console.log("Respuesta de la API:", json); // 🔍 Verifica la respuesta de la API
+
+						if (!json || json.length === 0) {
+							$("#mensajeSinDatosS").show(); // Muestra el mensaje si no hay datos
+						} else {
+							$("#mensajeSinDatosS").hide(); // Oculta el mensaje si hay datos
+						}
+
+						actualizarTotal(json); // Llamar a la función para calcular el total
+
+						return json;
+					},
+					"error": function (xhr, error, thrown) {
+						console.error("Error en la petición AJAX:", xhr.status, xhr.responseText);
+					}
+				},
+				"columns": [
+					{
+						data: "FECHAMOV",
+						className: "text-center",
+						render: function (data) {
+							let date = new Date(data);
+							return date.toLocaleDateString();
+						}
+					},
+					{ "data": "TURNO" },
+					{
+						"data": "CANTIDAD",
+						className: "text-end", // Alinear valores a la derecha
+						render: function (data) {
+							return new Intl.NumberFormat("es-ES").format(data) + " Kg"; // Agregar separador de miles
+						}
+					},
+					{ "data": "RESPONSABLE" }
+				],
+				"dom": "t", // Oculta search, show entries, paginación y otros elementos
+				"footerCallback": function (row, data, start, end, display) {
+					actualizarTotal(data); // También actualiza el total al cargar la tabla
+				}
+			});
+
+			// Evento para actualizar la tabla con los filtros dinámicos
+			$('#btnBuscar').click(function () {
+				console.log("Botón de búsqueda presionado 🚀"); // ✅ Depuración
+				table.ajax.reload(); // Recargar la tabla con los nuevos filtros
+			});
+
+			// Función para calcular y mostrar el total de CANTIDAD
+			function actualizarTotal(data) {
+				let totalCantidad = data.reduce((sum, item) => sum + (parseFloat(item.CANTIDAD) || 0), 0);
+				$("#totalCantidadS").text(new Intl.NumberFormat("es-ES").format(totalCantidad) + " Kg");
+			}
+		});
+
+		//STOCK FINAL
+		$(document).ready(function () {
+			var table = $('#productionStoreTableSF').DataTable({
+				"processing": true,
+				"serverSide": false,
+				"ajax": {
+					"url": "http://localhost:63152/api/ProductionStore/GetProductionStoreInitial",
+					"type": "GET",
+					"data": function (d) {
+						d.fechaDesde = $('#fechaDesde').val();
+						d.material = $('#material').val();
+						d.movimiento = "STOCK FINAL";
+
+						console.log("Datos enviados a la API:", d); // 🔍 Depuración en consola
+					},
+					"dataSrc": function (json) {
+						console.log("Respuesta de la API:", json); // 🔍 Verifica la respuesta de la API
+
+						if (!json || json.length === 0) {
+							$("#mensajeSinDatosSF").show(); // Muestra el mensaje si no hay datos
+						} else {
+							$("#mensajeSinDatosSF").hide(); // Oculta el mensaje si hay datos
+						}
+
+						actualizarTotal(json); // Llamar a la función para calcular el total
+
+						return json;
+					},
+					"error": function (xhr, error, thrown) {
+						console.error("Error en la petición AJAX:", xhr.status, xhr.responseText);
+					}
+				},
+				"columns": [
+					{
+						data: "FECHAMOV",
+						className: "text-center",
+						render: function (data) {
+							let date = new Date(data);
+							return date.toLocaleDateString();
+						}
+					},
+					{ "data": "TURNO" },
+					{
+						"data": "CANTIDAD",
+						className: "text-end", // Alinear valores a la derecha
+						render: function (data) {
+							return new Intl.NumberFormat("es-ES").format(data) + " Kg"; // Agregar separador de miles
+						}
+					},
+					{ "data": "RESPONSABLE" }
+				],
+				"dom": "t", // Oculta search, show entries, paginación y otros elementos
+				"footerCallback": function (row, data, start, end, display) {
+					actualizarTotal(data); // También actualiza el total al cargar la tabla
+				}
+			});
+
+			// Evento para actualizar la tabla con los filtros dinámicos
+			$('#btnBuscar').click(function () {
+				console.log("Botón de búsqueda presionado 🚀"); // ✅ Depuración
+				table.ajax.reload(); // Recargar la tabla con los nuevos filtros
+			});
+
+			// Función para calcular y mostrar el total de CANTIDAD
+			function actualizarTotal(data) {
+				let totalCantidad = data.reduce((sum, item) => sum + (parseFloat(item.CANTIDAD) || 0), 0);
+				$("#totalCantidadSF").text(new Intl.NumberFormat("es-ES").format(totalCantidad) + " Kg");
+			}
+		});
 
 	</script>
 

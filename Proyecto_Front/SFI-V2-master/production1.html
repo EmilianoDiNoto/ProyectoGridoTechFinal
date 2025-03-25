@@ -23,12 +23,9 @@
     <script src="js/production_datatable.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -66,8 +63,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-
-
 </head>
 
 <body>
@@ -100,6 +95,19 @@
                     <span>Órdenes de Trabajo</span>
                 </a>
             </li>
+            <li class="sidebar-item">
+                <a href="productStore.html" class="sidebar-link">
+                    <i class="zmdi zmdi-assignment"></i>
+                    <span>Almacen Tortas</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="incidents.html" class="sidebar-link">
+                    <i class="zmdi zmdi-assignment"></i>
+                    <span>Incidencias</span>
+                </a>
+            </li>
+
             <li class="sidebar-item">
                 <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                     data-bs-target="#materials" aria-expanded="false" aria-controls="materials">
@@ -161,369 +169,389 @@
             </div>
 
             <section>
-                <!--IMAGENES-->
-                <div class="ice-cream-container">
-                    <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND CREAM - GRIDO">
-                        <img src="assets/img/Torta-cookies-and-cream.jpg" alt="Cookie">
-                        <p>Torta Cookies and Cream</p>
-                        <button id="btnProduct1" class="order-btn">Orden de Trabajo</button>
-                    </div>
-                    <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND MOUSSE - GRIDO">
-                        <img src="assets/img/Torta-cookies-mousse.jpg" alt="Crema">
-                        <p>Torta Cookies Mousse</p>
-                        <button id="btnProduct2" class="order-btn">Orden de Trabajo</button>
-                    </div>
-                    <div class="ice-cream-item" data-product="PACK TORTA GRIDO CON RELLENO - GRIDO">
-                        <img src="assets/img/Torta-Grido360X360.jpg" alt="Chocolate">
-                        <p>Torta Grido c/ Relleno</p>
-                        <button id="btnProduct3" class="order-btn">Orden de Trabajo</button>
-                    </div>
-                </div>
-                <br>
                 <!--DECLARACION DE PRODUCCION-->
                 <div>
-                    <H2>DECLARAR PRODUCCION</H2>
-                    <h4>Ciclo de Avance</h4>
-                    <div class="position-relative m-4">
-                        <div class="progress-container">
-                            <div class="progress-step">
-                                <p>Stock Inicial</p>
-                                <button type="button"
-                                    class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
-                            </div>
-                            <div class="progress-step">
-                                <p>Solicitado</p>
-                                <button type="button"
-                                    class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
-                            </div>
-                            <div class="progress-step">
-                                <p>Devolución</p>
-                                <button type="button"
-                                    class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
-                            </div>
-                            <div class="progress-step">
-                                <p>Scrap</p>
-                                <button type="button"
-                                    class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
-                            </div>
-                            <div class="progress-step">
-                                <p>Stock Final</p>
-                                <button type="button"
-                                    class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
-                            </div>
-                        </div>
-
-                        <div class="progress" role="progressbar">
-                            <div id="progressBar" class="progress-bar bg-primary"></div>
-                        </div>
-                    </div>
-                    <form class="row g-3 needs-validation p-3" novalidate>
-                        <!-- Primera fila -->
-                        <div class="col-md-2">
-                            <label for="validationCustom04" class="form-label">FECHA</label>
-                            <input type="date" class="form-control" id="validationCustom04">
-                        </div>
-                        <div class="col-md-2">
-                            <label for="validationCustom05" class="form-label">TURNO</label>
-                            <input type="text" class="form-control" id="validationCustom05">
-                        </div>
-                        <div class="col-md-5">
-                            <label for="validationCustom06" class="form-label">RESPONSABLE</label>
-                            <input type="text" class="form-control" id="validationCustom06">
-                        </div>
-                        <div class="col-md-3">
-                            <label for="validationCustom01" class="form-label">ORDEN DE TRABAJO</label>
-                            <input type="text" class="form-control" id="validationCustom01">
-                        </div>
-                        <!-- Segunda fila -->
-                        <div class="col-md-6">
-                            <label for="validationCustom02" class="form-label">PRODUCTO</label>
-                            <input type="text" class="form-control" id="validationCustom02">
-                        </div>
-                        <div class="col-md-2">
-                            <label for="validationCustom03" class="form-label">CANTIDAD</label>
-                            <input type="text" class="form-control text-end" id="validationCustom03">
-                        </div>
-                        <div class="col-md-4 d-flex align-items-end">
-                            <div class="d-flex align-items-center gap-2 w-100">
-                                <button class="btn btn-primary w-100" type="submit">REALIZADO</button>
-                                <i id="iconoAbrirDetencion"
-                                    class="fa-solid fa-screwdriver-wrench fa-2x border icono-hover"></i>
-                            </div>
-                            <!-- Modal de Detención de Línea -->
-                            <div id="modalDetencionLinea" class="modal-detencion">
-                                <div class="modal-content-detencion">
-                                    <span class="close-detencion">&times;</span>
-                                    <h3>Registrar Detención</h3>
-                                    <form>
-                                        <!-- Fila con OT, Fecha y Hora Inicio -->
-                                        <div class="fila-detencion d-flex align-items-center gap-2">
-                                            <div class="col-auto">
-                                                <label for="modalOTDetencion">OT:</label>
-                                                <input type="text" id="modalOTDetencion"
-                                                    class="form-control text-center" readonly style="width: 80px;">
-                                            </div>
-                                            <div class="col-auto">
-                                                <label for="modalFechaDetencion">FECHA:</label>
-                                                <input type="date" id="modalFechaDetencion"
-                                                    class="form-control text-center" readonly
-                                                    style="width: 130px; margin-left: -5px;">
-                                            </div>
-                                            <div class="col-auto">
-                                                <label for="modalHoraDetencion">HORA INICIO:</label>
-                                                <input type="text" id="modalHoraDetencion"
-                                                    class="form-control text-center" readonly style="width: 90px;">
-                                            </div>
-                                        </div>
-                                        <label for="modalDetalleDetencion">DETALLE:</label>
-                                        <textarea id="modalDetalleDetencion" rows="3"></textarea>
-
-                                        <div class="d-flex align-items-end gap-3 mt-2">
-                                            <div class="col-md-7">
-                                                <label for="modalTallerDetencion">TALLER:</label>
-                                                <select id="modalTallerDetencion" class="form-select">
-                                                    <option value="" selected disabled>Selecciona un taller</option>
-                                                    <option value="MECANICO">MECÁNICO</option>
-                                                    <option value="CALIDAD">CALIDAD</option>
-                                                    <option value="ABASTECIMIENTO">ABASTECIMIENTO</option>
-                                                    <option value="SERVICIOS EXTERNOS">SERVICIOS EXTERNOS</option>
-                                                    <option value="PRODUCCION">PRODUCCIÓN</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <button type="submit"
-                                                    class="btn-guardar-detencion btn btn-primary">REINICIAR</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
-                    <hr class="my-3">
-                    <h2>GESTION DE ALMACEN</h2>
                     <div>
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <!-- STOCK INICIAL -->
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="stock-inicial-tab" data-bs-toggle="tab"
-                                    data-bs-target="#stock-inicial-pane" type="button" role="tab"
-                                    aria-controls="stock-inicial-pane" aria-selected="true">
-                                    STOCK INICIAL
-                                </button>
-                            </li>
-
-                            <!-- SOLICITAR -->
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="solicitar-tab" data-bs-toggle="tab"
-                                    data-bs-target="#solicitar-pane" type="button" role="tab"
-                                    aria-controls="solicitar-pane" aria-selected="false">
-                                    SOLICITAR
-                                </button>
-                            </li>
-
-                            <!-- RECEPCIONAR -->
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="recepcionar-tab" data-bs-toggle="tab"
-                                    data-bs-target="#recepcionar-pane" type="button" role="tab"
-                                    aria-controls="recepcionar-pane" aria-selected="false">
-                                    RECEPCIONAR
-                                </button>
-                            </li>
-
-                            <!-- SCRAP -->
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="scrap-tab" data-bs-toggle="tab"
-                                    data-bs-target="#scrap-pane" type="button" role="tab" aria-controls="scrap-pane"
-                                    aria-selected="false">
-                                    SCRAP
-                                </button>
-                            </li>
-
-                            <!-- DEVOLUCION -->
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="devolucion-tab" data-bs-toggle="tab"
-                                    data-bs-target="#devolucion-pane" type="button" role="tab"
-                                    aria-controls="devolucion-pane" aria-selected="false">
-                                    DEVOLUCIÓN
-                                </button>
-                            </li>
-
-                            <!-- STOCK FINAL -->
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="stock-final-tab" data-bs-toggle="tab"
-                                    data-bs-target="#stock-final-pane" type="button" role="tab"
-                                    aria-controls="stock-final-pane" aria-selected="false">
-                                    STOCK FINAL
-                                </button>
-                            </li>
-                        </ul>
-
-                        <!-- CONTENIDO DE LAS PESTAÑAS -->
-                        <div class="tab-content" id="myTabContent">
-                            <!-- STOCK INICIAL -->
-                            <div class="tab-pane fade show active" id="stock-inicial-pane" role="tabpanel"
-                                aria-labelledby="stock-inicial-tab">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 40%;">Material</th>
-                                            <th style="width: 10%;">Cantidad</th>
-                                            <th style="width: 25%;">Proveedor</th>
-                                            <th style="width: 20%;">Lote</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="stockInicialTableBody">
-                                        <!-- FILAS DINÁMICAS -->
-                                    </tbody>
-                                </table>
-                                <button type="button" id="stockInicialForm" class="btn btn-primary">
-                                    Enviar Stock Inicial
-                                </button>
-                            </div>
-
-                            <!-- SOLICITAR -->
-                            <div class="tab-pane fade" id="solicitar-pane" role="tabpanel"
-                                aria-labelledby="solicitar-tab">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 40%;">Material</th>
-                                            <th style="width: 10%;">Cantidad</th>
-                                            <th style="width: 5%;">Ok</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="solicitarTableBody">
-                                        <!-- FILAS DINÁMICAS -->
-                                    </tbody>
-                                </table>
-                                <button type="button" id="verSolicitudes" class="btn btn-primary">Solicitar</button>
-                                <!-- Botón para enviar los datos a la API SOLICITAR -->
-                                <button id="verSolicitudes1">Ver Solicitudes</button>
-                                <!-- Modal -->
-                                <div id="modalSolicitudes" class="modal">
-                                    <div class="modal-content">
-                                        <span class="close">&times;</span>
-                                        <h2>Solicitudes</h2>
-                                        <div class="modal-body">
-                                            <table id="myTable" class="display" style="width:100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Orden</th>
-                                                        <th>Fecha Solicitud</th>
-                                                        <th>Estado</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <h2 style="margin-left: 5px;">DECLARAR PRODUCCIÓN</h2>
+                            <!-- IMÁGENES -->
+                           <!--  <div class="ice-cream-container" style="display: flex; gap: 10px; margin-left: auto;">
+                                <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND CREAM - GRIDO">
+                                    <img src="assets/img/Torta-cookies-and-cream.jpg" alt="Cookie">
+                                <button id="btnProduct1" class="order-btn">Orden de Trabajo</button>
+                                </div>
+                                <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND MOUSSE - GRIDO">
+                                    <img src="assets/img/Torta-cookies-mousse.jpg" alt="Crema">
+                                <button id="btnProduct2" class="order-btn">Orden de Trabajo</button>
+                                </div>
+                                <div class="ice-cream-item" data-product="PACK TORTA GRIDO CON RELLENO - GRIDO">
+                                    <img src="assets/img/Torta-Grido360X360.jpg" alt="Chocolate">
+                                <button id="btnProduct3" class="order-btn">Orden de Trabajo</button>
+                                </div>
+                            </div> -->
+                            <br>
+                        </div>
+                        <h4 style="margin-left: 5px;">Ciclo de Avance</h4>
+                        <div class="position-relative m-4">
+                            <div class="progress-container">
+                                <div class="progress-step">
+                                    <p>Stock Inicial</p>
+                                    <button type="button"
+                                        class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
+                                </div>
+                                <div class="progress-step">
+                                    <p>Recepcionado</p>
+                                    <button type="button"
+                                        class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
+                                </div>
+                                <div class="progress-step">
+                                    <p>Devolución</p>
+                                    <button type="button"
+                                        class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
+                                </div>
+                                <div class="progress-step">
+                                    <p>Scrap</p>
+                                    <button type="button"
+                                        class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
+                                </div>
+                                <div class="progress-step">
+                                    <p>Stock Final</p>
+                                    <button type="button"
+                                        class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
                                 </div>
                             </div>
-                            <!-- RECEPCIONAR -->
-                            <div class="tab-pane fade" id="recepcionar-pane" role="tabpanel"
-                                aria-labelledby="recepcionar-tab">
-                                <p>Nùmero de Orden: <span id="numeroOrden">0</span></p>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 40%;">Material</th>
-                                            <th style="width: 10%;">Cantidad</th>
-                                            <th style="width: 25%;">Proveedor</th>
-                                            <th style="width: 20%;">Lote</th>
-                                            <th style="width: 5%;">Ok</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="recepcionarTableBody">
-                                        <!-- FILAS DINÁMICAS -->
-                                    </tbody>
-                                </table>
-                                <button type="button" id="recepcionarForm" class="btn btn-primary">Recibido</button>
-                                <!-- Botón para enviar los datos a la API RECEPCIONAR -->
-                                <button id="verSolicitudesR">Ver Solicitudes</button>
-                                <!-- Modal -->
-                                <div id="modalSolicitudesR" class="modal">
-                                    <div class="modal-content">
-                                        <span class="close">&times;</span>
-                                        <h2>Solicitudes</h2>
-                                        <div class="modal-body">
-                                            <table id="myTableR" class="display" style="width:100%">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Orden</th>
-                                                        <th>Fecha Solicitud</th>
-                                                        <th>Estado</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- SCRAP -->
-                            <div class="tab-pane fade" id="scrap-pane" role="tabpanel" aria-labelledby="scrap-tab">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 40%;">Material</th>
-                                            <th style="width: 10%;">Cantidad</th>
-                                            <th style="width: 25%;">Proveedor</th>
-                                            <th style="width: 20%;">Lote</th>
-                                            <th style="width: 5%;">Ok</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="scrapTableBody">
-                                        <!-- FILAS DINÁMICAS -->
-                                    </tbody>
-                                </table>
-                                <button type="button" id="scrapForm" class="btn btn-primary">Enviar Scrap</button>
-                            </div>
 
-                            <!-- DEVOLUCION -->
-                            <div class="tab-pane fade" id="devolucion-pane" role="tabpanel"
-                                aria-labelledby="devolucion-tab">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 40%;">Material</th>
-                                            <th style="width: 10%;">Cantidad</th>
-                                            <th style="width: 25%;">Proveedor</th>
-                                            <th style="width: 20%;">Lote</th>
-                                            <th style="width: 5%;">Ok</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="devolucionTableBody">
-                                        <!-- FILAS DINÁMICAS -->
-                                    </tbody>
-                                </table>
-                                <button type="button" id="devolucionForm" class="btn btn-primary">Enviar
-                                    Devolución</button>
-                            </div>
-
-                            <!-- STOCK FINAL -->
-                            <div class="tab-pane fade" id="stock-final-pane" role="tabpanel"
-                                aria-labelledby="stock-final-tab">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 40%;">Material</th>
-                                            <th style="width: 10%;">Cantidad</th>
-                                            <th style="width: 25%;">Proveedor</th>
-                                            <th style="width: 20%;">Lote</th>
-                                            <th style="width: 5%;">Ok</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="stockFinalTableBody">
-                                        <!-- FILAS DINÁMICAS -->
-                                    </tbody>
-                                </table>
-                                <button type="button" id="stockFinalForm" class="btn btn-primary">Enviar Stock
-                                    Final</button>
+                            <div class="progress" role="progressbar">
+                                <div id="progressBar" class="progress-bar bg-primary"></div>
                             </div>
                         </div>
-                    </div>
+                        <form class="row g-3 needs-validation p-3" novalidate>
+                            <!-- Primera fila -->
+                            <div class="col-md-2">
+                                <label for="validationCustom04" class="form-label">FECHA</label>
+                                <input type="date" class="form-control" id="validationCustom04" readonly
+                                    style="pointer-events: none;">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="validationCustom05" class="form-label">TURNO</label>
+                                <input type="text" class="form-control" id="validationCustom05" readonly
+                                    style="pointer-events: none;">
+                            </div>
+                            <div class="col-md-5">
+                                <label for="validationCustom06" class="form-label">RESPONSABLE</label>
+                                <input type="text" class="form-control" id="validationCustom06">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="validationCustom01" class="form-label">ORDEN DE TRABAJO</label>
+                                <input type="text" class="form-control" id="validationCustom01" readonly
+                                    style="pointer-events: none;">
+                            </div>
+                            <!-- Segunda fila -->
+                            <div class="col-md-6">
+                                <label for="validationCustom02" class="form-label">PRODUCTO</label>
+                                <input type="text" class="form-control" id="validationCustom02" readonly
+                                    style="pointer-events: none;">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="validationCustom03" class="form-label">CANTIDAD</label>
+                                <input type="text" class="form-control text-end" id="validationCustom03">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <div class="d-flex align-items-center gap-2 w-100">
+                                    <button class="btn btn-primary w-100" type="submit">REALIZADO</button>
+                                    <i id="iconoAbrirDetencion"
+                                        class="fa-solid fa-screwdriver-wrench fa-2x border icono-hover"></i>
+                                </div>
+                                <!-- Modal de Detención de Línea -->
+                                <div id="modalDetencionLinea" class="modal-detencion">
+                                    <div class="modal-content-detencion">
+                                        <span class="close-detencion">&times;</span>
+                                        <h3>Registrar Detención</h3>
+                                        <form>
+                                            <!-- Fila con OT, Fecha y Hora Inicio -->
+                                            <div class="fila-detencion d-flex align-items-center gap-2">
+                                                <div class="col-auto">
+                                                    <label for="modalOTDetencion">OT:</label>
+                                                    <input type="text" id="modalOTDetencion"
+                                                        class="form-control text-center" readonly style="width: 80px;">
+                                                </div>
+                                                <div class="col-auto">
+                                                    <label for="modalFechaDetencion">FECHA:</label>
+                                                    <input type="date" id="modalFechaDetencion"
+                                                        class="form-control text-center" readonly
+                                                        style="width: 130px; margin-left: -5px;">
+                                                </div>
+                                                <div class="col-auto">
+                                                    <label for="modalHoraDetencion">HORA INICIO:</label>
+                                                    <input type="text" id="modalHoraDetencion"
+                                                        class="form-control text-center" readonly style="width: 90px;">
+                                                </div>
+                                            </div>
+                                            <label for="modalDetalleDetencion">DETALLE:</label>
+                                            <textarea id="modalDetalleDetencion" rows="3"></textarea>
+
+                                            <div class="d-flex align-items-end gap-3 mt-2">
+                                                <div class="col-md-7">
+                                                    <label for="modalTallerDetencion">TALLER:</label>
+                                                    <select id="modalTallerDetencion" class="form-select">
+                                                        <option value="" selected disabled>Selecciona un taller</option>
+                                                        <option value="MECANICO">MECÁNICO</option>
+                                                        <option value="CALIDAD">CALIDAD</option>
+                                                        <option value="ABASTECIMIENTO">ABASTECIMIENTO</option>
+                                                        <option value="SERVICIOS EXTERNOS">SERVICIOS EXTERNOS</option>
+                                                        <option value="PRODUCCION">PRODUCCIÓN</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button type="submit"
+                                                        class="btn-guardar-detencion btn btn-primary">REINICIAR</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <hr class="my-3">
+                        <h2>GESTION DE ALMACEN</h2>
+                        <div>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <!-- STOCK INICIAL -->
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="stock-inicial-tab" data-bs-toggle="tab"
+                                        data-bs-target="#stock-inicial-pane" type="button" role="tab"
+                                        aria-controls="stock-inicial-pane" aria-selected="true">
+                                        STOCK INICIAL
+                                    </button>
+                                </li>
+
+                                <!-- SOLICITAR -->
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="solicitar-tab" data-bs-toggle="tab"
+                                        data-bs-target="#solicitar-pane" type="button" role="tab"
+                                        aria-controls="solicitar-pane" aria-selected="false">
+                                        SOLICITAR
+                                    </button>
+                                </li>
+
+                                <!-- RECEPCIONAR -->
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="recepcionar-tab" data-bs-toggle="tab"
+                                        data-bs-target="#recepcionar-pane" type="button" role="tab"
+                                        aria-controls="recepcionar-pane" aria-selected="false">
+                                        RECEPCIONAR
+                                    </button>
+                                </li>
+
+                                <!-- SCRAP -->
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="scrap-tab" data-bs-toggle="tab"
+                                        data-bs-target="#scrap-pane" type="button" role="tab" aria-controls="scrap-pane"
+                                        aria-selected="false">
+                                        SCRAP
+                                    </button>
+                                </li>
+
+                                <!-- DEVOLUCION -->
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="devolucion-tab" data-bs-toggle="tab"
+                                        data-bs-target="#devolucion-pane" type="button" role="tab"
+                                        aria-controls="devolucion-pane" aria-selected="false">
+                                        DEVOLUCIÓN
+                                    </button>
+                                </li>
+
+                                <!-- STOCK FINAL -->
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="stock-final-tab" data-bs-toggle="tab"
+                                        data-bs-target="#stock-final-pane" type="button" role="tab"
+                                        aria-controls="stock-final-pane" aria-selected="false">
+                                        STOCK FINAL
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <!-- CONTENIDO DE LAS PESTAÑAS -->
+                            <div class="tab-content" id="myTabContent">
+                                <!-- STOCK INICIAL -->
+                                <div class="tab-pane fade show active" id="stock-inicial-pane" role="tabpanel"
+                                    aria-labelledby="stock-inicial-tab">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%;">Material</th>
+                                                <th style="width: 10%;">Cantidad</th>
+                                                <th style="width: 25%;">Proveedor</th>
+                                                <th style="width: 20%;">Lote</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="stockInicialTableBody">
+                                            <!-- FILAS DINÁMICAS -->
+                                        </tbody>
+                                    </table>
+                                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                                        <button type="button" id="stockInicialForm" class="btn btn-primary">
+                                            Enviar Stock Inicial
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- SOLICITAR -->
+                                <div class="tab-pane fade" id="solicitar-pane" role="tabpanel"
+                                    aria-labelledby="solicitar-tab">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%;">Material</th>
+                                                <th style="width: 10%;">Cantidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="solicitarTableBody">
+                                            <!-- FILAS DINÁMICAS -->
+                                        </tbody>
+                                    </table>
+                                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                                        <button type="button" id="verSolicitudes"
+                                            class="btn btn-primary">Solicitar</button>
+                                        <!-- Botón para enviar los datos a la API SOLICITAR -->
+                                        <button id="verSolicitudes1" type="button" class="btn btn-outline-secondary">Ver
+                                            Solicitudes</button>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div id="modalSolicitudes" class="modal">
+                                        <div class="modal-content">
+                                            <span class="close">&times;</span>
+                                            <h2>Solicitudes</h2>
+                                            <div class="modal-body">
+                                                <table id="myTable" class="display" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Orden</th>
+                                                            <th>Fecha Solicitud</th>
+                                                            <th>Estado</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- RECEPCIONAR -->
+                                <div class="tab-pane fade" id="recepcionar-pane" role="tabpanel"
+                                    aria-labelledby="recepcionar-tab"><br>
+                                    <!-- Botón para enviar los datos a la API RECEPCIONAR -->
+                                    <div
+                                        style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                        <button id="verSolicitudesR" type="button" class="btn btn-outline-secondary">Ver
+                                            Solicitudes</button>
+                                        <p style="margin: 0;">Número de Orden: <span id="numeroOrden">0</span></p>
+                                    </div>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%;">Material</th>
+                                                <th style="width: 10%;">Cantidad</th>
+                                                <th style="width: 25%;">Proveedor</th>
+                                                <th style="width: 20%;">Lote</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recepcionarTableBody">
+                                            <!-- FILAS DINÁMICAS -->
+                                        </tbody>
+                                    </table>
+                                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+
+                                        <button type="button" id="recepcionarForm"
+                                            class="btn btn-primary">Recibido</button>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div id="modalSolicitudesR" class="modal">
+                                        <div class="modal-content">
+                                            <span class="close">&times;</span>
+                                            <h2>Solicitudes</h2>
+                                            <div class="modal-body">
+                                                <table id="myTableR" class="display" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Orden</th>
+                                                            <th>Fecha Solicitud</th>
+                                                            <th>Estado</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- SCRAP -->
+                                <div class="tab-pane fade" id="scrap-pane" role="tabpanel" aria-labelledby="scrap-tab">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%;">Material</th>
+                                                <th style="width: 10%;">Cantidad</th>
+                                                <th style="width: 25%;">Proveedor</th>
+                                                <th style="width: 20%;">Lote</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="scrapTableBody">
+                                            <!-- FILAS DINÁMICAS -->
+                                        </tbody>
+                                    </table>
+                                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                                        <button type="button" id="scrapForm" class="btn btn-primary">Enviar
+                                            Scrap</button>
+                                    </div>
+                                </div>
+
+                                <!-- DEVOLUCION -->
+                                <div class="tab-pane fade" id="devolucion-pane" role="tabpanel"
+                                    aria-labelledby="devolucion-tab">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%;">Material</th>
+                                                <th style="width: 10%;">Cantidad</th>
+                                                <th style="width: 25%;">Proveedor</th>
+                                                <th style="width: 20%;">Lote</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="DevolucionTableBody">
+                                            <!-- FILAS DINÁMICAS -->
+                                        </tbody>
+                                    </table>
+                                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                                        <button type="button" id="DevolucionForm" class="btn btn-primary">Enviar
+                                            Devolución</button>
+                                    </div>
+                                </div>
+
+                                <!-- STOCK FINAL -->
+                                <div class="tab-pane fade" id="stock-final-pane" role="tabpanel"
+                                    aria-labelledby="stock-final-tab">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%;">Material</th>
+                                                <th style="width: 10%;">Cantidad</th>
+                                                <th style="width: 25%;">Proveedor</th>
+                                                <th style="width: 20%;">Lote</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="stockFinalTableBody">
+                                            <!-- FILAS DINÁMICAS -->
+                                        </tbody>
+                                    </table>
+                                    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                                        <button type="button" id="stockFinalForm" class="btn btn-primary">Enviar Stock
+                                            Final</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
             </section>
         </section>

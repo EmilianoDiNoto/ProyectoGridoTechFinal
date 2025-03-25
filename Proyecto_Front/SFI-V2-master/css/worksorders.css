@@ -1,0 +1,194 @@
+#workOrdersTable_filter input {
+    width: 250px; /* Ajusta el tamaño del input */
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+#materialsModal .modal-content {
+    background-color: #ffffff;
+    color: #000;
+    border-radius: 12px;
+    border: 2px solid #00d1ff;
+    box-shadow: 0px 4px 20px rgba(0, 209, 255, 0.5);
+    transition: transform 0.2s ease-in-out;
+}
+
+#materialsModal .modal-content:hover {
+    transform: scale(1.02);
+}
+
+#materialsModal .modal-header {
+    background-color: #017d98;
+    color: white;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+#materialsModal .modal-footer {
+    background-color: #f1f1f1;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+}
+
+#materialsModal .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+#materialsModal .modal-body {
+    padding: 20px;
+}
+
+#materialsTable th {
+    background-color: #017d98;
+    color: white;
+    text-align: center;
+}
+
+#materialsTable td {
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Animación de entrada */
+.modal.fade .modal-dialog {
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.modal.show .modal-dialog {
+    transform: translateY(0);
+    opacity: 1;
+}
+/* Estilos generales de la tabla */
+#workOrdersTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #3092a8; /* Azul oscuro */
+    color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Encabezados */
+#workOrdersTable thead {
+    background-color: #375d89 !important; /* Asegura que tome el color */
+}
+
+#workOrdersTable thead th {
+    padding: 12px;
+    text-align: center;
+    color: #ffffff !important; /* Fuerza el color blanco */
+    font-weight: bold !important;
+    text-transform: uppercase;
+    border-bottom: 2px solid #225975;
+}
+
+/* Asegurar que DataTables no sobreescriba estilos */
+table.dataTable thead th {
+    background-color: #375d89 !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+}
+
+
+/* Filas */
+#workOrdersTable tbody tr {
+    border-bottom: 1px solid #6da0ac;
+    transition: background 0.3s ease;
+}
+
+#workOrdersTable tbody tr:nth-child(even) {
+    background-color: #6da0ac;
+}
+
+#workOrdersTable tbody tr:hover {
+    background-color: #00aaff;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+/* Celdas */
+#workOrdersTable tbody td {
+    padding: 10px;
+    text-align: center;
+}
+
+/* Estilos para la paginación y controles */
+.dataTables_wrapper .dataTables_paginate {
+    background-color: #83b1e7;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    background-color: #536fb0;
+    border: 1px solid #00aaff;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    background-color: #374c7c;
+    color: white;
+    border: 1px solid #00aaff;
+    border-radius: 5px;
+    padding: 5px;
+}
+/* Ajustar tamaño de fuente en la tabla */
+#previewTable {
+    font-size: 11px !important; /* Ajusta el tamaño de fuente general */
+}
+
+/* Encabezados de la tabla */
+#previewTable th {
+    font-size: 12px !important; /* Ajusta el tamaño de los encabezados */
+    font-weight: bold; /* Opcional: Negrita para destacar */
+    text-align: center; /* Centrar los textos en el encabezado */
+}
+
+/* Celdas de la tabla */
+.previewTable td {
+    font-size: 11px !important; /* Ajusta el tamaño de la fuente en las celdas */
+    text-align: center; /* Centrar el texto en las celdas */
+}
+
+/* Ajustar tamaño de fuente en controles de DataTable */
+.previewTable .dataTables_wrapper {
+    font-size: 11px !important;
+}
+
+/* Opcional: Reducir tamaño de paginación */
+.previewTable .dataTables_wrapper .dataTables_paginate {
+    font-size: 13px !important;
+}
+/* Mantener encabezados fijos */
+.previewTable .dataTables_scrollHead {
+    position: sticky;
+    top: 0;
+    background: white; /* Fondo blanco para que se vea bien */
+    z-index: 1000; /* Asegura que quede por encima del contenido */
+}
+
+/* Agrega un borde inferior para que el encabezado resalte */
+.previewTable .dataTables_scrollHead thead th {
+    border-bottom: 2px solid #007bff;
+    padding: 10px;
+    text-align: center;
+}
+#previewTable th:nth-child(1), 
+#previewTable td:nth-child(1) {
+    width: 50px; /* Ajusta según sea necesario */
+}
+
+#previewTable th:nth-child(2), 
+#previewTable td:nth-child(2) {
+    width: 100px; /* Ajusta el ancho de la segunda columna */
+}

@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
 	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/worksorders.css">
+	<link rel="stylesheet" href="css/productionstore.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<!-- SweetAlert2 (una sola versión) -->
@@ -61,14 +61,12 @@
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-	<!-- Agregar las bibliotecas jsPDF y SheetJS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js"></script>
-
+	<!--Libreria del Calendario Domingo a Sabado-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 </head>
 
@@ -91,7 +89,7 @@
 				</a>
 			</li>
 			<li class="sidebar-item">
-				<a href="production1.html" class="sidebar-link">
+				<a href="production.html" class="sidebar-link">
 					<i class="zmdi zmdi-washing-machine"></i>
 					<span>Declarar Producción</span>
 				</a>
@@ -140,98 +138,81 @@
 			</li>
 		</ul>
 	</aside>
-	<section class="full-width main">
-		<!-- Agrega Bootstrap en tu proyecto si aún no lo tienes -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-		<div class="mb-3" style="max-width: 400px;">
-			<label for="input-excel" class="form-label">Cargar Nuevas Ordenes de Trabajo</label>
-			<input class="form-control form-control-sm" type="file" id="input-excel" accept=".xlsx">
-		</div>
-
-
-		<!-- Botón para abrir el modal (opcional) -->
-		<button id="btnMostrarModal" class="btn btn-primary" style="display: none;" data-bs-toggle="modal"
-			data-bs-target="#previewModal">
-			Ver Vista Previa
-		</button>
-
-		<!-- Modal para la vista previa -->
-		<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg"> <!-- Modal grande -->
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="previewModalLabel">Vista Previa</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div>
-						<div class="modal-body">
-							<table id="previewTable" class="table table-striped">
-								<thead>
-									<tr>
-										<th style="width: 10%;">ID</th>
-										<th style="width: 10%;">CODIGO</th>
-										<th style="width: 10%;">DEMANDA</th>
-										<th style="width: 10%;">UM</th>
-										<th style="width: 10%;">FECHACREADA</th>
-										<th style="width: 20%;">FECHAMODIFICADA</th>
-										<th style="width: 20%;">ESTADO</th>
-										<th style="width: 10%;">FECHAELABORACION</th>
-									</tr>
-								</thead>
-								<tbody></tbody>
-							</table>
-						</div>
-						<div class="modal-footer">
-							<button id="btnEnviar" class="btn btn-success">Enviar a DB</button>
-						</div>
-					</div>
+	<section>
+		<div class="container">
+			<table id="example" class="display" style="width:100%">
+				<thead>
+					<tr>
+						<th style="width: 10%;">OT</th>
+						<th style="width: 10%;">FECHA</th>
+						<th style="width: 10%;">HS INICIO</th>
+						<th style="width: 10%;">HS FIN</th>
+						<th style="width: 50%;">DETALLE</th>
+						<th style="width: 20%;">TALLER</th>
+						<th style="width: 20%;">DURACION</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Los datos se insertarán aquí -->
+				</tbody>
+			</table>
+			<div id="progress-bars" class="mt-4">
+				<h3>Duración por Taller</h3>
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped" id="mecanico" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">MECANICO</div>
+				</div>
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped bg-success" id="calidad" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">CALIDAD</div>
+				</div>
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped bg-info" id="abastecimiento" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">ABASTECIMIENTO</div>
+				</div>
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped bg-warning" id="servicios" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">SERVICIOS EXTERNOS</div>
+				</div>
+				<div class="progress">
+					<div class="progress-bar progress-bar-striped bg-danger" id="produccion" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">PRODUCCION</div>
 				</div>
 			</div>
 		</div>
-		<br>
-		<h3 style="text-align: center;">ORDENES DE TRABAJO CONFIRMADAS</h3>
-		<table id="workOrdersTable" class="display nowrap" style="width:100%">
-			<thead>
-				<tr>
-					<th style="width: 10%;">OT</th>
-					<th style="width: 10%;">CODIGO</th>
-					<th style="width: 20%;">PRODUCTO</th>
-					<th style="width: 20%;">DEMANDA</th>
-					<th style="width: 20%;">ESTADO</th>
-					<th style="width: 10%;">ELABORACION</th>
-				</tr>
-			</thead>
-		</table>
 	</section>
-	<!-- Modal para mostrar materiales -->
-	<div class="modal fade" id="materialsModal" tabindex="-1" aria-labelledby="materialsModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg"> <!-- Cambiado de modal-xl a modal-lg -->
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="materialsModalLabel">Materiales Necesarios</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<table id="materialsTable" class="table table-striped">
-						<thead>
-							<tr>
-								<th style="width: 15%;">CODIGO</th>
-								<th style="width: 40%;">MATERIAL</th>
-								<th style="width: 10%;">NECESIDAD</th>
-								<th style="width: 15%;">ENTREGA</th>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+	</section>
+	<script>
+		$(document).ready(function () {
+			// Hacer la solicitud a la API
+			$.ajax({
+				url: 'http://localhost:63152/api/Unplanned/GetAllUnplanned',
+				method: 'GET',
+				dataType: 'json',
+				success: function (data) {
+					// Llenar la tabla con los datos
+					var tableBody = $('#example tbody');
+					data.forEach(function (incidente) {
+						var row = `<tr>
+							<td>${incidente.OT}</td>
+							<td>${new Date(incidente.FECHA).toLocaleDateString()}</td>
+							<td>${incidente.HSINICIO}</td>
+							<td>${incidente.HSFIN}</td>
+							<td>${incidente.DETALLE}</td>
+							<td>${incidente.TALLER}</td>
+							<td>${incidente.DURACION}</td>
+						</tr>`;
+						tableBody.append(row);
+					});
 
-	<!-- Script para leer el Excel -->
-	<script src="https://cdn.jsdelivr.net/npm/read-excel-file@5.4.0/bundle/read-excel-file.min.js"></script>
-
+					// Inicializar DataTable
+					new DataTable('#example', {
+						paging: false,
+						scrollCollapse: true,
+						scrollY: '600px'
+					});
+				},
+				error: function (xhr, status, error) {
+					console.error('Error al obtener los datos:', error);
+				}
+			});
+		});
+	</script>
 
 	<!-- Librerías necesarias -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -244,7 +225,7 @@
 	<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 	<!-- Archivo JavaScript separado -->
-	<script src="js/workorders.js"></script>
+	<script src="js/production1.js"></script>
 
 </body>
 
