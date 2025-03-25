@@ -523,6 +523,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ChatbotController.cs" />
     <Compile Include="Controllers\DiscardedMaterialController.cs" />
+    <Compile Include="Controllers\FiltroProductionGraficoController.cs" />
     <Compile Include="Controllers\GestionUsuariosController.cs" />
     <Compile Include="Controllers\IDController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
@@ -547,6 +548,7 @@
     </Compile>
     <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Models\DiscardedMaterial.cs" />
+    <Compile Include="Models\FiltroProductionGrafico.cs" />
     <Compile Include="Models\ID.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\InventoryE.cs" />
