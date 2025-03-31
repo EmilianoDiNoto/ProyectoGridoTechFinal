@@ -529,6 +529,7 @@
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\InventoryEController.cs" />
     <Compile Include="Controllers\MaterialsController.cs" />
+    <Compile Include="Controllers\MaterialSuppliersController.cs" />
     <Compile Include="Controllers\ProductionController.cs" />
     <Compile Include="Controllers\ProductionStoreController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -552,6 +553,7 @@
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\InventoryE.cs" />
     <Compile Include="Models\Materials.cs" />
+    <Compile Include="Models\MaterialSuplliers.cs" />
     <Compile Include="Models\Production.cs" />
     <Compile Include="Models\ProductionStore.cs" />
     <Compile Include="Models\Products.cs" />

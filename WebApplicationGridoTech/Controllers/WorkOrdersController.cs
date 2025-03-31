@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Web.Http;
@@ -8,22 +9,29 @@ namespace WebApplicationGridoTech.Controllers
 {
     public class WorkOrdersController : ApiController
     {
-        private readonly WorkOrders _workOrdersRepository;
+        private readonly WorkOrdersRepository _ProductionStoreRepository;
 
         public WorkOrdersController()
         {
-            _workOrdersRepository = new WorkOrders();
+            _ProductionStoreRepository = new WorkOrdersRepository();
         }
 
-        // GET: api/WorkOrders
-        public List<WorkOrders> Get()
+        // Nuevo método para obtener todos los materiales
+        [HttpGet]
+        [Route("api/WorkOrders/GetAllWorkOrders")]
+        public IHttpActionResult GetAllWorkOrderMaterials()
         {
-            var dt = _workOrdersRepository.SelectAll();
-            var ListaJson = JsonConvert.SerializeObject(dt);
-            return JsonConvert.DeserializeObject<List<WorkOrders>>(ListaJson);
+            List<WorkOrders> productionStores = _ProductionStoreRepository.GetAllWorkOrders();
+
+            if (productionStores.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(productionStores);
         }
 
-        // GET: api/WorkOrders/by-product/{productName}
+        //Nuevo Metodo para obtener orden por nombre de producto
         [HttpGet]
         [Route("api/WorkOrders/by-product/{productName}")]
         public List<WorkOrders> GetByProductName(string productName)
@@ -31,46 +39,54 @@ namespace WebApplicationGridoTech.Controllers
             if (string.IsNullOrEmpty(productName))
                 return new List<WorkOrders>();
 
-            var dt = _workOrdersRepository.SelectByProductName(productName);
+            var dt = _ProductionStoreRepository.SelectByProductName(productName);
             var ListaJson = JsonConvert.SerializeObject(dt);
             return JsonConvert.DeserializeObject<List<WorkOrders>>(ListaJson);
         }
 
-        // POST: api/WorkOrders
-        public void Post([FromBody] WorkOrders value)
+        [HttpGet]
+        [Route("api/WorkOrders/by-status/{productStatus}")]
+        public List<WorkOrders> GetByProductStatus(string productStatus)
         {
-            WorkOrders oWorkOrders = new WorkOrders
-            {
-                PRODUCTOID = value.PRODUCTOID,
-                CODIGO = value.CODIGO,
-                DEMANDA = value.DEMANDA,
-                UM = value.UM,
-                FECHACREADA = value.FECHACREADA,
-                FECHAMODIFICADA = value.FECHAMODIFICADA,
-                ESTADO = value.ESTADO,
-                FECHAELABORACION = value.FECHAELABORACION
-            };
+            if (string.IsNullOrEmpty(productStatus))
+                return new List<WorkOrders>();
 
-            oWorkOrders.Insert();
+            var dt = _ProductionStoreRepository.SelectByProductStatus(productStatus);
+            var ListaJson = JsonConvert.SerializeObject(dt);
+            return JsonConvert.DeserializeObject<List<WorkOrders>>(ListaJson);
         }
 
-        // PUT: api/WorkOrders/5
-        public void Put(int id, [FromBody] WorkOrders value)
+        // Nuevo método POST para insertar un movimiento en ProductionStore
+        [HttpPost]
+        [Route("api/WorkOrders/InsertWorkOrderse")]
+        public IHttpActionResult InsertWorkOrders([FromBody] WorkOrders WorkOrders)
         {
-            WorkOrders oWorkOrders = new WorkOrders
+            if (WorkOrders == null)
             {
-                OT = id,
-                PRODUCTOID = value.PRODUCTOID,
-                CODIGO = value.CODIGO,
-                DEMANDA = value.DEMANDA,
-                UM = value.UM,
-                FECHACREADA = value.FECHACREADA,
-                FECHAMODIFICADA = value.FECHAMODIFICADA,
-                ESTADO = value.ESTADO,
-                FECHAELABORACION = value.FECHAELABORACION
-            };
+                return BadRequest("Los datos del movimiento son requeridos.");
+            }
 
-            oWorkOrders.Actualizar();
+            try
+            {
+                _ProductionStoreRepository.InsertWorkOrders(
+                    WorkOrders.PRODUCTOID,
+                    WorkOrders.CODIGO,
+                    WorkOrders.DEMANDA,
+                    WorkOrders.UM,
+                    WorkOrders.FECHACREADA,
+                    WorkOrders.FECHAMODIFICADA,
+                    WorkOrders.ESTADO,
+                    WorkOrders.FECHAELABORACION
+                );
+
+                return Ok("Movimiento insertado exitosamente.");
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
+
+
     }
 }

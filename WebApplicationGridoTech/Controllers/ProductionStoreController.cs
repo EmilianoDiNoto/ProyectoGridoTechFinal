@@ -61,6 +61,72 @@ namespace WebApplicationGridoTech.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        // Nuevo método para obtener movimientos filtrados por fecha, material y tipo de movimiento
+        [HttpGet]
+        [Route("api/ProductionStore/GetProductionStoreByDateRange")]
+        public IHttpActionResult GetProductionStoreByDateRange(DateTime fechaDesde, DateTime fechaHasta, string material, string movimiento)
+        {
+            try
+            {
+                List<ProductionStore> productionStores = _ProductionStoreRepository.GetProductionStoreByDateRange(fechaDesde, fechaHasta, material, movimiento);
+
+                if (productionStores == null || productionStores.Count == 0)
+                {
+                    return NotFound();
+                }
+
+                return Ok(productionStores);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        // Nuevo método para obtener movimientos filtrados por fecha, material y tipo de movimiento
+        [HttpGet]
+        [Route("api/ProductionStore/GetProductionStoreInitial")]
+        public IHttpActionResult GetProductionStoreInitial(DateTime fechaDesde, string material, string movimiento)
+        {
+            try
+            {
+                List<ProductionStore> productionStoresI = _ProductionStoreRepository.GetProductionStoreInitial(fechaDesde, material, movimiento);
+
+                if (productionStoresI == null || productionStoresI.Count == 0)
+                {
+                    return NotFound();
+                }
+
+                return Ok(productionStoresI);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/ProductionStore/GetProductionStoreFinal")]
+        public IHttpActionResult GetProductionStoreFinal(DateTime fechaHasta, string material, string movimiento)
+        {
+            try
+            {
+                List<ProductionStore> productionStoresF = _ProductionStoreRepository.GetProductionStoreFinal(fechaHasta, material, movimiento);
+
+                if (productionStoresF == null || productionStoresF.Count == 0)
+                {
+                    return NotFound();
+                }
+
+                return Ok(productionStoresF);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
     }
 }
 

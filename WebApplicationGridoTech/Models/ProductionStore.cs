@@ -81,6 +81,116 @@ namespace YourNamespace
             }
         }
 
+        public List<ProductionStore> GetProductionStoreByDateRange(DateTime fechaDesde, DateTime fechaHasta, string material, string movimiento)
+        {
+            List<ProductionStore> productionStores = new List<ProductionStore>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("SP_GetDate_ProductionStore", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar parámetros al comando
+                    command.Parameters.AddWithValue("@FECHADESDE", fechaDesde);
+                    command.Parameters.AddWithValue("@FECHAHASTA", fechaHasta);
+                    command.Parameters.AddWithValue("@MATERIAL", material);
+                    command.Parameters.AddWithValue("@MOVIMIENTO", movimiento);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            productionStores.Add(new ProductionStore
+                            {
+                                FECHAMOV = Convert.ToDateTime(reader["FECHA"]),
+                                TURNO = reader["TURNO"].ToString(),
+                                CANTIDAD = Convert.ToInt32(reader["CANTIDAD"]),
+                                RESPONSABLE = reader["RESPONSABLE"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            return productionStores;
+        }
+
+        public List<ProductionStore> GetProductionStoreInitial(DateTime fechaDesde, string material, string movimiento)
+        {
+            List<ProductionStore> productionStoresI = new List<ProductionStore>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("SP_GetInitial_ProductionStore", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar parámetros al comando
+                    command.Parameters.AddWithValue("@FECHADESDE", fechaDesde);
+                    command.Parameters.AddWithValue("@MATERIAL", material);
+                    command.Parameters.AddWithValue("@MOTION", movimiento);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            productionStoresI.Add(new ProductionStore
+                            {
+                                FECHAMOV = Convert.ToDateTime(reader["FECHA"]),
+                                TURNO = reader["TURNO"].ToString(),
+                                CANTIDAD = Convert.ToInt32(reader["CANTIDAD"]),
+                                RESPONSABLE = reader["RESPONSABLE"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            return productionStoresI;
+        }
+
+        public List<ProductionStore> GetProductionStoreFinal(DateTime fechaHasta, string material, string movimiento)
+        {
+            List<ProductionStore> productionStoresF = new List<ProductionStore>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("SP_GetFin_ProductionStore", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar parámetros al comando
+                    command.Parameters.AddWithValue("@FECHAHASTA", fechaHasta);
+                    command.Parameters.AddWithValue("@MATERIAL", material);
+                    command.Parameters.AddWithValue("@MOTION", movimiento);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            productionStoresF.Add(new ProductionStore
+                            {
+                                FECHAMOV = Convert.ToDateTime(reader["FECHA"]),
+                                TURNO = reader["TURNO"].ToString(),
+                                CANTIDAD = Convert.ToInt32(reader["CANTIDAD"]),
+                                RESPONSABLE = reader["RESPONSABLE"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            return productionStoresF;
+        }
+
+
 
     }
 
@@ -98,4 +208,5 @@ namespace YourNamespace
         public string LOTE { get; set; }
         public string TIPOMOV { get; set; }
     }
+
 }
