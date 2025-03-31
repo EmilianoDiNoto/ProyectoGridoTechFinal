@@ -17,32 +17,32 @@ $(document).ready(function() {
         };
     }
     
-    // Mostrar/ocultar contraseña
-    $(".reveal").on('click', function() {
-        const $pwd = $("#txtPassword");
-        if ($pwd.attr('type') === 'password') {
-            $pwd.attr('type', 'text');
-            $('.glyphicon-eye-open').removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
-        } else {
-            $pwd.attr('type', 'password');
-            $('.glyphicon-eye-close').removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
-        }
-    });
+ // Mostrar/ocultar contraseña
+ $(".reveal").on('click', function () {
+    const $pwd = $("#txtPassword");
+    if ($pwd.attr('type') === 'password') {
+        $pwd.attr('type', 'text');
+        $('.glyphicon-eye-open').removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
+    } else {
+        $pwd.attr('type', 'password');
+        $('.glyphicon-eye-close').removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+    }
+});
     
     // Evento de login
     $(".login-button").on('click', function(e) {
         e.preventDefault();
         
+        // Ocultar mensaje de error previo
+        $("#formErrorMessage").hide();
+        
         const username = $("#txtUser").val().trim();
         const password = $("#txtPassword").val().trim();
         
-        if (username === "") {
-            showAlert("Error", "Por favor, ingrese su nombre de usuario", "error");
-            return;
-        }
-        
-        if (password === "") {
-            showAlert("Error", "Por favor, ingrese su contraseña", "error");
+        // Validar campos
+        if (username === "" || password === "") {
+            // Mostrar mensaje de error en el formulario
+            $("#formErrorMessage").show();
             return;
         }
         
@@ -57,7 +57,7 @@ $(document).ready(function() {
     });
     
     // También permitir Enter para enviar el formulario
-    $("#txtPassword").keypress(function(e) {
+    $("#txtPassword, #txtUser").keypress(function(e) {
         if (e.which === 13) {
             $(".login-button").click();
         }
@@ -71,8 +71,8 @@ $(document).ready(function() {
 
     // Función para autenticar al usuario
     function authenticateUser(username, password) {
-        // Mostrar indicador de carga
-        $(".login-button").prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Verificando...');
+        // Mostrar indicador de carga (animación de una tuerca girando)
+        $(".login-button").prop('disabled', true).html('<i class="fa fa-cog fa-spin"></i> Verificando...');
         
         // DEPURACIÓN: Mostrar en consola exactamente lo que se está enviando
         const requestData = {
@@ -101,26 +101,39 @@ $(document).ready(function() {
                     sessionStorage.setItem('email', response.email);
                 }
                 
-                // Mostrar un mensaje de éxito (opcional)
-                showAlert("¡Bienvenido!", "Inicio de sesión exitoso", "success");
-                
-                // Redirigir al dashboard después de un breve retraso
-                setTimeout(function() {
+                // Mostrar mensaje de éxito con SweetAlert
+                Swal.fire({
+                    title: '¡Bienvenido!',
+                    text: 'Sesión iniciada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar'
+                }).then(() => {
+                    // Redirigir al dashboard
                     window.location.href = 'home.html';
-                }, 1000);
+                });
             },
             error: function(xhr, status, error) {
                 console.error("Error en login:", xhr.status, error);
                 console.error("Respuesta completa:", xhr.responseText);
                 
                 // Restaurar botón
-                $(".login-button").prop('disabled', false).html('<i class="fa fa-sign-in"></i> INGRESAR');
+                $(".login-button").prop('disabled', false).html('<i class="fa fa-sign-in"></i> Iniciar sesión');
                 
-                // Mostrar mensaje de error
+                // Mostrar mensaje de error con SweetAlert
                 if (xhr.status === 401) {
-                    showAlert("Error", "Usuario o contraseña incorrecta", "error");
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Credenciales incorrectas',
+                        icon: 'error',
+                        confirmButtonText: 'Intentar nuevamente'
+                    });
                 } else {
-                    showAlert("Error", "Ocurrió un error al intentar iniciar sesión. Por favor intente nuevamente.", "error");
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ocurrió un error al intentar iniciar sesión. Por favor intente nuevamente.',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
                 }
             }
         });
@@ -276,7 +289,12 @@ $(document).ready(function() {
             });
         })
         .then(response => {
-            showAlert('¡Éxito!', 'Tu contraseña ha sido actualizada correctamente. Ya puedes iniciar sesión con tu nueva contraseña.', 'success');
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Tu contraseña ha sido actualizada correctamente. Ya puedes iniciar sesión con tu nueva contraseña.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
             return response;
         })
         .catch(error => {
@@ -289,20 +307,5 @@ $(document).ready(function() {
     function validateEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
-    }
-
-    // Función simplificada para mostrar alertas (con fallback a alert estándar)
-    function showAlert(title, message, icon) {
-        try {
-            Swal.fire({
-                title: title,
-                text: message,
-                icon: icon,
-                confirmButtonText: 'Aceptar'
-            });
-        } catch (error) {
-            console.error("Error al mostrar SweetAlert:", error);
-            alert(title + "\n" + message);
-        }
     }
 });

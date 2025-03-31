@@ -1,31 +1,25 @@
 @import url(https://fonts.googleapis.com/css?family=Exo:400,500,500italic,400italic,600,600italic,700,700italic,800,800italic,300,300italic);
 
-.container.login-form {
-    width: 500px; /* Reducir ancho */
-    margin-left: 50px; /* Distancia desde la izquierda */
-    margin-right: auto;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px; /* Reducir padding */
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
 body {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    font-family: 'Exo', sans-serif;
+    min-height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Alinear a la izquierda */
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
 }
 
+/* Estilos para el fondo de video */
 .video-background {
-    position: fixed;
+    position: absolute; /* Cambiado de fixed a absolute */
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     z-index: -1;
+    overflow: hidden;
 }
 
 .video-background video {
@@ -34,84 +28,158 @@ body {
     object-fit: cover;
 }
 
-.container.login-form {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 30px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+/* Contenedor principal y caja de login */
+.login-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding-left: 5%;
 }
 
-.panel {
-    margin-bottom: 0;
-    border: none;
-    box-shadow: none;
-} 
-.login-form{width:390px;}
-.login-title{font-family: 'Exo', sans-serif;text-align:center;color: black;}
-.login-userinput{margin-bottom: 10px;}
-.login-button{margin-top:10px;}
-.login-options{margin-bottom:0px;}
-.login-forgot{float: right;}
-
-/* Agregar estos estilos al archivo index.css para mejorar la apariencia de los modales */
-
-/* Estilos para modales de SweetAlert2 personalizados */
-.swal2-popup {
-    font-family: 'Exo', sans-serif;
-    border-radius: 5px;
+.login-box {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    padding: 25px;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 10vh;
 }
 
-.swal2-title {
-    color: #333;
-    font-weight: 600;
+.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.swal2-confirm {
-    background-color: #4e73df !important;
+.logo-container img {
+    width: 200px;
+    height: auto;
 }
 
-.swal2-cancel {
-    background-color: #858796 !important;
+/* Estilos para el formulario */
+.form-group {
+    margin-bottom: 20px;
 }
 
-/* Estilos para los inputs dentro del modal */
-.swal2-content .form-group {
-    margin-bottom: 15px;
-}
-
-.swal2-content .form-control {
-    border-radius: 4px;
-    height: 38px;
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+    font-weight: 500;
     font-size: 14px;
 }
 
-.swal2-content .input-group {
+.form-control {
+    height: 45px;
+    font-size: 16px;
+    background-color: #f0f2f7;
+    border: 1px solid #dde0e7;
+    border-radius: 4px;
+}
+
+.input-group-btn button {
+    height: 45px;
+    width: 45px;
+    background-color: #f0f2f7;
+    border: 1px solid #dde0e7;
+    border-left: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-forgot {
+    display: inline-block;
     margin-bottom: 15px;
+    font-size: 14px;
+    text-decoration: none;
+    color: #0078d7 !important;
 }
 
-.swal2-content .input-group-addon {
-    background-color: #f8f9fc;
-    border: 1px solid #d1d3e2;
-    border-right: 0;
-    border-radius: 4px 0 0 4px;
-    color: #858796;
-    padding: 6px 12px;
+.login-button {
+    height: 45px;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #0078d7;
+    border-color: #0078d7;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    color: white;
 }
 
-.swal2-content .mb-3 {
-    margin-bottom: 15px;
+.login-button:hover {
+    background-color: #006cc1;
 }
 
-/* Estilos para el token input */
-#tokenInput {
+/* Versión */
+.version {
     text-align: center;
-    letter-spacing: 2px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #4e73df;
+    position: absolute; /* Cambiado de fixed a absolute */
+    bottom: 10px;
+    width: 100%;
+    color: #666;
+    font-size: 12px;
 }
 
-/* Spinner para los botones */
-.fa-spinner {
-    margin-right: 5px;
+.error-message {
+    color: #d9534f;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+/* Estilos para los íconos de países */
+.country-flags {
+    text-align: center;
+    margin: 15px 0 25px;
+}
+
+.country-flag {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    border-radius: 50%;
+    border: 2px solid #0078d7;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.country-flag img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+    .login-container {
+        padding-left: 15px;
+        padding-right: 15px;
+        justify-content: center;
+    }
+    
+    .login-box {
+        margin-bottom: 0;
+    }
+    
+    .country-flag {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-height: 700px) {
+    .login-box {
+        margin-bottom: 5vh;
+        padding: 15px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
 }

@@ -1,94 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Grido Tech Advance - Login</title>
-	
+
 	<!-- CSS -->
-	<link rel="stylesheet" href="css/material.min.css">
-	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
-	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
-    <link rel="stylesheet" href="css/index.css">
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	
-	<!-- SweetAlert2 - IMPORTANTE: asegurarse de que el JS esté correctamente cargado -->
-	<link rel="stylesheet" href="css/sweetalert2.css">
-	<!-- Asegúrate de que el JS de SweetAlert se cargue correctamente -->
-	<script src="js/sweetalert2.min.js"></script>
-	<!-- Fallback CDN para SweetAlert2 en caso de que el archivo local falle -->
-	<script>
-		if (typeof Swal === 'undefined') {
-			document.write('<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"><\/script>');
-		}
-	</script>
-	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/index.css">
+
 	<!-- jQuery -->
+	<script src="js/index.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
-	
-	<!-- Otras bibliotecas JS -->
-	<script src="js/material.min.js"></script>
-	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script src="js/main.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+	<!-- SWEETALERT -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<!-- PRUEBA-->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
+
 <body>
-	<!-- Fondo de video -->
-	<div class="video-background">
-		<video autoplay loop muted>
-			<source src="./assets/img/Cámara de frío más grande de LATAM - Grido - Grido Helado (1080p, h264, youtube) (online-video-cutter.com).mp4" type="video/mp4">
-			Tu navegador no soporta la etiqueta de video.
-		</video>
-	</div>
-	
-	<!-- Formulario de login -->
-	<div class="container login-form">
-		<h2 class="login-title">Iniciar Sesión</h2>
-		<div class="panel panel-default">
-			<div class="panel-body">
+		<!-- Fondo de video -->
+		<div class="video-background">
+			<video autoplay loop muted>
+				<source src="./assets/img/Cámara de frío más grande de LATAM - Grido - Grido Helado (1080p, h264, youtube) (online-video-cutter.com).mp4" type="video/mp4">
+				Tu navegador no soporta la etiqueta de video.
+			</video>
+		</div>
+		<!-- Formulario de login -->
+		<div class="container login-container">
+			<div class="login-box">
+				<div class="logo-container">
+					<img src="assets/img/grido-icon.png" alt="Grido Tech Advance">
+				</div>
+				<div>
+					<h2 class="text-center">Iniciar sesión</h2>
+					
+					<!-- Íconos de banderas de países -->
+					<div class="country-flags">
+						<div class="country-flag" title="Argentina">
+							<img src="./assets/img/argentina.png" alt="Argentina">
+						</div>
+						<div class="country-flag" title="Chile">
+							<img src="./assets/img/chile.png" alt="Chile">
+						</div>
+						<div class="country-flag" title="Uruguay">
+							<img src="./assets/img/uruguay.png" alt="Uruguay">
+						</div>
+						<div class="country-flag" title="Paraguay">
+							<img src="./assets/img/paraguay.png" alt="Paraguay">
+						</div>
+					</div>
+				</div>
 				<form id="loginForm">
-					<!-- Campo de usuario -->
-					<div class="input-group login-userinput">
-						<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-						<input id="txtUser" type="text" class="form-control" name="username" placeholder="Username">
+					<!-- Campo de usuario/apellido -->
+					<div class="form-group">
+						<label for="txtUser">Usuario / Apellido</label>
+						<input id="txtUser" type="text" class="form-control" name="username" placeholder="Ingrese su apellido">
 					</div>
 					
 					<!-- Campo de contraseña -->
-					<div class="input-group">
-						<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-						<input id="txtPassword" type="password" class="form-control" name="password" placeholder="Password">
-						<span id="showPassword" class="input-group-btn">
-							<button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
-						</span>  
+					<div class="form-group">
+						<label for="txtPassword">Contraseña</label>
+						<div class="input-group">
+							<input id="txtPassword" type="password" class="form-control" name="password" placeholder="••••••••">
+							<span class="input-group-btn">
+								<button class="btn btn-default reveal" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+							</span>
+						</div>
+					</div>
+					
+					<!-- Mensaje de error en el formulario -->
+					<div class="error-message" id="formErrorMessage">Debe completar todos los campos</div>
+					
+					<!-- Olvidó contraseña -->
+					<div class="text-left">
+						<a href="#" class="login-forgot">¿Olvidó su contraseña?</a>
 					</div>
 					
 					<!-- Botón de ingreso -->
-					<button type="button" class="btn btn-primary btn-block login-button">
-						<i class="fa fa-sign-in"></i> INGRESAR
-					</button>
-					
-					<!-- Enlaces adicionales -->
-					<div class="checkbox login-options">
-						<a href="#" class="login-forgot">¿Olvidaste tu contraseña?</a>
-					</div>		
-				</form>			
+					<div class="form-group">
+						<button type="button" class="btn btn-primary btn-block login-button">
+							Ingresar
+						</button>
+					</div>
+				</form>
 			</div>
 		</div>
-	</div>
 	
-	<!-- Script de login personalizado (al final) -->
+		<!-- Versión -->
+		<div class="version">
+			GRIDO TECH ADVANCE V2.15.6.7
+		</div>
+
+	<!-- Script personalizado -->
 	<script src="js/index.js"></script>
-	
-	<!-- Script para probar si SweetAlert está disponible -->
-	<script>
-		$(document).ready(function() {
-			if (typeof Swal === 'undefined') {
-				console.error("SweetAlert no está disponible después de cargar todos los scripts");
-			} else {
-				console.log("SweetAlert está correctamente cargado");
-			}
-		});
-	</script>
 </body>
+
 </html>
