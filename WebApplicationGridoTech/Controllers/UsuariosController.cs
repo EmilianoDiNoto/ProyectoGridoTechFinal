@@ -18,7 +18,8 @@ namespace WebApplicationGridoTech.Controllers
 
     public class UsuariosController : ApiController
     {
-        private string connectionString = @"Data Source=LAPTOP-OJ158TC8;Initial Catalog=GridoTech ; Integrated Security= True ";
+        private string connectionString = @"Data Source=EMI-PC\EMI_PC_SERVER;Initial Catalog=GridoTech ; Integrated Security= True ";
+        /// Conexión a Base de Datos EMI
 
         [HttpPost]
         [Route("api/usuarios/login")]
@@ -32,10 +33,11 @@ namespace WebApplicationGridoTech.Controllers
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
+                // Corregido: UserLastname a UserLastName para consistencia
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT UserID, UserName, UserLastName, UserPass, RolID, Email FROM Users WHERE UserName = @UserName", conn))
+                    "SELECT UserID, UserName, UserLastName, UserPass, RolID, Email FROM Users WHERE UserLastName = @UserLastName", conn))
                 {
-                    cmd.Parameters.AddWithValue("@UserName", request.Username);
+                    cmd.Parameters.AddWithValue("@UserLastName", request.Username);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
