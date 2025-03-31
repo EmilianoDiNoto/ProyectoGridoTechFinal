@@ -1,84 +1,39 @@
-.container {
-    width: 100%;
-    max-width: 100%;
-}
-
-.row {
-    display: flex;
-    justify-content: space-around; /* Distribuye el espacio de manera más uniforme */
-    flex-wrap: nowrap; /* Mantiene las tablas en la misma línea */
-    gap: 5px; /* Reduce el espacio entre las tablas */
-}
-
-.col-md-3 {
-    flex: 1; /* Permite que cada tabla crezca dinámicamente */
-    min-width: 30%; /* Asegura que cada tabla tenga un tamaño adecuado */
-}
-
-.table {
-    width: 100%; /* Ocupar el 100% del contenedor */
-    min-height: 200px; /* Altura mínima para mantener el tamaño uniforme */
-    table-layout: fixed; /* Fija el ancho de las columnas */
-    background-color: #ccc;
-}
-
-th, td {
-    white-space: nowrap; /* Evita saltos de línea */
-    text-align: center;
-    padding: 5px; /* Añade algo de espacio en las celdas */
-}
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-.form-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    align-items: center;
-}
-
-.form-group {
+.progress-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-label {
+    margin-bottom: 10px; /* Espaciado entre las barras */
+  }
+  
+  .progress-taller {
+    flex: 0 0 auto;
+    margin-right: 10px; /* Separación entre el nombre y la barra */
     font-weight: bold;
-    min-width: 120px;
-    /* Ajusta el ancho para alinear */
-}
-
-input {
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    padding: 8px 15px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-#material {
-    width: 350px; /* Aumenta el tamaño */
-}
-
-.ag-format-container {
+  }
+  
+  .progress {
+    width: 100%;
+    margin-right: 10px; /* Espacio entre la barra y la duración */
+  }
+  
+  .progress-bar {
+    position: relative;
+  }
+  
+  .progress-value {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+  }
+  
+  .progress-duration {
+    flex: 0 0 auto;
+    font-weight: bold;
+    margin-left: 10px; /* Separación entre la barra y el valor de duración */
+  }
+  
+  .ag-format-container {
     width: 1142px;
     margin: 0 auto;
   }
@@ -172,8 +127,55 @@ button:hover {
     -o-transition: all .5s ease;
     transition: all .5s ease;
   }
-  .card:hover {
-    transform: scale(1.1);
-    transition: transform 0.3s ease-in-out;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Agrega sombra */
-}
+  .ag-courses_item:nth-child(2n) .ag-courses-item_bg {
+    background-color: #3ecd5e;
+  }
+  .ag-courses_item:nth-child(3n) .ag-courses-item_bg {
+    background-color: #e44002;
+  }
+  .ag-courses_item:nth-child(4n) .ag-courses-item_bg {
+    background-color: #952aff;
+  }
+  .ag-courses_item:nth-child(5n) .ag-courses-item_bg {
+    background-color: #cd3e94;
+  }
+  .ag-courses_item:nth-child(6n) .ag-courses-item_bg {
+    background-color: #4c49ea;
+  }
+  
+  
+  
+  @media only screen and (max-width: 979px) {
+    .ag-courses_item {
+      -ms-flex-preferred-size: calc(50% - 30px);
+      flex-basis: calc(50% - 30px);
+    }
+    .ag-courses-item_title {
+      font-size: 24px;
+    }
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .ag-format-container {
+      width: 96%;
+    }
+  
+  }
+  @media only screen and (max-width: 639px) {
+    .ag-courses_item {
+      -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+    }
+    .ag-courses-item_title {
+      min-height: 72px;
+      line-height: 1;
+  
+      font-size: 24px;
+    }
+    .ag-courses-item_link {
+      padding: 22px 40px;
+    }
+    .ag-courses-item_date-box {
+      font-size: 16px;
+    }
+  }

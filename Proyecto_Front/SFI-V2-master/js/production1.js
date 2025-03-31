@@ -210,30 +210,33 @@ $(document).ready(function () {
 
                     // Llamar a la API para obtener los proveedores del material actual
                     fetch(`http://localhost:63152/api/MaterialSupplier/by-material/${encodeURIComponent(material.MATERIAL)}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`Error: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(proveedores => {
-                            const selectProveedor = $(`#proveedor${index}`);
-                            selectProveedor.empty(); // Limpiar opciones previas
-                            selectProveedor.append('<option value=""></option>');
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Error: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(proveedores => {
+                        const selectProveedor = $(`#proveedor${index}`);
+                        selectProveedor.empty(); // Limpiar opciones previas
+                        
+                        // Añadir la opción vacía solo al inicio
+                        selectProveedor.append('<option value="" selected disabled hidden></option>');
+                
+                        if (Array.isArray(proveedores) && proveedores.length > 0) {
+                            proveedores.forEach(proveedor => {
+                                selectProveedor.append(
+                                    `<option value="${proveedor.PROVEEDOR}">${proveedor.PROVEEDOR}</option>`
+                                );
+                            });
+                        } else {
+                            selectProveedor.append('<option value="" disabled>Sin proveedores disponibles</option>');
+                        }
+                    })
+                    .catch(error => console.error(`❌ Error al obtener proveedores para ${material.MATERIAL}:`, error));
+                
 
-                            if (Array.isArray(proveedores) && proveedores.length > 0) {
-                                proveedores.forEach(proveedor => {
-                                    selectProveedor.append(`<option value="${proveedor.PROVEEDOR}">${proveedor.PROVEEDOR}</option>`);
-                                });
 
-                                // Forzar actualización del select
-                                selectProveedor.trigger("change");
-
-                            } else {
-                                selectProveedor.append('<option value="">Sin proveedores disponibles</option>');
-                            }
-                        })
-                        .catch(error => console.error(`❌ Error al obtener proveedores para ${material.MATERIAL}:`, error));
 
                 });
 
@@ -448,7 +451,7 @@ $(document).ready(function () {
                         .then(proveedores => {
                             const selectProveedor = $(`#proveedorSF${index}`);
                             selectProveedor.empty(); // Limpiar opciones previas
-                            selectProveedor.append('<option value=""></option>');
+                            selectProveedor.append('<option value="" selected disabled hidden></option>');
 
                             if (Array.isArray(proveedores) && proveedores.length > 0) {
                                 proveedores.forEach(proveedor => {
@@ -676,7 +679,7 @@ $(document).ready(function () {
                         .then(proveedores => {
                             const selectProveedor = $(`#proveedorDE${index}`);
                             selectProveedor.empty(); // Limpiar opciones previas
-                            selectProveedor.append('<option value=""></option>');
+                            selectProveedor.append('<option value="" selected disabled hidden></option>');
 
                             if (Array.isArray(proveedores) && proveedores.length > 0) {
                                 proveedores.forEach(proveedor => {
@@ -898,7 +901,7 @@ $(document).ready(function () {
                         .then(proveedores => {
                             const selectProveedor = $(`#proveedorSC${index}`);
                             selectProveedor.empty(); // Limpiar opciones previas
-                            selectProveedor.append('<option value=""></option>');
+                            selectProveedor.append('<option value="" selected disabled hidden></option>');
 
                             if (Array.isArray(proveedores) && proveedores.length > 0) {
                                 proveedores.forEach(proveedor => {
@@ -1203,6 +1206,16 @@ $(document).ready(function () {
 
 //MODAL VER SOLICITUD
 $(document).ready(function () {
+    $('#verSolicitudes1').on('click', function () {
+        // Recargar la tabla antes de mostrar el modal
+        table.ajax.reload(null, false); // 'false' mantiene la página actual
+
+        // Mostrar el modal después de recargar los datos
+        setTimeout(() => {
+            $("#modalSolicitudesR").show();
+        }, 500); // Pequeño retraso para garantizar la actualización
+
+    });
     let table = $('#myTable').DataTable({
         autoWidth: false,
         scrollX: true,  // Habilita desplazamiento horizontal
@@ -1310,31 +1323,25 @@ $(document).ready(function () {
 
     // Evento click para abrir el modal y cargar los datos
     $('#verSolicitudes1').on('click', function () {
-        console.log("El botón fue presionado. Recargando la tabla...");
-
-        // Recargar la tabla antes de mostrar el modal
-        table.ajax.reload(null, false); // 'false' mantiene la página actual
-
-        // Mostrar el modal después de recargar los datos
-        setTimeout(() => {
-            $("#modalSolicitudes").show();
-        }, 500);
-
+    console.log("El botón fue presionado. Recargando la tabla...");
+    
+    // Mostrar un indicador de carga (opcional)
+    $("#loadingIndicator").show();
+    
+    // Recargar la tabla y esperar a que termine
+    table.ajax.reload(function() {
+        // Esta función se ejecuta cuando la recarga de datos se completa
+        console.log("✅ Tabla recargada correctamente");
+        
+        // Ocultar indicador de carga (si existe)
+        $("#loadingIndicator").hide();
+        
+        // Mostrar el modal
         $("#modalSolicitudes").show();
-
-        // Llamar a la API para obtener los datos
-        $.ajax({
-            url: "http://localhost:63152/api/SolicitudMaterialRepository/GetAllSolicitudes",
-            method: "GET",
-            dataType: "json",
-            success: function (data) {
-                console.log("✅ Datos recibidos:", data);
-            },
-            error: function (xhr, status, error) {
-                console.error("❌ Error en la solicitud AJAX:", status, error);
-            }
-        });
-    });
+    }, false); // 'false' mantiene la página actual
+    
+    // No es necesario hacer otra llamada AJAX aquí, ya que DataTables ya la hizo
+});
 
     // Cerrar modal al hacer clic en la "X"
     $(".close").on("click", function () {
@@ -1352,8 +1359,6 @@ $(document).ready(function () {
 //ENVIAR PEDIDO
 $(document).ready(function () {
     $('#verSolicitudes1').on('click', function () {
-        console.log("El botón fue presionado. Recargando la tabla...");
-
         // Recargar la tabla antes de mostrar el modal
         table.ajax.reload(null, false); // 'false' mantiene la página actual
 
@@ -1500,7 +1505,7 @@ $(document).ready(function () {
                 data.DetalleMateriales.forEach((item, index) => {
                     let material = item.Material;
                     let cantidad = item.Cantidad;
-        
+
                     if ($("#recepcionarTableBody td:contains('" + material + "')").length === 0) {
                         let nuevaFila = `
                         <tr>
@@ -1523,10 +1528,10 @@ $(document).ready(function () {
                                 <input type="text" class="form-control lote-input" style="height: 24px; padding: 2px; text-align: center">
                             </td>
                         </tr>`;
-        
+
                         $("#recepcionarTableBody").append(nuevaFila);
                         console.log(`🆔 Select generado: #proveedor${index} para material ${item.Material}`);
-        
+
                         // Llamar a la API para obtener los proveedores del material actual
                         fetch(`http://localhost:63152/api/MaterialSupplier/by-material/${encodeURIComponent(item.Material)}`)
                             .then(response => {
@@ -1539,8 +1544,8 @@ $(document).ready(function () {
                                 console.log('Proveedores obtenidos:', proveedores); // Verifica los datos de proveedores
                                 const selectProveedor = $(`#proveedorRE${index}`);
                                 selectProveedor.empty();
-                                selectProveedor.append('<option value=""></option>');
-        
+                                selectProveedor.append('<option value="" selected disabled hidden></option>');
+
                                 if (Array.isArray(proveedores) && proveedores.length > 0) {
                                     proveedores.forEach(proveedor => {
                                         console.log('Proveedor:', proveedor); // Verifica la estructura del proveedor
@@ -1559,7 +1564,7 @@ $(document).ready(function () {
                             .catch(error => console.error(`❌ Error al obtener proveedores para ${item.Material}:`, error));
                     }
                 });
-        
+
                 // Bloquear números negativos
                 document.querySelectorAll(".cantidad-input").forEach(input => {
                     input.addEventListener("input", function () {
@@ -1568,13 +1573,13 @@ $(document).ready(function () {
                         }
                     });
                 });
-        
+
                 // 🔴 Cerrar el modal manualmente
                 document.getElementById("modalSolicitudesR").style.display = "none";
-        
+
                 alert("✅ Todos los materiales han sido agregados correctamente.");
                 table.ajax.reload(null, false); // Recargar la tabla
-        
+
                 setTimeout(() => {
                     $("#modalSolicitudes").show();
                 }, 500);
@@ -2022,5 +2027,73 @@ function asignarTurno() {
 // Llamar a la función cuando se carga la página
 window.onload = asignarTurno;
 
+//Barras de progreso con pasos numerados
+async function cargarMovimientos(ordenTrabajoID) {
+    try {
+        const response = await fetch("http://localhost:63152/api/ProductionStore/GetAllProductionStore");
+        if (!response.ok) throw new Error("Error al obtener los datos");
+
+        const data = await response.json();
+
+        // Filtrar los datos por la OT seleccionada
+        const movimientosOT = data.filter(item => item.OT == ordenTrabajoID);
+
+        // Definir los tipos de movimiento en orden secuencial
+        const tiposOrdenados = ["STOCK INICIAL", "PEDIDO", "DEVOLUCION", "SCRAP", "STOCK FINAL"];
+
+        // Identificar qué niveles tienen al menos un registro
+        let nivelesAlcanzados = tiposOrdenados.map(tipo =>
+            movimientosOT.some(item => item.TIPOMOV.toUpperCase() === tipo)
+        );
+
+        // Calcular el porcentaje de avance según los niveles alcanzados
+        let totalNiveles = tiposOrdenados.length;
+        let nivelesCompletados = nivelesAlcanzados.filter(v => v).length;
+        let progreso = (nivelesCompletados / totalNiveles) * 100;
+
+        // Ajustar la barra de progreso
+        let progressBar = document.getElementById("progressBar");
+        progressBar.style.width = `${progreso}%`;
+
+        // Ajustar la posición de los botones en la barra de progreso
+        let buttons = document.querySelectorAll(".progress-btn");
+
+        buttons.forEach((btn, index) => {
+            if (index < totalNiveles) {
+                // Solo actualizamos los colores, no la posición
+                if (nivelesAlcanzados[index]) {
+                    btn.classList.remove("btn-secondary");
+                    btn.classList.add("btn-primary");
+                } else {
+                    btn.classList.remove("btn-primary");
+                    btn.classList.add("btn-secondary");
+                }
+            }
+        });
+
+        console.log(`✅ Progreso actualizado para OT ${ordenTrabajoID}: ${progreso.toFixed(2)}%`);
+
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+// Iniciar el monitoreo de la OT ingresada y actualizar la barra de progreso
+document.addEventListener("DOMContentLoaded", function () {
+    const otInput = document.getElementById("validationCustom01");
+
+    function actualizarProgreso() {
+        const currentValue = otInput.value.trim();
+        if (currentValue !== "") {
+            cargarMovimientos(currentValue);
+        }
+    }
+
+    // Ejecutar la función inmediatamente al cargar la página
+    actualizarProgreso();
+
+    // Configurar actualización automática cada 5 segundos
+    setInterval(actualizarProgreso, 5000);
+});
 
 

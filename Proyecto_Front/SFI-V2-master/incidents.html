@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
 	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/productionstore.css">
+	<link rel="stylesheet" href="css/incidents.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<!-- SweetAlert2 (una sola versión) -->
@@ -27,20 +27,6 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-
-
-	<!-- Chart.js -->
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
-	<script src="js/material.min.js"></script>
-	<script src="js/sweetalert2.min.js"></script>
-	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-	<script src="js/main.js"></script>
-	<script src="js/menuControl.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 	<!-- BOOTSTRAP -->
 	<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
@@ -64,9 +50,9 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-	<!--Libreria del Calendario Domingo a Sabado-->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+	<script src="https://code.highcharts.com/dashboards/dashboards.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
 
 </head>
 
@@ -139,7 +125,9 @@
 		</ul>
 	</aside>
 	<section>
+		
 		<div class="container">
+			<h2>Incidencias Registradas</h2>
 			<table id="example" class="display" style="width:100%">
 				<thead>
 					<tr>
@@ -156,63 +144,9 @@
 					<!-- Los datos se insertarán aquí -->
 				</tbody>
 			</table>
-			<div id="progress-bars" class="mt-4">
-				<h3>Duración por Taller</h3>
-				<div class="progress">
-					<div class="progress-bar progress-bar-striped" id="mecanico" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">MECANICO</div>
-				</div>
-				<div class="progress">
-					<div class="progress-bar progress-bar-striped bg-success" id="calidad" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">CALIDAD</div>
-				</div>
-				<div class="progress">
-					<div class="progress-bar progress-bar-striped bg-info" id="abastecimiento" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">ABASTECIMIENTO</div>
-				</div>
-				<div class="progress">
-					<div class="progress-bar progress-bar-striped bg-warning" id="servicios" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">SERVICIOS EXTERNOS</div>
-				</div>
-				<div class="progress">
-					<div class="progress-bar progress-bar-striped bg-danger" id="produccion" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">PRODUCCION</div>
-				</div>
-			</div>
+			
 		</div>
 	</section>
-	</section>
-	<script>
-		$(document).ready(function () {
-			// Hacer la solicitud a la API
-			$.ajax({
-				url: 'http://localhost:63152/api/Unplanned/GetAllUnplanned',
-				method: 'GET',
-				dataType: 'json',
-				success: function (data) {
-					// Llenar la tabla con los datos
-					var tableBody = $('#example tbody');
-					data.forEach(function (incidente) {
-						var row = `<tr>
-							<td>${incidente.OT}</td>
-							<td>${new Date(incidente.FECHA).toLocaleDateString()}</td>
-							<td>${incidente.HSINICIO}</td>
-							<td>${incidente.HSFIN}</td>
-							<td>${incidente.DETALLE}</td>
-							<td>${incidente.TALLER}</td>
-							<td>${incidente.DURACION}</td>
-						</tr>`;
-						tableBody.append(row);
-					});
-
-					// Inicializar DataTable
-					new DataTable('#example', {
-						paging: false,
-						scrollCollapse: true,
-						scrollY: '600px'
-					});
-				},
-				error: function (xhr, status, error) {
-					console.error('Error al obtener los datos:', error);
-				}
-			});
-		});
-	</script>
 
 	<!-- Librerías necesarias -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -225,7 +159,7 @@
 	<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 	<!-- Archivo JavaScript separado -->
-	<script src="js/production1.js"></script>
+	<script src="js/incidents.js"></script>
 
 </body>
 

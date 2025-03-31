@@ -84,9 +84,15 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a href="production.html" class="sidebar-link">
+                <a href="production1.html" class="sidebar-link">
                     <i class="zmdi zmdi-washing-machine"></i>
                     <span>Declarar Producción</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="productionTable.html" class="sidebar-link">
+                    <i class="zmdi zmdi-washing-machine"></i>
+                    <span>Producción Confirmada</span>
                 </a>
             </li>
             <li class="sidebar-item">
@@ -98,7 +104,7 @@
             <li class="sidebar-item">
                 <a href="productStore.html" class="sidebar-link">
                     <i class="zmdi zmdi-assignment"></i>
-                    <span>Almacen Tortas</span>
+                    <span>Almacen</span>
                 </a>
             </li>
             <li class="sidebar-item">
@@ -107,24 +113,11 @@
                     <span>Incidencias</span>
                 </a>
             </li>
-
             <li class="sidebar-item">
-                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                    data-bs-target="#materials" aria-expanded="false" aria-controls="materials">
-                    <i class="zmdi zmdi-case"></i>
+                <a href="materials.html" class="sidebar-link">
+                    <i class="zmdi zmdi-assignment"></i>
                     <span>Materiales</span>
                 </a>
-                <ul id="materials" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                        <a href="materials.html" class="sidebar-link">Materiales</a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="providers.html" class="sidebar-link">Materiales Descartados</a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="payments.html" class="sidebar-link">Materiales Retenidos</a>
-                    </li>
-                </ul>
             </li>
             <li class="sidebar-item">
                 <a href="products.html" class="sidebar-link">
@@ -133,13 +126,19 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a href="productStore.html" class="sidebar-link">
+                <a href="Users_Gestion.html" class="sidebar-link">
                     <i class="zmdi zmdi-store"></i>
-                    <span>Almacén</span>
+                    <span>Gestión de Usuarios</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="index.html" class="sidebar-link">
+                    <i class="zmdi zmdi-store"></i>
+                    <span>Cerrar Sesión</span>
                 </a>
             </li>
         </ul>
-    </aside>
+    </aside>>
     <section class="full-width main">
         <section class="full-width main">
             <!-- navBar -->
@@ -175,26 +174,26 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                             <h2 style="margin-left: 5px;">DECLARAR PRODUCCIÓN</h2>
                             <!-- IMÁGENES -->
-                           <!--  <div class="ice-cream-container" style="display: flex; gap: 10px; margin-left: auto;">
+                            <div class="ice-cream-container" style="display: flex; gap: 10px; margin-left: auto;">
                                 <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND CREAM - GRIDO">
-                                    <img src="assets/img/Torta-cookies-and-cream.jpg" alt="Cookie">
-                                <button id="btnProduct1" class="order-btn">Orden de Trabajo</button>
+                                    <!-- <img src="assets/img/Torta-cookies-and-cream.jpg" alt="Cookie"> -->
+                                    <button id="btnProduct1" class="order-btn">Orden de Trabajo</button>
                                 </div>
                                 <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND MOUSSE - GRIDO">
-                                    <img src="assets/img/Torta-cookies-mousse.jpg" alt="Crema">
-                                <button id="btnProduct2" class="order-btn">Orden de Trabajo</button>
+                                    <!-- <img src="assets/img/Torta-cookies-mousse.jpg" alt="Crema"> -->
+                                    <button id="btnProduct2" class="order-btn">Orden de Trabajo</button>
                                 </div>
                                 <div class="ice-cream-item" data-product="PACK TORTA GRIDO CON RELLENO - GRIDO">
-                                    <img src="assets/img/Torta-Grido360X360.jpg" alt="Chocolate">
-                                <button id="btnProduct3" class="order-btn">Orden de Trabajo</button>
+                                    <!-- <img src="assets/img/Torta-Grido360X360.jpg" alt="Chocolate"> -->
+                                    <button id="btnProduct3" class="order-btn">Orden de Trabajo</button>
                                 </div>
-                            </div> -->
+                            </div>
                             <br>
                         </div>
                         <h4 style="margin-left: 5px;">Ciclo de Avance</h4>
                         <div class="position-relative m-4">
                             <div class="progress-container">
-                                <div class="progress-step">
+                                <div class="progress-step first">
                                     <p>Stock Inicial</p>
                                     <button type="button"
                                         class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
@@ -214,105 +213,122 @@
                                     <button type="button"
                                         class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
                                 </div>
-                                <div class="progress-step">
+                                <div class="progress-step last">
                                     <p>Stock Final</p>
                                     <button type="button"
                                         class="progress-btn btn btn-sm btn-secondary rounded-pill">✓</button>
                                 </div>
                             </div>
-
                             <div class="progress" role="progressbar">
                                 <div id="progressBar" class="progress-bar bg-primary"></div>
                             </div>
                         </div>
-                        <form class="row g-3 needs-validation p-3" novalidate>
-                            <!-- Primera fila -->
-                            <div class="col-md-2">
-                                <label for="validationCustom04" class="form-label">FECHA</label>
-                                <input type="date" class="form-control" id="validationCustom04" readonly
-                                    style="pointer-events: none;">
-                            </div>
-                            <div class="col-md-2">
-                                <label for="validationCustom05" class="form-label">TURNO</label>
-                                <input type="text" class="form-control" id="validationCustom05" readonly
-                                    style="pointer-events: none;">
-                            </div>
-                            <div class="col-md-5">
-                                <label for="validationCustom06" class="form-label">RESPONSABLE</label>
-                                <input type="text" class="form-control" id="validationCustom06">
-                            </div>
-                            <div class="col-md-3">
-                                <label for="validationCustom01" class="form-label">ORDEN DE TRABAJO</label>
-                                <input type="text" class="form-control" id="validationCustom01" readonly
-                                    style="pointer-events: none;">
-                            </div>
-                            <!-- Segunda fila -->
-                            <div class="col-md-6">
-                                <label for="validationCustom02" class="form-label">PRODUCTO</label>
-                                <input type="text" class="form-control" id="validationCustom02" readonly
-                                    style="pointer-events: none;">
-                            </div>
-                            <div class="col-md-2">
-                                <label for="validationCustom03" class="form-label">CANTIDAD</label>
-                                <input type="text" class="form-control text-end" id="validationCustom03">
-                            </div>
-                            <div class="col-md-4 d-flex align-items-end">
-                                <div class="d-flex align-items-center gap-2 w-100">
-                                    <button class="btn btn-primary w-100" type="submit">REALIZADO</button>
-                                    <i id="iconoAbrirDetencion"
-                                        class="fa-solid fa-screwdriver-wrench fa-2x border icono-hover"></i>
+                        <div>
+                            <form class="row g-3 needs-validation p-3" novalidate>
+                                <!-- Primera fila -->
+                                <div class="col-md-2">
+                                    <label for="validationCustom04" class="form-label">FECHA</label>
+                                    <input type="date" class="form-control" id="validationCustom04" readonly
+                                        style="pointer-events: none;">
                                 </div>
-                                <!-- Modal de Detención de Línea -->
-                                <div id="modalDetencionLinea" class="modal-detencion">
-                                    <div class="modal-content-detencion">
-                                        <span class="close-detencion">&times;</span>
-                                        <h3>Registrar Detención</h3>
-                                        <form>
-                                            <!-- Fila con OT, Fecha y Hora Inicio -->
-                                            <div class="fila-detencion d-flex align-items-center gap-2">
-                                                <div class="col-auto">
-                                                    <label for="modalOTDetencion">OT:</label>
-                                                    <input type="text" id="modalOTDetencion"
-                                                        class="form-control text-center" readonly style="width: 80px;">
+                                <div class="col-md-2">
+                                    <label for="validationCustom05" class="form-label">TURNO</label>
+                                    <input type="text" class="form-control" id="validationCustom05" readonly
+                                        style="pointer-events: none;">
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="validationCustom06" class="form-label">RESPONSABLE</label>
+                                    <input type="text" class="form-control" id="validationCustom06">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="validationCustom01" class="form-label">ORDEN DE TRABAJO</label>
+                                    <input type="text" class="form-control" id="validationCustom01" readonly
+                                        style="pointer-events: none;">
+                                </div>
+                                <!-- Segunda fila -->
+                                <div class="col-md-6">
+                                    <label for="validationCustom02" class="form-label">PRODUCTO</label>
+                                    <input type="text" class="form-control" id="validationCustom02" readonly
+                                        style="pointer-events: none;">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="validationCustom03" class="form-label">CANTIDAD</label>
+                                    <input type="text" class="form-control text-end" id="validationCustom03">
+                                </div>
+                                <div class="col-md-4 d-flex align-items-end">
+                                    <div class="d-flex align-items-center gap-2 w-100">
+                                        <button class="btn btn-primary w-100" type="submit">REALIZADO</button>
+                                        <i id="iconoAbrirDetencion"
+                                            class="fa-solid fa-screwdriver-wrench fa-2x border icono-hover"></i>
+                                    </div>
+                                    <!-- Modal de Detención de Línea -->
+                                    <div id="modalDetencionLinea" class="modal-detencion">
+                                        <div class="modal-content-detencion">
+                                            <span class="close-detencion">&times;</span>
+                                            <h3>Registrar Detención</h3>
+                                            <form>
+                                                <!-- Fila con OT, Fecha y Hora Inicio -->
+                                                <div class="fila-detencion d-flex align-items-center gap-2">
+                                                    <div class="col-auto">
+                                                        <label for="modalOTDetencion">OT:</label>
+                                                        <input type="text" id="modalOTDetencion"
+                                                            class="form-control text-center" readonly
+                                                            style="width: 80px;">
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <label for="modalFechaDetencion">FECHA:</label>
+                                                        <input type="date" id="modalFechaDetencion"
+                                                            class="form-control text-center" readonly
+                                                            style="width: 130px; margin-left: -5px;">
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <label for="modalHoraDetencion">HORA INICIO:</label>
+                                                        <input type="text" id="modalHoraDetencion"
+                                                            class="form-control text-center" readonly
+                                                            style="width: 90px;">
+                                                    </div>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <label for="modalFechaDetencion">FECHA:</label>
-                                                    <input type="date" id="modalFechaDetencion"
-                                                        class="form-control text-center" readonly
-                                                        style="width: 130px; margin-left: -5px;">
+                                                <label for="modalDetalleDetencion">DETALLE:</label>
+                                                <textarea id="modalDetalleDetencion" rows="3"></textarea>
+                                                <div class="d-flex align-items-end gap-3 mt-2">
+                                                    <div class="col-md-7">
+                                                        <label for="modalTallerDetencion">TALLER:</label>
+                                                        <select id="modalTallerDetencion" class="form-select">
+                                                            <option value="" selected disabled>Selecciona un taller
+                                                            </option>
+                                                            <option value="ABASTECIMIENTO">ABASTECIMIENTO</option>
+                                                            <option value="CALIDAD">CALIDAD</option>
+                                                            <option value="EFLUENTES">EFLUENTES</option>
+                                                            <option value="ELECTRICO">ELECTRICO</option>
+                                                            <option value="FECHADORA">FECHADORA</option>
+                                                            <option value="LIMPIEZA">LIMPIEZA</option>
+                                                            <option value="MADURACION">MADURACION</option>
+                                                            <option value="MECANICO">MECANICO</option>
+                                                            <option value="PRODUCCION">PRODUCCION</option>
+                                                            <option value="PRODUCTORAS">PRODUCTORAS</option>
+                                                            <option value="SALA DE HORNOS">SALA DE HORNOS</option>
+                                                            <option value="SALA DE MAQUINAS">SALA DE MAQUINAS</option>
+                                                            <option value="SERVICIOS EXTERNOS">SERVICIOS EXTERNOS
+                                                            </option>
+                                                            <option value="SIMULACRO">SIMULACRO</option>
+                                                        </select>
+                                                    </div>
+                                                    <style>
+                                                        #modalTallerDetencion option[disabled] {
+                                                            display: none;
+                                                        }
+                                                    </style>
+                                                    <div class="col-md-3">
+                                                        <button type="submit"
+                                                            class="btn-guardar-detencion btn btn-primary">REGISTRAR</button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <label for="modalHoraDetencion">HORA INICIO:</label>
-                                                    <input type="text" id="modalHoraDetencion"
-                                                        class="form-control text-center" readonly style="width: 90px;">
-                                                </div>
-                                            </div>
-                                            <label for="modalDetalleDetencion">DETALLE:</label>
-                                            <textarea id="modalDetalleDetencion" rows="3"></textarea>
-
-                                            <div class="d-flex align-items-end gap-3 mt-2">
-                                                <div class="col-md-7">
-                                                    <label for="modalTallerDetencion">TALLER:</label>
-                                                    <select id="modalTallerDetencion" class="form-select">
-                                                        <option value="" selected disabled>Selecciona un taller</option>
-                                                        <option value="MECANICO">MECÁNICO</option>
-                                                        <option value="CALIDAD">CALIDAD</option>
-                                                        <option value="ABASTECIMIENTO">ABASTECIMIENTO</option>
-                                                        <option value="SERVICIOS EXTERNOS">SERVICIOS EXTERNOS</option>
-                                                        <option value="PRODUCCION">PRODUCCIÓN</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <button type="submit"
-                                                        class="btn-guardar-detencion btn btn-primary">REINICIAR</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
-
+                            </form>
+                        </div>
                         <hr class="my-3">
                         <h2>GESTION DE ALMACEN</h2>
                         <div>
@@ -556,73 +572,13 @@
             </section>
         </section>
 
+
+
         <!--Barra de progreso-->
         <script>
-            async function cargarMovimientos(ordenTrabajoID) {
-                try {
-                    const response = await fetch("http://localhost:63152/api/ProductionStore/GetAllProductionStore");
-                    if (!response.ok) throw new Error("Error al obtener los datos");
-
-                    const data = await response.json();
-
-                    // Filtrar los datos por la OT seleccionada
-                    const movimientosOT = data.filter(item => item.OT == ordenTrabajoID);
-
-                    // Definir los tipos de movimiento en orden secuencial
-                    const tiposOrdenados = ["STOCK INICIAL", "PEDIDO", "DEVOLUCION", "SCRAP", "STOCK FINAL"];
-
-                    // Identificar qué niveles tienen al menos un registro
-                    let nivelesAlcanzados = tiposOrdenados.map(tipo =>
-                        movimientosOT.some(item => item.TIPOMOV.toUpperCase() === tipo)
-                    );
-
-                    // Calcular el porcentaje de avance según los niveles alcanzados
-                    let totalNiveles = tiposOrdenados.length;
-                    let nivelesCompletados = nivelesAlcanzados.filter(v => v).length;
-                    let progreso = (nivelesCompletados / totalNiveles) * 100;
-
-                    // Ajustar la barra de progreso
-                    let progressBar = document.getElementById("progressBar");
-                    progressBar.style.width = `${progreso}%`;
-
-                    // Ajustar la posición de los botones en la barra de progreso
-                    let buttons = document.querySelectorAll(".progress-btn");
-
-                    buttons.forEach((btn, index) => {
-                        if (index < totalNiveles) {
-                            let posicion = (index / (totalNiveles - 1)) * 100;
-                            btn.style.left = `${posicion}%`;
-
-                            // Resaltar los niveles completados
-                            if (nivelesAlcanzados[index]) {
-                                btn.classList.remove("btn-secondary");
-                                btn.classList.add("btn-primary");
-                            } else {
-                                btn.classList.remove("btn-primary");
-                                btn.classList.add("btn-secondary");
-                            }
-                        }
-                    });
-
-                } catch (error) {
-                    console.error("Error:", error);
-                }
-            }
-            //ESTAPAS
-            document.addEventListener("DOMContentLoaded", function () {
-                const otInput = document.getElementById("validationCustom01");
-                let lastValue = otInput.value.trim();
-
-                setInterval(function () {
-                    const currentValue = otInput.value.trim();
-                    if (currentValue !== lastValue && currentValue !== "") {
-                        console.log("OT detectada automáticamente:", currentValue);
-                        lastValue = currentValue;
-                        cargarMovimientos(currentValue);
-                    }
-                }, 1000); // Revisa cada segundo
-            });
+           
         </script>
+
 
         <!-- Librerías necesarias -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
