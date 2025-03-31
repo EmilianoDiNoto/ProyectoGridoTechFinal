@@ -1,31 +1,4 @@
-.ice-cream-container {
-    display: flex;
-    justify-content: center;
-    /* Centra horizontalmente */
-    align-items: center;
-    /* Alinea los elementos verticalmente */
-    gap: 50px;
-    /* Espaciado entre imágenes */
-    margin-top: 10px;
-    /* Ajusta la distancia desde la parte superior */
-    flex-wrap: nowrap;
-    /* Evita que se apilen en pantallas grandes */
-}
 
-.ice-cream-item {
-    text-align: center;
-    /* Centra el texto debajo de la imagen */
-}
-
-.ice-cream-item img {
-    width: 250px;
-    /* Ajusta el tamaño de las imágenes */
-    height: auto;
-    border-radius: 100px;
-    /* Bordes redondeados */
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-    /* Sombra ligera */
-}
 
 
 .order-btn {
@@ -38,7 +11,7 @@
     border-radius: 5px;
     background-color: #007bff;
     /* Azul predeterminado */
-    color: white;
+    color: rgb(163, 160, 160);
     transition: background-color 0.3s ease;
 }
 
@@ -193,51 +166,68 @@ tr.shown .btn-expand {
     display: flex;
     justify-content: space-between;
     position: relative;
-    align-items: center;
-    margin-top: 40px; /* Mayor separación */
+    width: 100%;
+    padding-top: 30px; /* Espacio para los textos arriba */
+    margin-bottom: 30px; /* Espacio abajo */
 }
 
 .progress-step {
     text-align: center;
-    flex: 1;
     position: relative;
+    z-index: 3; /* Mantener por encima de la barra */
 }
 
 .progress-step p {
-    margin-bottom: 10px; /* Mayor espacio entre el texto y el punto */
+    position: absolute;
+    top: -30px; /* Posiciona el texto arriba del botón */
+    left: 50%;
+    transform: translateX(-50%); /* Centra el texto horizontalmente */
+    margin: 0;
     font-size: 0.9rem;
     font-weight: bold;
+    width: 100px; /* Ancho fijo para evitar problemas de alineación */
+}
+
+.progress-step p {
+    position: absolute;
+    top: -40px; /* Aumentamos la distancia a -40px desde -30px */
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: bold;
+    width: 100px;
 }
 
 .progress-btn {
-    width: 2.5rem;  /* Aumenta el tamaño del punto */
-    height: 2.5rem; /* Aumenta el tamaño del punto */
+    width: 2.5rem;
+    height: 2.5rem;
     font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 2; /* Para que los puntos estén sobre la barra */
-    background-color: white; /* Asegura que la línea no cubra los botones */
-    border: 3px solid #007bff; /* Hace más visibles los puntos */
-    top: -10px; /* Sube los puntos por encima de la línea */
+    z-index: 2; /* Por encima de la línea */
+    border: 3px solid #007bff;
+    background-color: white; /* Fondo blanco para que la línea no se vea a través */
+    margin-top: -1.25rem; /* Mitad de la altura del botón para posicionarlo sobre la línea */
+}
+
+/* Eliminamos margins específicos para first y last */
+.progress-step.first, .progress-step.last {
+    margin: 0;
 }
 
 .progress {
     position: absolute;
-    top: 50%;
+    top: 30px; /* Alinea con el centro de los botones */
     left: 0;
     width: 100%;
-    height: 1px; /* Hace la línea más delgada */
+    height: 8px;
     background-color: #ddd;
-    z-index: 1;
+    z-index: 1; /* Por debajo de los botones */
 }
 
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    transition: width 0.5s ease-in-out;
-}
 
 .nav-link {
     background-color: rgba(144, 143, 143, 0.1); /* Color oscuro sutil */

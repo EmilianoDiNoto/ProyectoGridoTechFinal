@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
 	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
 	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/production1.css">
+	<link rel="stylesheet" href="css/worksorders.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 	<!-- SweetAlert2 (una sola versión) -->
@@ -62,6 +62,12 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 
+	<!-- Agregar las bibliotecas jsPDF y SheetJS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.6.0/jspdf.plugin.autotable.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js"></script>
 
 
 </head>
@@ -85,7 +91,7 @@
 				</a>
 			</li>
 			<li class="sidebar-item">
-				<a href="production.html" class="sidebar-link">
+				<a href="production1.html" class="sidebar-link">
 					<i class="zmdi zmdi-washing-machine"></i>
 					<span>Declarar Producción</span>
 				</a>
@@ -103,22 +109,22 @@
 				</a>
 			</li>
 			<li class="sidebar-item">
-				<a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-					data-bs-target="#materials" aria-expanded="false" aria-controls="materials">
-					<i class="zmdi zmdi-case"></i>
+				<a href="productStore.html" class="sidebar-link">
+					<i class="zmdi zmdi-assignment"></i>
+					<span>Almacen</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="incidents.html" class="sidebar-link">
+					<i class="zmdi zmdi-assignment"></i>
+					<span>Incidencias</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="materials.html" class="sidebar-link">
+					<i class="zmdi zmdi-assignment"></i>
 					<span>Materiales</span>
 				</a>
-				<ul id="materials" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-					<li class="sidebar-item">
-						<a href="materials.html" class="sidebar-link">Materiales</a>
-					</li>
-					<li class="sidebar-item">
-						<a href="providers.html" class="sidebar-link">Materiales Descartados</a>
-					</li>
-					<li class="sidebar-item">
-						<a href="payments.html" class="sidebar-link">Materiales Retenidos</a>
-					</li>
-				</ul>
 			</li>
 			<li class="sidebar-item">
 				<a href="products.html" class="sidebar-link">
@@ -127,32 +133,111 @@
 				</a>
 			</li>
 			<li class="sidebar-item">
-				<a href="productStore.html" class="sidebar-link">
+				<a href="Users_Gestion.html" class="sidebar-link">
 					<i class="zmdi zmdi-store"></i>
-					<span>Almacén</span>
+					<span>Gestión de Usuarios</span>
+				</a>
+			</li>
+			<li class="sidebar-item">
+				<a href="index.html" class="sidebar-link">
+					<i class="zmdi zmdi-store"></i>
+					<span>Cerrar Sesión</span>
 				</a>
 			</li>
 		</ul>
 	</aside>
 	<section class="full-width main">
+		<!-- Agrega Bootstrap en tu proyecto si aún no lo tienes -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+		<div class="mb-3" style="max-width: 400px;">
+			<label for="input-excel" class="form-label">Cargar Nuevas Ordenes de Trabajo</label>
+			<input class="form-control form-control-sm" type="file" id="input-excel" accept=".xlsx">
+		</div>
+
+
+		<!-- Botón para abrir el modal (opcional) -->
+		<button id="btnMostrarModal" class="btn btn-primary" style="display: none;" data-bs-toggle="modal"
+			data-bs-target="#previewModal">
+			Ver Vista Previa
+		</button>
+
+		<!-- Modal para la vista previa -->
+		<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg"> <!-- Modal grande -->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="previewModalLabel">Vista Previa</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div>
+						<div class="modal-body">
+							<table id="previewTable" class="table table-striped">
+								<thead>
+									<tr>
+										<th style="width: 10%;">ID</th>
+										<th style="width: 10%;">CODIGO</th>
+										<th style="width: 10%;">DEMANDA</th>
+										<th style="width: 10%;">UM</th>
+										<th style="width: 10%;">FECHACREADA</th>
+										<th style="width: 20%;">FECHAMODIFICADA</th>
+										<th style="width: 20%;">ESTADO</th>
+										<th style="width: 10%;">FECHAELABORACION</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+						<div class="modal-footer">
+							<button id="btnEnviar" class="btn btn-success">Enviar a DB</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<h3 style="text-align: center;">ORDENES DE TRABAJO CONFIRMADAS</h3>
 		<table id="workOrdersTable" class="display nowrap" style="width:100%">
 			<thead>
 				<tr>
-					<th>ORDE DE TRABAJO</th>
-					<th>CODIGO</th>
-					<th>PRODUCTO</th>
-					<th>DEMANDA</th>
-					<th>UM</th>
-					<th>ESTADO</th>
-					<th>FECHA ELABORACION</th>
+					<th style="width: 10%;">OT</th>
+					<th style="width: 10%;">CODIGO</th>
+					<th style="width: 20%;">PRODUCTO</th>
+					<th style="width: 20%;">DEMANDA</th>
+					<th style="width: 20%;">ESTADO</th>
+					<th style="width: 10%;">ELABORACION</th>
 				</tr>
 			</thead>
 		</table>
-
 	</section>
-	<script>
-		
-	</script>
+	<!-- Modal para mostrar materiales -->
+	<div class="modal fade" id="materialsModal" tabindex="-1" aria-labelledby="materialsModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg"> <!-- Cambiado de modal-xl a modal-lg -->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="materialsModalLabel">Materiales Necesarios</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table id="materialsTable" class="table table-striped">
+						<thead>
+							<tr>
+								<th style="width: 15%;">CODIGO</th>
+								<th style="width: 40%;">MATERIAL</th>
+								<th style="width: 10%;">NECESIDAD</th>
+								<th style="width: 15%;">ENTREGA</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Script para leer el Excel -->
+	<script src="https://cdn.jsdelivr.net/npm/read-excel-file@5.4.0/bundle/read-excel-file.min.js"></script>
+
 
 	<!-- Librerías necesarias -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -165,7 +250,7 @@
 	<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 	<!-- Archivo JavaScript separado -->
-	<script src="js/production1.js"></script>
+	<script src="js/workorders.js"></script>
 
 </body>
 
