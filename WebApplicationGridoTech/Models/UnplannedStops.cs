@@ -54,6 +54,35 @@ namespace WebApplicationGridoTech.Models
             return Unplanned;
         }
 
+        public List<UnplannedW> GetUnplanned()
+        {
+            List<UnplannedW> UnplannedW = new List<UnplannedW>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("SP_GetWorkshop", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            UnplannedW.Add(new UnplannedW
+                            {
+                                TALLER = reader["TALLER"].ToString(),
+                                DURACION = Convert.ToInt32(reader["DURACION"]),
+                            });
+                        }
+                    }
+                }
+            }
+
+            return UnplannedW;
+        }
+
         // Nuevo método para insertar un movimiento en ProductionStore
         public void InsertUnplanned( int OT, DateTime FECHA, TimeSpan HSINICIO, DateTime FECHAFIN, TimeSpan HSFIN, string DETALLE, string TALLER)
         {
@@ -92,5 +121,12 @@ namespace WebApplicationGridoTech.Models
         public string DETALLE { get; set; }
         public string TALLER { get; set; }
         public int DURACION { get; set; }
+    }
+
+    public class UnplannedW
+    {
+        public string TALLER { get; set; }
+        public int DURACION { get; set; }
+       
     }
 }

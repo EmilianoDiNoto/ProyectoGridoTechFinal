@@ -32,6 +32,21 @@ namespace WebApplicationGridoTech.Controllers
             return Ok(production);
         }
 
+        [HttpGet]
+        [Route("api/Unplanned/GetUnplanned")]
+        public IHttpActionResult GetUnplanned()
+        {
+            List<UnplannedW> production = _UnplannedStopsRepository.GetUnplanned();
+
+            if (production.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(production);
+        }
+
+
         // Nuevo método POST para insertar un EVENTO
         [HttpPost]
         [Route("api/Unplanned/InsertUnplanned")]
