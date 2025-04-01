@@ -83,6 +83,24 @@
 			}
 		};
 	</script>
+ <!-- Agregar esto para la alineación de tablas -->
+ <style>
+	.text-right {
+		text-align: right !important;
+	}
+	
+	/* Aplicar también a las celdas del encabezado para mantener consistencia */
+	table.dataTable thead th.text-right {
+		text-align: right !important;
+	}
+	
+	/* Asegurar que la alineación se aplique en pantallas pequeñas */
+	@media screen and (max-width: 767px) {
+		table.dataTable.dtr-inline.collapsed > tbody > tr > td.text-right {
+			text-align: right !important;
+		}
+	}
+</style>
 
 	<script>
 		// Fix para el error de SweetAlert - Ejecutar antes de otros scripts
@@ -179,7 +197,7 @@
 		<div class="main">
 			<div class="welcome-section md-4"
 				style="display: flex; justify-content: space-between; align-items: center;">
-				<h1>Bienvenido, Emiliano</h1>
+				<img src="assets/img/HelacorSAA.png" alt="" class="logo-helacor">
 				<div class="ice-cream-container" style="display: flex; gap: 10px;">
 					<div class="ice-cream-item" data-product="PACK TORTA COOKIES AND CREAM - GRIDO">
 						<img src="assets/img/Torta-cookies-and-cream.jpg" alt="Cookie">
@@ -230,23 +248,7 @@
 
 			<!-- Nuevo layout para la sección de gráficos -->
 			<div class="row">
-				<!-- Balance de Masas General (ocupa 8/12 columnas en desktop) -->
-				<div class="col-12 col-lg-8 mb-4">
-					<div class="chart-container chart-container-large">
-						<h3 class="chart-title">Balance de Masas Total</h3>
-						<div id="balance-highchart-container" class="highchart-wrapper"></div>
-						<button id="balance-consultar-btn" class="btn btn-consultar" data-bs-toggle="modal"
-							data-bs-target="#balanceModal">
-							Consultar
-						</button>
-					</div>
-
-					<!-- Producción por Temporada -->
-					<div class="chart-container chart-container-medium">
-						<h3 class="chart-title">Producción por Temporada</h3>
-						<div id="produccion-temporada-container" class="highchart-wrapper"></div>
-					</div>
-				</div>
+				
 
 				<!-- Columna derecha (ocupa 4/12 columnas en desktop) -->
 				<div class="col-12 col-lg-4 mb-4">
@@ -271,6 +273,25 @@
 					<div class="chart-container chart-container-small">
 						<h3 class="chart-title">Órdenes de Trabajo</h3>
 						<div id="ordenes-trabajo-container" class="highchart-wrapper"></div>
+					</div>
+				</div>
+
+
+				<!-- Balance de Masas General (ocupa 8/12 columnas en desktop) -->
+				<div class="col-12 col-lg-8 mb-4">
+					<div class="chart-container chart-container-large">
+						<h3 class="chart-title">Balance de Masas Total</h3>
+						<div id="balance-highchart-container" class="highchart-wrapper"></div>
+						<button id="balance-consultar-btn" class="btn btn-consultar" data-bs-toggle="modal"
+							data-bs-target="#balanceModal">
+							Consultar
+						</button>
+					</div>
+
+					<!-- Producción por Temporada -->
+					<div class="chart-container chart-container-medium">
+						<h3 class="chart-title">Producción por Temporada</h3>
+						<div id="produccion-temporada-container" class="highchart-wrapper"></div>
 					</div>
 				</div>
 			</div>

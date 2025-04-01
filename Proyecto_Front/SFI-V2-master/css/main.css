@@ -2311,3 +2311,16 @@ canvas {
     transform: scale(1.1); /* Aumenta el tamaño de la imagen */
     box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3); /* Aumenta la sombra */
 }
+
+.logo-helacor {
+    max-width: 300px;
+    height: auto;
+    margin-right: 20px; /* Opcional: para dar un poco de espacio entre el logo y las imágenes */
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 767.98px) {
+    .logo-helacor {
+        max-width: 120px; /* Aún más pequeño en dispositivos móviles */
+    }
+}
