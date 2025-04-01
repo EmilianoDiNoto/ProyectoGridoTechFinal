@@ -736,7 +736,7 @@ function inicializarUltimaProduccion() {
             return [];
         });
     
-    const getOrders = fetch('http://localhost:63152/api/WorkOrders')
+    const getOrders = fetch('http://localhost:63152/api/WorkOrders/GetAllWorkOrders')
         .then(response => {
             if (!response.ok) {
                 console.error('Error en respuesta de API de órdenes:', response.status);
@@ -898,7 +898,7 @@ function initOrdenesTrabajoChart() {
     if (!container) return;
 
     $.ajax({
-        url: 'http://localhost:63152/api/WorkOrders',
+        url: 'http://localhost:63152/api/WorkOrders/GetAllWorkOrders',
         success: function (workOrdersData) {
             // Contar órdenes por estado
             const realizadas = workOrdersData.filter(item => item.ESTADO === 'REALIZADA').length;
@@ -1300,7 +1300,7 @@ function initProduccionAnualChart() {
     });
 }
 
-// 3. Mejorar el gráfico de Balance de Masas
+//BALANCE DE MASAS
 function initBalanceMasasChart() {
     const container = document.getElementById('balance-highchart-container');
     if (!container) {
@@ -1358,6 +1358,10 @@ function initBalanceMasasChart() {
                     }
                 },
                 yAxis: {
+                    min: 500000, // Establecer el mínimo exactamente en 500,000
+                    startOnTick: false, // Importante: No iniciar en un tick automático
+                    endOnTick: false, // Importante: No terminar en un tick automático
+                    tickAmount: 8, // Controlar número de divisiones del eje
                     title: {
                         text: 'Cantidad Total',
                         style: {
@@ -1438,8 +1442,6 @@ function initBalanceMasasChart() {
         }
     });
 }
-
-
 
 
 
@@ -1692,7 +1694,6 @@ function initTables() {
 
 
     // Tabla de Producción
-    // Tabla de Producción
     let productionTable = $('#productionTable').DataTable({
         ...commonConfig,
         ajax: {
@@ -1710,11 +1711,18 @@ function initTables() {
             },
             { data: "TURNO" },
             { data: "RESPONSABLE" },
-            { data: "OT" },
+            { 
+                data: "OT",
+                className: "text-right" 
+            },
             { data: "PRODUCTO" },
-            { data: "PRODUCIDO" },
+            { 
+                data: "PRODUCIDO",
+                className: "text-right" 
+            },
             {
                 data: "PERFORMANCE",
+                className: "text-right",
                 render: function (data) {
                     return (data / 100).toFixed(2) + '%';
                 }
@@ -1751,21 +1759,24 @@ function initTables() {
             { data: "MATERIAL" },
             {
                 data: "TEORICO",
+                className: "text-right",
                 render: function (data) {
                     return parseFloat(data).toFixed(2) + ' KG';
                 }
             },
             {
                 data: "REAL",
+                className: "text-right",
                 render: function (data) {
                     return parseFloat(data).toFixed(2) + ' KG';
                 }
             },
             {
                 data: "DESVIO",
+                className: "text-right",
                 render: function (data) {
                     const value = parseFloat(data);
-                    const color = value < 0 ? '#dc3545' : '#28a745'; // Rojo para negativos, verde para positivos
+                    const color = value < 0 ? '#dc3545' : '#28a745';
                     return `<span style="color: ${color}">${value.toFixed(2)} KG</span>`;
                 }
             }
@@ -1784,89 +1795,111 @@ function initTables() {
     window.theoricalTableInProduction = theoricalTableInProduction;
 
     // Tabla para el consolidado de Balance de Masas
-    let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
-        ...commonConfig,
-        searching: true,
-        language: window.dataTablesLanguage,
-        ajax: {
-            url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
-            dataSrc: ''
-        },
-        columns: [
-            { data: "MATERIAL" },
-            {
-                data: "TEORICO",
-                render: function (data) {
-                    return parseFloat(data).toFixed(2) + ' KG';
-                }
-            },
-            {
-                data: "REAL",
-                render: function (data) {
-                    return parseFloat(data).toFixed(2) + ' KG';
-                }
-            },
-            {
-                data: "DESVIO",
-                render: function (data) {
-                    const value = parseFloat(data);
-                    const color = value < 0 ? '#dc3545' : '#28a745';
-                    return `<span style="color: ${color}">${value.toFixed(2)} KG</span>`;
-                }
-            },
-            {
-                data: null,
-                render: function (data, type, row) {
-                    // Mapa de precios fijos para cada material
-                    const precios = {
-                        "DULCE DE LECHE C/CACAO P/SEMBRAR": 1699.47,
-                        "DULCE DE LECHE P/SEMBRAR": 1675.69,
-                        "GALLETA OREO PICADA": 4049.75,
-                        "GALLETAS MILKA MOUSSE": 5301.71,
-                        "HELADO DE CHOCOLATE": 10000,
-                        "HELADO DE CREMA AMERICANA": 10000,
-                        "HELADO DE DULCE DE LECHE": 10000,
-                        "PREPARADO ALMIBAR STANDART": 247.68,
-                        "SALSA DULCE SABOR CHOCOLATE": 1379.57,
-                        "TAPA GALLETA SABOR VAINILLA 17 CM": 1862.48
-                    };
-
-                    const desvio = parseFloat(row.DESVIO || 0);
-                    const precioMaterial = precios[row.MATERIAL] || 0;
-                    const valorDesvio = desvio * precioMaterial;
-
-                    // Función para formatear valores grandes
-                    function formatearValor(valor) {
-                        const valorAbs = Math.abs(valor);
-                        if (valorAbs >= 1000000) {
-                            return `${(valorAbs / 1000000).toFixed(2)}M`;
-                        } else if (valorAbs >= 1000) {
-                            return `${(valorAbs / 1000).toFixed(2)}k`;
-                        }
-                        return valorAbs.toFixed(2);
-                    }
-
-                    const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
-                    const formattedValue = formatearValor(valorDesvio);
-                    const fullValue = Math.abs(valorDesvio).toFixed(2);
-
-                    // Usar el atributo title nativo para mostrar el valor completo
-                    return `<span style="color: ${color}; cursor: help;" 
-                           title="Valor completo: $${fullValue}">${valorDesvio < 0 ? '-' : ''}$${formattedValue}</span>`;
-                }
+    // Tabla para el consolidado de Balance de Masas
+let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
+    ...commonConfig,
+    searching: true,
+    language: window.dataTablesLanguage,
+    ajax: {
+        url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
+        dataSrc: ''
+    },
+    columns: [
+        { data: "MATERIAL" },
+        {
+            data: "TEORICO",
+            render: function (data) {
+                return parseFloat(data).toFixed(2) + ' KG';
             }
-        ],
-        initComplete: function () {
-            $('#consolidadoBMTable thead th').css({
-                'background-color': '#0e2238',
-                'color': 'white'
-            });
-            $('#consolidadoBMTable tbody tr').css({
-                'background-color': 'white',
-                'color': 'black'
-            });
+        },
+        {
+            data: "REAL",
+            render: function (data) {
+                return parseFloat(data).toFixed(2) + ' KG';
+            }
+        },
+        {
+            data: "DESVIO",
+            render: function (data) {
+                const value = parseFloat(data);
+                const color = value < 0 ? '#dc3545' : '#28a745';
+                return `<span style="color: ${color}">${value.toFixed(2)} KG</span>`;
+            }
+        },
+        {
+            data: null,
+            render: function (data, type, row) {
+                // Mapa de precios fijos para cada material
+                const precios = {
+                    "DULCE DE LECHE C/CACAO P/SEMBRAR": 1699.47,
+                    "DULCE DE LECHE CON CACAO PARA SEMBRAR": 1699.47, // Añadir versión alternativa del nombre
+                    "DULCE DE LECHE P/SEMBRAR": 1675.69,
+                    "DULCE DE LECHE PARA SEMBRAR": 1675.69, // Añadir versión alternativa del nombre
+                    "GALLETA OREO PICADA": 4049.75,
+                    "GALLETAS MILKA MOUSSE": 5301.71,
+                    "HELADO DE CHOCOLATE": 10000,
+                    "HELADO DE CREMA AMERICANA": 10000,
+                    "HELADO DE DULCE DE LECHE": 10000,
+                    "PREPARADO ALMIBAR STANDART": 247.68,
+                    "PREPARADO ALMIBAR STANDART": 247.68,
+                    "SALSA DULCE SABOR CHOCOLATE": 1379.57,
+                    "TAPA GALLETA SABOR VAINILLA 17 CM": 1862.48
+                };
+
+                // Buscar el precio por el nombre exacto o variaciones comunes
+                let precioMaterial = 0;
+                const materialName = row.MATERIAL;
+                
+                // Comprobar si el material existe exactamente en el mapa de precios
+                if (precios[materialName] !== undefined) {
+                    precioMaterial = precios[materialName];
+                } else {
+                    // Intentar encontrar coincidencias parciales
+                    const keys = Object.keys(precios);
+                    for (const key of keys) {
+                        // Verificar si el nombre del material contiene o está contenido en una clave
+                        if (key.includes(materialName) || materialName.includes(key)) {
+                            precioMaterial = precios[key];
+                            break;
+                        }
+                    }
+                }
+
+                const desvio = parseFloat(row.DESVIO || 0);
+                const valorDesvio = desvio * precioMaterial;
+
+                // Función para formatear valores grandes
+                function formatearValor(valor) {
+                    const valorAbs = Math.abs(valor);
+                    if (valorAbs >= 1000000) {
+                        return `${(valorAbs / 1000000).toFixed(2)}M`;
+                    } else if (valorAbs >= 1000) {
+                        return `${(valorAbs / 1000).toFixed(2)}k`;
+                    }
+                    return valorAbs.toFixed(2);
+                }
+
+                const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
+                const formattedValue = formatearValor(valorDesvio);
+                const fullValue = Math.abs(valorDesvio).toFixed(2);
+
+                // Usar el atributo title nativo para mostrar el valor completo
+                return `<span style="color: ${color}; cursor: help;" 
+                       title="Valor completo: $${fullValue}">${valorDesvio < 0 ? '-' : ''}$${formattedValue}</span>`;
+            }
         }
-    });
+    ],
+    initComplete: function () {
+        $('#consolidadoBMTable thead th').css({
+            'background-color': '#0e2238',
+            'color': 'white'
+        });
+        $('#consolidadoBMTable tbody tr').css({
+            'background-color': 'white',
+            'color': 'black'
+        });
+    }
+});
     window.consolidadoBMTable = consolidadoBMTable;
 
 
@@ -1952,10 +1985,14 @@ function initTables() {
             },
             { data: "TURNO" },
             { data: "RESPONSABLE" },
-            { data: "OT" },
+            { 
+                data: "OT",
+                className: "text-right"
+            },
             { data: "MATERIAL" },
             {
                 data: "CANTIDAD",
+                className: "text-right",
                 render: function (data) {
                     return parseFloat(data).toFixed(2) + ' KG';
                 }
