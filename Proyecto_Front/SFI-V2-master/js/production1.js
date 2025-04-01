@@ -274,7 +274,10 @@ $(document).ready(function () {
             const ot = $("#validationCustom01").val();
 
             if (!fecha || !turnoNombre || !responsableNombre) {
-                alert("Por favor, complete todos los campos.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Por favor, complete todos los campos....",
+                  });
                 return;
             }
 
@@ -286,7 +289,10 @@ $(document).ready(function () {
             console.log("Filas seleccionadas:", filasSeleccionadas.length);
 
             if (filasSeleccionadas.length === 0) {
-                alert("Seleccione al menos un material para registrar.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Seleccione al menos un material para registrar...",
+                  });
                 return;
             }
 
@@ -342,6 +348,10 @@ $(document).ready(function () {
 
             if (dataToSend.length === 0) {
                 alert("No se encontraron materiales válidos para enviar.");
+                Swal.fire({
+                    icon: "error",
+                    title: "No se encontraron materiales válidos para enviar....",
+                  });
                 return;
             }
 
@@ -371,11 +381,18 @@ $(document).ready(function () {
             // Opcional: Enfocar el primer campo de cantidad
             $("#cantidad0").focus();
 
-            alert("✅ Stock Inicial enviado correctamente.");
+            /* alert("✅ Stock Inicial enviado correctamente."); */
+            Swal.fire({
+                title: "✅ Stock Inicial enviado correctamente.",
+              });
 
         } catch (error) {
             console.error("Error:", error);
-            alert("❌ Hubo un error en la operación. Revisa la consola para más detalles.");
+            Swal.fire({
+                icon: "error",
+                title: "❌ Hubo un error en la operación.",
+                text: "Revisa los datos cargados!",
+              });
         }
     });
 
@@ -1858,17 +1875,23 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             let result = await saveResponse.json();
-            alert("Producción registrada exitosamente.");
-
+            Swal.fire({
+                title: "Producción registrada exitosamente.",
+                text: "Que tengas una excelente jornada",
+                icon: "success"
+            }).then(() => {
+                window.location.href = "home.html"; // Redirige después de presionar "OK"
+            });            
 
             // Limpiar el campo de PRODUCIDO
             document.getElementById("validationCustom01").value = "";
             document.getElementById("validationCustom02").value = "";
             document.getElementById("validationCustom03").value = "";
-
             document.getElementById("validationCustom03").focus();
 
+            localStorage.removeItem('datosFormularioProceso');
 
+            
         } catch (error) {
             console.error("❌ Error al guardar la producción:", error.message);
             alert("Error al guardar la producción. Verifique la consola.");
@@ -2095,5 +2118,3 @@ document.addEventListener("DOMContentLoaded", function () {
     // Configurar actualización automática cada 5 segundos
     setInterval(actualizarProgreso, 5000);
 });
-
-

@@ -16,7 +16,7 @@ $(document).ready(function () {
                     <td>${incidente.HSFIN}</td>
                     <td>${incidente.DETALLE}</td>
                     <td>${incidente.TALLER}</td>
-                    <td>${incidente.DURACION}</td>
+                    <td>${incidente.DURACION} min</td>
                 </tr>`;
                 tableBody.append(row);
             });
