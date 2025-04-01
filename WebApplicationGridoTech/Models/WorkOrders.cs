@@ -18,40 +18,54 @@ namespace WebApplicationGridoTech.Models
             connectionString = ConfigurationManager.ConnectionStrings["YourConnectionStringName"].ConnectionString;
         }
 
-        // Nuevo método para obtener todos los movimientos del almacen
         public List<WorkOrders> GetAllWorkOrders()
         {
-            List<WorkOrders> WorkOrders = new List<WorkOrders>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            List<WorkOrders> workOrders = new List<WorkOrders>();
+            try
             {
-                using (SqlCommand command = new SqlCommand("SP_GetAll_WorkOrder", connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    connection.Open();
-
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (SqlCommand command = new SqlCommand("SP_GetAll_WorkOrder", connection))
                     {
-                        while (reader.Read())
+                        command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            WorkOrders.Add(new WorkOrders
+                            while (reader.Read())
                             {
-                                OT = Convert.ToInt32(reader["OT"]),
-                                CODIGO = Convert.ToInt32(reader["CODIGO"]),
-                                PRODUCTO = reader["PRODUCTO"].ToString(),
-                                DEMANDA = Convert.ToInt32(reader["DEMANDA"]),
-                                UM = reader["UM"].ToString(),
-                                ESTADO = reader["ESTADO"].ToString(),
-                                FECHAELABORACION = Convert.ToDateTime(reader["FECHAELABORACION"]),
+                                try
+                                {
+                                    WorkOrders order = new WorkOrders
+                                    {
+                                        OT = reader["OT"] != DBNull.Value ? Convert.ToInt32(reader["OT"]) : 0,
+                                        CODIGO = reader["CODIGO"] != DBNull.Value ? Convert.ToInt32(reader["CODIGO"]) : 0,
+                                        PRODUCTO = reader["PRODUCTO"]?.ToString() ?? string.Empty,
+                                        DEMANDA = reader["DEMANDA"] != DBNull.Value ? Convert.ToInt32(reader["DEMANDA"]) : 0,
+                                        UM = reader["UM"]?.ToString() ?? string.Empty,
+                                        ESTADO = reader["ESTADO"]?.ToString() ?? string.Empty,
+                                        FECHAELABORACION = reader["FECHAELABORACION"] != DBNull.Value ?
+                                            Convert.ToDateTime(reader["FECHAELABORACION"]) : DateTime.MinValue
+                                    };
 
-                            });
+                                    workOrders.Add(order);
+                                }
+                                catch (Exception ex)
+                                {
+                                    // Solo registramos el error pero continuamos con el siguiente registro
+                                    Console.WriteLine($"Error al procesar fila: {ex.Message}");
+                                }
+                            }
                         }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                // Captura cualquier excepción a nivel de conexión o comando
+                Console.WriteLine($"Error en GetAllWorkOrders: {ex.Message}");
+            }
 
-            return WorkOrders;
+            return workOrders;
         }
 
         //Buscar Orden por nombre de producto
