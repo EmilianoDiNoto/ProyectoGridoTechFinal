@@ -109,7 +109,7 @@ $(document).ready(function() {
                     confirmButtonText: 'Continuar'
                 }).then(() => {
                     // Redirigir al dashboard
-                    window.location.href = 'home.html';
+                    window.location.href = 'home1.html';
                 });
             },
             error: function(xhr, status, error) {

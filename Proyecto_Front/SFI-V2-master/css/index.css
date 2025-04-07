@@ -53,11 +53,16 @@ body {
 .logo-container {
     text-align: center;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .logo-container img {
-    width: 200px;
-    height: auto;
+    width: 300px; /* Ancho más grande */
+    height: auto; /* Altura automática proporcional */
+    max-height: 200px; /* Limitar la altura máxima */
+    object-fit: contain; /* Mantener la proporción del logo */
 }
 
 /* Estilos para el formulario */

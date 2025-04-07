@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráficos con Highcharts</title>
+
+    <!-- Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        .charts-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 100%;
+            margin: 20px auto;
+            gap: 20px;
+        }
+
+        .chart-box {
+            flex: 1;
+            min-width: 30%;
+            height: 500px;
+            position: relative;
+        }
+
+        .chart-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .chart-box {
+                min-width: 45%;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .chart-box {
+                min-width: 100%;
+            }
+        }
+
+        /* Estilos adicionales para el gráfico de última producción */
+        .highcharts-center-info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .center-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .center-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .metrics-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            flex: 1;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 0 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Primer grupo de gráficos -->
+    <div class="charts-section">
+        <div class="chart-box">
+            <h3 class="chart-title">Población Histórica</h3>
+            <div id="container"></div>
+        </div>
+
+        <div class="chart-box">
+            <h3 class="chart-title">Ultima producción</h3>
+            <div id="Ultima-Produccion"></div>
+            <div class="metrics-container"></div>
+        </div>
+
+        <div class="chart-box">
+            <h3 class="chart-title">Órdenes de Trabajo</h3>
+            <div id="ordenes-trabajo-container"></div>
+        </div>
+    </div>
+
+    <!-- Segundo grupo de gráficos (nuevo) -->
+    <div class="charts-section">
+        <div class="chart-box">
+            <h3 class="chart-title">Cantidad por Tipo de Material</h3>
+            <div id="materiales-por-tipo-container"></div>
+        </div>
+
+        <div class="chart-box">
+            <h3 class="chart-title">Producción Temporada</h3>
+            <div id="produccion-temporada-container"></div>
+        </div>
+
+        <div class="chart-box">
+            <h3 class="chart-title">Balance de Masas Total</h3>
+            <div id="balance-highchart-container"></div>
+        </div>
+    </div>
+
+    <!-- Scripts para los gráficos -->
+    <script>
+        // Gráfico 1: Población
+        Highcharts.chart('container', {
+            chart: { type: 'bar' },
+            title: { text: null },
+            xAxis: { categories: ['África', 'América', 'Asia', 'Europa'], title: { text: null } },
+            yAxis: { min: 0, title: { text: 'Población (millones)' } },
+            tooltip: { valueSuffix: ' millones' },
+            plotOptions: {
+                bar: {
+                    borderRadius: 5,
+                    dataLabels: { enabled: true }
+                }
+            },
+            series: [
+                { name: 'Año 1990', data: [632, 727, 3202, 721] },
+                { name: 'Año 2000', data: [814, 841, 3714, 726] },
+                { name: 'Año 2021', data: [1393, 1031, 4695, 745] }
+            ]
+        });
+
+        // Gráfico 2: Balance de Masas
+        $.ajax({
+            url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
+            success: function (balanceData) {
+                const totales = balanceData.reduce((acc, item) => ({
+                    teorico: acc.teorico + parseFloat(item.TEORICO || 0),
+                    real: acc.real + parseFloat(item.REAL || 0),
+                    desvio: acc.desvio + parseFloat(item.DESVIO || 0)
+                }), { teorico: 0, real: 0, desvio: 0 });
+
+                Highcharts.chart('balance-highchart-container', {
+                    chart: { type: 'column', backgroundColor: 'transparent' },
+                    title: { text: null },
+                    credits: { enabled: false },
+                    xAxis: { categories: ['Balance de Masas'] },
+                    yAxis: { title: { text: 'Cantidad Total' } },
+                    legend: { align: 'center', verticalAlign: 'top' },
+                    tooltip: {
+                        formatter: function () {
+                            let value = this.y;
+                            if (this.series.name === 'Desvío Total' && totales.desvio < 0) {
+                                value = -value;
+                            }
+                            return `<b>${this.series.name}</b>: ${value.toFixed(2)}`;
+                        }
+                    },
+                    plotOptions: { column: { borderWidth: 0, borderRadius: 5 } },
+                    series: [
+                        { name: 'Consumo Teórico', data: [Math.abs(totales.teorico)], color: '#0c169f' },
+                        { name: 'Consumo Real', data: [Math.abs(totales.real)], color: '#1cc88a' },
+                        { name: 'Desvío Total', data: [Math.abs(totales.desvio)], color: '#e74a3b' }
+                    ]
+                });
+            },
+            error: function (xhr, status, error) {
+                document.getElementById('balance-highchart-container').innerHTML =
+                    `<div style="text-align: center; color: red;">Error al cargar los datos del balance de masas</div>`;
+            }
+        });
+
+        // Gráfico 3: Órdenes de Trabajo
+        function initOrdenesTrabajoChart() {
+            $.ajax({
+                url: 'http://localhost:63152/api/WorkOrders/GetAllWorkOrders',
+                success: function (data) {
+                    const realizadas = data.filter(item => item.ESTADO === 'REALIZADA').length;
+                    const pendientes = data.filter(item => item.ESTADO === 'PENDIENTE').length;
+
+                    Highcharts.chart('ordenes-trabajo-container', {
+                        chart: { type: 'pie', backgroundColor: 'transparent' },
+                        title: { text: null },
+                        credits: { enabled: false },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                innerSize: '60%',
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.y}'
+                                }
+                            }
+                        },
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle',
+                            itemStyle: { fontSize: '12px' }
+                        },
+                        series: [{
+                            name: 'Órdenes',
+                            colorByPoint: true,
+                            data: [
+                                { name: 'Pendientes', y: pendientes, color: '#0c169f' },
+                                { name: 'Realizadas', y: realizadas, color: '#1cc88a' }
+                            ]
+                        }]
+                    });
+                },
+                error: function () {
+                    document.getElementById('ordenes-trabajo-container').innerHTML =
+                        '<div class="error-message">Error al cargar datos de órdenes de trabajo</div>';
+                }
+            });
+        }
+
+        // Función para las métricas de Última Producción
+        function inicializarUltimaProduccion() {
+            const metricsContainer = document.querySelector('.metrics-container');
+            if (!metricsContainer) {
+                console.error('No se encontró el contenedor de métricas de Última Producción');
+                return;
+            }
+
+            // Mostrar loader
+            metricsContainer.innerHTML = `
+                <div style="width: 100%; text-align: center; padding: 20px;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mt-2">Cargando datos de producción...</p>
+                </div>
+            `;
+
+            const getProduction = fetch('http://localhost:63152/api/Production/GetAllProduction')
+                .then(res => res.ok ? res.json() : [])
+                .catch(err => {
+                    console.error('Error al obtener datos de producción:', err);
+                    return [];
+                });
+
+            const getOrders = fetch('http://localhost:63152/api/WorkOrders/GetAllWorkOrders')
+                .then(res => res.ok ? res.json() : [])
+                .catch(err => {
+                    console.error('Error al obtener órdenes:', err);
+                    return [];
+                });
+
+            Promise.all([getProduction, getOrders])
+                .then(([produccionData, ordenesData]) => {
+                    try {
+                        const otProduccion = produccionData.filter(p => p && typeof p === 'object' && p.OT === 4);
+                        const otOrden = ordenesData.find(o => o && typeof o === 'object' && o.OT === 4);
+
+                        const totalProducido = otProduccion.reduce((sum, p) => {
+                            const producido = p && typeof p.PRODUCIDO === 'number' ? p.PRODUCIDO : 0;
+                            return sum + producido;
+                        }, 0);
+
+                        const produccionSolicitada = otOrden && typeof otOrden.DEMANDA === 'number' ? otOrden.DEMANDA : 0;
+
+                        let performance = "0.0";
+                        if (otProduccion.length > 0) {
+                            const produccionOrdenada = [...otProduccion].sort((a, b) =>
+                                new Date(b.FECHA) - new Date(a.FECHA)
+                            );
+
+                            if (produccionOrdenada[0] && typeof produccionOrdenada[0].PERFORMANCE === 'number') {
+                                const performanceValue = produccionOrdenada[0].PERFORMANCE / 100;
+                                performance = performanceValue.toFixed(2);
+                            }
+                        }
+
+                        // Actualizar contenedor con datos
+                        metricsContainer.innerHTML = `
+                            <div class="metric-card">
+                                <div style="font-size: 18px; color: #0c169f; margin-bottom: 5px;">
+                                    <i class="zmdi zmdi-check-circle"></i>
+                                </div>
+                                <div style="font-size: 18px; font-weight: bold; color: #333;">${totalProducido.toLocaleString()}</div>
+                                <div style="font-size: 12px; color: #666;">Producido</div>
+                            </div>
+
+                            <div class="metric-card">
+                                <div style="font-size: 18px; color: #e74a3b; margin-bottom: 5px;">
+                                    <i class="zmdi zmdi-assignment-o"></i>
+                                </div>
+                                <div style="font-size: 18px; font-weight: bold; color: #333;">${produccionSolicitada.toLocaleString()}</div>
+                                <div style="font-size: 12px; color: #666;">Demanda</div>
+                            </div>
+
+                            <div class="metric-card">
+                                <div style="font-size: 18px; color: #1cc88a; margin-bottom: 5px;">
+                                    <i class="zmdi zmdi-trending-up"></i>
+                                </div>
+                                <div style="font-size: 18px; font-weight: bold; color: #333;">${performance}%</div>
+                                <div style="font-size: 12px; color: #666;">Performance</div>
+                            </div>
+                        `;
+
+                        // Crear gráfico de dona en Ultima-Produccion
+                        const porcentajeProducido = ((totalProducido / produccionSolicitada) * 100).toFixed(1);
+                        const porcentajeFaltante = (100 - porcentajeProducido).toFixed(1);
+
+                        Highcharts.chart('Ultima-Produccion', {
+                            chart: {
+                                type: 'pie',
+                                backgroundColor: 'transparent'
+                            },
+                            title: {
+                                text: undefined
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    innerSize: '60%',
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: false
+                                    },
+                                    size: '80%'
+                                }
+                            },
+                            series: [{
+                                name: 'Producción',
+                                colorByPoint: true,
+                                data: [{
+                                    name: 'Producción Real',
+                                    y: parseFloat(porcentajeProducido),
+                                    color: '#0c169f'
+                                }, {
+                                    name: 'Pendiente',
+                                    y: parseFloat(porcentajeFaltante),
+                                    color: '#e74a3b'
+                                }]
+                            }]
+                        });
+
+                        // Agregar etiqueta central al gráfico
+                        const container = document.getElementById('Ultima-Produccion');
+
+                        // Eliminar etiqueta central si ya existe
+                        const existingInfo = container.querySelector('.highcharts-center-info');
+                        if (existingInfo) existingInfo.remove();
+
+                        const centerInfo = document.createElement('div');
+                        centerInfo.className = 'highcharts-center-info';
+                        centerInfo.innerHTML = `
+                            <div class="center-title">OT 4</div>
+                            <div class="center-value">${porcentajeProducido}%</div>
+                        `;
+                        container.style.position = 'relative';
+                        container.appendChild(centerInfo);
+                    } catch (error) {
+                        console.error('Error al procesar datos:', error);
+                        metricsContainer.innerHTML = `
+                            <div style="width: 100%; text-align: center; padding: 20px; color: #dc3545;">
+                                <i class="zmdi zmdi-alert-circle-o" style="font-size: 24px;"></i>
+                                <p class="mt-2">Error al procesar los datos. Por favor, intente de nuevo más tarde.</p>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error general:', error);
+                    metricsContainer.innerHTML = `
+                        <div style="width: 100%; text-align: center; padding: 20px; color: #dc3545;">
+                            <i class="zmdi zmdi-alert-circle-o" style="font-size: 24px;"></i>
+                            <p class="mt-2">Error al cargar los datos. Por favor, intente de nuevo más tarde.</p>
+                        </div>
+                    `;
+                });
+        }
+
+        // Función para Producción por Temporada
+        function initProduccionTemporadaChart() {
+            const container = document.getElementById('produccion-temporada-container');
+            if (!container) return;
+
+            // Mostrar mensaje de carga
+            container.innerHTML = '<div class="loading-message">Cargando datos de producción...</div>';
+
+            // Arrays para almacenar los nombres de tortas y cantidades
+            let datosProduccion = [];
+            let promesasCargadas = 0;
+            const totalPromesas = 3;
+
+            // Función para actualizar el gráfico cuando todos los datos estén cargados
+            function actualizarGrafico() {
+                // Ordenar los datos de mayor a menor cantidad
+                datosProduccion.sort((a, b) => b.cantidad - a.cantidad);
+
+                // Separar los arrays para el gráfico
+                const tortas = datosProduccion.map(item => item.nombre);
+                const cantidades = datosProduccion.map(item => item.cantidad);
+
+                Highcharts.chart('produccion-temporada-container', {
+                    chart: {
+                        type: 'column',
+                        backgroundColor: 'transparent'
+                    },
+                    title: {
+                        text: undefined
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    xAxis: {
+                        categories: tortas,
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Cantidad'
+                        },
+                        labels: {
+                            formatter: function () {
+                                return this.value.toLocaleString();
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0,
+                            borderRadius: 5
+                        }
+                    },
+                    series: [{
+                        name: 'Producción febrero 2025',
+                        color: '#0c169f',
+                        data: cantidades
+                    }]
+                });
+            }
+
+            // 1. Obtener datos de la torta Cookies and Cream
+            $.ajax({
+                url: 'http://localhost:63152/api/production/report/gridocookie',
+                success: function (data) {
+                    datosProduccion.push({
+                        nombre: 'Grido Cookie and Cream',
+                        cantidad: data.TotalCantidad
+                    });
+
+                    promesasCargadas++;
+
+                    if (promesasCargadas === totalPromesas) {
+                        actualizarGrafico();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al cargar datos de Cookies and Cream:", error);
+                    datosProduccion.push({
+                        nombre: 'Grido Cookie and Cream',
+                        cantidad: 0
+                    });
+
+                    promesasCargadas++;
+
+                    if (promesasCargadas === totalPromesas) {
+                        actualizarGrafico();
+                    }
+                }
+            });
+
+            // 2. Obtener datos de la torta Mousse
+            $.ajax({
+                url: 'http://localhost:63152/api/production/report/mousse',
+                success: function (data) {
+                    datosProduccion.push({
+                        nombre: 'Grido Mousse',
+                        cantidad: data.TotalCantidad
+                    });
+
+                    promesasCargadas++;
+
+                    if (promesasCargadas === totalPromesas) {
+                        actualizarGrafico();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al cargar datos de Mousse:", error);
+                    datosProduccion.push({
+                        nombre: 'Grido Mousse',
+                        cantidad: 0
+                    });
+
+                    promesasCargadas++;
+
+                    if (promesasCargadas === totalPromesas) {
+                        actualizarGrafico();
+                    }
+                }
+            });
+
+            // 3. Obtener datos de la torta Grido con Relleno
+            $.ajax({
+                url: 'http://localhost:63152/api/production/report/tortagrido',
+                success: function (data) {
+                    datosProduccion.push({
+                        nombre: 'Grido con Relleno',
+                        cantidad: data.TotalCantidad
+                    });
+
+                    promesasCargadas++;
+
+                    if (promesasCargadas === totalPromesas) {
+                        actualizarGrafico();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al cargar datos de Torta Grido con Relleno:", error);
+                    datosProduccion.push({
+                        nombre: 'Grido con Relleno',
+                        cantidad: 0
+                    });
+
+                    promesasCargadas++;
+
+                    if (promesasCargadas === totalPromesas) {
+                        actualizarGrafico();
+                    }
+                }
+            });
+        }
+
+        // Función para Producción Anual
+        function initProduccionAnualChart() {
+            const container = document.getElementById('materiales-por-tipo-container');
+            if (!container) return;
+
+            // Mostrar mensaje de carga
+            container.innerHTML = '<div class="loading-message">Cargando datos de producción anual...</div>';
+
+            // Obtener datos de la API
+            $.ajax({
+                url: 'http://localhost:63152/api/Production/GetAllProduction',
+                success: function (data) {
+                    // Filtrar datos por los últimos 13 meses (desde marzo 2024 hasta marzo 2025)
+                    const fechaInicio = new Date(2024, 2, 1); // Marzo 2024 (0-indexed months)
+                    const fechaFin = new Date(2025, 2, 31); // Marzo 2025
+
+                    // Nombres exactos de productos a filtrar
+                    const productosAFiltrar = [
+                        "PACK TORTA COOKIES AND MOUSSE - GRIDO",
+                        "PACK TORTA GRIDO CON RELLENO - GRIDO",
+                        "PACK TORTA COOKIES AND CREAM - GRIDO"
+                    ];
+
+                    // Función para mapear nombres de productos a series
+                    const mapProductoASerie = (producto) => {
+                        if (producto === "PACK TORTA COOKIES AND CREAM - GRIDO") {
+                            return "Grido Cookie and Cream";
+                        } else if (producto === "PACK TORTA COOKIES AND MOUSSE - GRIDO") {
+                            return "Grido Mousse";
+                        } else if (producto === "PACK TORTA GRIDO CON RELLENO - GRIDO") {
+                            return "Grido con Relleno";
+                        } else {
+                            return "Otros";
+                        }
+                    };
+
+                    // Filtrar datos en el rango de fechas y agrupar por producto y mes
+                    const produccionPorProductoYMes = {};
+
+                    data.forEach(item => {
+                        // Verificar que la fecha sea válida y el producto esté en nuestra lista
+                        if (!item.FECHA || !productosAFiltrar.includes(item.PRODUCTO)) return;
+
+                        // Parsear la fecha (formato: 2024-11-07T00:00:00)
+                        const fechaStr = item.FECHA;
+                        const fecha = new Date(fechaStr);
+
+                        // Verificar que la fecha esté en el rango deseado
+                        if (fecha >= fechaInicio && fecha <= fechaFin) {
+                            // Determinar a qué serie pertenece
+                            const nombreSerie = mapProductoASerie(item.PRODUCTO);
+
+                            // Obtener año y mes de la fecha
+                            const año = fecha.getFullYear();
+                            const mes = fecha.getMonth(); // 0-indexed (0=enero, 11=diciembre)
+
+                            // Crear clave para agrupar por año-mes y serie
+                            const clave = `${año}-${mes}-${nombreSerie}`;
+
+                            // Inicializar si no existe
+                            if (!produccionPorProductoYMes[clave]) {
+                                produccionPorProductoYMes[clave] = 0;
+                            }
+
+                            // Sumar la cantidad PRODUCIDO (en lugar de CANTIDAD)
+                            produccionPorProductoYMes[clave] += parseFloat(item.PRODUCIDO || 0);
+                        }
+                    });
+
+                    // Preparar datos para el gráfico
+                    const meses = [];
+                    const series = {
+                        "Grido Cookie and Cream": [],
+                        "Grido Mousse": [],
+                        "Grido con Relleno": []
+                    };
+
+                    // Generar array de meses desde marzo 2024 hasta marzo 2025
+                    for (let m = 0; m < 13; m++) {
+                        const fecha = new Date(2024, 2 + m, 1); // Empezar en marzo 2024
+                        const año = fecha.getFullYear();
+                        const mes = fecha.getMonth();
+
+                        // Nombre del mes para mostrar en el gráfico
+                        const nombreMes = fecha.toLocaleString('es', { month: 'short' });
+                        meses.push(nombreMes);
+
+                        // Inicializar datos para cada serie en este mes
+                        Object.keys(series).forEach(nombreSerie => {
+                            const clave = `${año}-${mes}-${nombreSerie}`;
+                            series[nombreSerie].push(produccionPorProductoYMes[clave] || 0);
+                        });
+                    }
+
+                    // Crear el gráfico
+                    Highcharts.chart('materiales-por-tipo-container', {
+                        chart: {
+                            type: 'line',
+                            backgroundColor: 'transparent'
+                        },
+                        title: {
+                            text: undefined
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        xAxis: {
+                            categories: meses,
+                            crosshair: true
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Cantidad'
+                            },
+                            labels: {
+                                formatter: function () {
+                                    return this.value.toLocaleString();
+                                }
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
+                            footerFormat: '</table>',
+                            shared: true,
+                            useHTML: true
+                        },
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'top',
+                            borderWidth: 0
+                        },
+                        plotOptions: {
+                            line: {
+                                marker: {
+                                    radius: 3
+                                },
+                                lineWidth: 3
+                            }
+                        },
+                        series: [
+                            {
+                                name: 'Grido Cookie and Cream',
+                                color: '#0e2238',
+                                data: series['Grido Cookie and Cream']
+                            },
+                            {
+                                name: 'Grido Mousse',
+                                color: '#f6c23e',
+                                data: series['Grido Mousse']
+                            },
+                            {
+                                name: 'Grido con Relleno',
+                                color: '#e74a3b',
+                                data: series['Grido con Relleno']
+                            }
+                        ]
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al cargar datos de producción anual:", error);
+                    container.innerHTML = '<div class="error-message">Error al cargar datos de producción anual. Por favor, intente nuevamente más tarde.</div>';
+                }
+            });
+        }
+
+        // Iniciar los gráficos del primer grupo
+        initOrdenesTrabajoChart();
+
+        // Iniciar los gráficos del segundo grupo
+        document.addEventListener('DOMContentLoaded', function () {
+            initProduccionTemporadaChart();
+            initProduccionAnualChart();
+            inicializarUltimaProduccion();
+        });
+    </script>
+</body>
+
+</html>

@@ -67,106 +67,95 @@
 </head>
 
 <body>
-    <!-- Sidebar -->
-    <aside id="sidebar">
-        <div class="d-flex">
-            <button class="toggle-btn" type="button">
-                <i class="lni lni-grid-alt"></i>
+     <!-- Navbar Superior -->
+     <nav class="navbar navbar-expand-lg navbar-dark navbar-grido fixed-top">
+        <div class="container-fluid">
+            <!-- Logo y Nombre -->
+            <a class="navbar-brand" href="home1.html">
+                <img src="assets/img/logo_negativo-removebg-preview.png" alt="Helacor Logo">
+            </a>
+
+            <!-- Botón de hamburguesa para móviles -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="sidebar-logo">
-                <a href="#">Grido Tech Advance</a>
-            </div>
-        </div>
-        <ul class="sidebar-nav">
-            <li class="sidebar-item">
-                <a href="home.html" class="sidebar-link">
-                    <i class="zmdi zmdi-view-dashboard"></i>
-                    <span>Inicio</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="production1.html" class="sidebar-link">
-                    <i class="zmdi zmdi-washing-machine"></i>
-                    <span>Declarar Producción</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="productionTable.html" class="sidebar-link">
-                    <i class="zmdi zmdi-washing-machine"></i>
-                    <span>Producción Confirmada</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="workOders.html" class="sidebar-link">
-                    <i class="zmdi zmdi-assignment"></i>
-                    <span>Órdenes de Trabajo</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="productStore.html" class="sidebar-link">
-                    <i class="zmdi zmdi-assignment"></i>
-                    <span>Almacen</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="incidents.html" class="sidebar-link">
-                    <i class="zmdi zmdi-assignment"></i>
-                    <span>Incidencias</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="materials.html" class="sidebar-link">
-                    <i class="zmdi zmdi-assignment"></i>
-                    <span>Materiales</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="products.html" class="sidebar-link">
-                    <i class="zmdi zmdi-store"></i>
-                    <span>Productos</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="Users_Gestion.html" class="sidebar-link">
-                    <i class="zmdi zmdi-store"></i>
-                    <span>Gestión de Usuarios</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="index.html" class="sidebar-link">
-                    <i class="zmdi zmdi-store"></i>
-                    <span>Cerrar Sesión</span>
-                </a>
-            </li>
-        </ul>
-    </aside>
-    <section class="full-width main">
-        <section class="full-width main">
-            <!-- navBar -->
-            <div class="full-width navBar">
-                <div class="full-width navBar-options">
-                    <i class="zmdi zmdi-swap btn-menu" id="btn-menu"></i>
-                    <div class="mdl-tooltip" for="btn-menu">Hide / Show MENU</div>
-                    <nav class="navBar-options-list">
-                        <ul class="list-unstyle">
-                            <li class="btn-Notification" id="notifications">
-                                <i class="zmdi zmdi-notifications"></i>
-                                <div class="mdl-tooltip" for="notifications">Notifications</div>
-                            </li>
-                            <li class="btn-exit" id="btn-exit">
-                                <i class="zmdi zmdi-power"></i>
-                                <div class="mdl-tooltip" for="btn-exit">LogOut</div>
-                            </li>
-                            <li class="text-condensedLight noLink"><small>Emiliano Di Noto</small></li>
-                            <li class="noLink">
-                                <figure>
-                                    <img src="assets/img/Emi (sin Fondo).png" alt="Avatar" class="img-responsive">
-                                </figure>
-                            </li>
+
+            <!-- Contenido del menú -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- Inicio -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="home1.html">Inicio</a>
+                    </li>
+
+                    <!-- Dropdown de Producción -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProduccion" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Producción
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownProduccion">
+                            <li><a class="dropdown-item" href="production1.html">Declarar Producción</a></li>
+                            <li><a class="dropdown-item" href="productionTable.html">Producción Confirmada</a></li>
                         </ul>
-                    </nav>
+                    </li>
+
+                    <!-- Órdenes de Trabajo -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="workOders.html">Órdenes de Trabajo</a>
+                    </li>
+
+                    <!-- Almacén -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="productStore.html">Almacén</a>
+                    </li>
+
+                    <!-- Incidencias -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="incidents.html">Incidencias</a>
+                    </li>
+
+                    <!-- Dropdown de Inventario -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownInventario" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Inventario
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownInventario">
+                            <li><a class="dropdown-item" href="materials.html">Materiales</a></li>
+                            <li><a class="dropdown-item" href="products.html">Productos</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Gestión de Usuarios -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="Users_Gestion.html">Gestión de Usuarios</a>
+                    </li>
+
+                     <!-- Gestión de Usuarios -->
+                     <li class="nav-item">
+                        <a class="nav-link" href="index.html">Cerrar Sesión</a>
+                    </li>
+                </ul>
+
+                <!-- Elementos a la derecha -->
+                <div class="navbar-right">
+                    <!-- Botón de configuración -->
+                    <button class="settings-btn" title="Configuración">
+                        <i class="zmdi zmdi-settings"></i>
+                    </button>
+
+                    <!-- Botón de cerrar sesión -->
+                    <a class="nav-link" href="index.html" title="Cerrar Sesión">
+                        <i class="zmdi zmdi-power"></i>
+                    </a>
                 </div>
             </div>
+        </div>
+    </nav>
+    <section class="full-width main">
+        <section class="full-width main">
             <section>
                 <table id="example" class="display nowrap" style="width:100%">
                     <thead>
