@@ -1243,3 +1243,7 @@ canvas {
         margin: 10px;
     }
 }
+.main {
+    margin-top: 80px !important; /* Ajusta este valor según la altura de tu navbar */
+    padding-top: 20px;
+}
