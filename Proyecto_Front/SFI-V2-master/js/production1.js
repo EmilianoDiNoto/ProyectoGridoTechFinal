@@ -148,7 +148,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // EXTRACCIÓN MATERIAL STOCK INICIAL
 $(document).ready(function () {
-    
     // Obtener parámetros de la URL
     const urlParams = new URLSearchParams(window.location.search);
     const ot = urlParams.get("ot");
@@ -211,30 +210,34 @@ $(document).ready(function () {
 
                     // Llamar a la API para obtener los proveedores del material actual
                     fetch(`http://localhost:63152/api/MaterialSupplier/by-material/${encodeURIComponent(material.MATERIAL)}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`Error: ${response.status}`);
-                            }
-                            return response.json();
-                        })
-                        .then(proveedores => {
-                            const selectProveedor = $(`#proveedor${index}`);
-                            selectProveedor.empty(); // Limpiar opciones previas
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Error: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(proveedores => {
+                        const selectProveedor = $(`#proveedor${index}`);
+                        selectProveedor.empty(); // Limpiar opciones previas
+                        
+                        // Añadir la opción vacía solo al inicio
+                        selectProveedor.append('<option value="" selected disabled hidden></option>');
+                
+                        if (Array.isArray(proveedores) && proveedores.length > 0) {
+                            proveedores.forEach(proveedor => {
+                                selectProveedor.append(
+                                    `<option value="${proveedor.PROVEEDOR}">${proveedor.PROVEEDOR}</option>`
+                                );
+                            });
+                        } else {
+                            selectProveedor.append('<option value="" disabled>Sin proveedores disponibles</option>');
+                        }
+                    })
+                    .catch(error => console.error(`❌ Error al obtener proveedores para ${material.MATERIAL}:`, error));
+                
 
-                            // Añadir la opción vacía solo al inicio
-                            selectProveedor.append('<option value="" selected disabled hidden></option>');
 
-                            if (Array.isArray(proveedores) && proveedores.length > 0) {
-                                proveedores.forEach(proveedor => {
-                                    selectProveedor.append(
-                                        `<option value="${proveedor.PROVEEDOR}">${proveedor.PROVEEDOR}</option>`
-                                    );
-                                });
-                            } else {
-                                selectProveedor.append('<option value="" disabled>Sin proveedores disponibles</option>');
-                            }
-                        })
-                        .catch(error => console.error(`❌ Error al obtener proveedores para ${material.MATERIAL}:`, error));
+
                 });
 
                 // Evitar números negativos en "cantidad"
@@ -258,8 +261,7 @@ $(document).ready(function () {
                     }
                 });
             })
-            .catch(error => console.error("Error al obtener materiales:", error)
-            );
+            .catch(error => console.error("Error al obtener materiales:", error));
     }
 
 
@@ -275,7 +277,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: "error",
                     title: "Por favor, complete todos los campos....",
-                });
+                  });
                 return;
             }
 
@@ -290,7 +292,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: "error",
                     title: "Seleccione al menos un material para registrar...",
-                });
+                  });
                 return;
             }
 
@@ -349,7 +351,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: "error",
                     title: "No se encontraron materiales válidos para enviar....",
-                });
+                  });
                 return;
             }
 
@@ -382,7 +384,7 @@ $(document).ready(function () {
             /* alert("✅ Stock Inicial enviado correctamente."); */
             Swal.fire({
                 title: "✅ Stock Inicial enviado correctamente.",
-            });
+              });
 
         } catch (error) {
             console.error("Error:", error);
@@ -390,7 +392,7 @@ $(document).ready(function () {
                 icon: "error",
                 title: "❌ Hubo un error en la operación.",
                 text: "Revisa los datos cargados!",
-            });
+              });
         }
     });
 
@@ -398,6 +400,11 @@ $(document).ready(function () {
 
 // EXTRACCIÓN MATERIAL STOCK FINAL
 $(document).ready(function () {
+    // Obtener parámetros de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const ot = urlParams.get("ot");
+    const producto = urlParams.get("producto");
+
     if (ot && producto) {
         $("#validationCustom01").val(ot);
         $("#validationCustom02").val(producto);
@@ -499,8 +506,7 @@ $(document).ready(function () {
                     }
                 });
             })
-            .catch(error => console.error("Error al obtener materiales:", error)
-            );
+            .catch(error => console.error("Error al obtener materiales:", error));
     }
 
 
@@ -1334,25 +1340,25 @@ $(document).ready(function () {
 
     // Evento click para abrir el modal y cargar los datos
     $('#verSolicitudes1').on('click', function () {
-        console.log("El botón fue presionado. Recargando la tabla...");
-
-        // Mostrar un indicador de carga (opcional)
-        $("#loadingIndicator").show();
-
-        // Recargar la tabla y esperar a que termine
-        table.ajax.reload(function () {
-            // Esta función se ejecuta cuando la recarga de datos se completa
-            console.log("✅ Tabla recargada correctamente");
-
-            // Ocultar indicador de carga (si existe)
-            $("#loadingIndicator").hide();
-
-            // Mostrar el modal
-            $("#modalSolicitudes").show();
-        }, false); // 'false' mantiene la página actual
-
-        // No es necesario hacer otra llamada AJAX aquí, ya que DataTables ya la hizo
-    });
+    console.log("El botón fue presionado. Recargando la tabla...");
+    
+    // Mostrar un indicador de carga (opcional)
+    $("#loadingIndicator").show();
+    
+    // Recargar la tabla y esperar a que termine
+    table.ajax.reload(function() {
+        // Esta función se ejecuta cuando la recarga de datos se completa
+        console.log("✅ Tabla recargada correctamente");
+        
+        // Ocultar indicador de carga (si existe)
+        $("#loadingIndicator").hide();
+        
+        // Mostrar el modal
+        $("#modalSolicitudes").show();
+    }, false); // 'false' mantiene la página actual
+    
+    // No es necesario hacer otra llamada AJAX aquí, ya que DataTables ya la hizo
+});
 
     // Cerrar modal al hacer clic en la "X"
     $(".close").on("click", function () {
@@ -1875,7 +1881,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon: "success"
             }).then(() => {
                 window.location.href = "home1.html"; // Redirige después de presionar "OK"
-            });
+            });            
 
             // Limpiar el campo de PRODUCIDO
             document.getElementById("validationCustom01").value = "";
@@ -1883,9 +1889,9 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("validationCustom03").value = "";
             document.getElementById("validationCustom03").focus();
 
-            localStorage.removeItem('datosFormularioOT');
+            localStorage.removeItem('datosFormularioProceso');
 
-
+            
         } catch (error) {
             console.error("❌ Error al guardar la producción:", error.message);
             alert("Error al guardar la producción. Verifique la consola.");
@@ -1914,7 +1920,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        console.log("✅ Se abrirá el modal desde el iconoss.");
+        console.log("✅ Se abrirá el modal desde el icono.");
 
         const otValue = document.getElementById("validationCustom01").value;
 
@@ -2112,56 +2118,3 @@ document.addEventListener("DOMContentLoaded", function () {
     // Configurar actualización automática cada 5 segundos
     setInterval(actualizarProgreso, 5000);
 });
-
-function guardarEnLocalStorage() {
-    const datosFormulario = {
-        fecha: document.getElementById('validationCustom04').value,
-        turno: document.getElementById('validationCustom05').value,
-        responsable: document.getElementById('validationCustom06').value,
-        orden: document.getElementById('validationCustom01').value,
-        producto: document.getElementById('validationCustom02').value,
-        cantidad: document.getElementById('validationCustom03').value,
-        modalAbierto: document.getElementById('modalDetencionLinea').style.display === 'block',
-    };
-    localStorage.setItem('datosFormularioOT', JSON.stringify(datosFormulario));
-}
-
-function cargarDesdeLocalStorage() {
-    const datosGuardados = JSON.parse(localStorage.getItem('datosFormularioOT'));
-    if (datosGuardados) {
-        document.getElementById('validationCustom04').value = datosGuardados.fecha || '';
-        document.getElementById('validationCustom05').value = datosGuardados.turno || '';
-        document.getElementById('validationCustom06').value = datosGuardados.responsable || '';
-        document.getElementById('validationCustom01').value = datosGuardados.orden || '';
-        document.getElementById('validationCustom02').value = datosGuardados.producto || '';
-        document.getElementById('validationCustom03').value = datosGuardados.cantidad || '';
-    }
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    const datosGuardados = JSON.parse(localStorage.getItem('datosFormularioOT'));
-
-    if (datosGuardados) {
-        document.getElementById('validationCustom04').value = datosGuardados.fecha || '';
-        document.getElementById('validationCustom05').value = datosGuardados.turno || '';
-        document.getElementById('validationCustom06').value = datosGuardados.responsable || '';
-        document.getElementById('validationCustom01').value = datosGuardados.orden || '';
-        document.getElementById('validationCustom02').value = datosGuardados.producto || '';
-        document.getElementById('validationCustom03').value = datosGuardados.cantidad || '';
-
-        // 👇 Asegurate de que el fetch se dispare después de setear todo
-        const ot = datosGuardados.orden;
-        const producto = datosGuardados.producto;
-
-        if (ot && producto) {
-            cargarMaterialesPorOT(ot);
-        }
-    }
-
-    // Eventos para guardar automáticamente
-    document.getElementById('validationCustom06').addEventListener('input', guardarEnLocalStorage);
-    document.getElementById('validationCustom03').addEventListener('input', guardarEnLocalStorage);
-    document.getElementById('validationCustom01').addEventListener('change', guardarEnLocalStorage);
-    document.getElementById('validationCustom02').addEventListener('change', guardarEnLocalStorage);
-});
-
