@@ -1920,7 +1920,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        console.log("✅ Se abrirá el modal desde el icono.");
+        console.log("✅ Se abrirá el modal desde el iconoss.");
 
         const otValue = document.getElementById("validationCustom01").value;
 
