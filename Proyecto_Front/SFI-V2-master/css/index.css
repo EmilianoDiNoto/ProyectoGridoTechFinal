@@ -53,11 +53,16 @@ body {
 .logo-container {
     text-align: center;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .logo-container img {
-    width: 200px;
-    height: auto;
+    width: 300px; /* Ancho más grande */
+    height: auto; /* Altura automática proporcional */
+    max-height: 200px; /* Limitar la altura máxima */
+    object-fit: contain; /* Mantener la proporción del logo */
 }
 
 /* Estilos para el formulario */
@@ -127,9 +132,11 @@ body {
 
 .error-message {
     color: #d9534f;
-    font-size: 12px;
     margin-top: 5px;
     display: none;
+    font-size: 1.1em !important;
+    border-radius: 10px !important;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Estilos para los íconos de países */
@@ -182,4 +189,29 @@ body {
     .form-group {
         margin-bottom: 15px;
     }
+}
+
+/* Añadir estos estilos a tu archivo CSS existente (css/index.css) */
+
+/* Estilo personalizado para el popup de inicio de sesión exitoso */
+.login-success-popup {
+    font-size: 1.1em !important;
+    border-radius: 10px !important;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2) !important;
+}
+
+.login-success-title {
+    font-size: 1.8em !important;
+    font-weight: bold !important;
+}
+
+.login-success-content {
+    font-size: 1.2em !important;
+    margin-top: 10px !important;
+}
+
+/* Estilo personalizado para la barra de progreso del timer */
+.swal2-timer-progress-bar {
+    background: rgba(52, 152, 219, 0.6) !important;
+    height: 5px !important;
 }

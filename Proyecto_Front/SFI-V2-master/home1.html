@@ -4,402 +4,304 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Grido Tech Advance - Dashboard</title>
-    <link rel="stylesheet" href="css/grido-home.css">
+    <title> Inicio</title>
     <link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/sweetalert2.css">
-	<link rel="stylesheet" href="css/material.min.css">
-	<link rel="stylesheet" href="css/material-design-iconic-font.min.css">
-	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
-	<link rel="stylesheet" href="css/main.css">
-	<link rel="stylesheet" href="css/robot.css">
+    <link rel="stylesheet" href="css/sweetalert2.css">
+    <link rel="stylesheet" href="css/material.min.css">
+    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/robot.css">
+    <link rel="stylesheet" href="css/grido-home.css">
 
-	<!-- Highcharts core -->
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<!-- Para gráficos circulares -->
-	<script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<script src="https://code.highcharts.com/modules/export-data.js"></script>
-	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <!-- Highcharts core -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <!-- Para gráficos circulares -->
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-	<!-- Chart.js -->
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
-	<script src="js/material.min.js"></script>
-	<script src="js/sweetalert2.min.js"></script>
-	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="js/material.min.js"></script>
+    <script src="js/sweetalert2.min.js"></script>
+    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
 
-	<script src="js/main.js"></script>
-	<script src="js/menuControl.js"></script>
-	<script src="js/robot.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/menuControl2.js"></script>
+    <script src="js/robot.js"></script>
+    <script src="js/production1.js"></script>
+    <script src="js/pedidos-solicitudes.js"></script>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-	<!-- BOOTSTRAP -->
-	<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
-	<!-- DataTables CSS -->
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
-	<link rel="stylesheet" type="text/css"
-		href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-	<link rel="stylesheet" type="text/css"
-		href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
-	<!-- DataTables JS -->
-	<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
-	<script type="text/javascript"
-		src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 
-	<!-- SWEETALERT -->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SWEETALERT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-	<!-- PRUEBA-->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script>
-		// Configuración para DataTables
-		window.dataTablesLanguage = {
-			"decimal": "",
-			"emptyTable": "No hay datos disponibles",
-			"info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-			"infoEmpty": "Mostrando 0 a 0 de 0 registros",
-			"infoFiltered": "(filtrado de _MAX_ registros totales)",
-			"infoPostFix": "",
-			"thousands": ",",
-			"lengthMenu": "Mostrar _MENU_ registros",
-			"loadingRecords": "Cargando...",
-			"processing": "Procesando...",
-			"search": "Buscar:",
-			"zeroRecords": "No se encontraron coincidencias",
-			"paginate": {
-				"first": "Primero",
-				"last": "Último",
-				"next": "Siguiente",
-				"previous": "Anterior"
-			}
-		};
-	</script>
-
-	<script>
-		// Fix para el error de SweetAlert - Ejecutar antes de otros scripts
-		window.addEventListener('DOMContentLoaded', function () {
-			if (typeof Swal !== 'undefined' && typeof swal !== 'undefined' && !swal.init) {
-				swal.init = function () {
-					return typeof Swal.isVisible === 'function' ? Swal.isVisible() : false;
-				};
-				console.log('SweetAlert polyfill aplicado');
-			}
-		}, { once: true });
-	</script>
-
+    <!-- PRUEBA-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Configuración para DataTables
+        window.dataTablesLanguage = {
+            "decimal": "",
+            "emptyTable": "No hay datos disponibles",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "No se encontraron coincidencias",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        };
+    </script>
+    <!-- Agregar esto para la alineación de tablas -->
+    <script>
+        // Fix para el error de SweetAlert - Ejecutar antes de otros scripts
+        window.addEventListener('DOMContentLoaded', function () {
+            if (typeof Swal !== 'undefined' && typeof swal !== 'undefined' && !swal.init) {
+                swal.init = function () {
+                    return typeof Swal.isVisible === 'function' ? Swal.isVisible() : false;
+                };
+                console.log('SweetAlert polyfill aplicado');
+            }
+        }, { once: true });
+    </script>
 </head>
 
 <body>
     <div class="wrapper">
-        <!-- Sidebar -->
-        <aside id="sidebar">
-            <div class="d-flex">
-                <button class="toggle-btn" type="button">
-                    <i class="lni lni-grid-alt"></i>
+        <!-- Navbar Superior -->
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-grido fixed-top">
+            <div class="container-fluid">
+                <!-- Logo y Nombre -->
+                <a class="navbar-brand" href="home1.html">
+                    <img src="assets/img/logo_negativo-removebg-preview.png" alt="Helacor Logo">
+                </a>
+
+                <!-- Botón de hamburguesa para móviles -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="sidebar-logo">
-                    <a href="#">Grido Tech Advance</a>
+
+                <!-- Contenido del menú -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <!-- Inicio -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="home1.html">Inicio</a>
+                        </li>
+
+                        <!-- Dropdown de Producción -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProduccion" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Producción
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownProduccion">
+                                <li><a class="dropdown-item" href="production1.html">Declarar Producción</a></li>
+                                <li><a class="dropdown-item" href="productionTable.html">Producción Confirmada</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Órdenes de Trabajo -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="workOders.html">Órdenes de Trabajo</a>
+                        </li>
+
+                        <!-- Almacén -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="productStore.html">Almacén</a>
+                        </li>
+
+                        <!-- Incidencias -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="incidents.html">Incidencias</a>
+                        </li>
+
+                        <!-- Dropdown de Inventario -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownInventario" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Inventario
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownInventario">
+                                <li><a class="dropdown-item" href="materials.html">Materiales</a></li>
+                                <li><a class="dropdown-item" href="products.html">Productos</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Gestión de Usuarios -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="Users_Gestion.html">Gestión de Usuarios</a>
+                        </li>
+
+                         <!-- Gestión de Usuarios -->
+                         <li class="nav-item">
+                            <a class="nav-link" href="index.html">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+
+                    <!-- Elementos a la derecha -->
+                    <div class="navbar-right">
+                        <!-- Botón de configuración -->
+                        <button class="settings-btn" title="Configuración">
+                            <i class="zmdi zmdi-settings"></i>
+                        </button>
+
+                        <!-- Botón de cerrar sesión -->
+                        <a class="nav-link" href="index.html" title="Cerrar Sesión">
+                            <i class="zmdi zmdi-power"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <ul class="sidebar-nav">
-                <li class="sidebar-item">
-                    <a href="home.html" class="sidebar-link active">
-                        <i class="zmdi zmdi-view-dashboard"></i>
-                        <span>Inicio</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="production1.html" class="sidebar-link">
-                        <i class="zmdi zmdi-washing-machine"></i>
-                        <span>Declarar Producción</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="productionTable.html" class="sidebar-link">
-                        <i class="zmdi zmdi-washing-machine"></i>
-                        <span>Producción Confirmada</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="workOders.html" class="sidebar-link">
-                        <i class="zmdi zmdi-assignment"></i>
-                        <span>Órdenes de Trabajo</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="productStore.html" class="sidebar-link">
-                        <i class="zmdi zmdi-store"></i>
-                        <span>Almacén</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="incidents.html" class="sidebar-link">
-                        <i class="zmdi zmdi-alert-triangle"></i>
-                        <span>Incidencias</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="materials.html" class="sidebar-link">
-                        <i class="zmdi zmdi-layers"></i>
-                        <span>Materiales</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="products.html" class="sidebar-link">
-                        <i class="zmdi zmdi-cake"></i>
-                        <span>Productos</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="Users_Gestion.html" class="sidebar-link">
-                        <i class="zmdi zmdi-accounts"></i>
-                        <span>Gestión de Usuarios</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="index.html" class="sidebar-link">
-                        <i class="zmdi zmdi-power"></i>
-                        <span>Cerrar Sesión</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
+        </nav>
 
-        <!-- Contenido principal -->
         <div class="main">
-            <!-- Sección de bienvenida -->
+            <!--Sección superior compacta mejorada-->
             <div class="welcome-section">
-                <div class="container-fluid p-0">
-                    <div class="row g-0">
-                        <!-- Columna izquierda: Información y estadísticas -->
-                        <div class="col-lg-5 welcome-info">
-                            <div class="welcome-content">
-                                <div class="welcome-header">
-                                    <h2>Bienvenido a <span class="brand-highlight">Grido Tech Advance</span></h2>
-                                    <p class="lead">Sistema de gestión de producción y calidad</p>
-                                </div>
-                                
-                                <div class="quick-stats">
-                                    <div class="stat-item" id="efficiency-stat">
-                                        <div class="stat-icon"><i class="zmdi zmdi-chart"></i></div>
-                                        <div class="stat-info">
-                                            <h3 class="stat-title">Eficiencia mensual</h3>
-                                            <div class="stat-value">93.8%</div>
-                                            <div class="stat-progress">
-                                                <div class="progress">
-                                                    <div class="progress-bar" role="progressbar" style="width: 93.8%" aria-valuenow="93.8" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="stat-item">
-                                        <div class="stat-icon"><i class="zmdi zmdi-check-circle"></i></div>
-                                        <div class="stat-info">
-                                            <h3 class="stat-title">Órdenes completadas</h3>
-                                            <div class="stat-value">26 <small>este mes</small></div>
-                                            <div class="stat-trend positive">
-                                                <i class="zmdi zmdi-trending-up"></i> +12% vs. mes anterior
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                <!-- Contenedor de productos -->
+                <div class="ice-cream-container">
+                    <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND CREAM - GRIDO">
+                        <img src="assets/img/Torta-cookies-and-cream.jpg" alt="Torta Cookies and Cream">
+                        <button id="btnProduct1" class="order-btn">Orden de Trabajo</button>
+                        <div class="product-name">COOKIES AND CREAM</div>
+                    </div>
+                    <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND MOUSSE - GRIDO">
+                        <img src="assets/img/Torta-cookies-mousse.jpg" alt="Torta Cookies and Mousse">
+                        <button id="btnProduct2" class="order-btn">Orden de Trabajo</button>
+                        <div class="product-name">COOKIES AND MOUSSE</div>
+                    </div>
+                    <div class="ice-cream-item" data-product="PACK TORTA GRIDO CON RELLENO - GRIDO">
+                        <img src="assets/img/Torta-Grido360X360.jpg" alt="Torta Grido con Relleno">
+                        <button id="btnProduct3" class="order-btn">Orden de Trabajo</button>
+                        <div class="product-name">GRIDO CON RELLENO</div>
+                    </div>
+                </div>
+
+                <!-- Fila de contadores -->
+                <div class="row counter-row">
+                    <div class="col-md-3 col-sm-6 mb-2">
+                        <div class="counter-card">
+                            <h3>PEDIDOS PENDIENTES</h3>
+                            <p class="counter-value text-warning">0</p>
                         </div>
-                        
-                        <!-- Columna derecha: Productos destacados con efectos modernos -->
-                        <div class="col-lg-7 welcome-products">
-                            <div class="welcome-product-gallery">
-                                <h3 class="gallery-title">Productos destacados</h3>
-                                
-                                <div class="product-carousel">
-                                    <div class="ice-cream-container">
-                                        <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND CREAM - GRIDO">
-                                            <div class="product-card">
-                                                <div class="product-image">
-                                                    <img src="assets/img/Torta-cookies-and-cream.jpg" alt="Cookie">
-                                                </div>
-                                                <div class="product-info">
-                                                    <h4>Torta Cookies & Cream</h4>
-                                                    <div class="product-meta">
-                                                        <span class="production-status">En producción</span>
-                                                        <span class="production-quantity">OT #4</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="ice-cream-item" data-product="PACK TORTA COOKIES AND MOUSSE - GRIDO">
-                                            <div class="product-card">
-                                                <div class="product-image">
-                                                    <img src="assets/img/Torta-cookies-mousse.jpg" alt="Crema">
-                                                </div>
-                                                <div class="product-info">
-                                                    <h4>Torta Cookies & Mousse</h4>
-                                                    <div class="product-meta">
-                                                        <span class="production-status">Planificada</span>
-                                                        <span class="production-quantity">OT #6</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="ice-cream-item" data-product="PACK TORTA GRIDO CON RELLENO - GRIDO">
-                                            <div class="product-card">
-                                                <div class="product-image">
-                                                    <img src="assets/img/Torta-Grido360X360.jpg" alt="Chocolate">
-                                                </div>
-                                                <div class="product-info">
-                                                    <h4>Torta Grido con Relleno</h4>
-                                                    <div class="product-meta">
-                                                        <span class="production-status">Completada</span>
-                                                        <span class="production-quantity">OT #3</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-2">
+                        <div class="counter-card counter-clickable" id="stock-final-counter">
+                            <h3>STOCK FINAL</h3>
+                            <div class="counter-icon"><i class="zmdi zmdi-search"></i></div>
+                            <p class="counter-value text-info" id="stock-final-count"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-2">
+                        <div class="counter-card">
+                            <h3>TOTAL DE DESVÍO PRODUCCIÓN</h3>
+                            <p class="counter-value text-danger" id="desvio-total">$0,00</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-2">
+                        <div class="counter-card">
+                            <h3>Orden pendiente</h3>
+                            <p class="counter-value text-primary" id="inventario-valorizado">$0,00</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Contadores superiores -->
-            <div class="dashboard-metrics">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="counter-card counter-primary">
-                                <div class="counter-icon">
-                                    <i class="zmdi zmdi-balance"></i>
-                                </div>
-                                <div class="counter-content">
-                                    <h3>TOTAL INVENTARIO VALORIZADO</h3>
-                                    <p class="counter-value" id="inventario-valorizado">$0,00</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="counter-card counter-danger">
-                                <div class="counter-icon">
-                                    <i class="zmdi zmdi-trending-down"></i>
-                                </div>
-                                <div class="counter-content">
-                                    <h3>TOTAL DE DESVÍO PRODUCCIÓN</h3>
-                                    <p class="counter-value" id="desvio-total">$0,00</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="counter-card counter-info counter-clickable" id="stock-final-counter">
-                                <div class="counter-icon">
-                                    <i class="zmdi zmdi-storage"></i>
-                                </div>
-                                <div class="counter-content">
-                                    <h3>STOCK FINAL</h3>
-                                    <p class="counter-value" id="stock-final-count">$0,00</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="counter-card counter-warning">
-                                <div class="counter-icon">
-                                    <i class="zmdi zmdi-assignment"></i>
-                                </div>
-                                <div class="counter-content">
-                                    <h3>PEDIDOS PENDIENTES</h3>
-                                    <p class="counter-value">0</p>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Diseño de 3 columnas para los gráficos principales -->
+            <div class="row">
+                <!-- Primera columna - Balance de Masas (33%) -->
+                <div class="col-md-4 mb-3">
+                    <div class="chart-container chart-container-medium">
+                        <h3 class="chart-title">Última Producción</h3>
+                        <div class="metrics-container"
+                            style="display: flex; justify-content: space-between; padding: 10px 0; width: 100%;"></div>
+                        <button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#productionModal">
+                            Consultar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tercera columna - Ordenes de Trabajo (33%) -->
+                <div class="col-md-4 mb-3">
+                    <div class="chart-container chart-container-large">
+                        <h3 class="chart-title">Órdenes de Trabajo</h3>
+                        <div id="ordenes-trabajo-container" class="highchart-wrapper"></div>
+                    </div>
+                </div>
+
+                <!-- Segunda columna - Producción por Temporada (33%) -->
+                <div class="col-md-4 mb-3">
+                    <div class="chart-container chart-container-large">
+                        <h3 class="chart-title">Balance de Masas Total</h3>
+                        <div id="balance-highchart-container" class="highchart-wrapper"></div>
+                        <button id="balance-consultar-btn" class="btn btn-consultar" data-bs-toggle="modal"
+                            data-bs-target="#balanceModal">
+                            Consultar
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Contenido del Dashboard -->
-            <div class="dashboard-content">
-                <div class="container-fluid">
-                    <!-- Fila 1: Balance y Última Producción -->
-                    <div class="row">
-                        <!-- Balance de Masas General (ocupa 8/12 columnas) -->
-                        <div class="col-12 col-lg-8 mb-4">
-                            <div class="chart-container chart-container-large">
-                                <div class="chart-header">
-                                    <h3 class="chart-title">Balance de Masas Total</h3>
-                                    <div class="chart-actions">
-                                        <button id="export-balance-chart-btn" class="btn-icon">
-                                            <i class="zmdi zmdi-download"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div id="balance-highchart-container" class="highchart-wrapper"></div>
-                                <button id="balance-consultar-btn" class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#balanceModal">
-                                    Consultar Detalle
-                                </button>
-                            </div>
-
-                            <!-- Producción por Temporada -->
-                            <div class="chart-container chart-container-medium">
-                                <div class="chart-header">
-                                    <h3 class="chart-title">Producción por Temporada</h3>
-                                </div>
-                                <div id="produccion-temporada-container" class="highchart-wrapper"></div>
-                            </div>
-                        </div>
-
-                        <!-- Columna derecha (ocupa 4/12 columnas) -->
-                        <div class="col-12 col-lg-4 mb-4">
-                            <!-- Última Producción - versión renovada -->
-                            <div class="chart-container chart-container-small">
-                                <div class="chart-header">
-                                    <h3 class="chart-title">Última Producción</h3>
-                                </div>
-                                <div class="metrics-container">
-                                    <!-- Contenedor de métricas dinámicas -->
-                                </div>
-                                <button class="btn btn-consultar" data-bs-toggle="modal" data-bs-target="#productionModal">
-                                    Ver Detalles
-                                </button>
-                            </div>
-
-                            <!-- Órdenes de Trabajo -->
-                            <div class="chart-container chart-container-small">
-                                <div class="chart-header">
-                                    <h3 class="chart-title">Órdenes de Trabajo</h3>
-                                </div>
-                                <div id="ordenes-trabajo-container" class="highchart-wrapper"></div>
-                            </div>
-                        </div>
+            <!-- Fila para Última Producción (50%) y Producción Anual (50%) -->
+            <div class="row">
+                <!-- Última Producción -->
+                <div class="col-md-6 mb-3">
+                    <div class="chart-container chart-container-large">
+                        <h3 class="chart-title">Producción por Temporada</h3>
+                        <div id="produccion-temporada-container" class="highchart-wrapper"></div>
                     </div>
+                </div>
 
-                    <!-- Fila 2: Producción Anual -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="chart-container chart-container-medium">
-                                <div class="chart-header">
-                                    <h3 class="chart-title">Producción Anual</h3>
-                                </div>
-                                <div id="produccion-anual-container" class="highchart-wrapper"></div>
-                            </div>
-                        </div>
+                <!-- Producción Anual -->
+                <div class="col-md-6 mb-3">
+                    <div class="chart-container chart-container-medium">
+                        <h3 class="chart-title">Producción Anual</h3>
+                        <div id="produccion-anual-container" class="highchart-wrapper"></div>
                     </div>
                 </div>
             </div>
+
+            <div id="container" style="display: none;"></div>
 
             <!-- Modal Producción -->
-            <div class="modal fade" id="productionModal" tabindex="-1" aria-labelledby="productionModalLabel" aria-hidden="true">
+            <div class="modal fade" id="productionModal" tabindex="-1" aria-labelledby="productionModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -409,7 +311,7 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <h6>Producción OT 4</h6>
+                                    <h6>Última Producción</h6>
                                     <table id="productionTable" class="display nowrap" style="width:100%">
                                         <thead>
                                             <tr>
@@ -425,7 +327,7 @@
                                     </table>
                                 </div>
                                 <div class="col-md-6">
-                                    <h6>Balance de Masas OT 4</h6>
+                                    <h6>Balance de Masas</h6>
                                     <table id="theoricalTableInProduction" class="display nowrap" style="width:100%">
                                         <thead>
                                             <tr>
@@ -444,7 +346,8 @@
             </div>
 
             <!-- Modal Balance de Masas -->
-            <div class="modal fade" id="balanceModal" tabindex="-1" aria-labelledby="balanceModalLabel" aria-hidden="true">
+            <div class="modal fade" id="balanceModal" tabindex="-1" aria-labelledby="balanceModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -560,26 +463,47 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="js/material.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-    
-    <!-- DataTables JS -->
-    <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-    
-    <!-- Custom Scripts -->
-    <script src="js/main.js"></script>
-    <script src="js/menuControl.js"></script>
-    <script src="js/welcome-section.js"></script>
-    <script src="js/robot.js"></script>
-    <script src="js/incidents.js"></script>
-    <script src="js/production1.js"></script>
-    <script src="js/grido-dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+    <script>
+        // Script para actualizar el contador de pedidos pendientes
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("Iniciando contador de pedidos pendientes...");
+
+            // Verificar si estamos en desktop
+            function isDesktop() {
+                return window.innerWidth >= 992;
+            }
+
+            // Agregar eventos para los dropdowns
+            const dropdownMenus = document.querySelectorAll('.dropdown');
+
+            dropdownMenus.forEach(function (dropdown) {
+                dropdown.addEventListener('mouseenter', function () {
+                    if (isDesktop()) {
+                        const dropdownMenu = this.querySelector('.dropdown-menu');
+                        dropdownMenu.classList.add('show');
+                    }
+                });
+
+                dropdown.addEventListener('mouseleave', function () {
+                    if (isDesktop()) {
+                        const dropdownMenu = this.querySelector('.dropdown-menu');
+                        dropdownMenu.classList.remove('show');
+                    }
+                });
+            });
+
+            // Configuración modal para el botón de ajustes
+            const settingsBtn = document.querySelector('.settings-btn');
+            settingsBtn.addEventListener('click', function () {
+                alert('Aquí se mostraría el modal de configuración.');
+            });
+
+
+        })
+    </script>
 </body>
+
 </html>

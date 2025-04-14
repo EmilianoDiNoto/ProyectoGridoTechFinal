@@ -1,589 +1,689 @@
-/**
- * grido-home.css
- * Estilos específicos para la página home.html
- * Enfocado solo en los elementos de esta página sin afectar al resto del sistema
- */
+.text-right {
+            text-align: right !important;
+        }
 
-/* Variables para colores consistentes */
-:root {
-    --grido-primary: #0e2238;
-    --grido-primary-light: #1a3b5d;
-    --grido-accent: #117daf;
-    --grido-success: #28a745;
-    --grido-warning: #ffc107;
-    --grido-danger: #dc3545;
-    --grido-info: #17a2b8;
-}
+        /* Aplicar también a las celdas del encabezado para mantener consistencia */
+        table.dataTable thead th.text-right {
+            text-align: right !important;
+        }
 
-/* Estilos para la página principal */
-.main {
-    background-color: #f3f6ff;
-}
+        /* Asegurar que la alineación se aplique en pantallas pequeñas */
+        @media screen and (max-width: 767px) {
+            table.dataTable.dtr-inline.collapsed>tbody>tr>td.text-right {
+                text-align: right !important;
+            }
+        }
 
-/* Sección de bienvenida */
-.welcome-section {
-    background: linear-gradient(135deg, var(--grido-primary) 0%, var(--grido-primary-light) 100%);
-    border-radius: 0 0 10px 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    color: #fff;
-    margin-bottom: 30px;
+        /* Estilos optimizados para el dashboard */
+        .main {
+            padding: 15px;
+        }
+
+        /* Nuevos estilos para optimizar espacio */
+        .chart-container {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            height: auto;
+        }
+
+        .chart-container-large {
+            height: 300px;
+        }
+
+        .chart-container-medium {
+            height: 250px;
+        }
+
+        .chart-container-small {
+            height: 220px;
+        }
+
+        .highchart-wrapper {
+            width: 100%;
+            height: calc(100% - 50px);
+        }
+
+        .counter-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            margin-bottom: 15px;
+        }
+
+        .counter-card h3 {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .counter-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .btn-consultar {
+            background-color: #0e2238 !important;
+            color: white !important;
+            border: none !important;
+            padding: 4px 12px !important;
+            border-radius: 4px !important;
+            font-size: 0.85em !important;
+            margin: 8px auto !important;
+        }
+
+        .chart-title {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        /* Estilos para la sección de bienvenida */
+        .welcome-section {
+            margin-bottom: 15px;
+        }
+
+        .logo-helacor {
+            max-width: 200px;
+        }
+
+        .ice-cream-container {
+            gap: 8px;
+        }
+
+        .ice-cream-item img {
+            width: 80px;
+        }
+
+        /* Ajustes para el robot chatbot */
+        .robot-grido-container {
+            bottom: 10px;
+            right: 10px;
+            width: 320px;
+            height: 400px;
+        }
+
+        :root {
+            --primary-color: #0e2238;
+            --secondary-color: #1a3b5d;
+            --text-color: #ffffff;
+            --hover-bg: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            padding-top: 70px;
+            /* Espacio para la navbar fija */
+            background-color: #fafbfe;
+            font-family: "RobotoRegular", sans-serif;
+        }
+
+        .navbar-grido {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--text-color) !important;
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar-toggler {
+            border: none;
+            color: var(--text-color);
+            padding: 0.5rem;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-color) !important;
+            padding: 0.8rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-item.dropdown:hover .nav-link {
+            background-color: var(--hover-bg);
+        }
+
+        .dropdown-menu {
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 0.25rem;
+            margin-top: 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item {
+            color: var(--text-color);
+            padding: 0.5rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--hover-bg);
+            color: var(--text-color);
+        }
+
+        .navbar-right {
+            margin-left: auto;
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            margin: 0 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .settings-btn:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Ajustes para pantallas pequeñas */
+        @media (max-width: 992px) {
+            .navbar-collapse {
+                background-color: var(--primary-color);
+                padding: 1rem;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .dropdown-menu {
+                background-color: rgba(0, 0, 0, 0.2);
+                border: none;
+                padding-left: 1rem;
+            }
+
+            .navbar-right {
+                margin-left: 0;
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        /* Contenedor principal ajustado para navbar superior */
+        .main {
+            padding: 20px;
+            width: 100%;
+            transition: all 0.35s ease-in-out;
+        }
+
+        /* Demo de la página */
+        .content-demo {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .content-title {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        /* Estilos mejorados para las tarjetas de contadores */
+.counter-card {
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    transition: all 0.3s ease;
+    position: relative;
     overflow: hidden;
-}
-
-/* Columna izquierda - Información */
-.welcome-info {
-    padding: 40px;
     display: flex;
-    align-items: center;
-    min-height: 340px;
-}
-
-.welcome-content {
-    width: 100%;
-}
-
-.welcome-header h2 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 10px;
-}
-
-.welcome-header p {
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 0;
-}
-
-.brand-highlight {
-    color: var(--grido-accent);
-    position: relative;
-}
-
-.brand-highlight::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--grido-accent), rgba(17, 125, 175, 0.5));
-    border-radius: 2px;
-}
-
-/* Estadísticas rápidas */
-.quick-stats {
-    margin-top: 30px;
-}
-
-.stat-item {
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.stat-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.stat-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--grido-accent) 0%, #16a0d3 100%);
-    display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    margin-right: 15px;
-    flex-shrink: 0;
+    margin-bottom: 15px;
+    border-left: 4px solid;
 }
 
-.stat-icon i {
-    font-size: 24px;
-    color: white;
+/* Colores específicos para cada tarjeta de contador */
+.counter-card:nth-child(1) {
+    background: linear-gradient(135deg, #e8f5fe, #d1ecfc);
+    border-left-color: #0c169f;
 }
 
-.stat-info {
-    flex-grow: 1;
+.counter-card:nth-child(2) {
+    background: linear-gradient(135deg, #fdeeee, #fad4d4);
+    border-left-color: #dc3545;
 }
 
-.stat-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 5px;
+.counter-card:nth-child(3) {
+    background: linear-gradient(135deg, #e8f7fd, #c9edfb);
+    border-left-color: #0dcaf0;
 }
 
-.stat-value {
-    font-size: 22px;
+.counter-card:nth-child(4) {
+    background: linear-gradient(135deg, #fff7e6, #ffe9b8);
+    border-left-color: #ffc107;
+}
+
+.counter-card h3 {
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    color: #333;
     font-weight: 700;
-    color: #ffffff;
-    display: flex;
-    align-items: baseline;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.stat-value small {
-    font-size: 14px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.7);
-    margin-left: 8px;
+.counter-value {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 8px 0;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-.stat-progress {
-    margin-top: 8px;
+/* Hover effect para tarjetas */
+.counter-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.stat-progress .progress {
-    height: 8px;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.2);
+/* Estilos para tarjeta clickeable */
+.counter-clickable {
+    cursor: pointer;
 }
 
-.stat-progress .progress-bar {
-    background: linear-gradient(90deg, var(--grido-accent), var(--grido-info));
-    border-radius: 4px;
-}
-
-.stat-trend {
-    font-size: 13px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-}
-
-.stat-trend.positive {
-    color: var(--grido-success);
-}
-
-.stat-trend.negative {
-    color: var(--grido-danger);
-}
-
-.stat-trend i {
-    margin-right: 4px;
-    font-size: 16px;
-}
-
-/* Columna derecha - Productos */
-.welcome-products {
-    background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
-    color: white;
-    padding: 40px;
-    min-height: 340px;
-    display: flex;
-    align-items: center;
-}
-
-.welcome-product-gallery {
-    width: 100%;
-}
-
-.gallery-title {
-    font-size: 22px;
-    font-weight: 600;
-    margin-bottom: 30px;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.gallery-title::after {
-    content: '';
+.counter-clickable .counter-icon {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, #f8f9fa, rgba(248, 249, 250, 0.2));
-    border-radius: 2px;
+    top: 10px;
+    right: 10px;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.4);
 }
 
-/* Productos destacados */
+.counter-clickable:hover .counter-icon {
+    color: #0e2238;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Estilos mejorados para productos de helado */
+.welcome-section {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .ice-cream-container {
     display: flex;
     justify-content: center;
     gap: 20px;
-    margin-top: 20px;
-    flex-wrap: nowrap;
+    margin-top: 15px;
+    width: 100%;
 }
 
 .ice-cream-item {
-    flex: 1;
-    max-width: 250px;
-    transition: transform 0.3s ease;
+    position: relative;
+    width: 30%;
+    max-width: 180px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-color: white;
     cursor: pointer;
 }
 
-.product-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.ice-cream-item:hover {
-    transform: translateY(-10px);
-}
-
-.ice-cream-item:hover .product-card {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.product-image {
-    overflow: hidden;
-    position: relative;
-    padding-top: 100%; /* Aspecto cuadrado */
-}
-
-.product-image img {
-    position: absolute;
-    top: 0;
-    left: 0;
+.ice-cream-item img {
     width: 100%;
-    height: 100%;
+    height: 180px;
     object-fit: cover;
     transition: transform 0.5s ease;
 }
 
-.ice-cream-item:hover .product-image img {
-    transform: scale(1.1);
-}
-
-.product-info {
-    padding: 15px;
-}
-
-.product-info h4 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: white;
-}
-
-.product-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-}
-
-.production-status {
-    padding: 3px 8px;
-    border-radius: 20px;
-    font-weight: 500;
-}
-
-.ice-cream-item:nth-child(1) .production-status {
-    background-color: var(--grido-success);
-    color: white;
-}
-
-.ice-cream-item:nth-child(2) .production-status {
-    background-color: var(--grido-warning);
-    color: #212529;
-}
-
-.ice-cream-item:nth-child(3) .production-status {
-    background-color: var(--grido-info);
-    color: white;
-}
-
-.production-quantity {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-/* Contadores superiores (solo estilos visuales) */
-#inventario-valorizado,
-#desvio-total,
-#stock-final-count {
-    transition: all 0.3s ease;
-}
-
-/* Estilo para transición de contador al actualizarse */
-@keyframes counterUpdate {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); color: var(--grido-accent); }
-    100% { transform: scale(1); }
-}
-
-.counter-updated {
-    animation: counterUpdate 0.5s ease forwards;
-}
-
-/* Contenedor clickeable para el contador de stock */
-#stock-final-counter {
-    cursor: pointer;
-    position: relative;
-}
-
-#stock-final-counter:hover {
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-    transform: translateY(-3px);
-}
-
-/* Mejoras visuales para los gráficos */
-.chart-container {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-    overflow: visible !important;
-}
-
-.chart-container:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-}
-
-.chart-container .chart-title {
-    color: var(--grido-primary);
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-/* Estilos para el botón de consultar */
-.btn-consultar {
-    display: inline-block;
-    background-color: var(--grido-primary);
-    color: white !important;
-    padding: 8px 20px;
-    border-radius: 30px;
-    border: none;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-top: 15px;
-}
-
-.btn-consultar:hover {
-    background-color: var(--grido-primary-light);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-/* Botón de exportación para gráfico de balance */
-#export-balance-chart-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background-color: rgba(14, 34, 56, 0.05);
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.ice-cream-item::after {
+    content: "";
     position: absolute;
-    top: 15px;
-    right: 15px;
-}
-
-#export-balance-chart-btn i {
-    color: var(--grido-primary);
-    font-size: 18px;
-}
-
-#export-balance-chart-btn:hover {
-    background-color: var(--grido-primary);
-}
-
-#export-balance-chart-btn:hover i {
-    color: white;
-}
-
-/* Contenedor de métricas para Última Producción */
-.metrics-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.metric-card {
-    flex: 1;
-    min-width: 100px;
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.metric-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.metric-icon {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.metric-icon i {
-    color: var(--grido-primary);
-}
-
-.metric-value {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--grido-primary);
-    margin-bottom: 5px;
-}
-
-.metric-label {
-    font-size: 12px;
-    color: #6c757d;
-}
-
-/* Estilos para el modal de detalles del producto */
-.product-detail-modal {
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.product-detail-image {
-    position: relative;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 15px;
-}
-
-.product-detail-image img {
+    bottom: 0;
+    left: 0;
     width: 100%;
-    border-radius: 10px;
+    height: 40px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.product-status-badge {
+.ice-cream-item .product-name {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px;
-    border-radius: 20px;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
     color: white;
     font-size: 12px;
     font-weight: 600;
+    text-align: center;
+    padding: 0 10px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px);
 }
 
-.product-detail-info h4 {
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-    color: var(--grido-primary);
+/* Hover effects para productos de helado */
+.ice-cream-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-.product-description {
-    font-size: 0.95rem;
-    color: #6c757d;
-    margin-bottom: 20px;
+.ice-cream-item:hover img {
+    transform: scale(1.08);
 }
 
-.production-data {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
+.ice-cream-item:hover::after {
+    opacity: 1;
 }
 
-.data-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
+.ice-cream-item:hover .product-name {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.data-label {
-    font-weight: 600;
-    color: #6c757d;
-}
-
-.data-value {
-    font-weight: 600;
-    color: var(--grido-primary);
-}
-
-/* Estilos para el menú de exportación */
-.export-menu {
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.export-menu-item {
-    padding: 8px 15px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    font-size: 14px;
-}
-
-.export-menu-item:hover {
-    background-color: #f0f0f0;
-}
-
-/* Media queries para responsividad */
-@media (max-width: 991.98px) {
-    .welcome-info, 
-    .welcome-products {
-        padding: 30px;
-        min-height: auto;
+/* Media queries para responsive */
+@media (max-width: 992px) {
+    .ice-cream-container {
+        gap: 15px;
     }
     
-    .welcome-header h2 {
-        font-size: 24px;
+    .ice-cream-item {
+        width: 28%;
+        max-width: 140px;
     }
     
-    .welcome-header p {
-        font-size: 16px;
+    .ice-cream-item img {
+        height: 140px;
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-section {
+        flex-direction: column;
     }
     
+    .counter-row, .ice-cream-container {
+        width: 100%;
+    }
+    
+    .ice-cream-item {
+        width: 30%;
+        max-width: 120px;
+    }
+    
+    .ice-cream-item img {
+        height: 120px;
+    }
+}
+
+@media (max-width: 576px) {
     .ice-cream-container {
         flex-wrap: wrap;
         justify-content: center;
     }
     
     .ice-cream-item {
-        max-width: 200px;
-        width: calc(50% - 20px);
-        margin-bottom: 20px;
+        width: 45%;
+        max-width: none;
+        margin-bottom: 15px;
+    }
+
+}
+
+/* Diseño reorganizado para welcome-section */
+.welcome-section {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Fila de contadores más compacta */
+.counter-row {
+    flex: 3;
+    margin: 0;
+}
+
+/* Estilos de tarjetas más compactos */
+.counter-card {
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 10px;
+    border-left: 4px solid;
+    height: 95px; /* Altura fija más compacta */
+}
+
+/* Colores específicos para cada tarjeta de contador */
+.counter-card:nth-child(1) {
+    background: linear-gradient(135deg, #e8f5fe, #d1ecfc);
+    border-left-color: #0c169f;
+}
+
+.counter-card:nth-child(2) {
+    background: linear-gradient(135deg, #fdeeee, #fad4d4);
+    border-left-color: #dc3545;
+}
+
+.counter-card:nth-child(3) {
+    background: linear-gradient(135deg, #e8f7fd, #c9edfb);
+    border-left-color: #0dcaf0;
+}
+
+.counter-card:nth-child(4) {
+    background: linear-gradient(135deg, #fff7e6, #ffe9b8);
+    border-left-color: #ffc107;
+}
+
+/* Títulos más compactos */
+.counter-card h3 {
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.counter-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 4px 0;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Hover effect para tarjetas */
+.counter-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Estilos para tarjeta clickeable */
+.counter-clickable {
+    cursor: pointer;
+}
+
+.counter-clickable .counter-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.counter-clickable:hover .counter-icon {
+    color: #0e2238;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Contenedor de productos ajustado para alinearse con las tarjetas */
+.ice-cream-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin: 0;
+}
+
+.ice-cream-item {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background-color: white;
+    cursor: pointer;
+}
+
+.ice-cream-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.ice-cream-item::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.ice-cream-item .product-name {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    color: #000; /* Cambiado a negro como solicitaste */
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    padding: 0 10px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px);
+    text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.9); /* Sombra para mejorar legibilidad */
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente para mejorar legibilidad */
+    padding: 3px 0;
+}
+
+/* Hover effects para productos de helado */
+.ice-cream-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.ice-cream-item:hover img {
+    transform: scale(1.08);
+}
+
+.ice-cream-item:hover::after {
+    opacity: 1;
+}
+
+.ice-cream-item:hover .product-name {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Media queries para responsive */
+@media (max-width: 1200px) {
+    .welcome-section {
+        flex-direction: column;
+    }
+    
+    .counter-row, .ice-cream-container {
+        width: 100%;
+    }
+    
+    .ice-cream-container {
+        justify-content: center;
+        margin-top: 15px;
     }
 }
 
-@media (max-width: 767.98px) {
-    .welcome-info, 
-    .welcome-products {
-        padding: 25px;
+@media (max-width: 768px) {
+    .welcome-section {
+        flex-direction: column;
     }
     
-    .welcome-header h2 {
-        font-size: 22px;
-    }
-    
-    .stat-item {
-        padding: 12px;
-    }
-    
-    .stat-icon {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .stat-icon i {
-        font-size: 20px;
-    }
-    
-    .stat-value {
-        font-size: 18px;
+    .counter-card {
+        height: auto;
+        min-height: 90px;
     }
     
     .ice-cream-item {
-        width: 100%;
-        max-width: 180px;
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 576px) {
+    .ice-cream-container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .ice-cream-item {
+        width: 90px;
+        height: 90px;
     }
 }

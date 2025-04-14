@@ -1,4 +1,3 @@
-//tabla de incidencias
 $(document).ready(function () {
     // Hacer la solicitud a la API
     $.ajax({
@@ -6,26 +5,84 @@ $(document).ready(function () {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            // Llenar la tabla con los datos
-            var tableBody = $('#example tbody');
-            data.forEach(function (incidente) {
-                var row = `<tr>
-                    <td>${incidente.OT}</td>
-                    <td>${new Date(incidente.FECHA).toLocaleDateString()}</td>
-                    <td>${incidente.HSINICIO}</td>
-                    <td>${incidente.HSFIN}</td>
-                    <td>${incidente.DETALLE}</td>
-                    <td>${incidente.TALLER}</td>
-                    <td>${incidente.DURACION} min</td>
-                </tr>`;
-                tableBody.append(row);
-            });
-
-            // Inicializar DataTable
-            new DataTable('#example', {
-                paging: false,
+            // Inicializar DataTable con los datos de la API
+            $('#example').DataTable({
+                data: data,
+                columns: [
+                    { 
+                        data: 'OT',
+                        render: function(data, type) {
+                            if (type === 'sort' || type === 'type') {
+                                return data;
+                            }
+                            return `<span class="ot-badge">${data}</span>`;
+                        }
+                    },
+                    { 
+                        data: 'FECHA',
+                        render: function(data, type) {
+                            if (type === 'sort') {
+                                return new Date(data).getTime();
+                            }
+                            return new Date(data).toLocaleDateString('es-ES', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: '2-digit'
+                            });
+                        }
+                    },
+                    { data: 'HSINICIO' },
+                    { data: 'HSFIN' },
+                    { data: 'DETALLE' },
+                    { 
+                        data: 'TALLER',
+                        render: function(data, type) {
+                            if (type === 'sort' || type === 'type') {
+                                return data;
+                            }
+                            
+                            let tallerClass = '';
+                            
+                            // Asignar clase basada en el tipo de taller
+                            if (data.toLowerCase().includes('mecanico') || data.toLowerCase().includes('mecánico')) {
+                                tallerClass = 'taller-mecanico';
+                            } else if (data.toLowerCase().includes('electrico') || data.toLowerCase().includes('eléctrico')) {
+                                tallerClass = 'taller-electrico';
+                            } else {
+                                tallerClass = 'taller-general';
+                            }
+                            
+                            return `<span class="${tallerClass}">${data}</span>`;
+                        }
+                    },
+                    { 
+                        data: 'DURACION',
+                        render: function(data, type) {
+                            if (type === 'sort' || type === 'type') {
+                                return data;
+                            }
+                            
+                            // Formato para la duración con color basado en la gravedad
+                            let duracionClass = '';
+                            
+                            if (data > 120) {
+                                duracionClass = 'text-danger';
+                            } else if (data > 60) {
+                                duracionClass = 'text-warning';
+                            } else {
+                                duracionClass = 'text-success';
+                            }
+                            
+                            return `<span class="${duracionClass} fw-bold">${data} min</span>`;
+                        }
+                    }
+                ],
+                order: [[0, 'desc']], // Ordenar por OT en orden descendente
+                paging: true,         // Activar paginación
+                pageLength: 15,       // Filas por página
+                scrollY: '60vh',      // Altura del scroll
                 scrollCollapse: true,
-                scrollY: '450px',
+                responsive: true,     // Hacer la tabla responsive
                 language: {
                     search: "Buscar:",
                     lengthMenu: "Mostrar _MENU_ registros",
@@ -38,75 +95,64 @@ $(document).ready(function () {
                         last: "Último",
                         next: "Siguiente",
                         previous: "Anterior"
-                    }}
+                    }
+                },
+                dom: '<"top"lf>rt<"bottom"ip>',  // Personalizar layout
+                initComplete: function() {
+                    // Agregar clases adicionales para mejorar el estilo
+                    $('.dataTables_wrapper').addClass('container-fluid px-0');
+                    $('.dataTables_filter').addClass('mb-3');
+                    $('.dataTables_length').addClass('mb-3');
+                    
+                    // Añadir título con la fecha actual
+                    var today = new Date();
+                    var dateStr = today.toLocaleDateString('es-ES', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+                    
+                    $('.container h2').html('Incidencias Registradas <small class="text-muted">Fecha: ' + dateStr + '</small>');
+                }
             });
         },
         error: function (xhr, status, error) {
             console.error('Error al obtener los datos:', error);
+            // Mostrar mensaje de error amigable
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al cargar datos',
+                text: 'No se pudieron cargar las incidencias. Por favor, intente nuevamente.',
+                confirmButtonColor: '#0e2238'
+            });
         }
     });
-});
-
-//Grafico duracion por taller
-$(document).ready(function () {
-    $.ajax({
-        url: "http://localhost:63152/api/Unplanned/GetUnplanned", // Cambia la URL si es necesario
-        method: "GET",
-        success: function (data) {
-            // Procesar los datos obtenidos de la API
-            const talleres = data.map(item => item.TALLER);
-            const duraciones = data.map(item => item.DURACION);
-
-            // Crear el gráfico de Highcharts
-            Highcharts.chart('container', {
-                chart: {
-                    type: 'bar'
-                },
-                title: {
-                    text: 'Incidencias: detencion no planificada'
-                },
-                subtitle:{
-                    text: 'Minutos por taller'
-                },
-                xAxis: {
-                    categories: talleres, // Usar los nombres de los talleres
-                    title: {
-                        text: null
-                    },
-                    gridLineWidth: 1,
-                    lineWidth: 0
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Duración (minutos)',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    },
-                    gridLineWidth: 0
-                },
-                tooltip: {
-                    valueSuffix: ' minutos'
-                },
-                plotOptions: {
-                    bar: {
-                        borderRadius: '50%',
-                        dataLabels: {
-                            enabled: true
-                        },
-                        groupPadding: 0.1
-                    }
-                },
-                series: [{
-                    name: 'Duración',
-                    data: duraciones // Usar las duraciones como los datos de las barras
-                }]
+    
+    // Si quieres añadir interactividad a la tabla
+    $('#example').on('click', 'tbody tr', function() {
+        // Obtener datos de la fila seleccionada
+        var table = $('#example').DataTable();
+        var data = table.row(this).data();
+        
+        if (data) {
+            // Mostrar detalles en un modal
+            Swal.fire({
+                title: 'Detalle de Incidencia',
+                html: `
+                    <div class="text-start">
+                        <p><strong>OT:</strong> ${data.OT}</p>
+                        <p><strong>Fecha:</strong> ${new Date(data.FECHA).toLocaleDateString('es-ES')}</p>
+                        <p><strong>Horario:</strong> ${data.HSINICIO} a ${data.HSFIN}</p>
+                        <p><strong>Taller:</strong> ${data.TALLER}</p>
+                        <p><strong>Duración:</strong> ${data.DURACION} minutos</p>
+                        <hr>
+                        <p><strong>Descripción:</strong></p>
+                        <p class="text-muted">${data.DETALLE}</p>
+                    </div>
+                `,
+                confirmButtonColor: '#0e2238',
+                confirmButtonText: 'Cerrar'
             });
-        },
-        error: function () {
-            alert("Error al cargar los datos de la API.");
         }
     });
 });

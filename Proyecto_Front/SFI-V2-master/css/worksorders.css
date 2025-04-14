@@ -192,3 +192,104 @@ table.dataTable thead th {
 #previewTable td:nth-child(2) {
     width: 100px; /* Ajusta el ancho de la segunda columna */
 }
+/* Estilos para la navbar superior */
+.navbar-grido {
+    background-color: #0e2238 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    margin-bottom: 60px; /* Espacio para el contenido debajo de la navbar */
+  }
+  
+  .navbar-brand img {
+    height: 40px;
+    width: auto;
+  }
+  
+  /* Estilos para los items del menú */
+  .navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .navbar-dark .navbar-nav .nav-link:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+  
+  /* Estilos para el dropdown */
+  .dropdown-menu {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    padding: 0.5rem;
+  }
+  
+  .dropdown-item {
+    color: #333333;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    border-radius: 4px;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #0e2238;
+  }
+  
+  /* Elementos a la derecha */
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+  
+  .navbar-right .nav-link,
+  .settings-btn {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .navbar-right .nav-link:hover,
+  .settings-btn:hover {
+    color: #ffffff;
+  }
+  
+  /* Ajuste para el contenido debajo de la navbar */
+  section {
+    margin-top: 70px; /* Ajusta este valor según la altura de tu navbar */
+    padding-top: 20px;
+  }
+  
+  /* Ajustes responsive */
+  @media (max-width: 991px) {
+    .navbar-collapse {
+      background-color: #0e2238;
+      border-radius: 0 0 8px 8px;
+      padding: 1rem;
+      margin-top: 0.5rem;
+    }
+    
+    .navbar-right {
+      margin-top: 1rem;
+      justify-content: center;
+    }
+  }
+  .main {
+    margin-top: 80px !important; /* Ajusta este valor según la altura de tu navbar */
+    padding-top: 20px;
+}

@@ -1874,7 +1874,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: "Que tengas una excelente jornada",
                 icon: "success"
             }).then(() => {
-                window.location.href = "home.html"; // Redirige después de presionar "OK"
+                window.location.href = "home1.html"; // Redirige después de presionar "OK"
             });
 
             // Limpiar el campo de PRODUCIDO

@@ -101,15 +101,25 @@ $(document).ready(function() {
                     sessionStorage.setItem('email', response.email);
                 }
                 
-                // Mostrar mensaje de éxito con SweetAlert
+                // Mostrar mensaje de éxito con SweetAlert (modificado)
                 Swal.fire({
                     title: '¡Bienvenido!',
                     text: 'Sesión iniciada correctamente',
                     icon: 'success',
-                    confirmButtonText: 'Continuar'
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    width: '400px',
+                    heightAuto: true,
+                    padding: '2em',
+                    customClass: {
+                        popup: 'login-success-popup',
+                        title: 'login-success-title',
+                        content: 'login-success-content'
+                    }
                 }).then(() => {
                     // Redirigir al dashboard
-                    window.location.href = 'home.html';
+                    window.location.href = 'home1.html';
                 });
             },
             error: function(xhr, status, error) {

@@ -104,6 +104,74 @@ document.addEventListener('DOMContentLoaded', function () {
     reorganizarGraficos();
 });
 
+// Función para actualizar las tablas de producción y balance con la OT especificada
+function actualizarTablasProduccion(ot) {
+    console.log(`Actualizando tablas para la OT ${ot}`);
+    
+    // Actualizar tabla de producción si ya está inicializada
+    if (window.productionTable) {
+        window.productionTable.ajax.url(`http://localhost:63152/api/Production/GetAllProduction`).load();
+        
+        // Aplicar filtro para la OT específica
+        window.productionTable.column(3).search(ot.toString()).draw();
+    }
+    
+    // Actualizar tabla de balance teórico si ya está inicializada
+    if (window.theoricalTableInProduction) {
+        // Destruir y reinicializar la tabla con la nueva URL específica para la OT
+        if ($.fn.DataTable.isDataTable('#theoricalTableInProduction')) {
+            $('#theoricalTableInProduction').DataTable().destroy();
+        }
+        
+        window.theoricalTableInProduction = $('#theoricalTableInProduction').DataTable({
+            ajax: {
+                url: `http://localhost:63152/api/TheoricalConsumption/GetTheoricalConsumption?ot=${ot}`,
+                dataSrc: ''
+            },
+            language: window.dataTablesLanguage,
+            columns: [
+                { data: "MATERIAL" },
+                {
+                    data: "TEORICO",
+                    className: "text-right",
+                    render: function (data) {
+                        return parseFloat(data).toFixed(2) + ' KG';
+                    }
+                },
+                {
+                    data: "REAL",
+                    className: "text-right",
+                    render: function (data) {
+                        return parseFloat(data).toFixed(2) + ' KG';
+                    }
+                },
+                {
+                    data: "DESVIO",
+                    className: "text-right",
+                    render: function (data) {
+                        const value = parseFloat(data);
+                        const color = value < 0 ? '#dc3545' : '#28a745';
+                        return `<span style="color: ${color}">${value.toFixed(2)} KG</span>`;
+                    }
+                }
+            ],
+            initComplete: function () {
+                $('#theoricalTableInProduction thead th').css({
+                    'background-color': '#0e2238',
+                    'color': 'white'
+                });
+                $('#theoricalTableInProduction tbody tr').css({
+                    'background-color': 'white',
+                    'color': 'black'
+                });
+            }
+        });
+    }
+}
+
+
+
+
 // Función para solucionar problemas de botones - FUERA del DOMContentLoaded
 function solucionarProblemasBotones() {
     // Asegurarse de que los botones de consulta estén posicionados correctamente
@@ -702,8 +770,9 @@ function initUltimaProduccionChart() {
         });
     };
 }
-// Función corregida para cargar dinámicamente los datos de Última Producción
-function inicializarUltimaProduccion() {
+// Función para cargar dinámicamente los datos de la última OT con estado REALIZADA
+// Función para cargar los datos de la última OT realizada usando una consulta directa
+function cargarUltimaProduccion() {
     // Seleccionar el contenedor de métricas
     const metricsContainer = document.querySelector('.metrics-container');
     if (!metricsContainer) {
@@ -721,96 +790,153 @@ function inicializarUltimaProduccion() {
         </div>
     `;
 
-    // Crear promesas con manejo mejorado de errores
-    const getProduction = fetch('http://localhost:63152/api/Production/GetAllProduction')
+    // Obtener primero todas las órdenes de trabajo para identificar la última REALIZADA
+    fetch('http://localhost:63152/api/WorkOrders/GetAllWorkOrders')
         .then(response => {
             if (!response.ok) {
-                console.error('Error en respuesta de API de producción:', response.status);
-                throw new Error('Error al cargar datos de producción');
+                throw new Error('Error al cargar órdenes de trabajo');
             }
             return response.json();
         })
-        .catch(error => {
-            console.error('Error al obtener datos de producción:', error);
-            // Devolver un array vacío para evitar errores en Promise.all
-            return [];
-        });
-    
-    const getOrders = fetch('http://localhost:63152/api/WorkOrders/GetAllWorkOrders')
-        .then(response => {
-            if (!response.ok) {
-                console.error('Error en respuesta de API de órdenes:', response.status);
-                throw new Error('Error al cargar datos de órdenes de trabajo');
+        .then(ordenesData => {
+            // Filtrar órdenes con estado REALIZADA
+            const ordenesRealizadas = ordenesData.filter(item => item.ESTADO === 'REALIZADA');
+            
+            // Ordenar por OT descendente para obtener la última (asumiendo que las OT más recientes tienen números más altos)
+            ordenesRealizadas.sort((a, b) => b.OT - a.OT);
+            
+            // Obtener la última OT realizada
+            const ultimaOT = ordenesRealizadas.length > 0 ? ordenesRealizadas[0] : null;
+            
+            if (!ultimaOT) {
+                metricsContainer.innerHTML = `
+                    <div style="width: 100%; text-align: center; padding: 20px; color: #dc3545;">
+                        <i class="zmdi zmdi-alert-circle-o" style="font-size: 24px;"></i>
+                        <p class="mt-2">No se encontraron órdenes de trabajo realizadas.</p>
+                    </div>
+                `;
+                return Promise.reject('No hay órdenes de trabajo realizadas');
             }
-            return response.json();
+            
+            console.log('Última OT REALIZADA:', ultimaOT);
+            
+            // Guardar la última OT en una variable global para usarla en otras funciones
+            window.ultimaOTrealizada = ultimaOT.OT;
+            
+            // Actualizar título del modal con la OT encontrada
+            const modalTitle = document.getElementById('productionModalLabel');
+            if (modalTitle) {
+                modalTitle.textContent = `Última Producción - OT ${ultimaOT.OT}`;
+            }
+
+            // Crear una consulta personalizada para obtener los datos de producción de esta OT específica
+            // Esta es una URL ficticia que deberías reemplazar con un endpoint real que consulte directamente la tabla Production
+            // O implementar una nueva solución en el backend
+            
+            // Por ahora, intentemos usar GetAllProduction y buscar manualmente los datos de la OT deseada
+            return Promise.all([
+                fetch('http://localhost:63152/api/Production/GetAllProduction')
+                    .then(response => {
+                        if (!response.ok) throw new Error('Error al cargar datos de producción');
+                        return response.json();
+                    }),
+                Promise.resolve(ultimaOT)
+            ]);
         })
-        .catch(error => {
-            console.error('Error al obtener datos de órdenes de trabajo:', error);
-            // Devolver un array vacío para evitar errores en Promise.all
-            return [];
-        });
-
-    // Realizar ambas solicitudes en paralelo con mejor manejo de errores
-    Promise.all([getProduction, getOrders])
-    .then(([produccionData, ordenesData]) => {
-        try {
-            // Verificar si los arrays existen y tienen datos
-            if (!Array.isArray(produccionData)) {
-                console.error('Datos de producción inválidos:', produccionData);
-                produccionData = [];
-            }
-
-            if (!Array.isArray(ordenesData)) {
-                console.error('Datos de órdenes inválidos:', ordenesData);
-                ordenesData = [];
-            }
-
-            // Filtrar datos para OT 4 con verificación adicional
-            const otProduccion = produccionData.filter(item => item && typeof item === 'object' && item.OT === 4);
-            const otOrden = ordenesData.find(item => item && typeof item === 'object' && item.OT === 4);
+        .then(([produccionData, ultimaOT]) => {
+            // Filtrar datos de producción para la última OT
+            let otProduccion = produccionData.filter(item => item.OT === ultimaOT.OT);
             
-            // Muestra en consola para diagnóstico
-            console.log('Datos de producción filtrados:', otProduccion);
-            console.log('Orden encontrada:', otOrden);
+            // Si no hay datos para esta OT en la vista, podríamos implementar una solución alternativa aquí
+            // Por ejemplo, podríamos crear un nuevo endpoint que consulte directamente la tabla Production
             
-            // Calcular producción total con validación adicional
+            // Como solución temporal, si no hay datos, mostrar un mensaje explicativo
+            if (otProduccion.length === 0) {
+                console.warn(`No se encontraron datos de producción para la OT ${ultimaOT.OT} en la vista GetAllProduction. Se usarán valores predeterminados.`);
+                
+                // Valores predeterminados para mostrar algo
+                const totalProducido = ultimaOT.CANTIDAD || 0; // Usar la cantidad de la orden como aproximación
+                const produccionSolicitada = ultimaOT.DEMANDA || 0;
+                const performance = "0.00"; // No tenemos un valor real
+                
+                // Actualizar el contenedor con los datos predeterminados
+                metricsContainer.innerHTML = `
+                    <div class="metric-card" 
+                        style="flex: 1; text-align: center; background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin: 0 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div class="metric-icon" style="font-size: 18px; color: #0c169f; margin-bottom: 5px;">
+                            <i class="zmdi zmdi-check-circle"></i>
+                        </div>
+                        <div class="metric-value" style="font-size: 18px; font-weight: bold; color: #333;">${totalProducido.toLocaleString()}</div>
+                        <div class="metric-label" style="font-size: 12px; color: #666;">Producido</div>
+                    </div>
+
+                    <div class="metric-card" 
+                        style="flex: 1; text-align: center; background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin: 0 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div class="metric-icon" style="font-size: 18px; color: #e74a3b; margin-bottom: 5px;">
+                            <i class="zmdi zmdi-assignment-o"></i>
+                        </div>
+                        <div class="metric-value" style="font-size: 18px; font-weight: bold; color: #333;">${produccionSolicitada.toLocaleString()}</div>
+                        <div class="metric-label" style="font-size: 12px; color: #666;">Demanda</div>
+                    </div>
+
+                    <div class="metric-card" 
+                        style="flex: 1; text-align: center; background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin: 0 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <div class="metric-icon" style="font-size: 18px; color: #1cc88a; margin-bottom: 5px;">
+                            <i class="zmdi zmdi-trending-up"></i>
+                        </div>
+                        <div class="metric-value" style="font-size: 18px; font-weight: bold; color: #333;">${performance}%</div>
+                        <div class="metric-label" style="font-size: 12px; color: #666;">Performance</div>
+                    </div>
+                    
+                    <div style="width: 100%; text-align: center; margin-top: 10px; font-size: 12px; color: #dc3545;">
+                        <i class="zmdi zmdi-info-outline"></i> Los datos de producción para la OT ${ultimaOT.OT} no están completos en el sistema.
+                    </div>
+                `;
+                
+                // Almacenar los datos para uso posterior
+                window.ultimaProduccionData = {
+                    producido: totalProducido,
+                    demanda: produccionSolicitada,
+                    performance: performance,
+                    ot: ultimaOT.OT
+                };
+                
+                console.log('Datos de Última Producción (predeterminados):', window.ultimaProduccionData);
+                
+                // También actualizar las tablas
+                actualizarTablasProduccion(ultimaOT.OT);
+                
+                return; // Salir de la función
+            }
+            
+            // Si hay datos, continuar con el procesamiento normal
+            // Calcular producción total
             const totalProducido = otProduccion.reduce((sum, item) => {
-                // Validar que PRODUCIDO sea un número
-                const producido = item && typeof item.PRODUCIDO === 'number' ? item.PRODUCIDO : 0;
-                return sum + producido;
+                return sum + (typeof item.PRODUCIDO === 'number' ? item.PRODUCIDO : 0);
             }, 0);
             
-            // Obtener demanda desde la orden de trabajo con validación
-            // *** CAMBIO CLAVE: Usar DEMANDA en lugar de CANTIDAD ***
-            const produccionSolicitada = otOrden && typeof otOrden.DEMANDA === 'number' ? otOrden.DEMANDA : 0;
+            // Obtener la demanda desde la orden de trabajo
+            const produccionSolicitada = ultimaOT.DEMANDA;
             
-            // Obtener el último performance registrado
-            // *** CAMBIO CLAVE: Usar PERFORMANCE de la API en lugar de calcularlo ***
-            let performance = "0.0";
-            if (otProduccion.length > 0) {
-                // Ordenar por fecha descendente para obtener el último registro
-                const produccionOrdenada = [...otProduccion].sort((a, b) => 
-                    new Date(b.FECHA) - new Date(a.FECHA)
-                );
-                
-                // Obtener el PERFORMANCE del último registro
-                if (produccionOrdenada[0] && typeof produccionOrdenada[0].PERFORMANCE === 'number') {
-                    // Dividir por 100 para convertir de 9308.0 a 93.08%
-                    const performanceValue = produccionOrdenada[0].PERFORMANCE / 100;
-                    performance = performanceValue.toFixed(2);
-                }
+            // Obtener el performance
+            // Obtener el último registro de producción (ordenado por fecha)
+            const produccionOrdenada = [...otProduccion].sort((a, b) => 
+                new Date(b.FECHA) - new Date(a.FECHA)
+            );
+            
+            // Calcular el performance como porcentaje de lo producido respecto a lo solicitado
+            let performance = 0;
+            if (produccionOrdenada.length > 0 && produccionOrdenada[0].PERFORMANCE) {
+                // El performance viene como número entero (9308.0 para 93.08%)
+                performance = (produccionOrdenada[0].PERFORMANCE / 100).toFixed(2);
+            } else if (produccionSolicitada > 0) {
+                // Calcularlo si no está disponible
+                performance = ((totalProducido / produccionSolicitada) * 100).toFixed(2);
             }
-            
-            // Mostrar valores en consola para diagnóstico
-            console.log('Valores calculados:', {
-                totalProducido,
-                produccionSolicitada,
-                performance
-            });
             
             // Actualizar el contenedor con los datos dinámicos
             metricsContainer.innerHTML = `
-                <div class="metric-card"
+                <div class="metric-card" 
                     style="flex: 1; text-align: center; background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin: 0 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                     <div class="metric-icon" style="font-size: 18px; color: #0c169f; margin-bottom: 5px;">
                         <i class="zmdi zmdi-check-circle"></i>
@@ -819,7 +945,7 @@ function inicializarUltimaProduccion() {
                     <div class="metric-label" style="font-size: 12px; color: #666;">Producido</div>
                 </div>
 
-                <div class="metric-card"
+                <div class="metric-card" 
                     style="flex: 1; text-align: center; background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin: 0 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                     <div class="metric-icon" style="font-size: 18px; color: #e74a3b; margin-bottom: 5px;">
                         <i class="zmdi zmdi-assignment-o"></i>
@@ -828,7 +954,7 @@ function inicializarUltimaProduccion() {
                     <div class="metric-label" style="font-size: 12px; color: #666;">Demanda</div>
                 </div>
 
-                <div class="metric-card"
+                <div class="metric-card" 
                     style="flex: 1; text-align: center; background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin: 0 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                     <div class="metric-icon" style="font-size: 18px; color: #1cc88a; margin-bottom: 5px;">
                         <i class="zmdi zmdi-trending-up"></i>
@@ -842,55 +968,46 @@ function inicializarUltimaProduccion() {
             window.ultimaProduccionData = {
                 producido: totalProducido,
                 demanda: produccionSolicitada,
-                performance: performance
+                performance: performance,
+                ot: ultimaOT.OT
             };
             
-            console.log('Datos de Última Producción cargados correctamente');
+            console.log('Datos de Última Producción cargados correctamente:', window.ultimaProduccionData);
             
-        } catch (error) {
-            // Capturar cualquier error en el procesamiento de datos
-            console.error('Error al procesar datos recibidos:', error);
+            // Actualizar tablas si ya están inicializadas
+            actualizarTablasProduccion(ultimaOT.OT);
+        })
+        .catch(error => {
+            console.error('Error al cargar datos de Última Producción:', error);
             
-            // Mostrar mensaje de error en el contenedor
+            // Mostrar mensaje de error en el contenedor con botón para reintentar
             metricsContainer.innerHTML = `
                 <div style="width: 100%; text-align: center; padding: 20px; color: #dc3545;">
                     <i class="zmdi zmdi-alert-circle-o" style="font-size: 24px;"></i>
-                    <p class="mt-2">Error al procesar los datos. Por favor, intente de nuevo más tarde.</p>
-                    <button class="btn btn-sm btn-outline-danger mt-2" onclick="inicializarUltimaProduccion()">
+                    <p class="mt-2">Error al cargar los datos. Por favor, intente de nuevo más tarde.</p>
+                    <button class="btn btn-sm btn-outline-danger mt-2" onclick="cargarUltimaProduccion()">
                         <i class="zmdi zmdi-refresh"></i> Reintentar
                     </button>
                 </div>
             `;
-        }
-    })
-    .catch(error => {
-        console.error('Error general al cargar datos de Última Producción:', error);
-        
-        // Mostrar mensaje de error en el contenedor con botón para reintentar
-        metricsContainer.innerHTML = `
-            <div style="width: 100%; text-align: center; padding: 20px; color: #dc3545;">
-                <i class="zmdi zmdi-alert-circle-o" style="font-size: 24px;"></i>
-                <p class="mt-2">Error al cargar los datos. Por favor, intente de nuevo más tarde.</p>
-                <button class="btn btn-sm btn-outline-danger mt-2" onclick="inicializarUltimaProduccion()">
-                    <i class="zmdi zmdi-refresh"></i> Reintentar
-                </button>
-            </div>
-        `;
-    });
+        });
 }
 
-// Asegurarse de que esta función se ejecute cuando se inicie el sistema
-document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar las métricas dinámicas
-    inicializarUltimaProduccion();
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Cargar los datos de la última OT realizada
+    cargarUltimaProduccion();
     
-    // También se puede llamar a esta función cuando sea necesario actualizar los datos
-    // Por ejemplo, cuando se abra el modal de producción
-    document.querySelector('[data-bs-target="#productionModal"]')?.addEventListener('click', function() {
-        inicializarUltimaProduccion();
+    // Inicializar tablas adaptadas para mostrar la última OT realizada
+    initTables();
+    
+    // Agregar evento para actualizar cuando se abra el modal
+    document.querySelector('.btn-consultar[data-bs-target="#productionModal"]')?.addEventListener('click', function () {
+        // Recargar datos actualizados
+        cargarUltimaProduccion();
     });
 });
-
 
 // 2. Órdenes de Trabajo (gráfico circular)
 function initOrdenesTrabajoChart() {
@@ -981,7 +1098,7 @@ function initProduccionTemporadaChart() {
     function actualizarGrafico() {
         // Ordenar los datos de mayor a menor cantidad
         datosProduccion.sort((a, b) => b.cantidad - a.cantidad);
-        
+
         // Separar los arrays para el gráfico
         const tortas = datosProduccion.map(item => item.nombre);
         const cantidades = datosProduccion.map(item => item.cantidad);
@@ -1043,9 +1160,9 @@ function initProduccionTemporadaChart() {
                 nombre: 'Grido Cookie and Cream',
                 cantidad: data.TotalCantidad
             });
-            
+
             promesasCargadas++;
-            
+
             // Verificar si ya se cargaron las tres APIs
             if (promesasCargadas === totalPromesas) {
                 actualizarGrafico();
@@ -1057,9 +1174,9 @@ function initProduccionTemporadaChart() {
                 nombre: 'Grido Cookie and Cream',
                 cantidad: 0
             });
-            
+
             promesasCargadas++;
-            
+
             if (promesasCargadas === totalPromesas) {
                 actualizarGrafico();
             }
@@ -1074,9 +1191,9 @@ function initProduccionTemporadaChart() {
                 nombre: 'Grido Mousse',
                 cantidad: data.TotalCantidad
             });
-            
+
             promesasCargadas++;
-            
+
             if (promesasCargadas === totalPromesas) {
                 actualizarGrafico();
             }
@@ -1087,9 +1204,9 @@ function initProduccionTemporadaChart() {
                 nombre: 'Grido Mousse',
                 cantidad: 0
             });
-            
+
             promesasCargadas++;
-            
+
             if (promesasCargadas === totalPromesas) {
                 actualizarGrafico();
             }
@@ -1104,9 +1221,9 @@ function initProduccionTemporadaChart() {
                 nombre: 'Grido con Relleno',
                 cantidad: data.TotalCantidad
             });
-            
+
             promesasCargadas++;
-            
+
             if (promesasCargadas === totalPromesas) {
                 actualizarGrafico();
             }
@@ -1117,9 +1234,9 @@ function initProduccionTemporadaChart() {
                 nombre: 'Grido con Relleno',
                 cantidad: 0
             });
-            
+
             promesasCargadas++;
-            
+
             if (promesasCargadas === totalPromesas) {
                 actualizarGrafico();
             }
@@ -1139,7 +1256,7 @@ function initProduccionAnualChart() {
     // Obtener datos de la API CORRECTA
     $.ajax({
         url: 'http://localhost:63152/api/Production/GetAllProduction',
-        success: function(data) {
+        success: function (data) {
             // Filtrar datos por los últimos 13 meses (desde marzo 2024 hasta marzo 2025)
             const fechaInicio = new Date(2024, 2, 1); // Marzo 2024 (0-indexed months)
             const fechaFin = new Date(2025, 2, 31); // Marzo 2025
@@ -1166,32 +1283,32 @@ function initProduccionAnualChart() {
 
             // Filtrar datos en el rango de fechas y agrupar por producto y mes
             const produccionPorProductoYMes = {};
-            
+
             data.forEach(item => {
                 // Verificar que la fecha sea válida y el producto esté en nuestra lista
                 if (!item.FECHA || !productosAFiltrar.includes(item.PRODUCTO)) return;
-                
+
                 // Parsear la fecha (formato: 2024-11-07T00:00:00)
                 const fechaStr = item.FECHA;
                 const fecha = new Date(fechaStr);
-                
+
                 // Verificar que la fecha esté en el rango deseado
                 if (fecha >= fechaInicio && fecha <= fechaFin) {
                     // Determinar a qué serie pertenece
                     const nombreSerie = mapProductoASerie(item.PRODUCTO);
-                    
+
                     // Obtener año y mes de la fecha
                     const año = fecha.getFullYear();
                     const mes = fecha.getMonth(); // 0-indexed (0=enero, 11=diciembre)
-                    
+
                     // Crear clave para agrupar por año-mes y serie
                     const clave = `${año}-${mes}-${nombreSerie}`;
-                    
+
                     // Inicializar si no existe
                     if (!produccionPorProductoYMes[clave]) {
                         produccionPorProductoYMes[clave] = 0;
                     }
-                    
+
                     // Sumar la cantidad PRODUCIDO (en lugar de CANTIDAD)
                     produccionPorProductoYMes[clave] += parseFloat(item.PRODUCIDO || 0);
                 }
@@ -1206,17 +1323,17 @@ function initProduccionAnualChart() {
                 "Grido Mousse": [],
                 "Grido con Relleno": []
             };
-            
+
             // Generar array de meses desde marzo 2024 hasta marzo 2025
             for (let m = 0; m < 13; m++) {
                 const fecha = new Date(2024, 2 + m, 1); // Empezar en marzo 2024
                 const año = fecha.getFullYear();
                 const mes = fecha.getMonth();
-                
+
                 // Nombre del mes para mostrar en el gráfico
                 const nombreMes = fecha.toLocaleString('es', { month: 'short' });
                 meses.push(nombreMes);
-                
+
                 // Inicializar datos para cada serie en este mes
                 Object.keys(series).forEach(nombreSerie => {
                     const clave = `${año}-${mes}-${nombreSerie}`;
@@ -1293,7 +1410,7 @@ function initProduccionAnualChart() {
                 ]
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error("Error al cargar datos de producción anual:", error);
             container.innerHTML = '<div class="error-message">Error al cargar datos de producción anual. Por favor, intente nuevamente más tarde.</div>';
         }
@@ -1310,7 +1427,7 @@ function initBalanceMasasChart() {
 
     // Limpiar el contenedor antes de crear un nuevo gráfico
     container.innerHTML = '';
-    
+
     // Agregar un contenedor para el estilo highcharts-figure
     container.className = 'highchart-wrapper highcharts-figure';
 
@@ -1423,7 +1540,7 @@ function initBalanceMasasChart() {
             `;
         }
     });
-    
+
     // Agregar estilos para hacer el gráfico responsive y con scroll si es necesario
     const style = document.createElement('style');
     style.textContent = `
@@ -1490,7 +1607,7 @@ function initBalanceMasasChart() {
             max-height: 500px;
         }
     `;
-    
+
     // Añadir los estilos solo si no existen ya
     if (!document.getElementById('balance-chart-styles')) {
         style.id = 'balance-chart-styles';
@@ -1688,40 +1805,429 @@ function fixSweetAlertError() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/// Función para inicializar las tablas DataTables
-function initTables() {
-
-    // Verificar si las tablas ya están inicializadas y destruirlas
-    if ($.fn.DataTable.isDataTable('#productionTable')) {
-        $('#productionTable').DataTable().destroy();
-    }
-    if ($.fn.DataTable.isDataTable('#theoricalTableInProduction')) {
-        $('#theoricalTableInProduction').DataTable().destroy();
-    }
-    if ($.fn.DataTable.isDataTable('#consolidadoBMTable')) {
-        $('#consolidadoBMTable').DataTable().destroy();
-    }
+// Tabla de Stock Final - Versión corregida para mostrar la última OT REALIZADA
+function initStockTable() {
+    // Destruir la tabla existente si ya está inicializada
     if ($.fn.DataTable.isDataTable('#stockTable')) {
         $('#stockTable').DataTable().destroy();
     }
 
+    // Primero obtenemos la última OT realizada y luego inicializamos la tabla
+    $.ajax({
+        url: 'http://localhost:63152/api/WorkOrders/GetAllWorkOrders',
+        success: function (workOrdersData) {
+            // Filtrar órdenes con estado REALIZADA
+            const realizadas = workOrdersData.filter(item => item.ESTADO === 'REALIZADA');
 
-    // Configuración común para las DataTables
-    let commonConfig = {
-        dom: 'Bfrtip', // Incluir botones en el DOM
+            // Ordenar por fecha descendente (asumiendo que hay un campo FECHA o similar)
+            realizadas.sort((a, b) => {
+                if (a.FECHA && b.FECHA) {
+                    return new Date(b.FECHA) - new Date(a.FECHA);
+                }
+                // Ordenar por número de OT si no hay fechas
+                return b.OT - a.OT;
+            });
+
+            // Obtener la última OT realizada
+            const ultimaOT = realizadas.length > 0 ? realizadas[0].OT : null;
+
+            // Guardar la última OT en una variable global para usarla en otras funciones
+            window.ultimaOTRealizada = ultimaOT;
+
+            if (ultimaOT) {
+                // Actualizar el título del modal con la OT
+                $('#stockModalLabel').text(`Stock Final - Orden de Trabajo ${ultimaOT}`);
+
+                // Inicializar la tabla con la OT encontrada
+                let stockTable = $('#stockTable').DataTable({
+                    ajax: {
+                        url: 'http://localhost:63152/api/ProductionStore/GetAllProductionStore',
+                        dataSrc: function (data) {
+                            // Filtrar por la última OT y tipo de movimiento STOCK FINAL
+                            return data.filter(item =>
+                                item.OT === ultimaOT && item.TIPOMOV === 'STOCK FINAL'
+                            );
+                        }
+                    },
+                    columns: [
+                        {
+                            data: "FECHAMOV",
+                            render: function (data) {
+                                return new Date(data).toLocaleDateString();
+                            }
+                        },
+                        { data: "TURNO" },
+                        { data: "RESPONSABLE" },
+                        {
+                            data: "OT",
+                            className: "text-right"
+                        },
+                        { data: "MATERIAL" },
+                        {
+                            data: "CANTIDAD",
+                            className: "text-right",
+                            render: function (data) {
+                                return parseFloat(data).toFixed(2) + ' KG';
+                            }
+                        },
+                        { data: "PROVEEDOR" },
+                        { data: "LOTE" }
+                    ],
+                    language: window.dataTablesLanguage,
+                    initComplete: function () {
+                        $('#stockTable thead th').css({
+                            'background-color': '#0e2238',
+                            'color': 'white'
+                        });
+                        $('#stockTable tbody tr').css({
+                            'background-color': 'white',
+                            'color': 'black'
+                        });
+                    }
+                });
+                window.stockTable = stockTable;
+            } else {
+                // No hay órdenes realizadas, mostrar un mensaje
+                $('#stockModalLabel').text('Stock Final - No hay órdenes realizadas');
+                $('#stockTable').html('<tr><td colspan="8" class="text-center">No hay órdenes de trabajo realizadas</td></tr>');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error al obtener órdenes de trabajo:", error);
+            $('#stockModalLabel').text('Stock Final - Error al cargar datos');
+            $('#stockTable').html('<tr><td colspan="8" class="text-center">Error al cargar datos: ' + error + '</td></tr>');
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Sobreescribir la función initTables para incluir nuestro filtro de OT
+function initTables() {
+    // Obtener primero la última OT realizada
+    fetch('http://localhost:63152/api/WorkOrders/GetAllWorkOrders')
+        .then(response => response.json())
+        .then(ordenesData => {
+            // Filtrar órdenes con estado REALIZADA
+            const ordenesRealizadas = ordenesData.filter(item => item.ESTADO === 'REALIZADA');
+            
+            // Ordenar por OT descendente
+            ordenesRealizadas.sort((a, b) => b.OT - a.OT);
+            
+            // Obtener la última OT realizada
+            const ultimaOT = ordenesRealizadas.length > 0 ? ordenesRealizadas[0].OT : null;
+            
+            if (!ultimaOT) {
+                console.error('No se encontraron órdenes de trabajo realizadas');
+                return;
+            }
+            
+            console.log('Última OT REALIZADA para tablas:', ultimaOT);
+            
+            // Guardar en variable global
+            window.ultimaOTrealizada = ultimaOT;
+            
+            // Verificar si las tablas ya están inicializadas y destruirlas
+            if ($.fn.DataTable.isDataTable('#productionTable')) {
+                $('#productionTable').DataTable().destroy();
+            }
+            if ($.fn.DataTable.isDataTable('#theoricalTableInProduction')) {
+                $('#theoricalTableInProduction').DataTable().destroy();
+            }
+            if ($.fn.DataTable.isDataTable('#consolidadoBMTable')) {
+                $('#consolidadoBMTable').DataTable().destroy();
+            }
+            if ($.fn.DataTable.isDataTable('#stockTable')) {
+                $('#stockTable').DataTable().destroy();
+            }
+
+            // Configuración común para las DataTables
+            let commonConfig = {
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="zmdi zmdi-file-text"></i> Excel',
+                        className: 'btn btn-sm btn-success export-btn',
+                        titleAttr: 'Exportar a Excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: '<i class="zmdi zmdi-file"></i> CSV',
+                        className: 'btn btn-sm btn-info export-btn',
+                        titleAttr: 'Exportar a CSV',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    }
+                ],
+                searching: true,
+                language: window.dataTablesLanguage || {
+                    // configuración de idioma
+                }
+            };
+
+            // Tabla de Producción (filtrada por la última OT REALIZADA)
+            let productionTable = $('#productionTable').DataTable({
+                ...commonConfig,
+                ajax: {
+                    url: 'http://localhost:63152/api/Production/GetAllProduction',
+                    dataSrc: function (json) {
+                        return json.filter(item => item.OT === ultimaOT);
+                    }
+                },
+                columns: [
+                    {
+                        data: "FECHA",
+                        render: function (data) {
+                            return new Date(data).toLocaleDateString();
+                        }
+                    },
+                    { data: "TURNO" },
+                    { data: "RESPONSABLE" },
+                    { 
+                        data: "OT",
+                        className: "text-right" 
+                    },
+                    { data: "PRODUCTO" },
+                    { 
+                        data: "PRODUCIDO",
+                        className: "text-right" 
+                    },
+                    {
+                        data: "PERFORMANCE",
+                        className: "text-right",
+                        render: function (data) {
+                            return (data / 100).toFixed(2) + '%';
+                        }
+                    }
+                ],
+                responsive: true,
+                scrollX: false,
+                language: window.dataTablesLanguage,
+                initComplete: function () {
+                    $('#productionTable thead th').css({
+                        'background-color': '#0e2238',
+                        'color': 'white'
+                    });
+                    $('#productionTable tbody tr').css({
+                        'background-color': 'white',
+                        'color': 'black'
+                    });
+                }
+            });
+            window.productionTable = productionTable;
+
+            // Tabla de Balance de Masas con colores en desvíos (filtrada por la última OT REALIZADA)
+            let theoricalTableInProduction = $('#theoricalTableInProduction').DataTable({
+                ajax: {
+                    url: `http://localhost:63152/api/TheoricalConsumption/GetTheoricalConsumption?ot=${ultimaOT}`,
+                    dataSrc: ''
+                },
+                language: window.dataTablesLanguage,
+                columns: [
+                    { data: "MATERIAL" },
+                    {
+                        data: "TEORICO",
+                        className: "text-right",
+                        render: function (data) {
+                            return parseFloat(data).toFixed(2) + ' KG';
+                        }
+                    },
+                    {
+                        data: "REAL",
+                        className: "text-right",
+                        render: function (data) {
+                            return parseFloat(data).toFixed(2) + ' KG';
+                        }
+                    },
+                    {
+                        data: "DESVIO",
+                        className: "text-right",
+                        render: function (data) {
+                            const value = parseFloat(data);
+                            const color = value < 0 ? '#dc3545' : '#28a745';
+                            return `<span style="color: ${color}">${value.toFixed(2)} KG</span>`;
+                        }
+                    }
+                ],
+                initComplete: function () {
+                    $('#theoricalTableInProduction thead th').css({
+                        'background-color': '#0e2238',
+                        'color': 'white'
+                    });
+                    $('#theoricalTableInProduction tbody tr').css({
+                        'background-color': 'white',
+                        'color': 'black'
+                    });
+                }
+            });
+            window.theoricalTableInProduction = theoricalTableInProduction;
+
+            // Mantener el resto de las tablas igual
+            // Tabla para el consolidado de Balance de Masas
+            let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
+                ...commonConfig,
+                searching: true,
+                language: window.dataTablesLanguage,
+                ajax: {
+                    url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: "MATERIAL" },
+                    {
+                        data: "TEORICO",
+                        className: "text-right", // Añadimos la clase text-right para alineación
+                        render: function (data) {
+                            return parseFloat(data).toFixed(2) + ' KG';
+                        }
+                    },
+                    {
+                        data: "REAL",
+                        className: "text-right", // Añadimos la clase text-right para alineación
+                        render: function (data) {
+                            return parseFloat(data).toFixed(2) + ' KG';
+                        }
+                    },
+                    {
+                        data: "DESVIO",
+                        className: "text-right", // Añadimos la clase text-right para alineación
+                        render: function (data) {
+                            const value = parseFloat(data);
+                            const color = value < 0 ? '#dc3545' : '#28a745';
+                            return `<span style="color: ${color}; text-align: right;">${value.toFixed(2)} KG</span>`;
+                        }
+                    },
+                    {
+                        data: null,
+                        className: "text-right", // Añadimos la clase text-right para alineación
+                        render: function (data, type, row) {
+                            // Código existente para el cálculo del valor en la última columna...
+                            const precios = {
+                                "DULCE DE LECHE C/CACAO P/SEMBRAR": 1699.47,
+                                "DULCE DE LECHE CON CACAO PARA SEMBRAR": 1699.47,
+                                "DULCE DE LECHE P/SEMBRAR": 1675.69,
+                                "DULCE DE LECHE PARA SEMBRAR": 1675.69,
+                                "GALLETA OREO PICADA": 4049.75,
+                                "GALLETAS MILKA MOUSSE": 5301.71,
+                                "HELADO DE CHOCOLATE": 10000,
+                                "HELADO DE CREMA AMERICANA": 10000,
+                                "HELADO DE DULCE DE LECHE": 10000,
+                                "PREPARADO ALMIBAR STANDART": 247.68,
+                                "PREPARADO ALMIBAR STANDART": 247.68,
+                                "SALSA DULCE SABOR CHOCOLATE": 1379.57,
+                                "TAPA GALLETA SABOR VAINILLA 17 CM": 1862.48
+                            };
+            
+                            let precioMaterial = 0;
+                            const materialName = row.MATERIAL;
+                            
+                            if (precios[materialName] !== undefined) {
+                                precioMaterial = precios[materialName];
+                            } else {
+                                const keys = Object.keys(precios);
+                                for (const key of keys) {
+                                    if (key.includes(materialName) || materialName.includes(key)) {
+                                        precioMaterial = precios[key];
+                                        break;
+                                    }
+                                }
+                            }
+            
+                            const desvio = parseFloat(row.DESVIO || 0);
+                            const valorDesvio = desvio * precioMaterial;
+            
+                            function formatearValor(valor) {
+                                const valorAbs = Math.abs(valor);
+                                if (valorAbs >= 1000000) {
+                                    return `${(valorAbs / 1000000).toFixed(2)}M`;
+                                } else if (valorAbs >= 1000) {
+                                    return `${(valorAbs / 1000).toFixed(2)}k`;
+                                }
+                                return valorAbs.toFixed(2);
+                            }
+            
+                            const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
+                            const formattedValue = formatearValor(valorDesvio);
+                            const fullValue = Math.abs(valorDesvio).toFixed(2);
+            
+                            return `<span style="color: ${color}; cursor: help; text-align: right;" 
+                                   title="Valor completo: $${fullValue}">${valorDesvio < 0 ? '-' : ''}$${formattedValue}</span>`;
+                        }
+                    }
+                ],
+                initComplete: function () {
+                    $('#consolidadoBMTable thead th').css({
+                        'background-color': '#0e2238',
+                        'color': 'white'
+                    });
+                    $('#consolidadoBMTable tbody tr').css({
+                        'background-color': 'white',
+                        'color': 'black'
+                    });
+                }
+            });
+            window.consolidadoBMTable = consolidadoBMTable;
+
+            // Inicializar la tabla de stock final
+            initStockTable(ultimaOT);
+
+            // Actualizar título del modal de producción
+            const modalTitle = document.getElementById('productionModalLabel');
+            if (modalTitle) {
+                modalTitle.textContent = `Última Producción - OT ${ultimaOT}`;
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener órdenes de trabajo:', error);
+        });
+
+    // Recargar tablas cuando se abren los modales
+    $('#productionModal').on('shown.bs.modal', function () {
+        if (window.productionTable) window.productionTable.ajax.reload();
+        if (window.theoricalTableInProduction) window.theoricalTableInProduction.ajax.reload();
+    });
+
+    $('#balanceModal').on('shown.bs.modal', function () {
+        if (window.consolidadoBMTable) window.consolidadoBMTable.ajax.reload();
+    });
+
+    $('#stockModal').on('shown.bs.modal', function () {
+        if (window.stockTable) {
+            window.stockTable.ajax.reload();
+        } else {
+            initStockTable(window.ultimaOTrealizada);
+        }
+    });
+}
+
+// Función para inicializar la tabla de stock final específica para una OT
+function initStockTable(ot) {
+    // Destruir la tabla existente si ya está inicializada
+    if ($.fn.DataTable.isDataTable('#stockTable')) {
+        $('#stockTable').DataTable().destroy();
+    }
+
+    // Actualizar el título del modal con la OT
+    $('#stockModalLabel').text(`Stock Final - Orden de Trabajo ${ot}`);
+
+    // Inicializar la tabla
+    let stockTable = $('#stockTable').DataTable({
+        dom: 'Bfrtip',
         buttons: [
             {
                 extend: 'excelHtml5',
@@ -1742,27 +2248,20 @@ function initTables() {
                 }
             }
         ],
-        searching: true, // Habilitar búsqueda
-        language: window.dataTablesLanguage || {
-            // configuración de idioma
-        }
-    };
-
-
-
-    // Tabla de Producción
-    let productionTable = $('#productionTable').DataTable({
-        ...commonConfig,
+        searching: true,
         ajax: {
-            url: 'http://localhost:63152/api/Production/GetAllProduction',
-            dataSrc: function (json) {
-                return json.filter(item => item.OT === 4);
+            url: 'http://localhost:63152/api/ProductionStore/GetAllProductionStore',
+            dataSrc: function (data) {
+                // Filtrar por la OT específica y tipo STOCK FINAL
+                return data.filter(item => 
+                    item.OT === ot && item.TIPOMOV === 'STOCK FINAL'
+                );
             }
         },
         columns: [
             {
-                data: "FECHA",
-                render: function (data) {
+                data: "FECHAMOV",
+                render: function(data) {
                     return new Date(data).toLocaleDateString();
                 }
             },
@@ -1770,194 +2269,106 @@ function initTables() {
             { data: "RESPONSABLE" },
             { 
                 data: "OT",
-                className: "text-right" 
+                className: "text-right"
             },
-            { data: "PRODUCTO" },
-            { 
-                data: "PRODUCIDO",
-                className: "text-right" 
-            },
-            {
-                data: "PERFORMANCE",
-                className: "text-right",
-                render: function (data) {
-                    return (data / 100).toFixed(2) + '%';
-                }
-            }
-        ],
-        responsive: true,
-        scrollX: false,
-        language: window.dataTablesLanguage,
-        initComplete: function () {
-            // Estilo para el encabezado (thead)
-            $('#productionTable thead th').css({
-                'background-color': '#0e2238',
-                'color': 'white'
-            });
-            // Estilo para las filas (tbody)
-            $('#productionTable tbody tr').css({
-                'background-color': 'white',
-                'color': 'black'
-            });
-        }
-    });
-    window.productionTable = productionTable;
-
-
-
-    // Tabla de Balance de Masas con colores en desvíos
-    let theoricalTableInProduction = $('#theoricalTableInProduction').DataTable({
-        ajax: {
-            url: 'http://localhost:63152/api/TheoricalConsumption/GetTheoricalConsumption?ot=4',
-            dataSrc: ''
-        },
-        language: window.dataTablesLanguage,
-        columns: [
             { data: "MATERIAL" },
             {
-                data: "TEORICO",
+                data: "CANTIDAD",
                 className: "text-right",
-                render: function (data) {
+                render: function(data) {
                     return parseFloat(data).toFixed(2) + ' KG';
                 }
             },
-            {
-                data: "REAL",
-                className: "text-right",
-                render: function (data) {
-                    return parseFloat(data).toFixed(2) + ' KG';
-                }
-            },
-            {
-                data: "DESVIO",
-                className: "text-right",
-                render: function (data) {
-                    const value = parseFloat(data);
-                    const color = value < 0 ? '#dc3545' : '#28a745';
-                    return `<span style="color: ${color}">${value.toFixed(2)} KG</span>`;
-                }
-            }
+            { data: "PROVEEDOR" },
+            { data: "LOTE" }
         ],
-        initComplete: function () {
-            $('#theoricalTableInProduction thead th').css({
+        language: window.dataTablesLanguage,
+        initComplete: function() {
+            $('#stockTable thead th').css({
                 'background-color': '#0e2238',
                 'color': 'white'
             });
-            $('#theoricalTableInProduction tbody tr').css({
+            $('#stockTable tbody tr').css({
                 'background-color': 'white',
                 'color': 'black'
             });
         }
     });
-    window.theoricalTableInProduction = theoricalTableInProduction;
+    
+    window.stockTable = stockTable;
+}
 
-    // Tabla para el consolidado de Balance de Masas
-    // Tabla para el consolidado de Balance de Masas
-let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
-    ...commonConfig,
-    searching: true,
-    language: window.dataTablesLanguage,
-    ajax: {
-        url: 'http://localhost:63152/api/TheoricalConsumption/Consolidadobm',
-        dataSrc: ''
-    },
-    columns: [
-        { data: "MATERIAL" },
-        {
-            data: "TEORICO",
-            render: function (data) {
-                return parseFloat(data).toFixed(2) + ' KG';
-            }
-        },
-        {
-            data: "REAL",
-            render: function (data) {
-                return parseFloat(data).toFixed(2) + ' KG';
-            }
-        },
-        {
-            data: "DESVIO",
-            render: function (data) {
-                const value = parseFloat(data);
-                const color = value < 0 ? '#dc3545' : '#28a745';
-                return `<span style="color: ${color}">${value.toFixed(2)} KG</span>`;
-            }
-        },
-        {
-            data: null,
-            render: function (data, type, row) {
-                // Mapa de precios fijos para cada material
-                const precios = {
-                    "DULCE DE LECHE C/CACAO P/SEMBRAR": 1699.47,
-                    "DULCE DE LECHE CON CACAO PARA SEMBRAR": 1699.47, // Añadir versión alternativa del nombre
-                    "DULCE DE LECHE P/SEMBRAR": 1675.69,
-                    "DULCE DE LECHE PARA SEMBRAR": 1675.69, // Añadir versión alternativa del nombre
-                    "GALLETA OREO PICADA": 4049.75,
-                    "GALLETAS MILKA MOUSSE": 5301.71,
-                    "HELADO DE CHOCOLATE": 10000,
-                    "HELADO DE CREMA AMERICANA": 10000,
-                    "HELADO DE DULCE DE LECHE": 10000,
-                    "PREPARADO ALMIBAR STANDART": 247.68,
-                    "PREPARADO ALMIBAR STANDART": 247.68,
-                    "SALSA DULCE SABOR CHOCOLATE": 1379.57,
-                    "TAPA GALLETA SABOR VAINILLA 17 CM": 1862.48
-                };
-
-                // Buscar el precio por el nombre exacto o variaciones comunes
-                let precioMaterial = 0;
-                const materialName = row.MATERIAL;
+// Función para cargar datos de la última OT realizada
+function cargarDatosUltimaOT() {
+    // Mostrar un indicador de carga mientras se obtienen los datos
+    $('#stockTable tbody').html('<tr><td colspan="8" class="text-center">Cargando datos...</td></tr>');
+    
+    // Obtener la última OT realizada
+    $.ajax({
+        url: 'http://localhost:63152/api/WorkOrders/GetAllWorkOrders',
+        success: function(workOrdersData) {
+            // Filtrar órdenes con estado REALIZADA
+            const realizadas = workOrdersData.filter(item => item.ESTADO === 'REALIZADA');
+            
+            // Ordenar por fecha descendente (o por número de OT si no hay fechas)
+            realizadas.sort((a, b) => {
+                if (a.FECHA && b.FECHA) {
+                    return new Date(b.FECHA) - new Date(a.FECHA);
+                }
+                return b.OT - a.OT;
+            });
+            
+            // Obtener la última OT realizada
+            const ultimaOT = realizadas.length > 0 ? realizadas[0].OT : null;
+            
+            // Guardar la última OT en una variable global
+            window.ultimaOTRealizada = ultimaOT;
+            
+            if (ultimaOT) {
+                // Actualizar el título del modal
+                $('#stockModalLabel').text(`Stock Final - Orden de Trabajo ${ultimaOT}`);
                 
-                // Comprobar si el material existe exactamente en el mapa de precios
-                if (precios[materialName] !== undefined) {
-                    precioMaterial = precios[materialName];
-                } else {
-                    // Intentar encontrar coincidencias parciales
-                    const keys = Object.keys(precios);
-                    for (const key of keys) {
-                        // Verificar si el nombre del material contiene o está contenido en una clave
-                        if (key.includes(materialName) || materialName.includes(key)) {
-                            precioMaterial = precios[key];
-                            break;
+                // Obtener datos de stock para esta OT
+                $.ajax({
+                    url: 'http://localhost:63152/api/ProductionStore/GetAllProductionStore',
+                    success: function(stockData) {
+                        // Filtrar por la última OT y tipo de movimiento STOCK FINAL
+                        const stockFinalData = stockData.filter(item => 
+                            item.OT === ultimaOT && item.TIPOMOV === 'STOCK FINAL'
+                        );
+                        
+                        if (stockFinalData.length > 0) {
+                            // Actualizar la tabla con los nuevos datos
+                            window.stockTable.clear().rows.add(stockFinalData).draw();
+                            
+                            // Aplicar estilos a las filas
+                            $('#stockTable tbody tr').css({
+                                'background-color': 'white',
+                                'color': 'black'
+                            });
+                        } else {
+                            window.stockTable.clear().draw();
+                            $('#stockTable tbody').html('<tr><td colspan="8" class="text-center">No hay datos de stock final para esta orden de trabajo</td></tr>');
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error al obtener datos de ProductionStore:", error);
+                        $('#stockTable tbody').html('<tr><td colspan="8" class="text-center">Error al cargar datos: ' + error + '</td></tr>');
                     }
-                }
-
-                const desvio = parseFloat(row.DESVIO || 0);
-                const valorDesvio = desvio * precioMaterial;
-
-                // Función para formatear valores grandes
-                function formatearValor(valor) {
-                    const valorAbs = Math.abs(valor);
-                    if (valorAbs >= 1000000) {
-                        return `${(valorAbs / 1000000).toFixed(2)}M`;
-                    } else if (valorAbs >= 1000) {
-                        return `${(valorAbs / 1000).toFixed(2)}k`;
-                    }
-                    return valorAbs.toFixed(2);
-                }
-
-                const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
-                const formattedValue = formatearValor(valorDesvio);
-                const fullValue = Math.abs(valorDesvio).toFixed(2);
-
-                // Usar el atributo title nativo para mostrar el valor completo
-                return `<span style="color: ${color}; cursor: help;" 
-                       title="Valor completo: $${fullValue}">${valorDesvio < 0 ? '-' : ''}$${formattedValue}</span>`;
+                });
+            } else {
+                // No hay órdenes realizadas
+                $('#stockModalLabel').text('Stock Final - No hay órdenes realizadas');
+                $('#stockTable tbody').html('<tr><td colspan="8" class="text-center">No hay órdenes de trabajo realizadas</td></tr>');
             }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error al obtener órdenes de trabajo:", error);
+            $('#stockModalLabel').text('Stock Final - Error al cargar datos');
+            $('#stockTable tbody').html('<tr><td colspan="8" class="text-center">Error al cargar datos: ' + error + '</td></tr>');
         }
-    ],
-    initComplete: function () {
-        $('#consolidadoBMTable thead th').css({
-            'background-color': '#0e2238',
-            'color': 'white'
-        });
-        $('#consolidadoBMTable tbody tr').css({
-            'background-color': 'white',
-            'color': 'black'
-        });
-    }
-});
-    window.consolidadoBMTable = consolidadoBMTable;
+    });
+}
 
 
 
@@ -2025,69 +2436,6 @@ let consolidadoBMTable = $('#consolidadoBMTable').DataTable({
     }
 
 
-    // Tabla de Stock Final
-    let stockTable = $('#stockTable').DataTable({
-        ajax: {
-            url: 'http://localhost:63152/api/ProductionStore/GetAllProductionStore',
-            dataSrc: function (json) {
-                return json.filter(item => item.OT === 4 && item.TIPOMOV === 'STOCK FINAL');
-            }
-        },
-        columns: [
-            {
-                data: "FECHAMOV",
-                render: function (data) {
-                    return new Date(data).toLocaleDateString();
-                }
-            },
-            { data: "TURNO" },
-            { data: "RESPONSABLE" },
-            { 
-                data: "OT",
-                className: "text-right"
-            },
-            { data: "MATERIAL" },
-            {
-                data: "CANTIDAD",
-                className: "text-right",
-                render: function (data) {
-                    return parseFloat(data).toFixed(2) + ' KG';
-                }
-            },
-            { data: "PROVEEDOR" },
-            { data: "LOTE" }
-        ],
-        language: window.dataTablesLanguage,
-        initComplete: function () {
-            $('#stockTable thead th').css({
-                'background-color': '#0e2238',
-                'color': 'white'
-            });
-            $('#stockTable tbody tr').css({
-                'background-color': 'white',
-                'color': 'black'
-            });
-        }
-    });
-    window.stockTable = stockTable;
-
-
-
-
-    // Recargar tablas cuando se abren los modales
-    $('#productionModal').on('shown.bs.modal', function () {
-        if (window.productionTable) window.productionTable.ajax.reload();
-        if (window.theoricalTableInProduction) window.theoricalTableInProduction.ajax.reload();
-    });
-
-    $('#balanceModal').on('shown.bs.modal', function () {
-        if (window.consolidadoBMTable) window.consolidadoBMTable.ajax.reload();
-    });
-
-    $('#stockModal').on('shown.bs.modal', function () {
-        if (window.stockTable) window.stockTable.ajax.reload();
-    });
-}
 
 // Reemplazar la función initPieCharts para modificar el gráfico de balance de masas con Highcharts
 function initPieCharts() {
@@ -2564,15 +2912,80 @@ async function actualizarContadores() {
     await calcularDesvioTotal();
 }
 
-// Modificar la función calcularStockFinalValor para mostrar un valor fijo
 async function calcularStockFinalValor() {
     try {
-        // Mostrar un valor fijo en lugar de contar los materiales
+        // Obtener la última OT realizada si no está ya guardada
+        if (!window.ultimaOTRealizada) {
+            const workOrdersResponse = await fetch('http://localhost:63152/api/WorkOrders/GetAllWorkOrders');
+            const workOrdersData = await workOrdersResponse.json();
+            const realizadas = workOrdersData.filter(item => item.ESTADO === 'REALIZADA');
+
+            realizadas.sort((a, b) => {
+                if (a.FECHA && b.FECHA) {
+                    return new Date(b.FECHA) - new Date(a.FECHA);
+                }
+                return b.OT - a.OT;
+            });
+
+            window.ultimaOTRealizada = realizadas.length > 0 ? realizadas[0].OT : null;
+        }
+
+        if (!window.ultimaOTRealizada) {
+            const stockFinalElement = document.querySelector('#stock-final-count');
+            if (stockFinalElement) {
+                stockFinalElement.textContent = "No hay OT realizada";
+            }
+            return;
+        }
+
+        // Obtener datos de stock final de la última OT
+        const stockResponse = await fetch('http://localhost:63152/api/ProductionStore/GetAllProductionStore');
+        const stockData = await stockResponse.json();
+        const stockFinal = stockData.filter(item =>
+            item.OT === window.ultimaOTRealizada && item.TIPOMOV === 'STOCK FINAL'
+        );
+
+        // Obtener precios de materiales
+        const materialsResponse = await fetch('http://localhost:63152/api/Materials');
+        const materialsData = await materialsResponse.json();
+
+        // Calcular el valor total
+        let valorTotal = 0;
+        stockFinal.forEach(stockItem => {
+            const material = materialsData.find(m => m.MATERIAL === stockItem.MATERIAL);
+            if (material && material.PRECIO) {
+                valorTotal += stockItem.CANTIDAD * material.PRECIO;
+            }
+        });
+
+        // Actualizar el contador con el nuevo valor calculado
         const stockFinalElement = document.querySelector('#stock-final-count');
         if (stockFinalElement) {
-            stockFinalElement.textContent = "$3.786.872,58";
-        } else {
-            console.error('Elemento #stock-final-count no encontrado');
+            stockFinalElement.textContent = `$${valorTotal.toLocaleString('es-AR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}`;
+
+            // También actualizar un info badge con el número de OT
+            const stockFinalCounter = document.querySelector('#stock-final-counter');
+            if (stockFinalCounter) {
+                // Buscar si ya existe el badge
+                let badge = stockFinalCounter.querySelector('.ot-badge');
+                if (!badge) {
+                    badge = document.createElement('div');
+                    badge.className = 'ot-badge';
+                    badge.style.fontSize = '11px';
+                    badge.style.backgroundColor = '#0c169f';
+                    badge.style.color = 'white';
+                    badge.style.padding = '2px 6px';
+                    badge.style.borderRadius = '10px';
+                    badge.style.position = 'absolute';
+                    badge.style.top = '10px';
+                    badge.style.left = '10px';
+                    stockFinalCounter.appendChild(badge);
+                }
+                badge.textContent = `OT ${window.ultimaOTRealizada}`;
+            }
         }
     } catch (error) {
         console.error('Error al calcular stock final:', error);
@@ -2582,6 +2995,7 @@ async function calcularStockFinalValor() {
         }
     }
 }
+
 // Actualizar la función actualizarContadores para incluir el nuevo cálculo
 async function actualizarContadores() {
     await calcularInventarioValorizado();
@@ -2778,52 +3192,44 @@ $('#balanceModal').on('shown.bs.modal', function () {
 
 
 
-// Manejar el redimensionamiento de la ventana con debounce
-let resizeTimeout;
-window.addEventListener('resize', function () {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(function () {
-        initializeAll();
-    }, 250);
-});
 
 // Correcciones para el menú contextual de Highcharts y otros problemas
 function fixHighchartsIssues() {
     // 1. Corregir problemas de posicionamiento del menú contextual
     function fixContextMenuPosition() {
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             // Verificar si el clic fue en un botón de menú contextual
             if (e.target.closest('.highcharts-button') || e.target.closest('.highcharts-contextmenu')) {
                 // Dar tiempo a que el menú se muestre
-                setTimeout(function() {
+                setTimeout(function () {
                     const menu = document.querySelector('.highcharts-contextmenu');
                     if (menu) {
                         // Obtener dimensiones del viewport
                         const viewportWidth = window.innerWidth;
                         const viewportHeight = window.innerHeight;
-                        
+
                         // Obtener dimensiones del menú
                         const menuWidth = menu.offsetWidth;
                         const menuHeight = menu.offsetHeight;
-                        
+
                         // Obtener posición del clic
                         const x = e.clientX;
                         const y = e.clientY;
-                        
+
                         // Calcular posición óptima
                         let newX = x;
                         let newY = y;
-                        
+
                         // Ajustar si sale por la derecha
                         if (x + menuWidth > viewportWidth) {
                             newX = viewportWidth - menuWidth - 10;
                         }
-                        
+
                         // Ajustar si sale por abajo
                         if (y + menuHeight > viewportHeight) {
                             newY = viewportHeight - menuHeight - 10;
                         }
-                        
+
                         // Aplicar nueva posición
                         menu.style.position = 'fixed';
                         menu.style.left = newX + 'px';
@@ -2833,9 +3239,9 @@ function fixHighchartsIssues() {
                 }, 10);
             }
         }, true);
-        
+
         // Cerrar menú al hacer clic fuera
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!e.target.closest('.highcharts-contextmenu') && !e.target.closest('.highcharts-button')) {
                 const menus = document.querySelectorAll('.highcharts-contextmenu');
                 menus.forEach(menu => {
@@ -2844,7 +3250,7 @@ function fixHighchartsIssues() {
             }
         });
     }
-    
+
     // 2. Configurar opciones globales de Highcharts
     if (typeof Highcharts !== 'undefined') {
         Highcharts.setOptions({
@@ -2881,25 +3287,25 @@ function fixHighchartsIssues() {
             }
         });
     }
-    
+
     // 3. Fix para el error de SweetAlert
     if (typeof Swal !== 'undefined' && typeof swal !== 'undefined' && !swal.init) {
-        swal.init = function() {
+        swal.init = function () {
             console.log('SweetAlert init polyfill');
             return Swal.isVisible();
         };
     }
-    
+
     // Ejecutar la función de corrección del menú contextual
     fixContextMenuPosition();
 }
 
 // Cargar estas correcciones cuando el documento esté listo
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     fixHighchartsIssues();
-    
+
     // Volver a aplicar correcciones después de un resize
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         clearTimeout(window.resizeTimer);
         window.resizeTimer = setTimeout(fixHighchartsIssues, 250);
     });
