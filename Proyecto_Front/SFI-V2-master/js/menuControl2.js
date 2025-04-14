@@ -2091,26 +2091,30 @@ function initTables() {
                     { data: "MATERIAL" },
                     {
                         data: "TEORICO",
+                        className: "text-right", // Añadimos la clase text-right para alineación
                         render: function (data) {
                             return parseFloat(data).toFixed(2) + ' KG';
                         }
                     },
                     {
                         data: "REAL",
+                        className: "text-right", // Añadimos la clase text-right para alineación
                         render: function (data) {
                             return parseFloat(data).toFixed(2) + ' KG';
                         }
                     },
                     {
                         data: "DESVIO",
+                        className: "text-right", // Añadimos la clase text-right para alineación
                         render: function (data) {
                             const value = parseFloat(data);
                             const color = value < 0 ? '#dc3545' : '#28a745';
-                            return `<span style="color: ${color}">${value.toFixed(2)} KG</span>`;
+                            return `<span style="color: ${color}; text-align: right;">${value.toFixed(2)} KG</span>`;
                         }
                     },
                     {
                         data: null,
+                        className: "text-right", // Añadimos la clase text-right para alineación
                         render: function (data, type, row) {
                             // Código existente para el cálculo del valor en la última columna...
                             const precios = {
@@ -2128,7 +2132,7 @@ function initTables() {
                                 "SALSA DULCE SABOR CHOCOLATE": 1379.57,
                                 "TAPA GALLETA SABOR VAINILLA 17 CM": 1862.48
                             };
-
+            
                             let precioMaterial = 0;
                             const materialName = row.MATERIAL;
                             
@@ -2143,10 +2147,10 @@ function initTables() {
                                     }
                                 }
                             }
-
+            
                             const desvio = parseFloat(row.DESVIO || 0);
                             const valorDesvio = desvio * precioMaterial;
-
+            
                             function formatearValor(valor) {
                                 const valorAbs = Math.abs(valor);
                                 if (valorAbs >= 1000000) {
@@ -2156,12 +2160,12 @@ function initTables() {
                                 }
                                 return valorAbs.toFixed(2);
                             }
-
+            
                             const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
                             const formattedValue = formatearValor(valorDesvio);
                             const fullValue = Math.abs(valorDesvio).toFixed(2);
-
-                            return `<span style="color: ${color}; cursor: help;" 
+            
+                            return `<span style="color: ${color}; cursor: help; text-align: right;" 
                                    title="Valor completo: $${fullValue}">${valorDesvio < 0 ? '-' : ''}$${formattedValue}</span>`;
                         }
                     }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Production</title>
+    <title>Producción Confirmada</title>
     <link rel="stylesheet" href="css/sweetalert2.css">
     <link rel="stylesheet" href="css/material.min.css">
     <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
@@ -39,7 +39,7 @@
     <script src="js/sweetalert2.min.js"></script>
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/menuControl.js"></script>
+    <script src="js/menuControl2.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <!-- BOOTSTRAP -->
@@ -183,82 +183,104 @@
 
             <script>
                 $(document).ready(function () {
-                    $('#example').DataTable({
-                        "ajax": {
-                            "url": "http://localhost:63152/api/Production/GetAllProduction",
-                            "dataSrc": ""
-                        },
-                        "lengthMenu": [[16, 32, 48, 64], [16, 32, 48, 64]], // Mostrar registros personalizados
-                        "order": [[0, "desc"]], // Ordena la tabla por la columna FECHA (más nuevo primero)
-                        "columns": [
-                            {
-                                "data": "FECHA",
-                                "render": function (data, type) {
-                                    if (type === "display" && data) {
-                                        let fecha = new Date(data);
-                                        let dia = fecha.getDate().toString().padStart(2, "0");
-                                        let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
-                                        let anio = fecha.getFullYear().toString().slice(-2);
-                                        return `${dia}-${mes}-${anio}`;
-                                    }
-                                    return data;
-                                }
-                            },
-                            { "data": "TURNO" },
-                            { "data": "RESPONSABLE" },
-                            { "data": "OT", "className": "text-center" },
-                            { "data": "PRODUCTO" },
-                            {
-                                "data": "PRODUCIDO",
-                                "className": "text-right",
-                                "render": function (data, type) {
-                                    return new Intl.NumberFormat("es-ES").format(data);
-                                }
-                            },
-                            {
-                                "data": "PERFORMANCE",
-                                "render": function (data, type) {
-                                    let porcentaje = data ? data.toFixed(2) : 0;
-                                    let color = "linear-gradient(to right, red, darkred)"; // Rojo por defecto
+    $('#example').DataTable({
+        "ajax": {
+            "url": "http://localhost:63152/api/Production/GetAllProduction",
+            "dataSrc": ""
+        },
+        "lengthMenu": [[16, 32, 48, 64], [16, 32, 48, 64]], // Mostrar registros personalizados
+        "order": [[3, "desc"]], // Ordena la tabla por la columna OT (índice 3) en orden descendente
+        "columns": [
+            {
+                "data": "FECHA",
+                "render": function (data, type) {
+                    // Para ordenamiento, convierte a timestamp
+                    if (type === 'sort') {
+                        return data ? new Date(data).getTime() : 0;
+                    }
+                    // Para visualización, formatea la fecha
+                    if (type === "display" && data) {
+                        let fecha = new Date(data);
+                        let dia = fecha.getDate().toString().padStart(2, "0");
+                        let mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+                        let anio = fecha.getFullYear().toString().slice(-2);
+                        return `${dia}-${mes}-${anio}`;
+                    }
+                    return data;
+                }
+            },
+            { "data": "TURNO" },
+            { "data": "RESPONSABLE" },
+            { 
+                "data": "OT", 
+                "className": "text-center",
+                // Asegurar que se ordene como número
+                "render": function(data, type) {
+                    if (type === 'sort') {
+                        return parseInt(data, 10) || 0;
+                    }
+                    return data;
+                }
+            },
+            { "data": "PRODUCTO" },
+            {
+                "data": "PRODUCIDO",
+                "className": "text-right",
+                "render": function (data, type) {
+                    return new Intl.NumberFormat("es-ES").format(data);
+                }
+            },
+            {
+                "data": "PERFORMANCE",
+                "render": function (data, type) {
+                    // Corregir el valor del performance dividiendo por 100
+                    let valorCorregido = data / 100;
+                    let porcentaje = valorCorregido ? valorCorregido.toFixed(2) : 0;
+                    
+                    // Para ordenamiento, retornar el valor numérico
+                    if (type === 'sort' || type === 'type') {
+                        return valorCorregido;
+                    }
+                    
+                    let color = "linear-gradient(to right, red, darkred)"; // Rojo por defecto
 
-                                    if (porcentaje >= 90) {
-                                        color = "linear-gradient(to right, lightgreen, green)";
-                                    } else if (porcentaje >= 50) {
-                                        color = "linear-gradient(to right, yellow, orange)";
-                                    }
+                    if (porcentaje >= 90) {
+                        color = "linear-gradient(to right, lightgreen, green)";
+                    } else if (porcentaje >= 50) {
+                        color = "linear-gradient(to right, yellow, orange)";
+                    }
 
-                                    return `
-                            <div style="width:100%; display:flex; align-items:center;">
-                                <div style="flex:1; background:#e0e0e0; border-radius:5px; overflow:hidden; height:15px; position:relative;">
-                                    <div style="width:${porcentaje}%; background:${color}; height:100%; border-radius:5px; transition: width 0.5s ease;"></div>
-                                </div>
-                                <span style="margin-left:10px; font-size:12px; font-weight:bold; color:black;">
-                                    ${porcentaje}%
-                                </span>
+                    return `
+                        <div style="width:100%; display:flex; align-items:center;">
+                            <div style="flex:1; background:#e0e0e0; border-radius:5px; overflow:hidden; height:15px; position:relative;">
+                                <div style="width:${porcentaje}%; background:${color}; height:100%; border-radius:5px; transition: width 0.5s ease;"></div>
                             </div>
-                        `;
-                                }
-                            }
-                        ],
-                        "language": {
-                            "sProcessing": "Procesando...",
-                            "sLengthMenu": "Mostrar _MENU_ registros",
-                            "sZeroRecords": "No se encontraron resultados",
-                            "sEmptyTable": "Ningún dato disponible en esta tabla",
-                            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
-                            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
-                            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                            "sSearch": "Buscar:",
-                            "oPaginate": {
-                                "sFirst": "Primero",
-                                "sLast": "Último",
-                                "sNext": "Siguiente",
-                                "sPrevious": "Anterior"
-                            }
-                        }
-
-                    });
-                });
+                            <span style="margin-left:10px; font-size:12px; font-weight:bold; color:black;">
+                                ${porcentaje}%
+                            </span>
+                        </div>
+                    `;
+                }
+            }
+        ],
+        "language": {
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sSearch": "Buscar:",
+            "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+            }
+        }
+    });
+});
             </script>
 
 
