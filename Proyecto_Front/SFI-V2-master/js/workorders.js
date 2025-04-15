@@ -1,3 +1,5 @@
+// Modificar la inicialización de la tabla para asegurar que todas las columnas estén centradas
+
 $(document).ready(function () {
     let tableWorkOrders = $('#workOrdersTable').DataTable({
         autoWidth: false,
@@ -10,20 +12,33 @@ $(document).ready(function () {
             dataSrc: ""
         },
         columns: [
-            { data: "OT", orderable: true },
-            { data: "CODIGO" },
-            { data: "PRODUCTO" },
+            {
+                data: "OT",
+                orderable: true,
+                className: "text-center" // Añadir la clase para centrar
+            },
+            {
+                data: "CODIGO",
+                className: "text-center" // Añadir la clase para centrar
+            },
+            {
+                data: "PRODUCTO",
+                className: "text-center" // Añadir la clase para centrar
+            },
             {
                 data: "DEMANDA",
-                className: "text-end", // Alinear valores a la derecha
+                className: "text-center", // Cambiar de text-end a text-center
                 render: function (data) {
-                    return new Intl.NumberFormat("es-ES").format(data) + " Pack"; // Agregar separador de miles
+                    return new Intl.NumberFormat("es-ES").format(data) + " Pack"; // Mantener el formato con separador de miles
                 }
             },
-            { data: "ESTADO" },
+            {
+                data: "ESTADO",
+                className: "text-center" // Añadir la clase para centrar
+            },
             {
                 data: "FECHAELABORACION",
-                className: "text-center",
+                className: "text-center", // Ya está centrado, mantener la clase
                 title: "ELABORACION",
                 render: function (data) {
                     let date = new Date(data);
@@ -45,8 +60,12 @@ $(document).ready(function () {
                 previous: "Anterior"
             }
         },
-
+        // Definir clases para todas las columnas
+        columnDefs: [
+            { className: "text-center", targets: "_all" }
+        ],
         initComplete: function () {
+
             setTimeout(() => {
                 tableWorkOrders.columns.adjust();
             }, 500); // Pequeño retraso para asegurarse de que se ajusta después de la carga
@@ -55,7 +74,6 @@ $(document).ready(function () {
             $("#workOrdersTable_filter").addClass("d-flex align-items-center mb-3");
             $("#workOrdersTable_filter label").addClass("me-2 fw-bold"); // Espaciado entre texto e input
         }
-
     });
 
 
@@ -79,6 +97,7 @@ $(document).ready(function () {
         });
     }
 
+    // Actualizar la función mostrarMateriales para asegurar que todas las celdas estén centradas
     function mostrarMateriales(materiales, ot) {
         let tbody = $("#materialsTable tbody");
         tbody.empty(); // Limpiar la tabla antes de agregar nuevos datos
@@ -90,16 +109,16 @@ $(document).ready(function () {
         $("#materialsModal").attr("data-ot", ot);
 
         if (materiales.length === 0) {
-            tbody.append("<tr><td colspan='5'>No hay materiales</td></tr>");
+            tbody.append("<tr><td colspan='5' class='text-center'>No hay materiales</td></tr>");
             return;
         }
 
         materiales.forEach(m => {
             tbody.append(`
                 <tr>
-                    <td style="width: 10%;">${m.CODIGO}</td>
-                    <td style="width: 20%;">${m.MATERIAL}</td>
-                    <td style="width: 10%;" class="text-end">${m.NECESIDAD} Kg</td>
+                    <td style="width: 10%;" class="text-center">${m.CODIGO}</td>
+                    <td style="width: 20%;" class="text-center">${m.MATERIAL}</td>
+                    <td style="width: 10%;" class="text-center">${m.NECESIDAD} Kg</td>
                     <td style="width: 10%;" class="text-center">${new Date(m.FECHAENTREGA).toLocaleDateString()}</td>
                 </tr>
             `);
@@ -108,14 +127,70 @@ $(document).ready(function () {
         // Mostrar el modal con los materiales
         $("#materialsModal").modal("show");
     }
+    // Modificar el modal al abrirse
+    $('#previewModal').on('shown.bs.modal', function () {
+        // Ajustar la tabla para que se adapte al nuevo tamaño del modal
+        if (previewTable) {
+            previewTable.columns.adjust().draw();
+        }
+
+        // Asegurar que las celdas estén centradas
+        $('#previewTable thead th, #previewTable tbody td').css({
+            'text-align': 'center',
+            'vertical-align': 'middle'
+        });
+
+        // Aplicar estilos adicionales a la tabla para mejorar visualización
+        $('#previewTable').css({
+            'width': '100%'
+        });
+
+        // Ajustar la altura del contenedor scrollable
+        $('.dataTables_scrollBody').css({
+            'max-height': '65vh'
+        });
+    });
 
 });
 
 //importar excel
 $(document).ready(function () {
     let previewTable = null;
-
     let dataToSend = [];
+
+    // Cuando el modal se muestre, limpiar y aplicar estilos
+    $('#previewModal').on('shown.bs.modal', function() {
+        // Dar tiempo a que el DOM se actualice completamente
+        setTimeout(function() {
+            // Remover todas las clases de ordenamiento y atributos adicionales
+            $('#previewTable thead th').removeClass('sorting sorting_asc sorting_desc sorting_disabled');
+            $('#previewTable thead th').removeAttr('rowspan colspan');
+            
+            // Eliminar manejadores de eventos de clic que DataTables pudo haber agregado
+            $('#previewTable thead th').off('click.DT');
+            
+            // Aplicar estilos directamente (mayor prioridad)
+            $('#previewTable thead th').attr('style', 
+                'text-align: center !important; ' +
+                'vertical-align: middle !important; ' +
+                'background-color: #375d89 !important; ' +
+                'color: white !important; ' +
+                'font-weight: bold !important; ' +
+                'padding: 10px !important; ' +
+                'border: 1px solid #dee2e6 !important'
+            );
+            
+            // Ajustar ancho de contenedores
+            $('.dataTables_scrollHeadInner, .dataTables_scrollHeadInner table').css({
+                'width': '100% !important'
+            });
+            
+            // Ajustar las columnas de la tabla
+            if (previewTable) {
+                previewTable.columns.adjust();
+            }
+        }, 100);
+    });
 
     document.getElementById("input-excel").addEventListener("change", function (event) {
         let file = event.target.files[0];
@@ -157,45 +232,65 @@ $(document).ready(function () {
 
                     let tr = document.createElement("tr");
                     tr.innerHTML = `
-                <td>${order.PRODUCTOID}</td>
-                <td>${order.CODIGO}</td>
-                <td>${order.DEMANDA}</td>
-                <td>${order.UM}</td>
-                <td>${order.FECHACREADA}</td>
-                <td>${order.FECHAMODIFICADA}</td>
-                <td>${order.ESTADO}</td>
-                <td>${order.FECHAELABORACION}</td>
-            `;
+                        <td class="text-center">${order.PRODUCTOID}</td>
+                        <td class="text-center">${order.CODIGO}</td>
+                        <td class="text-center">${order.DEMANDA}</td>
+                        <td class="text-center">${order.UM}</td>
+                        <td class="text-center">${order.FECHACREADA}</td>
+                        <td class="text-center">${order.FECHAMODIFICADA}</td>
+                        <td class="text-center">${order.ESTADO}</td>
+                        <td class="text-center">${order.FECHAELABORACION}</td>
+                    `;
                     tbody.appendChild(tr);
                 });
 
-                // Inicializar DataTable con ajustes de diseño
                 if (!previewTable) {
                     previewTable = new DataTable("#previewTable", {
                         paging: false,
                         scrollCollapse: true,
-                        scrollY: "400px",
-                        scrollX: true,  // Deshabilita el scroll horizontal
-                        searching: false, // Quita el cuadro de búsqueda
-                        autoWidth: false, // Mantiene el ancho de las columnas correcto
-                        responsive: true, // Hace que la tabla sea adaptable
-                        fixedHeader: true, // 🔥 Mantiene el encabezado fijo al hacer scroll
+                        scrollY: "60vh",
+                        scrollX: true,
+                        searching: false,
+                        autoWidth: false,
+                        responsive: false,
+                        fixedHeader: true,
+                        info: false,
+                        ordering: false,       // Desactivar completamente el ordenamiento
+                        dom: 't',              // Solo mostrar la tabla sin controles
+
+                        // Definir columnas explícitamente para evitar atributos automáticos
+                        columns: [
+                            { title: "ID", orderable: false, className: "text-center" },
+                            { title: "CODIGO", orderable: false, className: "text-center" },
+                            { title: "DEMANDA", orderable: false, className: "text-center" },
+                            { title: "UM", orderable: false, className: "text-center" },
+                            { title: "FECHACREADA", orderable: false, className: "text-center" },
+                            { title: "FECHAMODIFICADA", orderable: false, className: "text-center" },
+                            { title: "ESTADO", orderable: false, className: "text-center" },
+                            { title: "FECHAELABORACION", orderable: false, className: "text-center" }
+                        ],
+
                         columnDefs: [
-                            { width: "10%", targets: 0 },
+                            { orderable: false, targets: '_all' },  // Deshabilitar ordenamiento en todas las columnas
+                            { className: "text-center", targets: "_all" },  // Centrar todas las columnas
+                            // Definir anchos específicos
+                            { width: "7%", targets: 0 },
                             { width: "10%", targets: 1 },
                             { width: "10%", targets: 2 },
-                            { width: "10%", targets: 3 },
-                            { width: "10%", targets: 4 },
-                            { width: "20%", targets: 5 },
-                            { width: "20%", targets: 6 },
-                            { width: "10%", targets: 7 }
+                            { width: "7%", targets: 3 },
+                            { width: "15%", targets: 4 },
+                            { width: "15%", targets: 5 },
+                            { width: "13%", targets: 6 },
+                            { width: "15%", targets: 7 }
                         ],
+                        
                         language: {
                             lengthMenu: "Mostrar _MENU_ registros",
                             info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
                             infoEmpty: "No hay registros disponibles",
                             infoFiltered: "(filtrado de _MAX_ registros totales)",
                             zeroRecords: "No se encontraron registros",
+                            emptyTable: "No hay datos disponibles",
                             paginate: {
                                 first: "Primero",
                                 last: "Último",
@@ -203,10 +298,62 @@ $(document).ready(function () {
                                 previous: "Anterior"
                             }
                         },
+                        
+                        // Eventos importantes para eliminar clases no deseadas
+                        initComplete: function() {
+                            // Remover todas las clases de ordenamiento y atributos adicionales
+                            $('#previewTable thead th').removeClass('sorting sorting_asc sorting_desc sorting_disabled');
+                            $('#previewTable thead th').removeAttr('rowspan colspan');
+
+                            // Aplicar estilos limpios
+                            $('#previewTable thead th').css({
+                                'text-align': 'center',
+                                'vertical-align': 'middle',
+                                'background-color': '#375d89',
+                                'color': 'white',
+                                'font-weight': 'bold',
+                                'border': '1px solid #dee2e6'
+                            });
+                        },
+
+                        drawCallback: function() {
+                            // Ajustar anchos y centrado después de cada dibujado
+                            $('.dataTables_scrollHeadInner, .dataTables_scrollHeadInner table').css('width', '100%');
+
+                            // Remover clases de ordenamiento cada vez que se redibuja
+                            $('#previewTable thead th').removeClass('sorting sorting_asc sorting_desc sorting_disabled');
+                            $('#previewTable thead th').removeAttr('rowspan colspan');
+
+                            // Aplicar estilos limpios nuevamente
+                            $('#previewTable thead th').css({
+                                'text-align': 'center',
+                                'vertical-align': 'middle',
+                                'background-color': '#375d89',
+                                'color': 'white',
+                                'font-weight': 'bold',
+                                'border': '1px solid #dee2e6'
+                            });
+                        }
                     });
                 } else {
-                    previewTable.clear().draw();
-                    previewTable.rows.add($("#previewTable tbody tr")).draw();
+                    // Limpiar y actualizar la tabla existente
+                    previewTable.clear();
+                    previewTable.rows.add($("#previewTable tbody tr"));
+                    previewTable.draw();
+
+                    // Volver a aplicar limpieza de clases y atributos
+                    $('#previewTable thead th').removeClass('sorting sorting_asc sorting_desc sorting_disabled');
+                    $('#previewTable thead th').removeAttr('rowspan colspan');
+
+                    // Aplicar estilos limpios
+                    $('#previewTable thead th').css({
+                        'text-align': 'center',
+                        'vertical-align': 'middle',
+                        'background-color': '#375d89',
+                        'color': 'white',
+                        'font-weight': 'bold',
+                        'border': '1px solid #dee2e6'
+                    });
                 }
 
                 // Mostrar el botón para abrir el modal
@@ -224,57 +371,6 @@ $(document).ready(function () {
         return "";
     }
 
-    document.getElementById("btnEnviar").addEventListener("click", function () {
-        if (dataToSend.length === 0) {
-            alert("No hay datos para enviar.");
-            return;
-        }
-
-        let errores = 0;
-
-
-        dataToSend.forEach(order => {
-            fetch("http://localhost:63152/api/WorkOrders/InsertWorkOrderse", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(order)
-            })
-                .then(response => {
-                    if (!response.ok) throw new Error(`Error en la inserción: ${response.statusText}`);
-                    return response.json();
-                })
-                .then(result => {
-                    console.log("Insertado correctamente:", result);
-                })
-                .catch(error => {
-                    console.error("Error en la inserción:", error);
-                    errores++;
-                });
-        });
-
-        setTimeout(() => {
-            if (errores === 0) {
-                Swal.fire({
-                    title: "Nuevas Ordenes Insertadas!",
-                    icon: "success"
-                });
-                $("#previewModal").modal("hide"); // Cierra el modal
-                document.getElementById("input-excel").value = "";
-                
-            } else {
-                alert("Hubo errores en algunas inserciones.");
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Hubo errores en algunas inserciones.",
-                    footer: '<a href="#">Why do I have this issue?</a>'
-                });
-            }
-        }, 1000);
-
-    });
     function reloadWorkOrdersTable() {
         fetch("http://localhost:63152/api/WorkOrders/GetAllWorkOrders")
             .then(response => response.json())
@@ -324,5 +420,4 @@ $(document).ready(function () {
             }, 1000);
         });
     });
-
 });

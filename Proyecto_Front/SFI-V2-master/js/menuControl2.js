@@ -107,22 +107,22 @@ document.addEventListener('DOMContentLoaded', function () {
 // Función para actualizar las tablas de producción y balance con la OT especificada
 function actualizarTablasProduccion(ot) {
     console.log(`Actualizando tablas para la OT ${ot}`);
-    
+
     // Actualizar tabla de producción si ya está inicializada
     if (window.productionTable) {
         window.productionTable.ajax.url(`http://localhost:63152/api/Production/GetAllProduction`).load();
-        
+
         // Aplicar filtro para la OT específica
         window.productionTable.column(3).search(ot.toString()).draw();
     }
-    
+
     // Actualizar tabla de balance teórico si ya está inicializada
     if (window.theoricalTableInProduction) {
         // Destruir y reinicializar la tabla con la nueva URL específica para la OT
         if ($.fn.DataTable.isDataTable('#theoricalTableInProduction')) {
             $('#theoricalTableInProduction').DataTable().destroy();
         }
-        
+
         window.theoricalTableInProduction = $('#theoricalTableInProduction').DataTable({
             ajax: {
                 url: `http://localhost:63152/api/TheoricalConsumption/GetTheoricalConsumption?ot=${ot}`,
@@ -801,13 +801,13 @@ function cargarUltimaProduccion() {
         .then(ordenesData => {
             // Filtrar órdenes con estado REALIZADA
             const ordenesRealizadas = ordenesData.filter(item => item.ESTADO === 'REALIZADA');
-            
+
             // Ordenar por OT descendente para obtener la última (asumiendo que las OT más recientes tienen números más altos)
             ordenesRealizadas.sort((a, b) => b.OT - a.OT);
-            
+
             // Obtener la última OT realizada
             const ultimaOT = ordenesRealizadas.length > 0 ? ordenesRealizadas[0] : null;
-            
+
             if (!ultimaOT) {
                 metricsContainer.innerHTML = `
                     <div style="width: 100%; text-align: center; padding: 20px; color: #dc3545;">
@@ -817,12 +817,12 @@ function cargarUltimaProduccion() {
                 `;
                 return Promise.reject('No hay órdenes de trabajo realizadas');
             }
-            
+
             console.log('Última OT REALIZADA:', ultimaOT);
-            
+
             // Guardar la última OT en una variable global para usarla en otras funciones
             window.ultimaOTrealizada = ultimaOT.OT;
-            
+
             // Actualizar título del modal con la OT encontrada
             const modalTitle = document.getElementById('productionModalLabel');
             if (modalTitle) {
@@ -832,7 +832,7 @@ function cargarUltimaProduccion() {
             // Crear una consulta personalizada para obtener los datos de producción de esta OT específica
             // Esta es una URL ficticia que deberías reemplazar con un endpoint real que consulte directamente la tabla Production
             // O implementar una nueva solución en el backend
-            
+
             // Por ahora, intentemos usar GetAllProduction y buscar manualmente los datos de la OT deseada
             return Promise.all([
                 fetch('http://localhost:63152/api/Production/GetAllProduction')
@@ -846,19 +846,19 @@ function cargarUltimaProduccion() {
         .then(([produccionData, ultimaOT]) => {
             // Filtrar datos de producción para la última OT
             let otProduccion = produccionData.filter(item => item.OT === ultimaOT.OT);
-            
+
             // Si no hay datos para esta OT en la vista, podríamos implementar una solución alternativa aquí
             // Por ejemplo, podríamos crear un nuevo endpoint que consulte directamente la tabla Production
-            
+
             // Como solución temporal, si no hay datos, mostrar un mensaje explicativo
             if (otProduccion.length === 0) {
                 console.warn(`No se encontraron datos de producción para la OT ${ultimaOT.OT} en la vista GetAllProduction. Se usarán valores predeterminados.`);
-                
+
                 // Valores predeterminados para mostrar algo
                 const totalProducido = ultimaOT.CANTIDAD || 0; // Usar la cantidad de la orden como aproximación
                 const produccionSolicitada = ultimaOT.DEMANDA || 0;
                 const performance = "0.00"; // No tenemos un valor real
-                
+
                 // Actualizar el contenedor con los datos predeterminados
                 metricsContainer.innerHTML = `
                     <div class="metric-card" 
@@ -892,7 +892,7 @@ function cargarUltimaProduccion() {
                         <i class="zmdi zmdi-info-outline"></i> Los datos de producción para la OT ${ultimaOT.OT} no están completos en el sistema.
                     </div>
                 `;
-                
+
                 // Almacenar los datos para uso posterior
                 window.ultimaProduccionData = {
                     producido: totalProducido,
@@ -900,30 +900,30 @@ function cargarUltimaProduccion() {
                     performance: performance,
                     ot: ultimaOT.OT
                 };
-                
+
                 console.log('Datos de Última Producción (predeterminados):', window.ultimaProduccionData);
-                
+
                 // También actualizar las tablas
                 actualizarTablasProduccion(ultimaOT.OT);
-                
+
                 return; // Salir de la función
             }
-            
+
             // Si hay datos, continuar con el procesamiento normal
             // Calcular producción total
             const totalProducido = otProduccion.reduce((sum, item) => {
                 return sum + (typeof item.PRODUCIDO === 'number' ? item.PRODUCIDO : 0);
             }, 0);
-            
+
             // Obtener la demanda desde la orden de trabajo
             const produccionSolicitada = ultimaOT.DEMANDA;
-            
+
             // Obtener el performance
             // Obtener el último registro de producción (ordenado por fecha)
-            const produccionOrdenada = [...otProduccion].sort((a, b) => 
+            const produccionOrdenada = [...otProduccion].sort((a, b) =>
                 new Date(b.FECHA) - new Date(a.FECHA)
             );
-            
+
             // Calcular el performance como porcentaje de lo producido respecto a lo solicitado
             let performance = 0;
             if (produccionOrdenada.length > 0 && produccionOrdenada[0].PERFORMANCE) {
@@ -933,7 +933,7 @@ function cargarUltimaProduccion() {
                 // Calcularlo si no está disponible
                 performance = ((totalProducido / produccionSolicitada) * 100).toFixed(2);
             }
-            
+
             // Actualizar el contenedor con los datos dinámicos
             metricsContainer.innerHTML = `
                 <div class="metric-card" 
@@ -963,7 +963,7 @@ function cargarUltimaProduccion() {
                     <div class="metric-label" style="font-size: 12px; color: #666;">Performance</div>
                 </div>
             `;
-            
+
             // Almacenar los datos para uso posterior si es necesario
             window.ultimaProduccionData = {
                 producido: totalProducido,
@@ -971,15 +971,15 @@ function cargarUltimaProduccion() {
                 performance: performance,
                 ot: ultimaOT.OT
             };
-            
+
             console.log('Datos de Última Producción cargados correctamente:', window.ultimaProduccionData);
-            
+
             // Actualizar tablas si ya están inicializadas
             actualizarTablasProduccion(ultimaOT.OT);
         })
         .catch(error => {
             console.error('Error al cargar datos de Última Producción:', error);
-            
+
             // Mostrar mensaje de error en el contenedor con botón para reintentar
             metricsContainer.innerHTML = `
                 <div style="width: 100%; text-align: center; padding: 20px; color: #dc3545;">
@@ -998,10 +998,10 @@ function cargarUltimaProduccion() {
 document.addEventListener('DOMContentLoaded', function () {
     // Cargar los datos de la última OT realizada
     cargarUltimaProduccion();
-    
+
     // Inicializar tablas adaptadas para mostrar la última OT realizada
     initTables();
-    
+
     // Agregar evento para actualizar cuando se abra el modal
     document.querySelector('.btn-consultar[data-bs-target="#productionModal"]')?.addEventListener('click', function () {
         // Recargar datos actualizados
@@ -1920,23 +1920,23 @@ function initTables() {
         .then(ordenesData => {
             // Filtrar órdenes con estado REALIZADA
             const ordenesRealizadas = ordenesData.filter(item => item.ESTADO === 'REALIZADA');
-            
+
             // Ordenar por OT descendente
             ordenesRealizadas.sort((a, b) => b.OT - a.OT);
-            
+
             // Obtener la última OT realizada
             const ultimaOT = ordenesRealizadas.length > 0 ? ordenesRealizadas[0].OT : null;
-            
+
             if (!ultimaOT) {
                 console.error('No se encontraron órdenes de trabajo realizadas');
                 return;
             }
-            
+
             console.log('Última OT REALIZADA para tablas:', ultimaOT);
-            
+
             // Guardar en variable global
             window.ultimaOTrealizada = ultimaOT;
-            
+
             // Verificar si las tablas ya están inicializadas y destruirlas
             if ($.fn.DataTable.isDataTable('#productionTable')) {
                 $('#productionTable').DataTable().destroy();
@@ -1998,14 +1998,14 @@ function initTables() {
                     },
                     { data: "TURNO" },
                     { data: "RESPONSABLE" },
-                    { 
+                    {
                         data: "OT",
-                        className: "text-right" 
+                        className: "text-right"
                     },
                     { data: "PRODUCTO" },
-                    { 
+                    {
                         data: "PRODUCIDO",
-                        className: "text-right" 
+                        className: "text-right"
                     },
                     {
                         data: "PERFORMANCE",
@@ -2132,10 +2132,10 @@ function initTables() {
                                 "SALSA DULCE SABOR CHOCOLATE": 1379.57,
                                 "TAPA GALLETA SABOR VAINILLA 17 CM": 1862.48
                             };
-            
+
                             let precioMaterial = 0;
                             const materialName = row.MATERIAL;
-                            
+
                             if (precios[materialName] !== undefined) {
                                 precioMaterial = precios[materialName];
                             } else {
@@ -2147,24 +2147,29 @@ function initTables() {
                                     }
                                 }
                             }
-            
+
                             const desvio = parseFloat(row.DESVIO || 0);
                             const valorDesvio = desvio * precioMaterial;
-            
+
+                            // Modifica la función formatearValor para quitar los decimales
                             function formatearValor(valor) {
                                 const valorAbs = Math.abs(valor);
                                 if (valorAbs >= 1000000) {
-                                    return `${(valorAbs / 1000000).toFixed(2)}M`;
+                                    // Redondea al millón más cercano y quita los decimales
+                                    return `${Math.round(valorAbs / 1000000)}M`;
                                 } else if (valorAbs >= 1000) {
-                                    return `${(valorAbs / 1000).toFixed(2)}k`;
+                                    // Redondea al millar más cercano y quita los decimales
+                                    return `${Math.round(valorAbs / 1000)}k`;
                                 }
-                                return valorAbs.toFixed(2);
+                                // Para valores menores a 1000, mantén los decimales si los prefieres
+                                // o también puedes redondear con Math.round(valorAbs)
+                                return Math.round(valorAbs).toString();
                             }
-            
+
                             const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
                             const formattedValue = formatearValor(valorDesvio);
                             const fullValue = Math.abs(valorDesvio).toFixed(2);
-            
+
                             return `<span style="color: ${color}; cursor: help; text-align: right;" 
                                    title="Valor completo: $${fullValue}">${valorDesvio < 0 ? '-' : ''}$${formattedValue}</span>`;
                         }
@@ -2253,7 +2258,7 @@ function initStockTable(ot) {
             url: 'http://localhost:63152/api/ProductionStore/GetAllProductionStore',
             dataSrc: function (data) {
                 // Filtrar por la OT específica y tipo STOCK FINAL
-                return data.filter(item => 
+                return data.filter(item =>
                     item.OT === ot && item.TIPOMOV === 'STOCK FINAL'
                 );
             }
@@ -2261,13 +2266,13 @@ function initStockTable(ot) {
         columns: [
             {
                 data: "FECHAMOV",
-                render: function(data) {
+                render: function (data) {
                     return new Date(data).toLocaleDateString();
                 }
             },
             { data: "TURNO" },
             { data: "RESPONSABLE" },
-            { 
+            {
                 data: "OT",
                 className: "text-right"
             },
@@ -2275,7 +2280,7 @@ function initStockTable(ot) {
             {
                 data: "CANTIDAD",
                 className: "text-right",
-                render: function(data) {
+                render: function (data) {
                     return parseFloat(data).toFixed(2) + ' KG';
                 }
             },
@@ -2283,7 +2288,7 @@ function initStockTable(ot) {
             { data: "LOTE" }
         ],
         language: window.dataTablesLanguage,
-        initComplete: function() {
+        initComplete: function () {
             $('#stockTable thead th').css({
                 'background-color': '#0e2238',
                 'color': 'white'
@@ -2294,7 +2299,7 @@ function initStockTable(ot) {
             });
         }
     });
-    
+
     window.stockTable = stockTable;
 }
 
@@ -2302,14 +2307,14 @@ function initStockTable(ot) {
 function cargarDatosUltimaOT() {
     // Mostrar un indicador de carga mientras se obtienen los datos
     $('#stockTable tbody').html('<tr><td colspan="8" class="text-center">Cargando datos...</td></tr>');
-    
+
     // Obtener la última OT realizada
     $.ajax({
         url: 'http://localhost:63152/api/WorkOrders/GetAllWorkOrders',
-        success: function(workOrdersData) {
+        success: function (workOrdersData) {
             // Filtrar órdenes con estado REALIZADA
             const realizadas = workOrdersData.filter(item => item.ESTADO === 'REALIZADA');
-            
+
             // Ordenar por fecha descendente (o por número de OT si no hay fechas)
             realizadas.sort((a, b) => {
                 if (a.FECHA && b.FECHA) {
@@ -2317,30 +2322,30 @@ function cargarDatosUltimaOT() {
                 }
                 return b.OT - a.OT;
             });
-            
+
             // Obtener la última OT realizada
             const ultimaOT = realizadas.length > 0 ? realizadas[0].OT : null;
-            
+
             // Guardar la última OT en una variable global
             window.ultimaOTRealizada = ultimaOT;
-            
+
             if (ultimaOT) {
                 // Actualizar el título del modal
                 $('#stockModalLabel').text(`Stock Final - Orden de Trabajo ${ultimaOT}`);
-                
+
                 // Obtener datos de stock para esta OT
                 $.ajax({
                     url: 'http://localhost:63152/api/ProductionStore/GetAllProductionStore',
-                    success: function(stockData) {
+                    success: function (stockData) {
                         // Filtrar por la última OT y tipo de movimiento STOCK FINAL
-                        const stockFinalData = stockData.filter(item => 
+                        const stockFinalData = stockData.filter(item =>
                             item.OT === ultimaOT && item.TIPOMOV === 'STOCK FINAL'
                         );
-                        
+
                         if (stockFinalData.length > 0) {
                             // Actualizar la tabla con los nuevos datos
                             window.stockTable.clear().rows.add(stockFinalData).draw();
-                            
+
                             // Aplicar estilos a las filas
                             $('#stockTable tbody tr').css({
                                 'background-color': 'white',
@@ -2351,7 +2356,7 @@ function cargarDatosUltimaOT() {
                             $('#stockTable tbody').html('<tr><td colspan="8" class="text-center">No hay datos de stock final para esta orden de trabajo</td></tr>');
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error("Error al obtener datos de ProductionStore:", error);
                         $('#stockTable tbody').html('<tr><td colspan="8" class="text-center">Error al cargar datos: ' + error + '</td></tr>');
                     }
@@ -2362,7 +2367,7 @@ function cargarDatosUltimaOT() {
                 $('#stockTable tbody').html('<tr><td colspan="8" class="text-center">No hay órdenes de trabajo realizadas</td></tr>');
             }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error("Error al obtener órdenes de trabajo:", error);
             $('#stockModalLabel').text('Stock Final - Error al cargar datos');
             $('#stockTable tbody').html('<tr><td colspan="8" class="text-center">Error al cargar datos: ' + error + '</td></tr>');
@@ -2372,68 +2377,68 @@ function cargarDatosUltimaOT() {
 
 
 
-    // Reemplaza la función actualizarValoresDesvio con esta versión
-    async function actualizarValoresDesvio() {
-        try {
-            // Obtener precios de materiales
-            const materialsResponse = await fetch('http://localhost:63152/api/Materials');
-            const materialsData = await materialsResponse.json();
+// Reemplaza la función actualizarValoresDesvio con esta versión
+async function actualizarValoresDesvio() {
+    try {
+        // Obtener precios de materiales
+        const materialsResponse = await fetch('http://localhost:63152/api/Materials');
+        const materialsData = await materialsResponse.json();
 
-            console.log("Materiales obtenidos:", materialsData);
-            console.log("Elementos a actualizar:", $('.valor-desvio').length);
+        console.log("Materiales obtenidos:", materialsData);
+        console.log("Elementos a actualizar:", $('.valor-desvio').length);
 
-            // Función para formatear números grandes
-            function formatearValorCompacto(valor) {
-                // Valor absoluto para el formato
-                const valorAbs = Math.abs(valor);
+        // Función para formatear números grandes
+        function formatearValorCompacto(valor) {
+            // Valor absoluto para el formato
+            const valorAbs = Math.abs(valor);
 
-                if (valorAbs >= 1000000) {
-                    // Formato para millones (M)
-                    return (valorAbs / 1000000).toFixed(2) + 'M';
-                } else if (valorAbs >= 1000) {
-                    // Formato para miles (k)
-                    return (valorAbs / 1000).toFixed(2) + 'k';
-                } else {
-                    // Formato normal para valores pequeños
-                    return valorAbs.toFixed(2);
-                }
+            if (valorAbs >= 1000000) {
+                // Formato para millones (M)
+                return (valorAbs / 1000000).toFixed(2) + 'M';
+            } else if (valorAbs >= 1000) {
+                // Formato para miles (k)
+                return (valorAbs / 1000).toFixed(2) + 'k';
+            } else {
+                // Formato normal para valores pequeños
+                return valorAbs.toFixed(2);
             }
+        }
 
-            // Actualizar cada celda de valor en la tabla
-            $('.valor-desvio').each(function () {
-                const $this = $(this);
-                const materialName = $this.data('material');
-                const desvio = parseFloat($this.data('desvio'));
+        // Actualizar cada celda de valor en la tabla
+        $('.valor-desvio').each(function () {
+            const $this = $(this);
+            const materialName = $this.data('material');
+            const desvio = parseFloat($this.data('desvio'));
 
-                const material = materialsData.find(m => m.MATERIAL === materialName);
-                if (material) {
-                    const precioMaterial = parseFloat(material.PRECIO || 0);
-                    const valorDesvio = desvio * precioMaterial;
+            const material = materialsData.find(m => m.MATERIAL === materialName);
+            if (material) {
+                const precioMaterial = parseFloat(material.PRECIO || 0);
+                const valorDesvio = desvio * precioMaterial;
 
-                    const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
-                    const valorFormateado = formatearValorCompacto(valorDesvio);
-                    const valorCompleto = Math.abs(valorDesvio).toFixed(2);
+                const color = valorDesvio < 0 ? '#dc3545' : '#28a745';
+                const valorFormateado = formatearValorCompacto(valorDesvio);
+                const valorCompleto = Math.abs(valorDesvio).toFixed(2);
 
-                    // Creamos un span con tooltip o título para mostrar el valor completo al pasar el mouse
-                    $this.html(`<span style="color: ${color}; cursor: pointer;" 
+                // Creamos un span con tooltip o título para mostrar el valor completo al pasar el mouse
+                $this.html(`<span style="color: ${color}; cursor: pointer;" 
                                      title="$${valorCompleto}" 
                                      data-bs-toggle="tooltip" 
                                      data-bs-placement="top">
                                   $${valorFormateado}
                                </span>`);
-                } else {
-                    $this.text('$0.00');
-                }
-            });
+            } else {
+                $this.text('$0.00');
+            }
+        });
 
-            // Inicializar los tooltips de Bootstrap
-            $('[data-bs-toggle="tooltip"]').tooltip();
+        // Inicializar los tooltips de Bootstrap
+        $('[data-bs-toggle="tooltip"]').tooltip();
 
-        } catch (error) {
-            console.error('Error al actualizar valores de desvío:', error);
-            $('.valor-desvio').text('Error');
-        }
+    } catch (error) {
+        console.error('Error al actualizar valores de desvío:', error);
+        $('.valor-desvio').text('Error');
     }
+}
 
 
 

@@ -293,3 +293,148 @@ table.dataTable thead th {
     margin-top: 80px !important; /* Ajusta este valor según la altura de tu navbar */
     padding-top: 20px;
 }
+
+/* Asegurar que los encabezados de la tabla ocupen todo el ancho disponible */
+#previewTable thead th {
+    text-align: center !important;
+    vertical-align: middle !important;
+    background-color: #375d89 !important;
+    color: white !important;
+    font-weight: bold !important;
+    padding: 12px 8px !important;
+    white-space: nowrap !important;
+    width: auto !important; /* Permitir que se ajuste automáticamente */
+}
+
+/* Asegurar que la fila de encabezados ocupe todo el ancho */
+#previewTable thead tr {
+    width: 100% !important;
+    display: table !important;
+    table-layout: fixed !important;
+}
+
+/* Ajustar el contenedor de la tabla para que ocupe todo el ancho disponible */
+.dataTables_scrollHeadInner {
+    width: 100% !important;
+}
+
+.dataTables_scrollHeadInner table {
+    width: 100% !important;
+}
+
+/* Ajustar el ancho del cuerpo de la tabla para que coincida con el encabezado */
+.dataTables_scrollBody {
+    width: 100% !important;
+}
+
+.dataTables_scrollBody table {
+    width: 100% !important;
+}
+
+/* Establecer anchos específicos para cada columna */
+#previewTable th:nth-child(1), /* ID */
+#previewTable td:nth-child(1) {
+    width: 7% !important;
+}
+
+#previewTable th:nth-child(2), /* CODIGO */
+#previewTable td:nth-child(2) {
+    width: 10% !important;
+}
+
+#previewTable th:nth-child(3), /* DEMANDA */
+#previewTable td:nth-child(3) {
+    width: 10% !important;
+}
+
+#previewTable th:nth-child(4), /* UM */
+#previewTable td:nth-child(4) {
+    width: 7% !important;
+}
+
+#previewTable th:nth-child(5), /* FECHACREADA */
+#previewTable td:nth-child(5) {
+    width: 15% !important;
+}
+
+#previewTable th:nth-child(6), /* FECHAMODIFICADA */
+#previewTable td:nth-child(6) {
+    width: 15% !important;
+}
+
+#previewTable th:nth-child(7), /* ESTADO */
+#previewTable td:nth-child(7) {
+    width: 13% !important;
+}
+
+#previewTable th:nth-child(8), /* FECHAELABORACION */
+#previewTable td:nth-child(8) {
+    width: 15% !important;
+}
+
+/* Hacer que el modal ocupe aún más espacio */
+#previewModal .modal-dialog {
+    max-width: 95% !important;
+    width: 95% !important;
+    height: 90vh !important;
+}
+
+/* Ajustar el título del modal para que sea más visible */
+#previewModalLabel {
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+    color: white !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+/* Mejorar la apariencia de las filas de datos */
+#previewTable tbody tr {
+    background-color: #f8f9fa;
+}
+
+#previewTable tbody tr:nth-child(even) {
+    background-color: #e9ecef;
+}
+
+/* Agregar bordes para mejor visualización */
+#previewTable th, 
+#previewTable td {
+    border: 1px solid #dee2e6 !important;
+}
+
+/* Mejorar el botón de envío */
+#btnEnviar {
+    padding: 10px 30px !important;
+    font-size: 1.1rem !important;
+    font-weight: bold !important;
+}
+/* Ocultar los botones de DataTables que aparecen en la parte superior */
+.dataTables_wrapper .dt-buttons {
+    display: none !important; /* Ocultar los botones de DataTables */
+}
+
+/* También ocultar el menú de ordenamiento (flechas) si está presente */
+#previewTable thead th.sorting_asc,
+#previewTable thead th.sorting_desc,
+#previewTable thead th.sorting {
+    background-image: none !important; /* Quitar las flechas de ordenamiento */
+}
+
+/* En caso de que se muestre otra barra de herramientas no deseada */
+.dataTables_wrapper .dataTables_paginate,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_length {
+    display: none !important; /* Ocultar elementos de paginación e información */
+}
+
+/* Asegurar que los botones realmente estén ocultos con mayor especificidad */
+.dataTables_wrapper div.dt-buttons.btn-group.flex-wrap {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
