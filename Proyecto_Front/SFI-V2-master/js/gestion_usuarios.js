@@ -147,7 +147,7 @@ function loadUsers() {
 
             usersTable.clear().rows.add(processedData).draw();
 
-            // En la función loadUsers, agrega después de recibir la respuesta:
+            // Log para depuración
             console.log("Datos de usuarios recibidos:", response);
             // Verifica específicamente las imágenes
             response.forEach(user => {
@@ -290,14 +290,15 @@ function openUserModal(user = null) {
 function closeUserModal() {
     const userModalElement = document.getElementById('userModal');
     const userModal = bootstrap.Modal.getInstance(userModalElement);
+    if (userModal) {
+        // Eliminar el foco de cualquier elemento dentro del modal antes de cerrarlo
+        document.activeElement.blur();
 
-    // Eliminar el foco de cualquier elemento dentro del modal antes de cerrarlo
-    document.activeElement.blur();
-
-    // Añadir un pequeño retraso para asegurar que el foco se ha perdido
-    setTimeout(() => {
-        userModal.hide();
-    }, 10);
+        // Añadir un pequeño retraso para asegurar que el foco se ha perdido
+        setTimeout(() => {
+            userModal.hide();
+        }, 10);
+    }
 }
 
 // Resetear formulario de usuario
@@ -314,6 +315,7 @@ function getUserById(userId) {
         url: `${API_URL}/api/gestion-usuarios/${userId}`,
         type: 'GET',
         success: function (response) {
+            console.log("Datos del usuario obtenidos:", response);
             openUserModal(response);
         },
         error: function (xhr, status, error) {
@@ -432,7 +434,7 @@ function openChangePasswordModal(userId) {
     });
 }
 
-// Agrega esto a la función uploadProfileImage para más depuración
+// Función mejorada para subir imagen de perfil
 function uploadProfileImage() {
     const fileInput = $('#profileImageFile')[0];
     
@@ -515,55 +517,78 @@ function uploadProfileImage() {
     });
 }
 
-// Guardar usuario (crear o actualizar)
+// Función mejorada para guardar usuario (crear o actualizar)
 function saveUser() {
     // Validar formulario
     if (!validateUserForm()) {
         return;
     }
 
-    const userData = {
-        UserName: $('#userName').val(),
-        UserLastName: $('#userLastName').val(),
-        Email: $('#email').val(),
-        RolID: parseInt($('#rolId').val()),
-        ProfileImage: $('#profileImage').val() || null // Aseguramos que sea null si está vacío
-    };
+    // Mostrar indicador de carga
+    Swal.fire({
+        title: 'Guardando...',
+        text: 'Procesando la solicitud',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
     if (isEditMode) {
         // Actualizar usuario existente
-        const userId = $('#userId').val();
-        userData.UserID = parseInt(userId);
+        const userId = parseInt($('#userId').val());
+        
+        // Crear objeto UpdateUserRequest según la definición en el backend
+        const updateData = {
+            UserID: userId,
+            UserName: $('#userName').val(),
+            UserLastName: $('#userLastName').val(),
+            Email: $('#email').val(),
+            RolID: parseInt($('#rolId').val()),
+            ProfileImage: $('#profileImage').val() || null
+        };
 
-        // Si hay contraseña nueva, la agregamos
-        const password = $('#password').val();
-        if (password) {
-            userData.UserPass = password;
-        }
+        console.log("Datos de actualización:", updateData);
 
         $.ajax({
             url: `${API_URL}/api/gestion-usuarios/${userId}`,
             type: 'PUT',
             contentType: 'application/json',
-            data: JSON.stringify(userData),
+            data: JSON.stringify(updateData),
             success: function (response) {
+                Swal.close();
+                console.log("Respuesta de actualización:", response);
+                
                 Swal.fire({
                     title: 'Éxito',
-                    text: response.message,
+                    text: response.message || 'Usuario actualizado exitosamente',
                     icon: 'success'
                 });
 
                 // Cerrar modal correctamente
                 closeUserModal();
-
+                
+                // Recargar lista de usuarios
                 loadUsers();
             },
             error: function (xhr, status, error) {
+                Swal.close();
                 console.error("Error al actualizar usuario:", error);
+                console.error("Status:", status);
+                console.error("Respuesta:", xhr.responseText);
+                
                 let errorMessage = 'No se pudo actualizar el usuario.';
-
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     errorMessage = xhr.responseJSON.message;
+                } else if (xhr.responseText) {
+                    try {
+                        const errorObj = JSON.parse(xhr.responseText);
+                        if (errorObj.message) {
+                            errorMessage = errorObj.message;
+                        }
+                    } catch (e) {
+                        // Si no es JSON válido, usamos el mensaje genérico
+                    }
                 }
 
                 Swal.fire({
@@ -575,31 +600,56 @@ function saveUser() {
         });
     } else {
         // Crear nuevo usuario
-        userData.UserPass = $('#password').val(); // Usamos UserPass (mayúscula)
+        const createData = {
+            UserName: $('#userName').val(),
+            UserLastName: $('#userLastName').val(),
+            Email: $('#email').val(),
+            RolID: parseInt($('#rolId').val()),
+            UserPass: $('#password').val(),
+            ProfileImage: $('#profileImage').val() || null
+        };
+
+        console.log("Datos de creación:", createData);
 
         $.ajax({
             url: `${API_URL}/api/gestion-usuarios`,
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(userData),
+            data: JSON.stringify(createData),
             success: function (response) {
+                Swal.close();
+                console.log("Respuesta de creación:", response);
+                
                 Swal.fire({
                     title: 'Éxito',
-                    text: response.message,
+                    text: response.message || 'Usuario creado exitosamente',
                     icon: 'success'
                 });
 
                 // Cerrar modal correctamente
                 closeUserModal();
-
+                
+                // Recargar lista de usuarios
                 loadUsers();
             },
             error: function (xhr, status, error) {
+                Swal.close();
                 console.error("Error al crear usuario:", error);
+                console.error("Status:", status);
+                console.error("Respuesta:", xhr.responseText);
+                
                 let errorMessage = 'No se pudo crear el usuario.';
-
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     errorMessage = xhr.responseJSON.message;
+                } else if (xhr.responseText) {
+                    try {
+                        const errorObj = JSON.parse(xhr.responseText);
+                        if (errorObj.message) {
+                            errorMessage = errorObj.message;
+                        }
+                    } catch (e) {
+                        // Si no es JSON válido, usamos el mensaje genérico
+                    }
                 }
 
                 Swal.fire({
@@ -630,7 +680,6 @@ function validateUserForm() {
     }
 
     // Validar email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         Swal.fire({
             title: 'Error',
@@ -664,51 +713,21 @@ function validateUserForm() {
     return true;
 }
 
-// Agregar esta función para verificar email duplicado
-function checkEmailExists(email, userId = null) {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: `${API_URL}/api/gestion-usuarios/check-email`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                email: email,
-                userId: userId // Para excluir el usuario actual al editar
-            }),
-            success: function (response) {
-                resolve(response.exists);
-            },
-            error: function (xhr, status, error) {
-                console.error("Error al verificar email:", error);
-                reject(error);
-            }
-        });
-    });
-}
-
-// Agregar validación en tiempo real al campo de email
+// Función adicional para validación de email
 function setupEmailValidation() {
-    $('#email').on('blur', async function () {
+    $('#email').on('blur', function () {
         const email = $(this).val();
         if (email && emailRegex.test(email)) {
-            const userId = isEditMode ? parseInt($('#userId').val()) : null;
-            try {
-                const exists = await checkEmailExists(email, userId);
-                if (exists) {
-                    $(this).addClass('is-invalid');
-                    $(this).after('<div class="invalid-feedback">Este correo ya está registrado.</div>');
-                    Swal.fire({
-                        title: 'Email duplicado',
-                        text: 'Este correo electrónico ya está registrado en el sistema.',
-                        icon: 'warning'
-                    });
-                } else {
-                    $(this).removeClass('is-invalid');
-                    $(this).siblings('.invalid-feedback').remove();
-                }
-            } catch (error) {
-                console.error("Error en validación:", error);
-            }
+            // Remover mensajes de error previos
+            $(this).removeClass('is-invalid');
+            $(this).siblings('.invalid-feedback').remove();
+            
+            // Aquí podrías verificar si el email ya existe en el sistema
+            // usando una petición al backend
+        } else if (email) {
+            // Mostrar error de formato inválido
+            $(this).addClass('is-invalid');
+            $(this).after('<div class="invalid-feedback">Formato de email inválido.</div>');
         }
     });
 }
