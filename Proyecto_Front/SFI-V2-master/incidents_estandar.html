@@ -54,84 +54,90 @@
 
 	<script src="https://code.highcharts.com/dashboards/dashboards.js"></script>
 	<script src="https://code.highcharts.com/highcharts.js"></script>
+    <style>
+        /* Estilos formales para el navbar del home_estandar */
+        .navbar-grido {
+            background-color: #1a3163 !important;
+            /* Azul oscuro formal */
+            border-bottom: 2px solid #315698 !important;
+        }
 
+        /* Personalizar el hover de los items del menú */
+        .navbar-grido .nav-link:hover {
+            background-color: #284785 !important;
+            color: #ffffff !important;
+        }
+
+        /* Personalizar el dropdown menu */
+        .navbar-grido .dropdown-menu {
+            background-color: #1c3469 !important;
+            border: 1px solid #284785 !important;
+        }
+
+        .navbar-grido .dropdown-item {
+            color: #ffffff !important;
+        }
+
+        .navbar-grido .dropdown-item:hover {
+            background-color: #284785 !important;
+        }
+
+        /* Sutiles mejoras para el branding */
+        .navbar-grido .navbar-brand img {
+            filter: brightness(1.05);
+        }
+    </style>
 </head>
 
 <body>
-<!-- Navbar Superior -->
-<nav class="navbar navbar-expand-lg navbar-dark navbar-grido fixed-top">
-	<div class="container-fluid">
-		<!-- Logo y Nombre -->
-		<a class="navbar-brand" href="home1.html">
-			<img src="assets/img/logo_negativo-removebg-preview.png" alt="Helacor Logo">
-		</a>
-
-		<!-- Botón de hamburguesa para móviles -->
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<!-- Contenido del menú -->
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav">
-				<!-- Inicio -->
-				<li class="nav-item">
-					<a class="nav-link" href="home1.html">Inicio</a>
-				</li>
-
-				<!-- Dropdown de Producción -->
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProduccion" role="button"
-						data-bs-toggle="dropdown" aria-expanded="false">
-						Producción
-					</a>
-					<ul class="dropdown-menu" aria-labelledby="navbarDropdownProduccion">
-						<li><a class="dropdown-item" href="production1.html">Declarar Producción</a></li>
-						<li><a class="dropdown-item" href="productionTable.html">Producción Confirmada</a></li>
-					</ul>
-				</li>
-
-				<!-- Órdenes de Trabajo -->
-				<li class="nav-item">
-					<a class="nav-link" href="workOders.html">Órdenes de Trabajo</a>
-				</li>
-
-				<!-- Almacén -->
-				<li class="nav-item">
-					<a class="nav-link" href="productStore.html">Almacén</a>
-				</li>
-
-				<!-- Incidencias -->
-				<li class="nav-item">
-					<a class="nav-link" href="incidents.html">Incidencias</a>
-				</li>
-
-				<!-- Dropdown de Inventario -->
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownInventario" role="button"
-						data-bs-toggle="dropdown" aria-expanded="false">
-						Inventario
-					</a>
-					<ul class="dropdown-menu" aria-labelledby="navbarDropdownInventario">
-						<li><a class="dropdown-item" href="materials.html">Materiales</a></li>
-						<li><a class="dropdown-item" href="products.html">Productos</a></li>
-					</ul>
-				</li>
-
-				<!-- Gestión de Usuarios -->
-				<li class="nav-item">
-					<a class="nav-link" href="Users_Gestion.html">Gestión de Usuarios</a>
-				</li>
-
-				 <!-- Gestión de Usuarios -->
-				 <li class="nav-item">
-					<a class="nav-link" href="index.html">Cerrar Sesión</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
+	<!-- Navbar Superior -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-grido fixed-top">
+        <div class="container-fluid">
+            <!-- Logo y Nombre -->
+            <a class="navbar-brand" href="home_estandar.html">
+                <img src="assets/img/logo_negativo-removebg-preview.png" alt="Helacor Logo">
+            </a>
+    
+            <!-- Botón de hamburguesa para móviles -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <!-- Contenido del menú -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- Inicio -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="home_estandar.html">Inicio</a>
+                    </li>
+    
+                    <!-- Dropdown de Producción -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProduccion" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Producción
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownProduccion">
+                            <li><a class="dropdown-item" href="production_estandar.html">Declarar Producción</a></li>
+                            <li><a class="dropdown-item" href="productionTable_estandar.html">Producción Confirmada</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productStore_estandar.html">Almacen</a>
+                    </li>
+    
+                    <li class="nav-item">
+                        <a class="nav-link" href="incidents_estandar.html">Incidencias</a>
+                    </li>
+                    <!-- Gestión de Usuarios -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 	<section>
 		
 		<div class="container">

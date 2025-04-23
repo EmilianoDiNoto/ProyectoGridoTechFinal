@@ -164,7 +164,6 @@ function mostrarDetallesPedidosPendientes(pedidos) {
                         <th>ID</th>
                         <th>Fecha</th>
                         <th>Estado</th>
-                        <th>Usuario</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -180,7 +179,6 @@ function mostrarDetallesPedidosPendientes(pedidos) {
                 <td>${pedido.SolicitudID || ''}</td>
                 <td>${fecha}</td>
                 <td>${pedido.Estado || ''}</td>
-                <td>${pedido.Usuario || 'Sin asignar'}</td>
             </tr>
         `;
     });

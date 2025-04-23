@@ -14,12 +14,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    hamBurger.addEventListener("click", function () {
-        sidebar.classList.toggle("expand");
-        adjustTable();
-    });
+    // Verificar si hamBurger existe antes de añadir el evento
+    if (hamBurger) {
+        hamBurger.addEventListener("click", function () {
+            sidebar.classList.toggle("expand");
+            adjustTable();
+        });
+    }
 
     function handleResize() {
+        // Verificar si sidebar existe
+        if (!sidebar) return;
+        
         if (window.innerWidth <= 768) {
             sidebar.classList.remove("expand");
         } else {
@@ -31,9 +37,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     window.addEventListener('resize', handleResize);
-    handleResize();
-
-    
+    // Solo llamar a handleResize si sidebar existe
+    if (sidebar) {
+        handleResize();
+    }
 });
 
 // Inicialización de DataTable

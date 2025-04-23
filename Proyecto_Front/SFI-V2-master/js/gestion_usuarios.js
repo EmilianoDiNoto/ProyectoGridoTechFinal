@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Inicialización de DataTable
+// Inicialización de DataTable - Eliminada la columna de imágenes
 function initDataTable() {
     usersTable = $('#usersTable').DataTable({
         responsive: true,
@@ -55,25 +55,6 @@ function initDataTable() {
             }
         },
         columns: [
-            {
-                data: "ProfileImage",
-                render: function (data) {
-                    if (data && data.trim() !== '') {
-                        // Para depuración
-                        console.log(`Renderizando imagen (primeros 30 caracteres): ${data.substring(0, 30)}...`);
-                        
-                        // Verifica si la cadena ya tiene el prefijo data:
-                        if (data.startsWith('data:')) {
-                            return `<img src="${data}" alt="Perfil" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">`;
-                        } else {
-                            // Intenta agregar el prefijo data:image
-                            return `<img src="data:image/jpeg;base64,${data}" alt="Perfil" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">`;
-                        }
-                    } else {
-                        return `<img src="assets/img/user-profile-icon-free-vector.png" alt="Perfil" class="img-fluid rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">`;
-                    }
-                }
-            },
             { data: "UserName" },
             { data: "UserLastName" },
             {
@@ -149,13 +130,6 @@ function loadUsers() {
 
             // Log para depuración
             console.log("Datos de usuarios recibidos:", response);
-            // Verifica específicamente las imágenes
-            response.forEach(user => {
-                console.log(`Usuario ${user.UserID} - Imagen: ${user.ProfileImage ? 'Sí tiene' : 'No tiene'}`);
-                if (user.ProfileImage) {
-                    console.log(`Primeros 50 caracteres: ${user.ProfileImage.substring(0, 50)}`);
-                }
-            });
         },
         error: function (xhr, status, error) {
             // Eliminar indicador de carga
@@ -434,7 +408,7 @@ function openChangePasswordModal(userId) {
     });
 }
 
-// Función mejorada para subir imagen de perfil
+// Función para subir imagen de perfil - Mantenemos esta función intacta
 function uploadProfileImage() {
     const fileInput = $('#profileImageFile')[0];
     
@@ -474,25 +448,24 @@ function uploadProfileImage() {
             
             console.log("Respuesta completa del servidor:", response);
             
-            // Verificar si la respuesta contiene la imagen
             if (response && response.imageBase64) {
                 console.log("Imagen recibida correctamente. Longitud:", response.imageBase64.length);
                 console.log("Primeros 50 caracteres:", response.imageBase64.substring(0, 50));
                 
-                $('#profileImage').val(response.imageBase64);
-                $('#imagePreview').html(`<img src="${response.imageBase64}" alt="Imagen de perfil" class="img-thumbnail" style="max-height: 150px">`);
+                // Asegúrate de que la imagen comienza con data:
+                let imageData = response.imageBase64;
+                if (!imageData.startsWith('data:')) {
+                    console.warn("La imagen no incluye el prefijo data:. Añadiendo prefijo genérico.");
+                    imageData = 'data:image/jpeg;base64,' + imageData;
+                }
+                
+                $('#profileImage').val(imageData);
+                $('#imagePreview').html(`<img src="${imageData}" alt="Imagen de perfil" class="img-thumbnail" style="max-height: 150px">`);
                 
                 Swal.fire({
                     title: 'Éxito',
                     text: 'Imagen subida correctamente',
                     icon: 'success'
-                });
-            } else {
-                console.error("La respuesta no contiene la imagen en base64");
-                Swal.fire({
-                    title: 'Error',
-                    text: 'La respuesta del servidor no contiene la imagen',
-                    icon: 'error'
                 });
             }
         },

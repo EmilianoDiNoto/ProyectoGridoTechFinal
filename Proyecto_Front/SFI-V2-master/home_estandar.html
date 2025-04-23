@@ -100,6 +100,43 @@
             }
         }, { once: true });
     </script>
+
+    <style>
+        /* Estilos formales para el navbar del home_estandar */
+        .navbar-grido {
+            background-color: #1a3163 !important;
+            /* Azul oscuro formal */
+            border-bottom: 2px solid #315698 !important;
+        }
+
+        /* Personalizar el hover de los items del menú */
+        .navbar-grido .nav-link:hover {
+            background-color: #284785 !important;
+            color: #ffffff !important;
+        }
+
+        /* Personalizar el dropdown menu */
+        .navbar-grido .dropdown-menu {
+            background-color: #1c3469 !important;
+            border: 1px solid #284785 !important;
+        }
+
+        .navbar-grido .dropdown-item {
+            color: #ffffff !important;
+        }
+
+        .navbar-grido .dropdown-item:hover {
+            background-color: #284785 !important;
+        }
+
+        /* Sutiles mejoras para el branding */
+        .navbar-grido .navbar-brand img {
+            filter: brightness(1.05);
+        }
+    </style>
+
+
+
 </head>
 
 <body>
@@ -108,7 +145,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark navbar-grido fixed-top">
             <div class="container-fluid">
                 <!-- Logo y Nombre -->
-                <a class="navbar-brand" href="home1.html">
+                <a class="navbar-brand" href="home_estandar.html">
                     <img src="assets/img/logo_negativo-removebg-preview.png" alt="Helacor Logo">
                 </a>
 
@@ -123,7 +160,7 @@
                     <ul class="navbar-nav">
                         <!-- Inicio -->
                         <li class="nav-item">
-                            <a class="nav-link" href="home1.html">Inicio</a>
+                            <a class="nav-link" href="home_estandar.html">Inicio</a>
                         </li>
 
                         <!-- Dropdown de Producción -->
@@ -133,47 +170,24 @@
                                 Producción
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownProduccion">
-                                <li><a class="dropdown-item" href="production1.html">Declarar Producción</a></li>
-                                <li><a class="dropdown-item" href="productionTable.html">Producción Confirmada</a></li>
+                                <li><a class="dropdown-item" href="production_estandar.html">Declarar Producción</a>
+                                </li>
+                                <li><a class="dropdown-item" href="productionTable_estandar.html">ProducciónConfirmada</a></li>
                             </ul>
                         </li>
 
-                        <!-- Órdenes de Trabajo -->
                         <li class="nav-item">
-                            <a class="nav-link" href="workOders.html">Órdenes de Trabajo</a>
+                            <a class="nav-link" href="productStore_estandar.html">Almacen</a>
                         </li>
 
-                        <!-- Almacén -->
                         <li class="nav-item">
-                            <a class="nav-link" href="productStore.html">Almacén</a>
+                            <a class="nav-link" href="incidents_estandar.html">Incidencias</a>
                         </li>
-
-                        <!-- Incidencias -->
-                        <li class="nav-item">
-                            <a class="nav-link" href="incidents.html">Incidencias</a>
-                        </li>
-
-                        <!-- Dropdown de Inventario -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownInventario" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Inventario
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownInventario">
-                                <li><a class="dropdown-item" href="materials.html">Materiales</a></li>
-                                <li><a class="dropdown-item" href="products.html">Productos</a></li>
-                            </ul>
-                        </li>
-
                         <!-- Gestión de Usuarios -->
                         <li class="nav-item">
-                            <a class="nav-link" href="Users_Gestion.html">Gestión de Usuarios</a>
-                        </li>
-
-                         <!-- Gestión de Usuarios -->
-                         <li class="nav-item">
                             <a class="nav-link" href="index.html">Cerrar Sesión</a>
                         </li>
+
                     </ul>
                 </div>
             </div>
@@ -455,7 +469,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
-        
+
     <script>
         // Script para actualizar el contador de pedidos pendientes
         document.addEventListener('DOMContentLoaded', function () {

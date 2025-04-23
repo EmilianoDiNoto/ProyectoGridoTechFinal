@@ -70,84 +70,94 @@ $(document).ready(function() {
     });
 
     // Función para autenticar al usuario
-    function authenticateUser(username, password) {
-        // Mostrar indicador de carga (animación de una tuerca girando)
-        $(".login-button").prop('disabled', true).html('<i class="fa fa-cog fa-spin"></i> Verificando...');
-        
-        // DEPURACIÓN: Mostrar en consola exactamente lo que se está enviando
-        const requestData = {
-            Username: username,
-            Password: password
-        };
-        console.log("Enviando a la API:", requestData);
-        console.log("URL completa:", `${API_URL}/api/usuarios/login`);
-        
-        $.ajax({
-            url: `${API_URL}/api/usuarios/login`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(requestData),
-            success: function(response) {
-                console.log("Login exitoso:", response);
-                
-                // Guardar información del usuario en sessionStorage
-                sessionStorage.setItem('userId', response.userId);
-                sessionStorage.setItem('userName', response.userName);
-                if (response.userLastName) {
-                    sessionStorage.setItem('userLastName', response.userLastName);
-                }
-                sessionStorage.setItem('rolId', response.rolId);
-                if (response.email) {
-                    sessionStorage.setItem('email', response.email);
-                }
-                
-                // Mostrar mensaje de éxito con SweetAlert (modificado)
-                Swal.fire({
-                    title: '¡Bienvenido!',
-                    text: 'Sesión iniciada correctamente',
-                    icon: 'success',
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    width: '400px',
-                    heightAuto: true,
-                    padding: '2em',
-                    customClass: {
-                        popup: 'login-success-popup',
-                        title: 'login-success-title',
-                        content: 'login-success-content'
-                    }
-                }).then(() => {
-                    // Redirigir al dashboard
-                    window.location.href = 'home1.html';
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error("Error en login:", xhr.status, error);
-                console.error("Respuesta completa:", xhr.responseText);
-                
-                // Restaurar botón
-                $(".login-button").prop('disabled', false).html('<i class="fa fa-sign-in"></i> Iniciar sesión');
-                
-                // Mostrar mensaje de error con SweetAlert
-                if (xhr.status === 401) {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Credenciales incorrectas',
-                        icon: 'error',
-                        confirmButtonText: 'Intentar nuevamente'
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Ocurrió un error al intentar iniciar sesión. Por favor intente nuevamente.',
-                        icon: 'error',
-                        confirmButtonText: 'Aceptar'
-                    });
-                }
+function authenticateUser(username, password) {
+    // Mostrar indicador de carga
+    $(".login-button").prop('disabled', true).html('<i class="fa fa-cog fa-spin"></i> Verificando...');
+    
+    // DEPURACIÓN: Mostrar en consola exactamente lo que se está enviando
+    const requestData = {
+        Username: username,
+        Password: password
+    };
+    console.log("Enviando a la API:", requestData);
+    console.log("URL completa:", `${API_URL}/api/usuarios/login`);
+    
+    $.ajax({
+        url: `${API_URL}/api/usuarios/login`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(requestData),
+        success: function(response) {
+            console.log("Login exitoso:", response);
+            
+            // Guardar información del usuario en sessionStorage
+            sessionStorage.setItem('userId', response.userId);
+            sessionStorage.setItem('userName', response.userName);
+            if (response.userLastName) {
+                sessionStorage.setItem('userLastName', response.userLastName);
             }
-        });
-    }
+            sessionStorage.setItem('rolId', response.rolId);
+            if (response.email) {
+                sessionStorage.setItem('email', response.email);
+            }
+            
+            // Mostrar mensaje de éxito con SweetAlert (modificado)
+            Swal.fire({
+                title: '¡Bienvenido!',
+                text: 'Sesión iniciada correctamente',
+                icon: 'success',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                width: '400px',
+                heightAuto: true,
+                padding: '2em',
+                customClass: {
+                    popup: 'login-success-popup',
+                    title: 'login-success-title',
+                    content: 'login-success-content'
+                }
+            }).then(() => {
+                // Redirigir según el rol
+                const rolId = parseInt(response.rolId);
+                
+                if (rolId === 1) { // ADM
+                    window.location.href = 'home1.html';
+                } else if (rolId === 2 || rolId === 3) { // LID o RES
+                    window.location.href = 'home_estandar.html';
+                } else {
+                    // Si llega un rol no reconocido, redirigir a la página por defecto
+                    window.location.href = 'home1.html';
+                    console.warn("Rol no reconocido:", rolId);
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Error en login:", xhr.status, error);
+            console.error("Respuesta completa:", xhr.responseText);
+            
+            // Restaurar botón
+            $(".login-button").prop('disabled', false).html('Ingresar');
+            
+            // Mostrar mensaje de error con SweetAlert
+            if (xhr.status === 401) {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Credenciales incorrectas',
+                    icon: 'error',
+                    confirmButtonText: 'Intentar nuevamente'
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Ocurrió un error al intentar iniciar sesión. Por favor intente nuevamente.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        }
+    });
+}
 
     // Modal para recuperación de contraseña - Paso 1: Solicitar email
     function showResetPasswordModal() {

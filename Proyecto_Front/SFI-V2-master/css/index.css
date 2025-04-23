@@ -1,9 +1,39 @@
 @import url(https://fonts.googleapis.com/css?family=Exo:400,500,500italic,400italic,600,600italic,700,700italic,800,800italic,300,300italic);
 
+/*=====================================================
+					Tipografia
+======================================================*/
+@font-face{
+    font-family: "RobotoCondensedLight";
+    src: url("../fonts/robotocondensed-light.ttf"), 
+    url("../fonts/robotocondensed-light.eot"), 
+    url("../fonts/robotocondensed-light.woff"), 
+    url("../fonts/robotocondensed-light.woff2"), 
+    url("../fonts/robotocondensed-light.svg");
+}
+@font-face{
+    font-family: "RobotoRegular";
+    src: url("../fonts/roboto-regular.ttf"), 
+    url("../fonts/roboto-regular.eot"), 
+    url("../fonts/roboto-regular.woff"), 
+    url("../fonts/roboto-regular.woff2"), 
+    url("../fonts/roboto-regular.svg");
+}
+@font-face{
+    font-family: "OswaldLight";
+    src: url("../fonts/oswald-light.ttf"), 
+    url("../fonts/oswald-light.eot"), 
+    url("../fonts/oswald-light.woff"), 
+    url("../fonts/oswald-light.woff2"), 
+    url("../fonts/oswald-light.svg");
+}
+
+
+
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Exo', sans-serif;
+    font-family: "RobotoRegular";
     min-height: 100vh;
     display: flex;
     flex-direction: column;
