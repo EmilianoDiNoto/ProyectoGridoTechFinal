@@ -21,6 +21,43 @@ namespace WebApplicationGridoTech.Controllers
         private string connectionString = @"Data Source=EMI-PC\EMI_PC_SERVER;Initial Catalog=GridoTech ; Integrated Security= True ";
         /// Conexión a Base de Datos EMI
 
+        [HttpGet]
+        [Route("api/usuarios/getAllUsers")]
+        public IHttpActionResult GetAllUsers()
+        {
+            List<Usuario> usuarios = new List<Usuario>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("SP_GetAllUsers", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            usuarios.Add(new Usuario
+                            {
+                                UserID = Convert.ToInt32(reader["UserID"]),
+                                UserName = reader["UserName"].ToString(),
+                                UserLastName = reader["UserLastName"].ToString(),
+                                RolID = Convert.ToInt32(reader["RolID"]),
+                                RolName = reader["RolName"].ToString(),
+                                Email = reader["Email"].ToString(),
+                                UserState = Convert.ToBoolean(reader["UserState"])
+                            });
+                        }
+                    }
+                }
+            }
+
+            return Ok(usuarios);
+        }
+
+
+
         [HttpPost]
         [Route("api/usuarios/login")]
         public IHttpActionResult Login([FromBody] LoginRequest request)
