@@ -18,7 +18,7 @@ namespace WebApplicationGridoTech.Controllers
 
     public class UsuariosController : ApiController
     {
-        private string connectionString = @"Data Source=LAPTOP-OJ158TC8;Initial Catalog=GridoTech ; Integrated Security= True ";
+        private string connectionString = @"Data Source=DESKTOP-MLHSGS5\SQLEXPRESS;Initial Catalog=GridoTech ; Integrated Security= True ";
 
         [HttpPost]
         [Route("api/usuarios/login")]

@@ -19,7 +19,7 @@ namespace GridoTechAdvance.Controllers
 {
     public class FiltroProductionGraficoController : ApiController
     {
-        private string connectionString = @"Data Source=EMI-PC\EMI_PC_SERVER;Initial Catalog=GridoTech ; Integrated Security= True ";
+        private string connectionString = @"Data Source=DESKTOP-MLHSGS5\SQLEXPRESS ;Initial Catalog=GridoTech ; Integrated Security= True ";
 
         [HttpGet]
         [Route("api/production/report/gridocookie")]
