@@ -10,47 +10,91 @@ namespace YourNamespace
     {
         private string connectionString;
 
-        public ProductionRepository()
+        public ProductionRepository() 
         {
             // Asegúrate de tener "YourConnectionStringName" configurado en web.config o appsettings.json
             connectionString = ConfigurationManager.ConnectionStrings["YourConnectionStringName"].ConnectionString;
-        }
 
+        }
 
         // Nuevo método para obtener todos los movimientos del almacen
         public List<Production> GetAllProduction()
         {
             List<Production> production = new List<Production>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                using (SqlCommand command = new SqlCommand("SP_GetAll_Production", connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    connection.Open();
-
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (SqlCommand command = new SqlCommand("SP_GetAll_Production", connection))
                     {
-                        while (reader.Read())
+                        command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            production.Add(new Production
+                            while (reader.Read())
                             {
-                                FECHA = Convert.ToDateTime(reader["FECHA"]),
-                                TURNO = reader["TURNO"].ToString(),
-                                RESPONSABLE = reader["RESPONSABLE"].ToString(),
-                                OT = Convert.ToInt32(reader["OT"]),
-                                PRODUCTO = reader["PRODUCTO"].ToString(),
-                                PRODUCIDO = Convert.ToInt32(reader["PRODUCIDO"]),
-                                PERFORMANCE = (float)Convert.ToDouble(reader["PERFORMANCE"]),
+                                var item = new Production();
 
-                            });
+                                // Usar métodos de conversión con manejo de errores
+                                item.FECHA = reader["FECHA"] != DBNull.Value ? Convert.ToDateTime(reader["FECHA"]) : DateTime.MinValue;
+                                item.TURNO = reader["TURNO"]?.ToString() ?? string.Empty;
+                                item.RESPONSABLE = reader["RESPONSABLE"]?.ToString() ?? string.Empty;
+                                item.OT = reader["OT"] != DBNull.Value ? Convert.ToInt32(reader["OT"]) : 0;
+                                item.PRODUCTO = reader["PRODUCTO"]?.ToString() ?? string.Empty;
+                                item.PRODUCIDO = reader["PRODUCIDO"] != DBNull.Value ? Convert.ToInt32(reader["PRODUCIDO"]) : 0;
+
+                                // Manejar el valor de PERFORMANCE con cuidado
+                                try
+                                {
+                                    if (reader["PERFORMANCE"] != DBNull.Value)
+                                    {
+                                        // Intentar convertir directamente
+                                        if (reader["PERFORMANCE"] is float || reader["PERFORMANCE"] is double)
+                                        {
+                                            item.PERFORMANCE = (float)Convert.ToDouble(reader["PERFORMANCE"]);
+                                        }
+                                        // Si es string, intentar parsear
+                                        else if (reader["PERFORMANCE"] is string)
+                                        {
+                                            if (float.TryParse(reader["PERFORMANCE"].ToString(), out float perfValue))
+                                            {
+                                                item.PERFORMANCE = perfValue;
+                                            }
+                                            else
+                                            {
+                                                item.PERFORMANCE = 0;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            item.PERFORMANCE = (float)Convert.ToDouble(reader["PERFORMANCE"]);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        item.PERFORMANCE = 0;
+                                    }
+                                }
+                                catch
+                                {
+                                    item.PERFORMANCE = 0;
+                                    // Opcional: Registrar el error
+                                }
+
+                                production.Add(item);
+                            }
                         }
                     }
                 }
+                return production;
             }
-
-            return production;
+            catch (Exception ex)
+            {
+                // Registrar el error en algún lugar
+                Console.WriteLine("Error en GetAllProduction: " + ex.Message);
+                // Puedes rethrow la excepción o devolver una lista vacía
+                return new List<Production>();
+            }
         }
 
         // Nuevo método para insertar un movimiento en ProductionStore

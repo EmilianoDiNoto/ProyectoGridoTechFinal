@@ -190,6 +190,72 @@ namespace YourNamespace
             return productionStoresF;
         }
 
+        public List<ProductionStore> GetProgressPS(int ot,  string movimiento)
+        {
+            List<ProductionStore> psprogress = new List<ProductionStore>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("SP_GetProgress_PS", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar parámetros al comando
+                    command.Parameters.AddWithValue("@OT", ot);
+                    command.Parameters.AddWithValue("@MOTION", movimiento);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            psprogress.Add(new ProductionStore
+                            {
+                                MATERIAL = reader["MATERIAL"].ToString(),
+                                CANTIDAD = Convert.ToInt32(reader["CANTIDAD"]),
+                                PROVEEDOR = reader["PROVEEDOR"].ToString(),
+                                LOTE = reader["LOTE"].ToString(),
+                            });
+                        }
+                    }
+                }
+            }
+
+            return psprogress;
+        }
+
+        public List<ProductionStorec> GetProgressCount(int ot, string movimiento)
+        {
+            List<ProductionStorec> psprogress = new List<ProductionStorec>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("SP_Get_Progress", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Agregar parámetros al comando
+                    command.Parameters.AddWithValue("@OT", ot);
+                    command.Parameters.AddWithValue("@MOTION", movimiento);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            psprogress.Add(new ProductionStorec
+                            {
+                                REGISTROS = Convert.ToInt32(reader["TotalRegistros"]),
+                            });
+                        }
+                    }
+                }
+            }
+
+            return psprogress;
+        }
 
 
     }
@@ -207,6 +273,12 @@ namespace YourNamespace
         public string PROVEEDOR { get; set; }
         public string LOTE { get; set; }
         public string TIPOMOV { get; set; }
+        
+    }
+
+    public class ProductionStorec
+    {
+        public int REGISTROS { get; set; }
     }
 
 }

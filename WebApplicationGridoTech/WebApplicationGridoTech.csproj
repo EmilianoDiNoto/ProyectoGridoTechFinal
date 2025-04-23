@@ -562,7 +562,9 @@
     <Compile Include="Models\SolicitudMaterial.cs" />
     <Compile Include="Models\Suppliers.cs" />
     <Compile Include="Models\TheoricalConsumption.cs" />
+    <Compile Include="Models\TurnoRepository.cs" />
     <Compile Include="Models\UnplannedStops.cs" />
+    <Compile Include="Models\UsersRepository.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\WorkOrderMaterial.cs" />
     <Compile Include="Models\WorkOrders.cs" />

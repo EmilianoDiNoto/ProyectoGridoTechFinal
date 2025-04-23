@@ -127,6 +127,47 @@ namespace WebApplicationGridoTech.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/ProductionStore/GetProgressPS")]
+        public IHttpActionResult GetProgressPS(int ot, string movimiento)
+        {
+            try
+            {
+                List<ProductionStore> psprogress = _ProductionStoreRepository.GetProgressPS(ot, movimiento);
+
+                if (psprogress == null || psprogress.Count == 0)
+                {
+                    return NotFound();
+                }
+
+                return Ok(psprogress);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/ProductionStore/GetProgressCount")]
+        public IHttpActionResult GetProgressCount(int ot, string movimiento)
+        {
+            try
+            {
+                List<ProductionStorec> psprogress = _ProductionStoreRepository.GetProgressCount(ot, movimiento);
+
+                if (psprogress == null || psprogress.Count == 0)
+                {
+                    return NotFound();
+                }
+
+                return Ok(psprogress);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
     }
 }
 
