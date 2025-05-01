@@ -2701,35 +2701,86 @@ function prepareBalanceChart() {
 
 
 
-
-// AGREGAR EL NUEVO CÓDIGO AQUÍ
+// Reemplazar la función existente calcularInventarioValorizado
 async function calcularInventarioValorizado() {
     try {
-        // Obtener datos de stock final
-        const stockResponse = await fetch('http://localhost:63152/api/ProductionStore/GetAllProductionStore');
-        const stockData = await stockResponse.json();
-        const stockFinal = stockData.filter(item => item.OT === 4 && item.TIPOMOV === 'STOCK FINAL');
-
-        // Obtener precios de materiales
-        const materialsResponse = await fetch('http://localhost:63152/api/Materials');
-        const materialsData = await materialsResponse.json();
-
-        // Calcular el valor total
-        let valorTotal = 0;
-        stockFinal.forEach(stockItem => {
-            const material = materialsData.find(m => m.MATERIAL === stockItem.MATERIAL);
-            if (material) {
-                valorTotal += stockItem.CANTIDAD * material.PRECIO;
+        // Obtener todas las órdenes de trabajo
+        const workOrdersResponse = await fetch('http://localhost:63152/api/WorkOrders/GetAllWorkOrders');
+        const workOrdersData = await workOrdersResponse.json();
+        
+        // Filtrar órdenes con estado "PENDIENTE"
+        const ordenesPendientes = workOrdersData.filter(order => order.ESTADO === 'PENDIENTE');
+        
+        // Obtener la tarjeta y aplicar estilos de manera forzada
+        const counterCard = document.querySelector('#inventario-valorizado').closest('.counter-card');
+        
+        // Aplicar estilo directamente al elemento con !important
+        counterCard.setAttribute('style', 'background-color:#f3d83d  !important; color: #000000 !important; border-radius: 8px !important; padding: 15px !important; text-align: center !important; box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important; height: 100% !important; display: flex !important; flex-direction: column !important; justify-content: center !important; margin-bottom: 15px !important;');
+        
+        // Si no hay órdenes pendientes, mostrar mensaje informativo
+        if (ordenesPendientes.length === 0) {
+            document.querySelector('#inventario-valorizado').textContent = 'No hay órdenes pendientes';
+            
+            // Cambiar también el título de la tarjeta para más claridad
+            const cardTitle = counterCard.querySelector('h3');
+            if (cardTitle) {
+                cardTitle.textContent = 'ORDEN PENDIENTE';
+                cardTitle.style.cssText = 'color: #000000 !important; font-size: 0.9rem !important; margin-bottom: 8px !important; font-weight: 600 !important;';
+            }
+            return;
+        }
+        
+        // Ordenar las órdenes pendientes por OT (asumiendo que números más bajos van primero)
+        ordenesPendientes.sort((a, b) => a.OT - b.OT);
+        
+        // Obtener la primera orden pendiente (la próxima a realizar)
+        const proximaOrden = ordenesPendientes[0];
+        
+        // Cambiar el título de la tarjeta
+        const cardTitle = counterCard.querySelector('h3');
+        if (cardTitle) {
+            cardTitle.textContent = 'ORDEN PENDIENTE';
+            cardTitle.style.cssText = 'color: #000000 !important; font-size: 0.9rem !important; margin-bottom: 8px !important; font-weight: 600 !important;';
+        }
+        
+        // Actualizar el contador con la información de OT y PRODUCTO
+        const infoElement = document.querySelector('#inventario-valorizado');
+        
+        // Agregar icono de pendiente y formatar contenido con OT y PRODUCTO
+        infoElement.innerHTML = `
+            <div style="margin-bottom: 8px;">
+                <i class="zmdi zmdi-time-countdown" style="font-size: 1.4rem; margin-right: 8px; vertical-align: middle; color: #000000;"></i>
+            </div>
+            <div style="font-size: 1.3rem; font-weight: bold; color: #0c169f; margin-bottom: 5px;">OT ${proximaOrden.OT}</div>
+            <div style="font-size: 1rem; color: #000000;">${proximaOrden.PRODUCTO || 'Sin producto'}</div>
+        `;
+        
+        // Eliminar cualquier clase de color que pueda existir
+        infoElement.classList.remove('text-primary', 'text-info', 'text-warning', 'text-danger');
+        
+        // Asegurarse de que el texto dentro de la tarjeta sea negro
+        Array.from(counterCard.querySelectorAll('*')).forEach(el => {
+            if (el.tagName !== 'I' && !el.innerHTML.includes('OT')) { // Preservar el color del icono y el número de OT
+                el.style.color = '#000000';
             }
         });
-
-        // Actualizar el contador
-        document.querySelector('#inventario-valorizado').textContent =
-            `$${valorTotal.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        
     } catch (error) {
-        console.error('Error al calcular inventario valorizado:', error);
-        document.querySelector('#inventario-valorizado').textContent = 'Error al calcular';
+        console.error('Error al obtener información de órdenes pendientes:', error);
+        document.querySelector('#inventario-valorizado').textContent = 'Error de conexión';
     }
+}
+
+// Asegúrate de añadir la función a la lista de contadores que se actualizan
+async function actualizarContadores() {
+    await calcularInventarioValorizado();
+    await calcularDesvioTotal();
+    await calcularStockFinalValor();
+    
+    // Agregar evento de clic al contador de Stock Final
+    document.querySelector('#stock-final-counter').addEventListener('click', function () {
+        $('#stockModal').modal('show');
+    });
 }
 
 // Reemplazar la función calcularDesvioTotal() en paste-3.txt (alrededor de línea 711)
