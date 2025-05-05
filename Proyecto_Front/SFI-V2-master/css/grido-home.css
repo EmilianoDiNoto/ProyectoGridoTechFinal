@@ -687,3 +687,18 @@
         height: 90px;
     }
 }
+
+
+/* Añade esta regla al final de tu CSS para que tenga prioridad */
+.counter-card.orden-pendiente {
+    background: #ffcc00 !important;
+    background-image: none !important;
+    border-left-color: #c90 !important;
+    color: #000000 !important;
+}
+
+/* Asegúrate de que también los hijos tengan color de texto adecuado */
+.counter-card.orden-pendiente h3, 
+.counter-card.orden-pendiente .counter-value {
+    color: #000000 !important;
+}

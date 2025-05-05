@@ -32,6 +32,7 @@
 	<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/menuControl.js"></script>
+	<script src="js/fix-graficos.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 	<!-- DataTables CSS -->
@@ -48,7 +49,106 @@
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-
+	<style>
+		/* Estilos para la navbar superior */
+		.navbar-grido {
+			background-color: #0e2238 !important;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+			padding: 10px 20px;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 1030;
+			margin-bottom: 60px;
+		}
+		
+		.navbar-brand img {
+			height: 40px;
+			width: auto;
+		}
+		
+		/* Estilos para los items del menú */
+		.navbar-dark .navbar-nav .nav-link {
+			color: rgba(255, 255, 255, 0.8);
+			padding: 0.5rem 1rem;
+			font-weight: 500;
+			transition: all 0.2s ease;
+		}
+		
+		.navbar-dark .navbar-nav .nav-link:hover {
+			color: #ffffff;
+			background-color: rgba(255, 255, 255, 0.1);
+			border-radius: 4px;
+		}
+		
+		/* Estilos para el dropdown */
+		.dropdown-menu {
+			background-color: #ffffff;
+			border: none;
+			border-radius: 8px;
+			box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+			padding: 0.5rem;
+		}
+		
+		.dropdown-item {
+			color: #333333;
+			padding: 0.5rem 1rem;
+			font-weight: 500;
+			border-radius: 4px;
+		}
+		
+		.dropdown-item:hover {
+			background-color: #f8f9fa;
+			color: #0e2238;
+		}
+		
+		/* Elementos a la derecha */
+		.navbar-right {
+			display: flex;
+			align-items: center;
+			margin-left: auto;
+		}
+		
+		.navbar-right .nav-link,
+		.settings-btn {
+			color: rgba(255, 255, 255, 0.8);
+			font-size: 1.2rem;
+			padding: 0.5rem;
+			margin-left: 0.5rem;
+			background: none;
+			border: none;
+			cursor: pointer;
+			transition: all 0.2s ease;
+		}
+		
+		.navbar-right .nav-link:hover,
+		.settings-btn:hover {
+			color: #ffffff;
+		}
+		
+		/* Ajuste para el contenido principal */
+		.main {
+			width: 100%;
+			min-height: 100vh;
+			padding: 20px;
+		}
+		
+		/* Ajustes responsive */
+		@media (max-width: 991px) {
+			.navbar-collapse {
+				background-color: #0e2238;
+				border-radius: 0 0 8px 8px;
+				padding: 1rem;
+				margin-top: 0.5rem;
+			}
+			
+			.navbar-right {
+				margin-top: 1rem;
+				justify-content: center;
+			}
+		}
+	</style>
 </head>
 
 <body>
@@ -124,19 +224,6 @@
 					<a class="nav-link" href="index.html">Cerrar Sesión</a>
 				</li>
 			</ul>
-
-			<!-- Elementos a la derecha -->
-			<div class="navbar-right">
-				<!-- Botón de configuración -->
-				<button class="settings-btn" title="Configuración">
-					<i class="zmdi zmdi-settings"></i>
-				</button>
-
-				<!-- Botón de cerrar sesión -->
-				<a class="nav-link" href="index.html" title="Cerrar Sesión">
-					<i class="zmdi zmdi-power"></i>
-				</a>
-			</div>
 		</div>
 	</div>
 </nav>

@@ -1394,6 +1394,11 @@ chart-container-large {
     margin-bottom: 1rem;
 }
 
+.counter-card.orden-pendiente {
+    background-color: #ffcc00 !important;
+    color: #000000 !important;
+}
+
 .counter-card h3 {
     font-size: 0.9rem;
     margin-bottom: 8px;
@@ -2068,7 +2073,7 @@ canvas {
   
   /* 11. Estilos para los contadores */
   .counter-card {
-    background-color: white !important;
+    background-color: white;
     border-radius: 8px !important;
     padding: 20px !important;
     text-align: center !important;
@@ -2085,7 +2090,7 @@ canvas {
   .counter-card h3 {
     font-size: 1rem !important;
     margin-bottom: 10px !important;
-    color: #333333 !important;
+    color: #333333;
     font-weight: 600 !important;
   }
   
@@ -2490,3 +2495,7 @@ canvas {
     /* Texto en blanco para contraste */
 }
 
+.counter-card.orden-pendiente {
+    background-color: #f3d83d !important;
+    color: #000000 !important;
+}

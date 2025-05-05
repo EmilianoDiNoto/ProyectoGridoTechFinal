@@ -421,12 +421,12 @@ table.dataTable thead th {
     background-image: none !important; /* Quitar las flechas de ordenamiento */
 }
 
-/* En caso de que se muestre otra barra de herramientas no deseada */
+/* En caso de que se muestre otra barra de herramientas no deseada
 .dataTables_wrapper .dataTables_paginate,
 .dataTables_wrapper .dataTables_info,
 .dataTables_wrapper .dataTables_length {
     display: none !important; /* Ocultar elementos de paginación e información */
-}
+*/
 
 /* Asegurar que los botones realmente estén ocultos con mayor especificidad */
 .dataTables_wrapper div.dt-buttons.btn-group.flex-wrap {
@@ -437,4 +437,453 @@ table.dataTable thead th {
     overflow: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
+}
+/* CSS mejorado para la vista previa del Excel */
+
+/* Estilos para el selector de archivos */
+.card {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 15px 20px;
+}
+
+#input-excel {
+    padding: 12px;
+    border: 2px dashed #ccc;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+#input-excel:hover, #input-excel:focus {
+    border-color: #0d6efd;
+    background-color: #f0f7ff;
+}
+
+/* Información del archivo */
+.file-info {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border-left: 4px solid #0d6efd;
+}
+
+.file-info strong {
+    margin-right: 8px;
+    color: #495057;
+}
+
+/* Modal a pantalla completa con estilos mejorados */
+.modal-fullscreen {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+}
+
+.modal-content {
+    height: 100%;
+    border: none;
+    border-radius: 0;
+}
+
+.modal-header {
+    padding: 15px 25px;
+}
+
+.modal-body {
+    padding: 0;
+    overflow: auto;
+}
+
+.modal-footer {
+    padding: 15px 25px;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Tabla de vista previa */
+#previewTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0;
+}
+
+#previewTable thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#previewTable th {
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    padding: 15px 10px;
+    background-color: #212529;
+    white-space: nowrap;
+    border: 1px solid #32383e;
+}
+
+#previewTable td {
+    padding: 12px 8px;
+    vertical-align: middle;
+    text-align: center;
+    border: 1px solid #dee2e6;
+}
+
+/* Alternar colores de filas */
+#previewTable tbody tr.even-row {
+    background-color: #f8f9fa;
+}
+
+#previewTable tbody tr.odd-row {
+    background-color: #ffffff;
+}
+
+#previewTable tbody tr:hover {
+    background-color: #e9f2ff;
+}
+
+/* Ajustes específicos para cada columna */
+#previewTable th:nth-child(1), 
+#previewTable td:nth-child(1) {
+    width: 7%;
+}
+
+#previewTable th:nth-child(2), 
+#previewTable td:nth-child(2) {
+    width: 10%;
+}
+
+#previewTable th:nth-child(3), 
+#previewTable td:nth-child(3) {
+    width: 10%;
+}
+
+#previewTable th:nth-child(4), 
+#previewTable td:nth-child(4) {
+    width: 7%;
+}
+
+#previewTable th:nth-child(5), 
+#previewTable td:nth-child(5) {
+    width: 15%;
+}
+
+#previewTable th:nth-child(6), 
+#previewTable td:nth-child(6) {
+    width: 15%;
+}
+
+#previewTable th:nth-child(7), 
+#previewTable td:nth-child(7) {
+    width: 13%;
+}
+
+#previewTable th:nth-child(8), 
+#previewTable td:nth-child(8) {
+    width: 15%;
+}
+
+/* Barra de progreso personalizada */
+.progress {
+    height: 20px;
+    border-radius: 4px;
+    margin: 15px 0 10px 0;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    background-color: #0d6efd;
+    transition: width 0.2s ease;
+}
+
+#progress-text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 5px;
+    color: #6c757d;
+}
+
+/* Botones más atractivos */
+.btn-lg {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.btn-success {
+    background-color: #198754;
+    border-color: #198754;
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .modal-footer .row {
+        flex-direction: column;
+    }
+    
+    .modal-footer .col-md-6 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    #previewTable th, 
+    #previewTable td {
+        font-size: 0.8rem;
+        padding: 8px 4px;
+    }
+}
+
+/* Optimizaciones de scrolling */
+.table-responsive {
+    height: calc(100vh - 174px); /* Ajustar según los encabezados y pies de página */
+    overflow: auto;
+    border: none;
+}
+
+/* Estilos para el scroll */
+.table-responsive::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+/* CSS corregido para la tabla de vista previa */
+
+/* Configuración básica del modal */
+.modal-fullscreen {
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    margin: 0;
+}
+
+.modal-content {
+    height: 100%;
+    border: none;
+    border-radius: 0;
+}
+
+.modal-header {
+    background-color: #375d89 !important;
+    color: white !important;
+    padding: 15px 25px;
+}
+
+.modal-body {
+    padding: 0;
+    overflow: auto;
+}
+
+/* Estilos específicos para la tabla */
+.table-responsive {
+    height: calc(100vh - 174px);
+    overflow: auto;
+    border: none;
+}
+
+#previewTable {
+    width: 100%;
+    table-layout: fixed; /* Importante: fuerza a que las columnas respeten sus anchos */
+    border-collapse: collapse;
+    margin-bottom: 0;
+}
+
+/* Estilos para el encabezado de la tabla */
+#previewTable thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#previewTable th {
+    border: 1px solid #32383e !important;
+    background-color: #375d89 !important;
+    color: white !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    padding: 12px 8px !important;
+    font-size: 14px !important;
+}
+
+/* Definición específica de anchos para cada columna */
+#previewTable .productoid-col {
+    width: 7% !important;
+}
+
+#previewTable .codigo-col {
+    width: 10% !important;
+}
+
+#previewTable .demanda-col {
+    width: 10% !important;
+}
+
+#previewTable .um-col {
+    width: 7% !important;
+}
+
+#previewTable .fechacreada-col {
+    width: 15% !important;
+}
+
+#previewTable .fechamodificada-col {
+    width: 15% !important;
+}
+
+#previewTable .estado-col {
+    width: 13% !important;
+}
+
+#previewTable .fechaelaboracion-col {
+    width: 15% !important;
+}
+
+/* Estilos para las celdas */
+#previewTable td {
+    border: 1px solid #dee2e6 !important;
+    padding: 10px 8px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    font-size: 13px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Alternar colores en las filas */
+#previewTable tbody tr:nth-child(even) {
+    background-color: #f8f9fa !important;
+}
+
+#previewTable tbody tr:nth-child(odd) {
+    background-color: #ffffff !important;
+}
+
+#previewTable tbody tr:hover {
+    background-color: #e9f2ff !important;
+}
+
+/* Estilo para el botón de Enviar a DB */
+#btnEnviar {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+    padding: 10px 30px !important;
+    font-size: 1.1rem !important;
+    font-weight: bold !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+}
+
+#btnEnviar:hover {
+    background-color: #157347 !important;
+    border-color: #146c43 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+}
+
+/* Estilos para los mensajes de progreso */
+.progress {
+    height: 20px;
+    border-radius: 4px;
+    margin: 15px 0 10px 0;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    background-color: #0d6efd;
+    transition: width 0.2s ease;
+}
+
+#progress-text {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 5px;
+    color: #6c757d;
+}
+
+/* Mejoras para quitar cualquier estilo adicional que pueda estar interfiriendo */
+.dataTables_scrollHeadInner,
+.dataTables_scrollHeadInner table {
+    width: 100% !important;
+}
+
+/* Prevención para DataTables */
+#previewTable th.sorting,
+#previewTable th.sorting_asc,
+#previewTable th.sorting_desc,
+#previewTable th.sorting_disabled {
+    background-image: none !important;
+}
+
+/* Mejora del scroll */
+.table-responsive::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Corrección específica para resetear estilos de bootstrap o datatables */
+#previewTable thead tr,
+#previewTable tbody tr {
+    display: table-row !important;
+    width: 100% !important;
+}
+
+#previewTable thead th,
+#previewTable tbody td {
+    display: table-cell !important;
+}
+
+/* Asegurarse que la tabla se comporta correctamente */
+#previewTable {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+}
+
+#previewTable thead {
+    display: table-header-group !important;
+}
+
+#previewTable tbody {
+    display: table-row-group !important;
 }

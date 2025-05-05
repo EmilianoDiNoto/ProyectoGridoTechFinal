@@ -36,12 +36,20 @@ $(document).ready(function() {
             { data: 'PRODUCTO' },
             { data: 'PRODUCIDO' },
             { 
-                data: 'PERFORMANCE',
-                render: function(data) {
-                    // Formatear el performance como porcentaje
-                    return (data / 100).toFixed(2) + '%';
-                }
-            }
+    data: 'PERFORMANCE',
+    render: function(data) {
+        // Convertir a número
+        const value = parseFloat(data);
+        
+        // Si el valor ya es mayor que 1, asumimos que ya está en porcentaje
+        if (value > 1) {
+            return value.toFixed(2) + '%';
+        } else {
+            // Si es decimal (ej: 0.29), multiplicar por 100
+            return (value * 100).toFixed(2) + '%';
+        }
+    }
+}
         ],
         ajax: {
             url: 'http://localhost:63152/api/Production/GetAllProduction',

@@ -100,6 +100,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+
+
     // Ejecutar la reorganización de gráficos
     reorganizarGraficos();
 });
@@ -360,156 +362,6 @@ setTimeout(function () {
     solucionarProblemasBotones();
     mejorarMenuContextual();
 }, 500);
-
-
-
-
-
-
-// Función para crear un botón de exportación personalizado para el gráfico de Balance de Masas
-function crearBotonExportacionPersonalizado() {
-    // Configurar el gráfico de Balance de Masas para que no muestre el botón hamburguesa
-    if (typeof Highcharts !== 'undefined') {
-        const opcionesChart = {
-            exporting: {
-                enabled: false // Desactivar el botón de exportación nativo de Highcharts
-            }
-        };
-
-        // Aplicar al gráfico de Balance de Masas
-        const chart = Highcharts.charts.find(chart =>
-            chart && chart.renderTo.id === 'balance-highchart-container'
-        );
-
-        if (chart) {
-            chart.update(opcionesChart);
-        }
-    }
-
-    // Crear botón de exportación personalizado
-    const contenedor = document.querySelector('.chart-container-large');
-    if (contenedor && !document.getElementById('export-balance-chart-btn')) {
-        // Crear un contenedor para posicionar el botón de exportación
-        const exportBtnContainer = document.createElement('div');
-        exportBtnContainer.className = 'export-btn-container';
-        exportBtnContainer.style.position = 'absolute';
-        exportBtnContainer.style.top = '15px';
-        exportBtnContainer.style.right = '15px';
-        exportBtnContainer.style.zIndex = '90';
-
-        // Crear el botón de exportación
-        const exportBtn = document.createElement('button');
-        exportBtn.id = 'export-balance-chart-btn';
-        exportBtn.className = 'btn btn-sm btn-outline-secondary';
-        exportBtn.innerHTML = '<i class="zmdi zmdi-download"></i>';
-        exportBtn.title = 'Exportar gráfico';
-        exportBtn.style.padding = '5px 10px';
-
-        // Agregar el botón al contenedor
-        exportBtnContainer.appendChild(exportBtn);
-        contenedor.appendChild(exportBtnContainer);
-
-        // Agregar evento de clic al botón
-        exportBtn.addEventListener('click', function (e) {
-            e.stopPropagation();
-
-            // Eliminar menú existente si lo hay
-            const menuExistente = document.getElementById('export-balance-chart-menu');
-            if (menuExistente) {
-                menuExistente.remove();
-                return;
-            }
-
-            // Obtener el gráfico
-            const chart = Highcharts.charts.find(chart =>
-                chart && chart.renderTo.id === 'balance-highchart-container'
-            );
-
-            if (chart) {
-                // Obtener posición para el menú
-                const rect = this.getBoundingClientRect();
-
-                // Crear menú desplegable
-                const menu = document.createElement('div');
-                menu.id = 'export-balance-chart-menu';
-                menu.className = 'dropdown-menu show';
-                menu.style.position = 'absolute';
-                menu.style.left = rect.left + 'px';
-                menu.style.top = (rect.bottom + 5) + 'px';
-                menu.style.zIndex = '9999';
-                menu.style.backgroundColor = 'white';
-                menu.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
-                menu.style.borderRadius = '4px';
-                menu.style.padding = '8px 0';
-
-                // Opciones del menú
-                menu.innerHTML = `
-          <h6 class="dropdown-header">Exportar como imagen</h6>
-          <a class="dropdown-item" href="#" data-format="png">PNG</a>
-          <a class="dropdown-item" href="#" data-format="jpeg">JPEG</a>
-          <a class="dropdown-item" href="#" data-format="svg">SVG</a>
-          <a class="dropdown-item" href="#" data-format="pdf">PDF</a>
-          <div class="dropdown-divider"></div>
-
-          <a class="dropdown-item" href="#" data-format="print">Imprimir gráfico</a>
-        `;
-
-                // Agregar el menú al documento
-                document.body.appendChild(menu);
-
-                // Manejar clics en opciones
-                const menuItems = menu.querySelectorAll('.dropdown-item');
-                menuItems.forEach(item => {
-                    item.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        const formato = this.getAttribute('data-format');
-
-                        // Exportar usando las funciones nativas de Highcharts
-                        if (formato === 'png') {
-                            chart.exportChart({ type: 'image/png' });
-                        } else if (formato === 'jpeg') {
-                            chart.exportChart({ type: 'image/jpeg' });
-                        } else if (formato === 'pdf') {
-                            chart.exportChart({ type: 'application/pdf' });
-                        } else if (formato === 'svg') {
-                            chart.exportChart({ type: 'image/svg+xml' });
-                        } else if (formato === 'csv') {
-                            chart.downloadCSV();
-                        } else if (formato === 'xls') {
-                            chart.downloadXLS();
-                        } else if (formato === 'print') {
-                            chart.print();
-                        }
-
-                        // Eliminar menú
-                        menu.remove();
-                    });
-                });
-
-                // Cerrar menú al hacer clic fuera
-                document.addEventListener('click', function closeMenu(e) {
-                    if (!menu.contains(e.target) && e.target !== exportBtn) {
-                        menu.remove();
-                        document.removeEventListener('click', closeMenu);
-                    }
-                });
-            }
-        });
-    }
-}
-
-// Llamar a la función cuando el documento esté listo
-$(document).ready(function () {
-    setTimeout(crearBotonExportacionPersonalizado, 1000);
-
-    // Volver a crear el botón después de actualizar el gráfico
-    $(window).on('resize', function () {
-        setTimeout(crearBotonExportacionPersonalizado, 500);
-    });
-});
-
-
-
 
 
 // Función para detectar y corregir menús contextuales fuera de los límites
@@ -1145,7 +997,7 @@ function initProduccionTemporadaChart() {
                 }
             },
             series: [{
-                name: 'Producción febrero 2025',
+                name: 'Producción Temporada 2025',
                 color: '#0c169f',
                 data: cantidades
             }]
@@ -1244,8 +1096,7 @@ function initProduccionTemporadaChart() {
     });
 }
 
-
-// Función actualizada para el gráfico de Producción Anual
+// Función actualizada para el gráfico de Producción Anual con rango abril 2024 a mayo 2025
 function initProduccionAnualChart() {
     const container = document.getElementById('produccion-anual-container');
     if (!container) return;
@@ -1257,9 +1108,9 @@ function initProduccionAnualChart() {
     $.ajax({
         url: 'http://localhost:63152/api/Production/GetAllProduction',
         success: function (data) {
-            // Filtrar datos por los últimos 13 meses (desde marzo 2024 hasta marzo 2025)
-            const fechaInicio = new Date(2024, 2, 1); // Marzo 2024 (0-indexed months)
-            const fechaFin = new Date(2025, 2, 31); // Marzo 2025
+            // Filtrar datos desde abril 2024 hasta mayo 2025 (actualizado)
+            const fechaInicio = new Date(2024, 4, 1); // Mayo 2024 (0-indexed months, donde 3 = abril)
+            const fechaFin = new Date(2025, 3, 31); // Abril 2025 (0-indexed months, donde 4 = mayo)
 
             // Nombres exactos de productos a filtrar
             const productosAFiltrar = [
@@ -1324,15 +1175,15 @@ function initProduccionAnualChart() {
                 "Grido con Relleno": []
             };
 
-            // Generar array de meses desde marzo 2024 hasta marzo 2025
-            for (let m = 0; m < 13; m++) {
-                const fecha = new Date(2024, 2 + m, 1); // Empezar en marzo 2024
+            // Generar array de meses desde abril 2024 hasta mayo 2025 (14 meses)
+            for (let m = 0; m < 14; m++) {
+                const fecha = new Date(2024, 3 + m, 1); // Empezar en abril 2024
                 const año = fecha.getFullYear();
                 const mes = fecha.getMonth();
 
                 // Nombre del mes para mostrar en el gráfico
                 const nombreMes = fecha.toLocaleString('es', { month: 'short' });
-                meses.push(nombreMes);
+                meses.push(nombreMes + " " + año); // Añadir año para mayor claridad
 
                 // Inicializar datos para cada serie en este mes
                 Object.keys(series).forEach(nombreSerie => {
@@ -1357,7 +1208,13 @@ function initProduccionAnualChart() {
                 },
                 xAxis: {
                     categories: meses,
-                    crosshair: true
+                    crosshair: true,
+                    labels: {
+                        rotation: -45, // Rotar etiquetas para mejor visualización
+                        style: {
+                            fontSize: '11px'
+                        }
+                    }
                 },
                 yAxis: {
                     title: {
@@ -2844,35 +2701,86 @@ function prepareBalanceChart() {
 
 
 
-
-// AGREGAR EL NUEVO CÓDIGO AQUÍ
+// Reemplazar la función existente calcularInventarioValorizado
 async function calcularInventarioValorizado() {
     try {
-        // Obtener datos de stock final
-        const stockResponse = await fetch('http://localhost:63152/api/ProductionStore/GetAllProductionStore');
-        const stockData = await stockResponse.json();
-        const stockFinal = stockData.filter(item => item.OT === 4 && item.TIPOMOV === 'STOCK FINAL');
-
-        // Obtener precios de materiales
-        const materialsResponse = await fetch('http://localhost:63152/api/Materials');
-        const materialsData = await materialsResponse.json();
-
-        // Calcular el valor total
-        let valorTotal = 0;
-        stockFinal.forEach(stockItem => {
-            const material = materialsData.find(m => m.MATERIAL === stockItem.MATERIAL);
-            if (material) {
-                valorTotal += stockItem.CANTIDAD * material.PRECIO;
+        // Obtener todas las órdenes de trabajo
+        const workOrdersResponse = await fetch('http://localhost:63152/api/WorkOrders/GetAllWorkOrders');
+        const workOrdersData = await workOrdersResponse.json();
+        
+        // Filtrar órdenes con estado "PENDIENTE"
+        const ordenesPendientes = workOrdersData.filter(order => order.ESTADO === 'PENDIENTE');
+        
+        // Obtener la tarjeta y aplicar estilos de manera forzada
+        const counterCard = document.querySelector('#inventario-valorizado').closest('.counter-card');
+        
+        // Aplicar estilo directamente al elemento con !important
+        counterCard.setAttribute('style', 'background-color:#f3d83d  !important; color: #000000 !important; border-radius: 8px !important; padding: 15px !important; text-align: center !important; box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important; height: 100% !important; display: flex !important; flex-direction: column !important; justify-content: center !important; margin-bottom: 15px !important;');
+        
+        // Si no hay órdenes pendientes, mostrar mensaje informativo
+        if (ordenesPendientes.length === 0) {
+            document.querySelector('#inventario-valorizado').textContent = 'No hay órdenes pendientes';
+            
+            // Cambiar también el título de la tarjeta para más claridad
+            const cardTitle = counterCard.querySelector('h3');
+            if (cardTitle) {
+                cardTitle.textContent = 'ORDEN PENDIENTE';
+                cardTitle.style.cssText = 'color: #000000 !important; font-size: 0.9rem !important; margin-bottom: 8px !important; font-weight: 600 !important;';
+            }
+            return;
+        }
+        
+        // Ordenar las órdenes pendientes por OT (asumiendo que números más bajos van primero)
+        ordenesPendientes.sort((a, b) => a.OT - b.OT);
+        
+        // Obtener la primera orden pendiente (la próxima a realizar)
+        const proximaOrden = ordenesPendientes[0];
+        
+        // Cambiar el título de la tarjeta
+        const cardTitle = counterCard.querySelector('h3');
+        if (cardTitle) {
+            cardTitle.textContent = 'ORDEN PENDIENTE';
+            cardTitle.style.cssText = 'color: #000000 !important; font-size: 0.9rem !important; margin-bottom: 8px !important; font-weight: 600 !important;';
+        }
+        
+        // Actualizar el contador con la información de OT y PRODUCTO
+        const infoElement = document.querySelector('#inventario-valorizado');
+        
+        // Agregar icono de pendiente y formatar contenido con OT y PRODUCTO
+        infoElement.innerHTML = `
+            <div style="margin-bottom: 8px;">
+                <i class="zmdi zmdi-time-countdown" style="font-size: 1.4rem; margin-right: 8px; vertical-align: middle; color: #000000;"></i>
+            </div>
+            <div style="font-size: 1.3rem; font-weight: bold; color: #0c169f; margin-bottom: 5px;">OT ${proximaOrden.OT}</div>
+            <div style="font-size: 1rem; color: #000000;">${proximaOrden.PRODUCTO || 'Sin producto'}</div>
+        `;
+        
+        // Eliminar cualquier clase de color que pueda existir
+        infoElement.classList.remove('text-primary', 'text-info', 'text-warning', 'text-danger');
+        
+        // Asegurarse de que el texto dentro de la tarjeta sea negro
+        Array.from(counterCard.querySelectorAll('*')).forEach(el => {
+            if (el.tagName !== 'I' && !el.innerHTML.includes('OT')) { // Preservar el color del icono y el número de OT
+                el.style.color = '#000000';
             }
         });
-
-        // Actualizar el contador
-        document.querySelector('#inventario-valorizado').textContent =
-            `$${valorTotal.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        
     } catch (error) {
-        console.error('Error al calcular inventario valorizado:', error);
-        document.querySelector('#inventario-valorizado').textContent = 'Error al calcular';
+        console.error('Error al obtener información de órdenes pendientes:', error);
+        document.querySelector('#inventario-valorizado').textContent = 'Error de conexión';
     }
+}
+
+// Asegúrate de añadir la función a la lista de contadores que se actualizan
+async function actualizarContadores() {
+    await calcularInventarioValorizado();
+    await calcularDesvioTotal();
+    await calcularStockFinalValor();
+    
+    // Agregar evento de clic al contador de Stock Final
+    document.querySelector('#stock-final-counter').addEventListener('click', function () {
+        $('#stockModal').modal('show');
+    });
 }
 
 // Reemplazar la función calcularDesvioTotal() en paste-3.txt (alrededor de línea 711)
