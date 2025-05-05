@@ -347,7 +347,6 @@ $(document).ready(function () {
             console.log("Datos listos para enviar:", JSON.stringify(dataToSend, null, 2));
 
             if (dataToSend.length === 0) {
-                alert("No se encontraron materiales válidos para enviar.");
                 Swal.fire({
                     icon: "error",
                     title: "No se encontraron materiales válidos para enviar....",
@@ -519,7 +518,13 @@ $(document).ready(function () {
             const ot = $("#validationCustom01").val();
 
             if (!fecha || !turnoNombre || !responsableNombre) {
-                alert("Por favor, complete todos los campos.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Por favor, complete todos los campos.",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                  });
+
                 return;
             }
 
@@ -532,6 +537,13 @@ $(document).ready(function () {
 
             if (filasSeleccionadas.length === 0) {
                 alert("Seleccione al menos un material para registrar.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Seleccione al menos un material para registrar.",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                  });
+                
                 return;
             }
 
@@ -759,7 +771,12 @@ $(document).ready(function () {
             console.log("Filas seleccionadas:", filasSeleccionadas.length);
 
             if (filasSeleccionadas.length === 0) {
-                alert("Seleccione al menos un material para registrar.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Seleccione al menos un material para registrar.",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                  });
                 return;
             }
 
@@ -809,7 +826,12 @@ $(document).ready(function () {
             }
 
             if (dataToSend.length === 0) {
-                alert("No se encontraron materiales válidos para enviar.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "No se encontraron materiales válidos para enviar..",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                  });
                 return;
             }
 
@@ -843,7 +865,12 @@ $(document).ready(function () {
 
         } catch (error) {
             console.error("Error:", error);
-            alert("❌ Hubo un error en la operación. Revisa la consola para más detalles.");
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Hubo un error en la operación. Revisa la consola para más detalles.",
+                footer: '<a href="#">Why do I have this issue?</a>'
+              });
         }
     });
 });
@@ -969,7 +996,12 @@ $(document).ready(function () {
             const ot = $("#validationCustom01").val();
 
             if (!fecha || !turnoNombre || !responsableNombre) {
-                alert("Por favor, complete todos los campos.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Por favor, complete todos los campos.",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                  });
                 return;
             }
 
@@ -981,7 +1013,12 @@ $(document).ready(function () {
             console.log("Filas seleccionadas:", filasSeleccionadas.length);
 
             if (filasSeleccionadas.length === 0) {
-                alert("Seleccione al menos un material para registrar.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Seleccione al menos un material para registrar.",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                  });
                 return;
             }
 
@@ -1070,7 +1107,12 @@ $(document).ready(function () {
 
         } catch (error) {
             console.error("Error:", error);
-            alert("❌ Hubo un error en la operación. Revisa la consola para más detalles.");
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Hubo un error en la operación. Revisa la consola para más detalles.",
+                footer: '<a href="#">Why do I have this issue?</a>'
+              });
         }
     });
 
@@ -1188,7 +1230,12 @@ $(document).ready(function () {
 
                     // Validar que haya al menos un material seleccionado
                     if (solicitud.DetalleMateriales.length === 0) {
-                        alert("Debe seleccionar al menos un material con cantidad válida.");
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Debe seleccionar al menos un material con cantidad válida.",
+                            footer: '<a href="#">Why do I have this issue?</a>'
+                          });
                         return;
                     }
 
@@ -1332,7 +1379,12 @@ $(document).ready(function () {
                     btn.html('&#9660;'); // ▼ Cambia solo el botón de la fila actual
                 },
                 error: function () {
-                    alert("No se pudieron obtener los detalles.");
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "No se pudieron obtener los detalles.",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                      });
                 }
             });
         }
@@ -1493,7 +1545,12 @@ $(document).ready(function () {
                     btn.html("▼"); // Flecha hacia abajo cuando se expande
                 },
                 error: function () {
-                    alert("No se pudieron obtener los detalles.");
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "No se pudieron obtener los detalles.",
+                        footer: '<a href="#">Why do I have this issue?</a>'
+                      });
                 }
             });
         }
@@ -1602,7 +1659,12 @@ $(document).ready(function () {
                 }, 500);
             },
             error: function () {
-                alert("❌ No se pudieron obtener los detalles.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "No se pudieron obtener los detalles.",
+                    footer: '<a href="#">Why do I have this issue?</a>'
+                  });
             }
         });
     });
@@ -1716,7 +1778,11 @@ $(document).ready(function () {
                         if (exitos > 0) {
                             actualizarEstadoSolicitud(solicitudID);
                         } else {
-                            alert("⚠️ No se pudieron guardar los registros.");
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "No se pudieron guardar los registros.",
+                              });
                         }
                     }
                 }
@@ -1754,13 +1820,23 @@ $(document).ready(function () {
 
                             alert("✅ Datos guardados y tabla actualizada correctamente.");
                         } else {
-                            alert("❌ No se pudo guardar ningún dato.");
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "No se pudo guardar ningún dato.",
+                              });
+                            
                         }
                     }
                 }
 
             } else {
-                alert("❌ No hay materiales con el icono de verificación.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "No hay materiales con el icono de verificación.",
+                  });
+                
             }
         });
     });
@@ -1831,7 +1907,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Validar que los campos obligatorios no estén vacíos
         if (!fecha || !turno || !responsable || !otValue || !productoValue || !producido) {
-            alert("Por favor, complete todos los campos.");
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Por favor, complete todos los campos.",
+              });
             return;
         }
 
@@ -1894,7 +1974,11 @@ document.addEventListener("DOMContentLoaded", function () {
             
         } catch (error) {
             console.error("❌ Error al guardar la producción:", error.message);
-            alert("Error al guardar la producción. Verifique la consola.");
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error al guardar la producción. Verifique la consola.",
+              });
         }
     });
 });
