@@ -380,9 +380,8 @@ $(document).ready(function () {
             // Opcional: Enfocar el primer campo de cantidad
             $("#cantidad0").focus();
 
-            /* alert("✅ Stock Inicial enviado correctamente."); */
             Swal.fire({
-                title: "✅ Stock Inicial enviado correctamente.",
+                title: "✅ Stock Inicial Ingresado correctamente.",
               });
 
         } catch (error) {
@@ -521,8 +520,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Por favor, complete todos los campos.",
-                    footer: '<a href="#">Why do I have this issue?</a>'
+                    text: "Por favor, complete todos los campos."
                   });
 
                 return;
@@ -536,12 +534,10 @@ $(document).ready(function () {
             console.log("Filas seleccionadas:", filasSeleccionadas.length);
 
             if (filasSeleccionadas.length === 0) {
-                alert("Seleccione al menos un material para registrar.");
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Seleccione al menos un material para registrar.",
-                    footer: '<a href="#">Why do I have this issue?</a>'
+                    text: "Seleccione al menos un material para registrar."
                   });
                 
                 return;
@@ -598,7 +594,11 @@ $(document).ready(function () {
             console.log("Datos listos para enviar:", JSON.stringify(dataToSend, null, 2));
 
             if (dataToSend.length === 0) {
-                alert("No se encontraron materiales válidos para enviar.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "No se encontraron materiales válidos para enviar."
+                  });
                 return;
             }
 
@@ -628,11 +628,20 @@ $(document).ready(function () {
             // Opcional: Enfocar el primer campo de cantidad
             $("#cantidadSF0").focus();
 
-            alert("✅ Stock Final enviado correctamente.");
+            Swal.fire({
+                title: "Stock Final enviado correctamente.",
+                icon: "success",
+                draggable: true
+              });
+            
 
         } catch (error) {
             console.error("Error:", error);
-            alert("❌ Hubo un error en la operación. Revisa la consola para más detalles.");
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Hubo un error en la operación. Revisa la consola para más detalles."
+              });
         }
     });
 
@@ -759,7 +768,11 @@ $(document).ready(function () {
             const ot = $("#validationCustom01").val();
 
             if (!fecha || !turnoNombre || !responsableNombre) {
-                alert("Por favor, complete todos los campos.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Por favor, complete todos los campos."
+                  });
                 return;
             }
 
@@ -775,7 +788,6 @@ $(document).ready(function () {
                     icon: "error",
                     title: "Oops...",
                     text: "Seleccione al menos un material para registrar.",
-                    footer: '<a href="#">Why do I have this issue?</a>'
                   });
                 return;
             }
@@ -829,8 +841,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "No se encontraron materiales válidos para enviar..",
-                    footer: '<a href="#">Why do I have this issue?</a>'
+                    text: "No se encontraron materiales válidos para enviar.."
                   });
                 return;
             }
@@ -860,16 +871,18 @@ $(document).ready(function () {
 
             // Opcional: Enfocar el primer campo de cantidad
             $("#cantidadDE0").focus();
-
-            alert("✅ Devolución enviada correctamente.");
+            Swal.fire({
+                title: "Devolución enviada correctamente.",
+                icon: "success",
+                draggable: true
+              });
 
         } catch (error) {
             console.error("Error:", error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Hubo un error en la operación. Revisa la consola para más detalles.",
-                footer: '<a href="#">Why do I have this issue?</a>'
+                text: "Hubo un error en la operación. Revisa la consola para más detalles."
               });
         }
     });
@@ -999,8 +1012,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Por favor, complete todos los campos.",
-                    footer: '<a href="#">Why do I have this issue?</a>'
+                    text: "Por favor, complete todos los campos."
                   });
                 return;
             }
@@ -1017,7 +1029,6 @@ $(document).ready(function () {
                     icon: "error",
                     title: "Oops...",
                     text: "Seleccione al menos un material para registrar.",
-                    footer: '<a href="#">Why do I have this issue?</a>'
                   });
                 return;
             }
@@ -1073,7 +1084,11 @@ $(document).ready(function () {
             console.log("Datos listos para enviar:", JSON.stringify(dataToSend, null, 2));
 
             if (dataToSend.length === 0) {
-                alert("No se encontraron materiales válidos para enviar.");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "No se encontraron materiales válidos para enviar."
+                  });
                 return;
             }
 
@@ -1103,15 +1118,18 @@ $(document).ready(function () {
             // Opcional: Enfocar el primer campo de cantidad
             $("#cantidadSC0").focus();
 
-            alert("✅ Scrap enviado correctamente.");
+            Swal.fire({
+                title: "Scrap enviado correctamente.",
+                icon: "success",
+                draggable: true
+              });
 
         } catch (error) {
             console.error("Error:", error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Hubo un error en la operación. Revisa la consola para más detalles.",
-                footer: '<a href="#">Why do I have this issue?</a>'
+                text: "Hubo un error en la operación. Revisa la consola para más detalles."
               });
         }
     });
@@ -1233,8 +1251,7 @@ $(document).ready(function () {
                         Swal.fire({
                             icon: "error",
                             title: "Oops...",
-                            text: "Debe seleccionar al menos un material con cantidad válida.",
-                            footer: '<a href="#">Why do I have this issue?</a>'
+                            text: "Debe seleccionar al menos un material con cantidad válida."
                           });
                         return;
                     }
@@ -1249,7 +1266,9 @@ $(document).ready(function () {
                     })
                         .then(response => response.json())
                         .then(data => {
-                            alert("Solicitud enviada con éxito.");
+                            Swal.fire({
+                                title: "✅ Solicitud enviada con éxito..",
+                              });
                             console.log("Respuesta API:", data);
 
                             // Limpiar los campos de cantidad y ocultar iconos después del envío exitoso
@@ -1260,7 +1279,11 @@ $(document).ready(function () {
                         })
                         .catch(error => {
                             console.error("Error al enviar la solicitud:", error);
-                            alert("Hubo un error al enviar la solicitud.");
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Hubo un error al enviar la solicitud."
+                              });
                         });
                 });
             })
@@ -1382,8 +1405,7 @@ $(document).ready(function () {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: "No se pudieron obtener los detalles.",
-                        footer: '<a href="#">Why do I have this issue?</a>'
+                        text: "No se pudieron obtener los detalles."
                       });
                 }
             });
@@ -1548,8 +1570,7 @@ $(document).ready(function () {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
-                        text: "No se pudieron obtener los detalles.",
-                        footer: '<a href="#">Why do I have this issue?</a>'
+                        text: "No se pudieron obtener los detalles."
                       });
                 }
             });
@@ -1564,7 +1585,11 @@ $(document).ready(function () {
         console.log("Número de Orden capturado al hacer clic:", numeroOrden);
 
         if (!numeroOrden) {
-            alert("⚠️ Error: Número de orden no definido.");
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error: Número de orden no definido."
+              });
         }
 
         // Actualizar el campo externo con el número de orden
@@ -1650,8 +1675,13 @@ $(document).ready(function () {
 
                 // 🔴 Cerrar el modal manualmente
                 document.getElementById("modalSolicitudesR").style.display = "none";
-
-                alert("✅ Todos los materiales han sido agregados correctamente.");
+               
+                  Swal.fire({
+                    title: "Todos los materiales han sido recepcionados",
+                    icon: "success",
+                    draggable: true
+                  });
+                
                 table.ajax.reload(null, false); // Recargar la tabla
 
                 setTimeout(() => {
@@ -1663,7 +1693,6 @@ $(document).ready(function () {
                     icon: "error",
                     title: "Oops...",
                     text: "No se pudieron obtener los detalles.",
-                    footer: '<a href="#">Why do I have this issue?</a>'
                   });
             }
         });
@@ -1799,10 +1828,17 @@ $(document).ready(function () {
                         contentType: "application/json",
                         data: JSON.stringify(data),
                         success: function () {
-                            alert(`✅ ${exitos} registros guardados correctamente. Estado actualizado a ENTREGADO.`);
+                            
+                              Swal.fire({
+                                title: "Material ingresado al almacen",
+                                icon: "success",
+                                draggable: true
+                              });
                         },
                         error: function (xhr) {
-                            alert(`⚠️ ${exitos} registros guardados, pero no se pudo actualizar el estado: ${xhr.responseText}`);
+                            Swal.fire({
+                                title: "⚠️ ${exitos} registros guardados, pero no se pudo actualizar el estado: ${xhr.responseText}",
+                              });
                         }
                     });
                 }
@@ -1817,8 +1853,11 @@ $(document).ready(function () {
 
                             // Recargar la tabla de solicitudes
                             table.ajax.reload(null, false);
-
-                            alert("✅ Datos guardados y tabla actualizada correctamente.");
+                              Swal.fire({
+                                title: "Datos guardados y actualizada correctamente.",
+                                icon: "success",
+                                draggable: true
+                              });
                         } else {
                             Swal.fire({
                                 icon: "error",
@@ -2046,7 +2085,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!otValue || !fechaInicioValue || !horaInicioValue || !detalleValue || !tallerValue) {
             console.error("❌ Datos incompletos, revisa los campos del formulario.");
-            alert("Faltan datos por completar. Verifica la OT, fecha, hora y detalles.");
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Faltan datos por completar. Verifica la OT, fecha, hora y detalles."
+              });
             return;
         }
 
@@ -2083,7 +2126,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const resultado = await response.json();
 
-            alert("Reinicio registrado exitosamente");
+            Swal.fire({
+                title: "Reinicio registrado exitosamente",
+                icon: "success",
+                draggable: true
+              });
 
             // Limpiar los campos después del reinicio
             inputOT.value = "";
@@ -2097,7 +2144,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         } catch (error) {
             console.error("❌ Error al insertar:", error);
-            alert(`Error al registrar: ${error.message}`);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `Error al registrar: ${error.message}`
+              });
         }
     });
 

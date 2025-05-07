@@ -780,7 +780,7 @@ function cargarUltimaProduccion() {
             let performance = 0;
             if (produccionOrdenada.length > 0 && produccionOrdenada[0].PERFORMANCE) {
                 // El performance viene como número entero (9308.0 para 93.08%)
-                performance = (produccionOrdenada[0].PERFORMANCE / 100).toFixed(2);
+                performance = (produccionOrdenada[0].PERFORMANCE).toFixed(2);
             } else if (produccionSolicitada > 0) {
                 // Calcularlo si no está disponible
                 performance = ((totalProducido / produccionSolicitada) * 100).toFixed(2);
@@ -1868,7 +1868,7 @@ function initTables() {
                         data: "PERFORMANCE",
                         className: "text-right",
                         render: function (data) {
-                            return (data / 100).toFixed(2) + '%';
+                            return (data).toFixed(2) + '%';
                         }
                     }
                 ],
@@ -2013,10 +2013,10 @@ function initTables() {
                                 const valorAbs = Math.abs(valor);
                                 if (valorAbs >= 1000000) {
                                     // Redondea al millón más cercano y quita los decimales
-                                    return `${Math.round(valorAbs / 1000000)}M`;
+                                    return `${Math.round(valorAbs)}M`;
                                 } else if (valorAbs >= 1000) {
                                     // Redondea al millar más cercano y quita los decimales
-                                    return `${Math.round(valorAbs / 1000)}k`;
+                                    return `${Math.round(valorAbs)}k`;
                                 }
                                 // Para valores menores a 1000, mantén los decimales si los prefieres
                                 // o también puedes redondear con Math.round(valorAbs)
@@ -2251,10 +2251,10 @@ async function actualizarValoresDesvio() {
 
             if (valorAbs >= 1000000) {
                 // Formato para millones (M)
-                return (valorAbs / 1000000).toFixed(2) + 'M';
+                return (valorAbs).toFixed(2) + 'M';
             } else if (valorAbs >= 1000) {
                 // Formato para miles (k)
-                return (valorAbs / 1000).toFixed(2) + 'k';
+                return (valorAbs).toFixed(2) + 'k';
             } else {
                 // Formato normal para valores pequeños
                 return valorAbs.toFixed(2);

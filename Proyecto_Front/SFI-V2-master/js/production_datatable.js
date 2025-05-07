@@ -46,7 +46,7 @@ $(document).ready(function() {
             return value.toFixed(2) + '%';
         } else {
             // Si es decimal (ej: 0.29), multiplicar por 100
-            return (value * 100).toFixed(2) + '%';
+            return (value).toFixed(2) + '%';
         }
     }
 }
